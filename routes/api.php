@@ -211,8 +211,8 @@ Route::middleware('auth:kepegawaian')->group(function () {
 
     Route::get('/export-data-psb', [PsbController::class, 'exportExcel']);
     Route::get('/export-berkas-zip', [PsbController::class, 'exportBerkasZip']);
-    Route::post('/import-data-psb', [PsbController::class, 'importExcel']);
-    Route::post('/import-berkas-zip', [PsbController::class, 'importBerkasZip']);    
+    // Route::post('/import-data-psb', [PsbController::class, 'importExcel']);
+    // Route::post('/import-berkas-zip', [PsbController::class, 'importBerkasZip']);    
 // ? =========================================================================================================================== ?
 
 

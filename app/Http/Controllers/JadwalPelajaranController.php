@@ -22,7 +22,7 @@ class JadwalPelajaranController extends Controller
     /**
      * ✅ Untuk SPA
      */   
-    public function index()
+    public function index(Request $request)
     {
         $jadwal = JadwalPelajaran::with([
             'guru',
@@ -32,7 +32,9 @@ class JadwalPelajaranController extends Controller
             'ruangan',
             'kurikulumMataPelajaran.mataPelajaran',
             'kurikulumMataPelajaran.kurikulum',
-        ])->get();
+        ])
+        ->where('tahun_akademik_id', $request->tahun_akademik_id)
+        ->get();
 
         if ($jadwal->isEmpty()) {
             return ApiResponse::error('Not found', [
@@ -766,12 +768,30 @@ class JadwalPelajaranController extends Controller
             ];
         });
 
+        $tahun = TahunAkademik::get();
+
+        if ($tahun->isEmpty()) {
+            return ApiResponse::error(
+                'Data kosong',
+                ['data' => 'Belum ada data Tahun Akademik']
+            );
+        }
+
+        $tahunAkademik = $tahun->map(function ($th) {
+            return [
+                'tahun_akademik_id' => $th->id,
+                'tahun_akademik'    => $th->tahun_akademik,
+                'status'            => $th->status
+            ];
+        })->values();
+
         return ApiResponse::success(
             [
                 'kurikulum_mata_pelajaran' => $kurmap,
                 'guru' => $guru,
                 // 'rombel' => $rombel,
                 'ruangan' => $ruangan,
+                'tahun_akademik'    => $tahunAkademik
             ],
             'Data select berhasil diambil'
         );

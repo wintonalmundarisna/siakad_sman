@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use App\Models\IdentitasSekolah;
 use App\Models\Gedung;
+use App\Models\Psb;
 use App\Models\Ruangan;
 use App\Models\TahunAkademik;
 use App\Models\Semester;
@@ -436,6 +437,95 @@ class DatabaseSeeder extends Seeder
          * 🎯✅ SPA: C.R.U.D
          */
         // Penerimaan Siswa Baru
+        Psb::insert([
+            [
+                'foto_siswa'            => 'foto_satu.jpg',
+                'nama_siswa'            => 'Siswa Baru Pertama',
+                'nisn'                  => '202143500076',
+                'jk'                    => 'Laki-laki',
+                'tempat_lahir'          => 'Cirebon',
+                'tanggal_lahir'         =>  '2003-08-24',
+                'agama'                 => 'Islam',
+                'alamat'                => 'Jl. Satria, No. 59 B',
+                'no_hp_siswa'           => '087820624415',
+                'nama_ayah'             => 'Ayah Siswa Baru Pertama',
+                'pekerjaan_ayah'        => 'Guru',
+                'no_hp_ayah'            => '08777647826',
+                'nama_ibu'              => 'Ibu Siswa Baru Pertama',
+                'pekerjaan_ibu'         => 'Dosen',
+                'no_hp_ibu'             => '08777647832',
+                'nama_wali'             => 'Wali Siswa Baru Pertama',
+                'pekerjaan_wali'        => 'Wirausaha',
+                'no_hp_wali'            => '08777647543',
+                'sekolah_asal'          => 'SMP Citra Bangsa',
+                'alamat_sekolah_asal'   => 'Jl. Citra',
+                'kelas_terakhir'        => null,
+                'nilai_raport_terakhir' => '90',
+                'alasan_pindah'         => null,
+                'berkas_raport'         => 'berkas_raport_pertama.pdf',
+                'suket_pindah'          => 'suket_pindah_pertama.pdf',
+                'berkas_kartu_keluarga' => 'kk_pertama.jpg',
+                'berkas_akta_lahir'     => 'akta_pertama.png'
+            ],
+            [
+                'foto_siswa'            => 'foto_dua.jpg',
+                'nama_siswa'            => 'Siswa Baru Kedua',
+                'nisn'                  => '202143500090',
+                'jk'                    => 'Laki-laki',
+                'tempat_lahir'          => 'Depok',
+                'tanggal_lahir'         =>  '2001-05-25',
+                'agama'                 => 'Kristen',
+                'alamat'                => 'Jl. Kenangan',
+                'no_hp_siswa'           => '087820629990',
+                'nama_ayah'             => 'Ayah Siswa Baru Kedua',
+                'pekerjaan_ayah'        => 'Nelayan',
+                'no_hp_ayah'            => '08777647887',
+                'nama_ibu'              => 'Ibu Siswa Baru Kedua',
+                'pekerjaan_ibu'         => 'Dokter',
+                'no_hp_ibu'             => '08777647634',
+                'nama_wali'             => null,
+                'pekerjaan_wali'        => null,
+                'no_hp_wali'            => null,
+                'sekolah_asal'          => 'SMA Dharma Bakti',
+                'alamat_sekolah_asal'   => 'Jl. Kebaktian',
+                'kelas_terakhir'        => 'XI-IPA',
+                'nilai_raport_terakhir' => '90',
+                'alasan_pindah'         => 'Pindah Domisili',
+                'berkas_raport'         => 'berkas_raport_kedua.pdf',
+                'suket_pindah'          => 'suket_pindah_kedua.pdf',
+                'berkas_kartu_keluarga' => 'kk_kedua.jpg',
+                'berkas_akta_lahir'     => 'akta_kedua.png'
+            ],
+            [
+                'foto_siswa'            => 'foto_tiga.jpg',
+                'nama_siswa'            => 'Siswa Baru Ketiga',
+                'nisn'                  => '202143500005',
+                'jk'                    => 'Perempuan',
+                'tempat_lahir'          => 'Jakarta',
+                'tanggal_lahir'         =>  '2003-01-17',
+                'agama'                 => 'Katolik',
+                'alamat'                => 'Jl. Bumi Bersama',
+                'no_hp_siswa'           => '087820629100',
+                'nama_ayah'             => 'Ayah Siswa Baru Ketiga',
+                'pekerjaan_ayah'        => 'Satpam',
+                'no_hp_ayah'            => '08777647887',
+                'nama_ibu'              => 'Ibu Siswa Baru Ketiga',
+                'pekerjaan_ibu'         => 'Asisten Rumah Tangga',
+                'no_hp_ibu'             => '08777647634',
+                'nama_wali'             => null,
+                'pekerjaan_wali'        => null,
+                'no_hp_wali'            => null,
+                'sekolah_asal'          => 'SMP Ganesha',
+                'alamat_sekolah_asal'   => 'Jl. Merdeka',
+                'kelas_terakhir'        => null,
+                'nilai_raport_terakhir' => null,
+                'alasan_pindah'         => null,
+                'berkas_raport'         => 'berkas_raport_kedua.pdf',
+                'suket_pindah'          => null,
+                'berkas_kartu_keluarga' => 'kk_kedua.jpg',
+                'berkas_akta_lahir'     => 'akta_kedua.png'
+            ],
+        ]);
 
         /**
          * 🎯✅ spa: C.R.U.D
@@ -3254,7 +3344,19 @@ class DatabaseSeeder extends Seeder
                 'ruangan_id' => 1,
                 'link_opsional' => '',              
             ],              
-
+            [
+                // 1
+                'kurikulum_mata_pelajaran_id' => 6, // K13 - MTK
+                'tahun_akademik_id' => 1, // 2023/2024
+                'semester_id' => 1, // Ganjil
+                'hari' => 'Minggu',
+                'guru_id' => 9, // Guru MTK
+                'rombel_id' => 1, // X-A-1
+                'jam_mulai' => '07:30',
+                'jam_selesai' => '08:30',
+                'ruangan_id' => 1,
+                'link_opsional' => '',              
+                ]          
             
         ]);              
 
@@ -3968,21 +4070,7 @@ class DatabaseSeeder extends Seeder
                 'bukti' => null, // hadir, izin, sakit, alpa                            
                 'tahun_akademik_id' => 2,
                 'semester_id' => 4, // Genap
-            ],    
-            [,    
-            // 1
-            'kurikulum_mata_pelajaran_id' => 6, // K13 - MTK
-            'tahun_akademik_id' => 1, // 2023/2024
-            'semester_id' => 1, // Ganjil
-            'hari' => 'Minggu',
-            'guru_id' => 9, // Guru MTK
-            'rombel_id' => 1, // X-A-1
-            'jam_mulai' => '07:30',
-            'jam_selesai' => '08:30',
-            'ruangan_id' => 1,
-            'link_opsional' => '',              
-            ],                     
-                      
+            ]
         ]);        
 
         /**

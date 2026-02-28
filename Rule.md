@@ -15,6 +15,7 @@ Berikut Perubahan yang Terjadi: (Yang atas gausa dibaca)
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 N.A.M.B.A.H
+
 - Absensi Pegawai             : ✅ Data Select
 - Absensi Guru - Pelajaran    : ✅ Data Select
 - Absensi Siswa - Pelajaran   : ✅ Data Select
@@ -26,33 +27,38 @@ N.A.M.B.A.H
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 H.A.P.U.S:
 
-- Ruangan         :   ✅ Get All     : Karna Gedung: Get All sudah mewakili (http://127.0.0.1:8000/api/spa/ruangan)
-                      ✅ Data Select : Karna create dan update ruangan berada di detail gedung, bisa menggunakan id gedung yang sedang di get
+- Identitas Sekolah :   ✅ Get Detail  : Karna satu sekolah hanya boleh satu identitas (http://127.0.0.1:8000/api/spa/identitas-sekolah/7)
 
-- Rombel          :   ✅ Get All     : Karna detail kelas sudah mewakili (http://127.0.0.1:8000/api/spa/rombel)
-                      ✅ Data Select : kelas dihapus dari data select karna posisi create ada di detail kelas (bisa pakai id kelas yang sedang di get)
+- Ruangan           :   ✅ Get All     : Karna Gedung: Get All sudah mewakili (http://127.0.0.1:8000/api/spa/ruangan)
+                        ✅ Data Select : Karna create dan update ruangan berada di detail gedung, bisa menggunakan id gedung yang sedang di get
 
-- Wali Rombel     :   ✅ Data Select : Rombel dihapus dari data select karna posisi create sudah ada di detail tahun aktif rombel (bisa pakai id rombel yang sedang di get)
+- PSB               :   ✅ Import Excel : Karna memang tidak diperlukan (http://127.0.0.1:8000/api/import-data-psb)
+                        ✅ Import Berkas: Karna memang tidak diperlukan (http://127.0.0.1:8000/api/import-berkas-zip)
+
+- Rombel            :   ✅ Get All     : Karna detail kelas sudah mewakili (http://127.0.0.1:8000/api/spa/rombel)
+                        ✅ Data Select : kelas dihapus dari data select karna posisi create ada di detail kelas (bisa pakai id kelas yang sedang di get)
+
+- Wali Rombel       :   ✅ Data Select : Rombel dihapus dari data select karna posisi create sudah ada di detail tahun aktif rombel (bisa pakai id rombel yang sedang di get)
  
-- Siswa Rombel    :   ✅ Data Select : Rombel dihapus dari data select karna posisi create sudah ada di detail tahun aktif rombel (bisa pakai id rombel yang sedang di get)
+- Siswa Rombel      :   ✅ Data Select : Rombel dihapus dari data select karna posisi create sudah ada di detail tahun aktif rombel (bisa pakai id rombel yang sedang di get)
   
-- Guru - Jadwal   :   ✅ Data Select : Rombel dihapus dari data select karna posisi create sudah ada di detail tahun aktif rombel (bisa pakai id rombel yang sedang di get)
+- Guru - Jadwal     :   ✅ Data Select : Rombel dihapus dari data select karna posisi create sudah ada di detail tahun aktif rombel (bisa pakai id rombel yang sedang di get)
 
-- TahunAkademik   :   ✅ Get Detail  : Detail dihapus karna get all sudah mencukupi (http://127.0.0.1:8000/api/spa/tahun-akademik/1)
+- TahunAkademik     :   ✅ Get Detail  : Detail dihapus karna get all sudah mencukupi (http://127.0.0.1:8000/api/spa/tahun-akademik/1)
 
-- Semester        :   ✅ Get All     : All dihapus Karna get all tahun akademik sudah mencukupi (http://127.0.0.1:8000/api/spa/semester)
-                      ✅ Get Detail  : Detail dihapus Karna get all tahun akademik sudah mencukupi (http://127.0.0.1:8000/api/spa/semester/1)
-                      ✅ Data Select : Data select dihapus karna get all tahun akademik sudah membawa id
+- Semester          :   ✅ Get All     : All dihapus Karna get all tahun akademik sudah mencukupi (http://127.0.0.1:8000/api/spa/semester)
+                        ✅ Get Detail  : Detail dihapus Karna get all tahun akademik sudah mencukupi (http://127.0.0.1:8000/api/spa/semester/1)
+                        ✅ Data Select : Data select dihapus karna get all tahun akademik sudah membawa id
 
-- Atp Master      :   ✅ Get all     : All dihapus Karna get detail kompetensi sudah mencukupi (http://127.0.0.1:8000/api/spa/atp-master)
-                      ✅ Get detail  : Detail dihapus Karna get detail kompetensi sudah mencukupi http://127.0.0.1:8000/api/spa/atp-master/1
-                      ✅ Data Select : Data select dihapus karna get detail kompetensi sudah membawa id (http://127.0.0.1:8000/api/spa/data-select/atp-master)
+- Atp Master        :   ✅ Get all     : All dihapus Karna get detail kompetensi sudah mencukupi (http://127.0.0.1:8000/api/spa/atp-master)
+                        ✅ Get detail  : Detail dihapus Karna get detail kompetensi sudah mencukupi http://127.0.0.1:8000/api/spa/atp-master/1
+                        ✅ Data Select : Data select dihapus karna get detail kompetensi sudah membawa id (http://127.0.0.1:8000/api/spa/data-select/atp-master)
 
-- Pembina-Ekskul  :   ✅ Data Select : Eskul dihapus dari data select karena posisi create pembina sudah ada di detail ekskul (bisa pakai id ekskul yang sedang di detail)
+- Pembina-Ekskul    :   ✅ Data Select : Eskul dihapus dari data select karena posisi create pembina sudah ada di detail ekskul (bisa pakai id ekskul yang sedang di detail)
   
-- Pelatih-Ekskul  :   ✅ Data Select : Eskul dihapus dari data select karena posisi create pelatih sudah ada di detail ekskul (bisa pakai id ekskul yang sedang di detail)
+- Pelatih-Ekskul    :   ✅ Data Select : Eskul dihapus dari data select karena posisi create pelatih sudah ada di detail ekskul (bisa pakai id ekskul yang sedang di detail)
   
-- Siswa - Ekskul  :   ✅ Data Select : Eskul dihapus dari data select karena posisi create siswa ekskul sudah ada di detail ekskul (bisa pakai id ekskul yang sedang di detail)
+- Siswa - Ekskul    :   ✅ Data Select : Eskul dihapus dari data select karena posisi create siswa ekskul sudah ada di detail ekskul (bisa pakai id ekskul yang sedang di detail)
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -61,47 +67,50 @@ H.A.P.U.S:
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 U.B.A.H:
 
-- Gedung                    : ✅ Get Detail           | Hasil json berubah, ruangan lebih disederhanakan
+- Super Admin               : ✅ Get Detail Diri Sendiri  | Sudah diperbaiki
+                              
 
-- Kepegawaian               : ✅ Get All              | Penentuan Role
+- Gedung                    : ✅ Get Detail               | Hasil json berubah, ruangan lebih disederhanakan
 
-- Siswa                     : ✅ Get All              | Penentuan tahun
+- Kepegawaian               : ✅ Get All                  | Penentuan Role
 
-- Kelas                     : ✅ Get Detail           | Mengubah isi detail
+- Siswa                     : ✅ Get All                  | Penentuan tahun
 
-- TahunAkademik             : ✅ Get All              | Melengkapi semester
+- Kelas                     : ✅ Get Detail               | Mengubah isi detail
 
-- KurikulumMataPelajaran    : ✅ Get All              | Penentuan Tipe Kurikulum
+- TahunAkademik             : ✅ Get All                  | Melengkapi semester
 
-- Kompetensi                : ✅ Data Select          | Berisi list kurikulumMataPelajaran
-                              ✅ Create               | Ganti kurikulum_id dan mata_pelajaran_id menjadi kurikulum_mata_pelajaran_id
-                              ✅ Get all              | Penentuan kurikulum_mata_pelajaran
-                              ✅ Get Detail           | Perubahan pada output json "id" menjadi "kompetensi_id"
-                              ✅ Update               | Ganti kurikulum_id dan mata_pelajaran_id menjadi kurikulum_mata_pelajaran_id
-                              ✅ Tabel                | Mengubah kolom kurikulum_id dan kompetensi_id menjadi kurikulum_mata_pelajaran_id pada tabel kompetensi
-                              ✅ Wajib                | Cek semua API Kompetensi (soalnya yang berubah kolom tabelnya)
+- KurikulumMataPelajaran    : ✅ Get All                  | Penentuan Tipe Kurikulum
 
-- Rombel                    : ✅ Detail Histori       | Penentuan tahun
+- Kompetensi                : ✅ Data Select              | Berisi list kurikulumMataPelajaran
+                              ✅ Create                   | Ganti kurikulum_id dan mata_pelajaran_id menjadi kurikulum_mata_pelajaran_id
+                              ✅ Get all                  | Penentuan kurikulum_mata_pelajaran
+                              ✅ Get Detail               | Perubahan pada output json "id" menjadi "kompetensi_id"
+                              ✅ Update                   | Ganti kurikulum_id dan mata_pelajaran_id menjadi kurikulum_mata_pelajaran_id
+                              ✅ Tabel                    | Mengubah kolom kurikulum_id dan kompetensi_id menjadi kurikulum_mata_pelajaran_id pada tabel kompetensi
+                              ✅ Wajib                    | Cek semua API Kompetensi (soalnya yang berubah kolom tabelnya)
 
-- Wali Rombel               : ✅ Histori Menjadi Wali | Penentuan tahun
+- Rombel                    : ✅ Detail Histori           | Penentuan tahun
+
+- Wali Rombel               : ✅ Histori Menjadi Wali     | Penentuan tahun
   
-- Guru Jadwal Pelajaran     : ❌ Get All              | Penentuan tahun
-                              ✅ Histori Jadwal       | Penentuan tahun
+- Guru Jadwal Pelajaran     : ✅ Get All                  | Penentuan tahun
+                              ✅ Histori Jadwal           | Penentuan tahun
   
-- Absensi Pegawai           : ✅ Get All              | Penentuan tahun dan semester
-                              ✅ Histori Absensi      | Penentuan guru dan tahun
+- Absensi Pegawai           : ✅ Get All                  | Penentuan tahun dan semester
+                              ✅ Histori Absensi          | Penentuan guru dan tahun
 
-- Absensi Guru - Pelajaran  : ✅ Get All              | Penentuan tahun dan semester
-                              ✅ Histori absensi      | Penentuan Guru dan Tahun
+- Absensi Guru - Pelajaran  : ✅ Get All                  | Penentuan tahun dan semester
+                              ✅ Histori absensi          | Penentuan Guru dan Tahun
 
-- Absensi Siswa-Pelajaran   : ✅ Get All              | Penentuan tahun dan semester
-                              ✅ Histori Absensi      | Penentuan siswa dan tahun
+- Absensi Siswa-Pelajaran   : ✅ Get All                  | Penentuan tahun dan semester
+                              ✅ Histori Absensi          | Penentuan siswa dan tahun
                             
-- Ekstrakurikuler           : ✅ Get Detail Ekskul    | Penentuan tahun
+- Ekstrakurikuler           : ✅ Get Detail Ekskul        | Penentuan tahun
 
-- Data Nilai Siswa          : ✅ Leger dan Exportnya  | Penentuan tahun dan semester
+- Data Nilai Siswa          : ✅ Leger dan Exportnya      | Penentuan tahun dan semester
 
-- Prestasi                  : ✅ All Per Periode      | Penentuan tahun dan semester
+- Prestasi                  : ✅ All Per Periode          | Penentuan tahun dan semester
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -174,7 +183,7 @@ SPA:
       - Pembina eksktrakurikuler        : Histori membina
       - Pelatih ekstrakurikuler         : Histori melatih
 
-  - Selain Guru
+  - Staff
     - Ubah Password
     - Create
     - Update
@@ -323,16 +332,31 @@ SPA:
   - Belum jadi    
 
 
-
+      ___  
+      | |
+      | |
+      | |
+      | |
+      | |
+    __| |__
+    \     /
+      \  /
+       \/
 
 
 
 Hasil Debug Program:
 
 Winton:
-- Excel harus fix semua kolomnya ketika dibuka
-- Excel harus diberi header semua
-- Import excel psb dihapus aja
+- ❌ Excel harus diberi heading + table header + fix kolom + bg + kutip + no (center):
+  - ✅ PSB
+  - ✅ Leger
+  - ❌ Absensi Siswa
+  - ❌ Absensi Pegawai
+  - ❌ Absensi Guru - Pelajaran
+  - ❌ Keuangan
+- ✅ Import excel psb dihapus aja
+- ✅ Import zip berkas psb dihapus aja
 - ✅ Kurikulum        : Status arsip boleh dihapus
 - ✅ Tahun Akademik   : Status arsip boleh dihapus
 
@@ -363,3 +387,4 @@ Ryan
 - Atp master lihat di atas bagian alur
 - Alur Tujuan Pembelajaran juga lihat di atas bagian alur
 - ❌ Data Siswa
+- ❌ Bikinyang bisa dan tidak bisa masing-masing fitur, misal tahun akademik bisa dihapus pas arsip tapi gabisa pas udah di consume semester

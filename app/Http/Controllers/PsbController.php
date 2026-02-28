@@ -7,15 +7,16 @@ use App\Models\Psb;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 // use Symfony\Component\HttpFoundation\Response;
-use Illuminate\Support\Facades\Response;
+// use Illuminate\Support\Facades\Response;
 use Illuminate\Validation\Rule;
 use App\Helpers\ApiResponse;
 use App\Exports\PsbExport;
-use App\Imports\PsbImport;
+// use App\Imports\PsbImport;
 use ZipArchive;
 use Maatwebsite\Excel\Facades\Excel;
-use Illuminate\Support\Facades\Validator;
-use File;
+// use Illuminate\Support\Facades\Validator;
+// use File;
+use Illuminate\Validation\ValidationException;
 
 class PsbController extends Controller
 {
@@ -663,7 +664,7 @@ class PsbController extends Controller
 
         try {
             // Kirim file langsung sebagai download response
-            return Excel::download(new PsbExport($ids), 'data_psb.xlsx');
+            return Excel::download(new PsbExport($ids), 'data_psb_'.now()->year.'.xlsx');
         } catch (\Exception $e) {
             // Tangani error ekspor
             return response()->json([
@@ -685,7 +686,7 @@ class PsbController extends Controller
         $ids = $request->input('id');
         $psbList = $ids ? Psb::whereIn('id', $ids)->get() : Psb::all();
 
-        $zipFileName = 'berkas_psb.zip';
+        $zipFileName = 'berkas_psb_'.now()->year.'.zip';
         $tempZipPath = tempnam(sys_get_temp_dir(), 'zip_psb_');
 
         $zip = new \ZipArchive;
@@ -737,72 +738,72 @@ class PsbController extends Controller
      * ✅ Import data menggunakan app\Imports\PsbImport.php
      * php artisan make:import PsbImport --model=Psb
      */
-    public function importExcel(Request $request)
-    {
-        $request->validate([
-            'file' => 'required|mimes:xlsx,xls'
-        ]);
+    // public function importExcel(Request $request)
+    // {
+    //     $request->validate([
+    //         'file' => 'required|mimes:xlsx,xls'
+    //     ]);
         
-        Excel::import(new PsbImport, $request->file('file'));
+    //     Excel::import(new PsbImport, $request->file('file'));
         
-        return response()->json(['message' => 'Import berhasil']);
-    }
+    //     return response()->json(['message' => 'Import berhasil']);
+    // }
 
 
     /**
      * ✅ Import berkas
      */
-    public function importBerkasZip(Request $request)
-    {
-        $request->validate([
-            'zip_file' => 'required|file|mimes:zip',
-        ]);
+    // public function importBerkasZip(Request $request)
+    // {
+    //     $request->validate([
+    //         'zip_file' => 'required|file|mimes:zip',
+    //     ]);
 
-        $zipFile = $request->file('zip_file');
+    //     $zipFile = $request->file('zip_file');
 
-        // Simpan sementara file ZIP di storage
-        $tempPath = $zipFile->getRealPath();
+    //     // Simpan sementara file ZIP di storage
+    //     $tempPath = $zipFile->getRealPath();
 
-        $zip = new ZipArchive;
-        if ($zip->open($tempPath) !== true) {
-            return response()->json(['error' => 'Tidak dapat membuka file ZIP'], 400);
-        }
+    //     $zip = new ZipArchive;
+    //     if ($zip->open($tempPath) !== true) {
+    //         return response()->json(['error' => 'Tidak dapat membuka file ZIP'], 400);
+    //     }
 
-        // Loop semua file di ZIP
-        for ($i = 0; $i < $zip->numFiles; $i++) {
-            $entry = $zip->getNameIndex($i);
+    //     // Loop semua file di ZIP
+    //     for ($i = 0; $i < $zip->numFiles; $i++) {
+    //         $entry = $zip->getNameIndex($i);
 
-            // Skip folder kosong
-            if (substr($entry, -1) === '/') continue;
+    //         // Skip folder kosong
+    //         if (substr($entry, -1) === '/') continue;
 
-            // Tentukan folder disk berdasarkan prefix
-            if (str_starts_with($entry, 'public/')) {
-                $disk = 'public';
-                $relativePath = substr($entry, strlen('public/'));
-            } elseif (str_starts_with($entry, 'private/')) {
-                $disk = 'private';
-                $relativePath = substr($entry, strlen('private/'));
-            } else {
-                // Jika folder tidak dikenal, lewati
-                continue;
-            }
+    //         // Tentukan folder disk berdasarkan prefix
+    //         if (str_starts_with($entry, 'public/')) {
+    //             $disk = 'public';
+    //             $relativePath = substr($entry, strlen('public/'));
+    //         } elseif (str_starts_with($entry, 'private/')) {
+    //             $disk = 'private';
+    //             $relativePath = substr($entry, strlen('private/'));
+    //         } else {
+    //             // Jika folder tidak dikenal, lewati
+    //             continue;
+    //         }
 
-            // Pastikan direktori tujuan ada
-            $dir = dirname($relativePath);
-            if (!Storage::disk($disk)->exists($dir)) {
-                Storage::disk($disk)->makeDirectory($dir);
-            }
+    //         // Pastikan direktori tujuan ada
+    //         $dir = dirname($relativePath);
+    //         if (!Storage::disk($disk)->exists($dir)) {
+    //             Storage::disk($disk)->makeDirectory($dir);
+    //         }
 
-            // Ambil isi file
-            $fileContents = $zip->getFromIndex($i);
+    //         // Ambil isi file
+    //         $fileContents = $zip->getFromIndex($i);
 
-            // Simpan file ke storage sesuai disk
-            Storage::disk($disk)->put($relativePath, $fileContents);
-        }
+    //         // Simpan file ke storage sesuai disk
+    //         Storage::disk($disk)->put($relativePath, $fileContents);
+    //     }
 
-        $zip->close();
+    //     $zip->close();
 
-        return response()->json(['success' => 'File berhasil diimport']);
-    }
+    //     return response()->json(['success' => 'File berhasil diimport']);
+    // }
 
 }

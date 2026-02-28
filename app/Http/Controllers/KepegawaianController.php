@@ -389,119 +389,28 @@ class KepegawaianController extends Controller
     }
 
     // ✅ show diri sendiri (pegawai)
-    // public function showDiriSendiri()
-    // {
-    //     $user = Auth::guard('kepegawaian')->user();
+    public function showDiriSendiri() {
+        $id = Auth::guard('kepegawaian')->user();    
 
-    //     $pegawai = Kepegawaian::with([
-    //         'waliRombels.rombel.jurusan',
-    //         'waliRombels.tahunAkademik',
-    //         'pelatihEkskul.ekstrakurikuler',
-    //         'pelatihEkskul.tahunAkademik',
-    //         'pembinaEkskul.ekstrakurikuler',
-    //         'pembinaEkskul.tahunAkademik',
-    //         'jadwalPelajarans.kurikulumMataPelajaran.kurikulum',
-    //         'jadwalPelajarans.kurikulumMataPelajaran.mataPelajaran',
-    //         'jadwalPelajarans.semester.tahunAkademik',
-    //     ])->find($user->id);
+        $pegawai = Kepegawaian::find($id->id);        
 
-    //     if (!$pegawai) {
-    //         return ApiResponse::error('Not found', ['id' => ['Data tidak ditemukan']], 404);
-    //     }
+        if (!$pegawai) {
+            return ApiResponse::error('Pegawai tidak ditemukan', ['id' => ['Data tidak ditemukan']], 404);
+        }
 
-    //     $formatted = [
-    //         'id' => $pegawai->id ?? null,
-    //         'nama' => $pegawai->nama ?? null,
-    //         'email' => $pegawai->email ?? null,
-    //         'nip' => $pegawai->nip ?? null,
-    //         'nuptk' => $pegawai->nuptk ?? null,
-    //         'keterangan' => $pegawai->keterangan ?? null,
-    //         'role' => $pegawai->role ?? null,
-    //         'status' => $pegawai->status ?? null,
-    //         'histori_wali_rombel' => $pegawai->waliRombels->map(function ($walRom) {
-    //             return [
-    //                 'rombel_id' => $walRom->rombel->id ?? null,
-    //                 'nama_rombel' => $walRom->rombel->nama_rombel ?? null, // X-1
+        $formatted = [
+            'id' => $pegawai->id ?? null,
+            'nama' => $pegawai->nama ?? null,
+            'nip' => $pegawai->nip ?? null,
+            'nuptk' => $pegawai->nuptk ?? null,
+            'email' => $pegawai->email ?? null,
+            'keterangan' => $pegawai->keterangan ?? null,
+            'role' => $pegawai->role ?? null,
+            'status' => $pegawai->status ?? null,            
+        ];
 
-    //                 'kelas_id' => $walRom->rombel->kelas->id ?? null, // X
-    //                 'nama_kelas' => $walRom->rombel->kelas->nama_kelas ?? null,
-    //                 'tingkat_kelas' => $walRom->rombel->kelas->tingkat ?? null, // 10
-    //                 'jurusan_kelas' => $walRom->rombel->kelas->jurusan->nama_jurusan ?? null,                    
-
-    //                 'tahun_akademik_rombel' => $walRom->tahunAkademik->tahun_akademik ?? null,
-    //                 'status_tahun_akademik_rombel' => $walRom->tahunAkademik->status ?? null,
-    //             ];
-    //         }),
-    //         'histori_pelatih_ekskul' => $pegawai->pelatihEkskul->map(function ($pelatih) {
-    //             return [
-    //                 'pelatih_id' => $pelatih->id ?? null,
-    //                 'ekskul_id' => $pelatih->ekstrakurikuler_id ?? null,
-    //                 'nama_ekskul' => $pelatih->ekstrakurikuler->nama_ekstrakurikuler ?? null,
-    //                 'tahun_akademik_melatih' => $pelatih->tahunAkademik->tahun_akademik ?? null,
-    //                 'status_tahun_akademik_melatih' => $pelatih->tahunAkademik->status ?? null,
-    //             ];
-    //         }),
-    //         'histori_pembina_ekstrakurikuler' => $pegawai->pembinaEkskul->map(function ($pembina) {
-    //             return [
-    //                 'pembina_id' => $pembina->id ?? null,
-    //                 'ekstrakurikuler_id' => $pembina->ekstrakurikuler_id ?? null,
-    //                 'nama_ekstrakurikuler' => $pembina->ekstrakurikuler->nama_ekstrakurikuler ?? null,
-    //                 'tahun_akademik_membina' => $pembina->tahunAkademik->tahun_akademik ?? null,
-    //                 'status_tahun_akademik_membina' => $pembina->tahunAkademik->status ?? null,
-    //             ];
-    //         }),                    
-    //         'histori_jadwal_pelajaran' => $pegawai->jadwalPelajarans
-    //         ->groupBy(fn ($jadwal) => $jadwal->semester->tahunAkademik->id)
-    //         ->map(function ($jadwalPerTahun) {
-
-    //             $tahunAkademik = $jadwalPerTahun->first()->semester->tahunAkademik;
-
-    //             return [
-    //                 'tahun_akademik_id' => $tahunAkademik->id,
-    //                 'tahun_akademik' => $tahunAkademik->tahun_akademik,
-    //                 'status_tahun_akademik' => $tahunAkademik->status,
-
-    //                 'semester' => $jadwalPerTahun
-    //                     ->groupBy(fn ($jadwal) => $jadwal->semester->id)
-    //                     ->map(function ($jadwalPerSemester) {
-
-    //                         $semester = $jadwalPerSemester->first()->semester;
-
-    //                         return [
-    //                             'semester_id' => $semester->id,
-    //                             'semester' => $semester->semester, // Ganjil / Genap
-    //                             'status_semester' => $semester->status,
-
-    //                             'jadwal' => $jadwalPerSemester->map(function ($jadwal) {
-    //                                 $kurmap = $jadwal->kurikulumMataPelajaran;
-
-    //                                 return [
-    //                                     'jadwal_pelajaran_id' => $jadwal->id,
-    //                                     'hari' => $jadwal->hari,
-    //                                     'jam_mulai' => $jadwal->jam_mulai,
-    //                                     'jam_selesai' => $jadwal->jam_selesai,
-    //                                     'rombel' => $jadwal->rombel->nama_rombel ?? null,
-    //                                     'ruangan' => $jadwal->ruangan,
-    //                                     'link_opsional' => $jadwal->link_opsional,
-
-    //                                     'mata_pelajaran' => [
-    //                                         'nama_pelajaran' => $kurmap->mataPelajaran->nama_pelajaran ?? null,
-    //                                         'jurusan_pelajaran' => $kurmap->jurusan->nama_jurusan ?? null,
-    //                                         'tingkat_pelajaran' => $kurmap->tingkat,
-    //                                         'status_pelajaran' => $kurmap->status_mata_pelajaran,
-    //                                         'kkm' => $kurmap->nilai_kkm,
-    //                                         'tahun_akdemik_pelajaran' => $kurmap->tahunAkademik->tahun_akademik ?? null, 
-    //                                         'status_tahun_akdemik_pelajaran' => $kurmap->tahunAkademik->status ?? null, 
-    //                                     ],
-    //                                 ];
-    //                             })->values(),
-    //                         ];
-    //                     })->values(),
-    //             ];
-    //         })->values(),
-    //     ];
-    //     return ApiResponse::success($formatted, 'Detail data berhasil diambil');
-    // }
+        return ApiResponse::success($formatted, 'Detail pegawai berhasil diambil');
+    }
 
     // ✅ Store = Register
 
@@ -640,9 +549,9 @@ class KepegawaianController extends Controller
 
         $pegawai->update([
             'nama' => $validated['nama'] ?? null,
-            'email' => $validated['email'] ?? null,
             'nip' => $validated['nip'] ?? null,
             'nuptk' => $validated['nuptk'] ?? null,
+            'email' => $validated['email'] ?? null,
             'keterangan' => $validated['keterangan'] ?? null,
         ]);        
 

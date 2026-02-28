@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('kepegawaians', function (Blueprint $table) {
             $table->id();
             $table->string('nama');
-            $table->string('email')->unique();
             $table->string('nip')->nullable()->unique();
             $table->string('nuptk')->nullable();
+            $table->string('email')->unique();
             $table->text('keterangan')->nullable();
             $table->string('password');
             $table->enum('role', ['super_admin', 'kepsek', 'guru', 'staff', 'tu'])->default('staff');

@@ -6,10 +6,11 @@ use Illuminate\Http\Request;
 use App\Models\IdentitasSekolah;
 use Illuminate\Support\Facades\Storage;
 use App\Helpers\ApiResponse;
-use Illuminate\Support\Facades\Validator;
+// use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 
 class IdentitasSekolahController extends Controller
 {
@@ -152,36 +153,36 @@ class IdentitasSekolahController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
-        $identitas = IdentitasSekolah::find($id);
+    // public function show(string $id)
+    // {
+    //     $identitas = IdentitasSekolah::find($id);
 
-        if(!$identitas) {
-            return ApiResponse::error('Not found', ['id' => 'Identitas tidak ditemukan']);
-        }
+    //     if(!$identitas) {
+    //         return ApiResponse::error('Not found', ['id' => 'Identitas tidak ditemukan']);
+    //     }
 
-        return ApiResponse::success([
-            'id' => $identitas->id,
-            'npsn' => $identitas->npsn,
-            'nama_sekolah' => $identitas->nama_sekolah,
-            'status_sekolah' => $identitas->status_sekolah,
-            'jenjang' => $identitas->jenjang,
-            'akreditasi' => $identitas->akreditasi,
-            'alamat' => $identitas->alamat,
-            'desa_kelurahan' => $identitas->desa_kelurahan,
-            'kecamatan' => $identitas->kecamatan,
-            'kabupaten_kota' => $identitas->kabupaten_kota,
-            'provinsi' => $identitas->provinsi,
-            'kode_pos' => $identitas->kode_pos,
-            'email' => $identitas->email,
-            'no_telepon' => $identitas->no_telepon,
-            'kepala_sekolah' => $identitas->kepala_sekolah,
-            'nip_kepala_sekolah' => $identitas->nip_kepala_sekolah,
-            'visi' => $identitas->visi,
-            'misi' => $identitas->misi,
-            'logo' => $identitas->logo ? asset(str_replace('public/', 'storage/', $identitas->logo)) : null,
-        ], 'Detail identitas berasil diambil');
-    }
+    //     return ApiResponse::success([
+    //         'id' => $identitas->id,
+    //         'npsn' => $identitas->npsn,
+    //         'nama_sekolah' => $identitas->nama_sekolah,
+    //         'status_sekolah' => $identitas->status_sekolah,
+    //         'jenjang' => $identitas->jenjang,
+    //         'akreditasi' => $identitas->akreditasi,
+    //         'alamat' => $identitas->alamat,
+    //         'desa_kelurahan' => $identitas->desa_kelurahan,
+    //         'kecamatan' => $identitas->kecamatan,
+    //         'kabupaten_kota' => $identitas->kabupaten_kota,
+    //         'provinsi' => $identitas->provinsi,
+    //         'kode_pos' => $identitas->kode_pos,
+    //         'email' => $identitas->email,
+    //         'no_telepon' => $identitas->no_telepon,
+    //         'kepala_sekolah' => $identitas->kepala_sekolah,
+    //         'nip_kepala_sekolah' => $identitas->nip_kepala_sekolah,
+    //         'visi' => $identitas->visi,
+    //         'misi' => $identitas->misi,
+    //         'logo' => $identitas->logo ? asset(str_replace('public/', 'storage/', $identitas->logo)) : null,
+    //     ], 'Detail identitas berasil diambil');
+    // }
 
     /**
      * Update the specified resource in storage.
