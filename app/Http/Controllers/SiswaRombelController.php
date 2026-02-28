@@ -6,11 +6,12 @@ use Illuminate\Http\Request;
 use App\Models\SiswaRombel;
 use App\Models\Siswa;
 use App\Models\TahunAkademik;
-use App\Models\Rombel;
 use App\Helpers\ApiResponse;
-use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
+// use App\Models\Rombel;
+// use Illuminate\Validation\Rule;
+// use Illuminate\Support\Facades\Validator;
 
 class SiswaRombelController extends Controller
 {
@@ -319,29 +320,29 @@ class SiswaRombelController extends Controller
         
 
         // rombel
-        $data2 = Rombel::with('jurusan')
-        ->where('status', 'aktif')
-        ->get();
+        // $data2 = Rombel::with('jurusan')
+        // ->where('status', 'aktif')
+        // ->get();
 
-        if ($data2->isEmpty()) {
-            return ApiResponse::error(
-                'Data kosong',
-                ['data' => 'Belum ada data rombel']
-            );
-        }    
+        // if ($data2->isEmpty()) {
+        //     return ApiResponse::error(
+        //         'Data kosong',
+        //         ['data' => 'Belum ada data rombel']
+        //     );
+        // }    
 
-        $rombel = $data2->map(function ($r) {
-            return [
-                'rombel_id'     => $r->id ?? null,
-                'nama_rombel'   => $r->nama_rombel ?? null,
-                'jurusan'       => $r->jurusan->nama_jurusan ?? null
-            ];
-        });
+        // $rombel = $data2->map(function ($r) {
+        //     return [
+        //         'rombel_id'     => $r->id ?? null,
+        //         'nama_rombel'   => $r->nama_rombel ?? null,
+        //         'jurusan'       => $r->jurusan->nama_jurusan ?? null
+        //     ];
+        // });
 
 
         return ApiResponse::success([
             'siswa' => $siswa,
-            'rombels' => $rombel
+            // 'rombels' => $rombel
         ], 'Data select berhasil diambil');
     }
 

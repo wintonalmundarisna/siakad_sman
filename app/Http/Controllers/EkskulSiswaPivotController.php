@@ -6,12 +6,13 @@ use Illuminate\Http\Request;
 use App\Models\EkskulSiswaPivot;
 use App\Models\Siswa;
 use App\Models\TahunAkademik;
-use App\Models\Ekstrakurikuler;
-use Illuminate\Support\Facades\Hash;
+// use App\Models\Ekstrakurikuler;
 use App\Helpers\ApiResponse;
-use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
+// use Illuminate\Validation\Rule;
+// use Illuminate\Support\Facades\Hash;
+// use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 class EkskulSiswaPivotController extends Controller
 {
@@ -367,21 +368,21 @@ class EkskulSiswaPivotController extends Controller
     // ✅ spa
     public function dataSelect() {
         // data select
-        $data = Ekstrakurikuler::where('status_aktif', 'aktif')->get();
+        // $data = Ekstrakurikuler::where('status_aktif', 'aktif')->get();
 
-        if ($data->isEmpty()) {
-            return ApiResponse::error('No data', ['data' => 'Belum ada ekstrakurikuler aktif']);
-        }
+        // if ($data->isEmpty()) {
+        //     return ApiResponse::error('No data', ['data' => 'Belum ada ekstrakurikuler aktif']);
+        // }
 
-        $ekskul = $data->map(function ($e) {
-        return [
-                'ekskul_id' => $e->id ?? null,
-                'nama_ekskul' => $e->nama_ekstrakurikuler ?? null,
-                'anggaran' => $e->anggaran ?? null,
-                'status' => $e->status ?? null,
-                'status_aktif' => $e->status_aktif ?? null,
-        ];
-        });
+        // $ekskul = $data->map(function ($e) {
+        // return [
+        //         'ekskul_id' => $e->id ?? null,
+        //         'nama_ekskul' => $e->nama_ekstrakurikuler ?? null,
+        //         'anggaran' => $e->anggaran ?? null,
+        //         'status' => $e->status ?? null,
+        //         'status_aktif' => $e->status_aktif ?? null,
+        // ];
+        // });
 
         // siswa
         $data2 = Siswa::where('status', 'aktif')->get();
@@ -401,7 +402,7 @@ class EkskulSiswaPivotController extends Controller
 
         return ApiResponse::success([
             'siswa' => $siswa,
-            'ekskul' => $ekskul,
+            // 'ekskul' => $ekskul,
         ], 'Data select berhasil diambil');
     }
 }

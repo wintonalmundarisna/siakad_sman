@@ -5,10 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Kepegawaian;
 use App\Models\Jurusan;
-use Illuminate\Support\Facades\Auth;
 use App\Helpers\ApiResponse;
 use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\Validator;
+// use Illuminate\Support\Facades\Auth;
+// use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 class JurusanController extends Controller
 {
@@ -41,7 +42,7 @@ class JurusanController extends Controller
             'nama_jurusan' => $jurusan->nama_jurusan ?? null,
             'kode_jurusan' => $jurusan->kode_jurusan ?? null,
             'status' => $jurusan->status ?? null,
-            'details' => $jurusan->rombels->groupBy('kelas_id')
+            'kelas' => $jurusan->rombels->groupBy('kelas_id')
             ->map(function ($k) {
                 $kelas = $k->first()->kelas;
                 return [
@@ -49,11 +50,11 @@ class JurusanController extends Controller
                     'nama_kelas'=> $kelas->nama_kelas ?? null,
                     'tingkat'   => $kelas->tingkat ?? null,      
                     'status'    => $kelas->status ?? null,      
-                    'rombel'    => $k->map(function ($r) {
+                    'rombel_aktif'    => $k->map(function ($r) {
                         return [
                             'rombel_id'     => $r->id,
                             'nama_rombel'   => $r->nama_rombel,                            
-                            'status'        => $r->status,                            
+                            'status'        => $r->status,                                                        
                         ];
                     })->values(),
                 ];

@@ -195,7 +195,7 @@ Perbaikan
    - Frontend:
         - samakan dengan insomnia
 --------------------------------------                                            
-26. X absensi_pegawai: (MASUK SINI)
+26. X absensi_pegawai:
     - ☑️ Backend:
         - ✅ samakan dengan migrasi
     - Frontend:

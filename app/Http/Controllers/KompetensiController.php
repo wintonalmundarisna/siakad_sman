@@ -4,21 +4,26 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Kompetensi;
-use App\Models\Kurikulum;
-use App\Models\MataPelajaran;
+// use App\Models\Kurikulum;
+use App\Models\KurikulumMataPelajaran;
 use App\Helpers\ApiResponse;
-use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
+// use Illuminate\Validation\Rule;
+// use Illuminate\Support\Facades\Validator;
 
 class KompetensiController extends Controller
 {
-    /**
+    /**    
      * ✅ spa
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data = Kompetensi::with(['kurikulum', 'mataPelajaran'])->get();
+        $data = Kompetensi::with([
+                'kurikulumMataPelajaran.kurikulum',
+                'kurikulumMataPelajaran.mataPelajaran'
+            ])
+            ->where('kurikulum_mata_pelajaran_id', $request->kurikulum_mata_pelajaran_id)
+            ->get();
 
         if ($data->isEmpty()) {
             return ApiResponse::error(
@@ -28,7 +33,7 @@ class KompetensiController extends Controller
         }
 
         $formatted = $data
-            ->groupBy(fn ($item) => $item->kurikulum->tipe)
+            ->groupBy(fn ($item) => $item->kurikulumMataPelajaran->kurikulum->tipe)
             ->map(function ($groupByTipe, $tipeKurikulum) {
 
                 // =========================
@@ -39,17 +44,17 @@ class KompetensiController extends Controller
                         'tipe_kurikulum' => 'K13',
 
                         'data' => $groupByTipe
-                            ->groupBy('tingkat')
+                            ->groupBy(fn ($item) => $item->kurikulumMataPelajaran->tingkat)
                             ->map(function ($groupByTingkat) {
 
                                 return [
-                                    'tingkat' => $groupByTingkat->first()->tingkat,
+                                    'tingkat' => $groupByTingkat->first()->kurikulumMataPelajaran->tingkat,
 
                                     'mata_pelajaran' => $groupByTingkat
-                                        ->groupBy('mata_pelajaran_id')
+                                        ->groupBy(fn ($item) => $item->kurikulumMataPelajaran->mata_pelajaran_id)
                                         ->map(function ($groupByMapel) {
 
-                                            $mapel = $groupByMapel->first()->mataPelajaran;
+                                            $mapel = $groupByMapel->first()->kurikulumMataPelajaran->mataPelajaran;
 
                                             return [
                                                 'mata_pelajaran_id' => $mapel->id,
@@ -63,7 +68,6 @@ class KompetensiController extends Controller
                                                             'jenis'            => $kompetensi->jenis,
                                                             'kode'             => $kompetensi->kode,
                                                             'aspek'            => $kompetensi->aspek,
-                                                            // 'deskripsi'        => $kompetensi->deskripsi,
                                                             'status'           => $kompetensi->status,
                                                         ];
                                                     })
@@ -91,14 +95,15 @@ class KompetensiController extends Controller
                                 'fase' => $groupByFase->first()->fase,
 
                                 'mata_pelajaran' => $groupByFase
-                                    ->groupBy('mata_pelajaran_id')
+                                    ->groupBy(fn ($item) => $item->kurikulumMataPelajaran->mata_pelajaran_id)
                                     ->map(function ($groupByMapel) {
 
-                                        $mapel = $groupByMapel->first()->mataPelajaran;
+                                        $mapel = $groupByMapel->first()->kurikulumMataPelajaran;
 
                                         return [
-                                            'mata_pelajaran_id' => $mapel->id,
-                                            'mata_pelajaran'    => $mapel->nama_pelajaran,
+                                            'kurikulum_mata_pelajaran_id' => $mapel->id,
+                                            'mata_pelajaran'    => $mapel->mataPelajaran->nama_pelajaran,
+                                            'tingkat'    => $mapel->tingkat,
 
                                             'kompetensi' => $groupByMapel
                                                 ->map(function ($kompetensi) {
@@ -107,7 +112,6 @@ class KompetensiController extends Controller
                                                         'judul_kompetensi' => $kompetensi->judul_kompetensi,
                                                         'jenis'            => $kompetensi->jenis,
                                                         'kode'             => $kompetensi->kode,
-                                                        // 'deskripsi'        => $kompetensi->deskripsi,
                                                         'status'           => $kompetensi->status,
                                                     ];
                                                 })
@@ -126,9 +130,7 @@ class KompetensiController extends Controller
             $formatted,
             'Kompetensi berhasil diambil berdasarkan tipe kurikulum'
         );
-    }
-
-        
+    }       
 
     /**
      * ✅ spa
@@ -143,8 +145,7 @@ class KompetensiController extends Controller
 
         // Validasi input
         $validated = $request->validate([
-            'kurikulum_id' => 'required|exists:kurikulum,id',
-            'mata_pelajaran_id' => 'required|exists:mata_pelajarans,id',
+            'kurikulum_mata_pelajaran_id' => 'required|exists:kurikulum,id',            
             'judul_kompetensi' => 'required|string',
             'jenis' => 'required|in:KD,CP',
             'kode' => 'nullable|string',
@@ -153,10 +154,8 @@ class KompetensiController extends Controller
             'fase' => 'nullable|in:A,B,C,D,E,F',
             'deskripsi' => 'required|string',
         ], [
-            'kurikulum_id.required' => 'Kurikulum wajib diisi',
-            'kurikulum_id.exists' => 'Kurikulum tidak ditemukan',
-            'mata_pelajaran_id.required' => 'Mata pelajaran wajib diisi',
-            'mata_pelajaran_id.exists' => 'Mata pelajaran tidak ditemukan',
+            'kurikulum_mata_pelajaran_id.required' => 'Mata pelajaran wajib diisi',
+            'kurikulum_mata_pelajaran_id.exists' => 'Mata pelajaran tidak ditemukan',            
             'judul_kompetensi.required' => 'Judul kompetensi wajib diisi',
             'jenis.required' => 'Jenis kompetensi wajib diisi',
             'jenis.in' => 'Jenis kompetensi hanya KD atau CP',
@@ -188,9 +187,8 @@ class KompetensiController extends Controller
         }
 
         // Cek duplikasi (sesuai UNIQUE constraint tabel)
-        $isDuplicate = Kompetensi::where('kurikulum_id', $validated['kurikulum_id'])
+        $isDuplicate = Kompetensi::where('kurikulum_mata_pelajaran_id', $validated['kurikulum_mata_pelajaran_id'])
             ->where('jenis', $validated['jenis'])
-            ->where('mata_pelajaran_id', $validated['mata_pelajaran_id'])
             ->where('kode', $validated['kode'] ?? null)
             ->where('tingkat', $validated['tingkat'] ?? null)
             ->where('aspek', $validated['aspek'] ?? null)
@@ -205,9 +203,8 @@ class KompetensiController extends Controller
         }
 
         // Cek duplikasi (sesuai UNIQUE constraint tabel)
-        $isDuplicateDua = Kompetensi::where('kurikulum_id', $validated['kurikulum_id'])
+        $isDuplicateDua = Kompetensi::where('kurikulum_mata_pelajaran_id', $validated['kurikulum_mata_pelajaran_id'])
             ->where('jenis', $validated['jenis'])
-            ->where('mata_pelajaran_id', $validated['mata_pelajaran_id'])
             ->where('kode', $validated['kode'] ?? null)
             ->where('fase', $validated['fase'] ?? null)
             ->exists();
@@ -222,8 +219,7 @@ class KompetensiController extends Controller
 
         // Simpan data
         $kd = Kompetensi::create([
-            'kurikulum_id' => $validated['kurikulum_id'],
-            'mata_pelajaran_id' => $validated['mata_pelajaran_id'],
+            'kurikulum_mata_pelajaran_id' => $validated['kurikulum_mata_pelajaran_id'],
             'judul_kompetensi' => $validated['judul_kompetensi'],
             'jenis' => $validated['jenis'],
             'kode' => $validated['kode'] ?? null,
@@ -235,13 +231,13 @@ class KompetensiController extends Controller
         ]);
 
         // Load relasi yang memang ada
-        $kd->load('kurikulum', 'mataPelajaran');
+        $kd->load('kurikulumMataPelajaran.kurikulum', 'kurikulumMataPelajaran.mataPelajaran');
 
         // Response
         return ApiResponse::success([
             'id' => $kd->id,
-            'kurikulum' => $kd->kurikulum->nama_kurikulum,
-            'mata_pelajaran' => $kd->mataPelajaran->nama_pelajaran,
+            'kurikulum' => $kd->kurikulumMataPelajaran->kurikulum->nama_kurikulum,
+            'mata_pelajaran' => $kd->kurikulumMataPelajaran->mataPelajaran->nama_pelajaran,
             'judul_kompetensi' => $kd->judul_kompetensi,
             'jenis' => $kd->jenis,
             'kode' => $kd->kode ?? null,
@@ -261,12 +257,12 @@ class KompetensiController extends Controller
     public function show(string $id)
     {
         $kd = Kompetensi::where('id', $id)->with([
-            'kurikulum',
-            'atpMasters.alurTujuanPembelajarans',
-            'mataPelajaran',
+            'kurikulumMataPelajaran.kurikulum',
+            'kurikulumMataPelajaran.mataPelajaran',
+            'atpMasters.alurTujuanPembelajarans',            
             'atpMasters.alurTujuanPembelajarans.tahunAkademik',
             'atpMasters.alurTujuanPembelajarans.semesterRelasi',
-            'atpMasters.alurTujuanPembelajarans.kompetensi',
+            'atpMasters.alurTujuanPembelajarans.atpMaster.kompetensi',
         ])->first();
 
         if (!$kd) {
@@ -274,10 +270,10 @@ class KompetensiController extends Controller
         }
 
         if ($kd->jenis == 'KD') {
-            $formatted = [
-                'id' => $kd->id,
-                'kurikulum' => $kd->kurikulum->nama_kurikulum,
-                'mata_pelajaran' => $kd->mataPelajaran->nama_pelajaran,
+            $formatted = [                
+                'kurikulum' => $kd->kurikulumMataPelajaran->kurikulum->nama_kurikulum,
+                'mata_pelajaran' => $kd->kurikulumMataPelajaran->mataPelajaran->nama_pelajaran,
+                'kompetensi_id' => $kd->id,
                 'judul_kompetensi' => $kd->judul_kompetensi,
                 'jenis' => $kd->jenis,
                 'kode' => $kd->kode,
@@ -289,9 +285,9 @@ class KompetensiController extends Controller
             return ApiResponse::success($formatted, 'Detail kompetensi berhasil diambil');
         } else {
             $formatted = [
-                'id'                => $kd->id,
-                'kurikulum'         => $kd->kurikulum->nama_kurikulum,
-                'mata_pelajaran'    => $kd->mataPelajaran->nama_pelajaran,
+                'kurikulum' => $kd->kurikulumMataPelajaran->kurikulum->nama_kurikulum,
+                'mata_pelajaran' => $kd->kurikulumMataPelajaran->mataPelajaran->nama_pelajaran,
+                'kompetensi_id'     => $kd->id,
                 'judul_kompetensi'  => $kd->judul_kompetensi,
                 'jenis'             => $kd->jenis,
                 'kode'              => $kd->kode,
@@ -319,7 +315,7 @@ class KompetensiController extends Controller
     public function update(Request $request, string $id)
     {
         // Ambil data kompetensi (kompetensi TIDAK terkait langsung tahun akademik)
-        $kd = Kompetensi::with('kurikulum', 'mataPelajaran')->find($id);
+        $kd = Kompetensi::with('kurikulumMataPelajaran.kurikulum', 'kurikulumMataPelajaran.mataPelajaran')->find($id);
 
         if (! $kd) {
             return ApiResponse::error(
@@ -331,7 +327,7 @@ class KompetensiController extends Controller
 
         // Validasi input
         $validated = $request->validate([
-            'kurikulum_id' => 'sometimes|required|exists:kurikulum,id',
+            'kurikulum_mata_pelajaran_id' => 'sometimes|required|exists:kurikulum,id',
             'mata_pelajaran_id' => 'sometimes|required|exists:mata_pelajarans,id',
             'judul_kompetensi' => 'sometimes|required|string',
             'jenis' => 'sometimes|required|in:KD,CP',
@@ -342,10 +338,8 @@ class KompetensiController extends Controller
             'deskripsi' => 'sometimes|required|string',
             'status' => 'sometimes|in:aktif,arsip',
         ], [
-            'kurikulum_id.required' => 'Kurikulum wajib diisi',
-            'kurikulum_id.exists' => 'Kurikulum tidak ditemukan',
-            'mata_pelajaran_id.required' => 'Mata pelajaran wajib diisi',
-            'mata_pelajaran_id.exists' => 'Mata pelajaran tidak ditemukan',
+            'kurikulum_mata_pelajaran_id.required' => 'Kurikulum wajib diisi',
+            'kurikulum_mata_pelajaran_id.exists' => 'Kurikulum tidak ditemukan',            
             'judul_kompetensi.required' => 'Judul kompetensi wajib diisi',
             'jenis.required' => 'Jenis kompetensi wajib diisi',
             'jenis.in' => 'Jenis kompetensi hanya KD atau CP',
@@ -357,8 +351,7 @@ class KompetensiController extends Controller
         ]);
 
         // Ambil nilai lama jika field tidak dikirim (karena update partial)
-        $kurikulumId      = $validated['kurikulum_id'] ?? $kd->kurikulum_id;
-        $mapelId          = $validated['mata_pelajaran_id'] ?? $kd->mata_pelajaran_id;
+        $kurikulumId      = $validated['kurikulum_mata_pelajaran_id'] ?? $kd->kurikulum_mata_pelajaran_id;        
         $judul            = $validated['judul_kompetensi'] ?? $kd->judul_kompetensi;
         $jenis            = $validated['jenis'] ?? $kd->jenis;
         $kode             = $validated['kode'] ?? $kd->kode;
@@ -390,8 +383,7 @@ class KompetensiController extends Controller
         }
 
         // Cek duplikasi (HARUS exclude data sendiri)
-        $isDuplicate = Kompetensi::where('kurikulum_id', $kurikulumId)
-            ->where('mata_pelajaran_id', $mapelId)
+        $isDuplicate = Kompetensi::where('kurikulum_mata_pelajaran_id', $kurikulumId)
             ->where('jenis', $jenis)
             ->where('kode', $kode)
             ->where('tingkat', $tingkat)
@@ -408,8 +400,7 @@ class KompetensiController extends Controller
         }
 
         // Cek duplikasi (HARUS exclude data sendiri)
-        $isDuplicate = Kompetensi::where('kurikulum_id', $kurikulumId)
-            ->where('mata_pelajaran_id', $mapelId)
+        $isDuplicate = Kompetensi::where('kurikulum_mata_pelajaran_id', $kurikulumId)
             ->where('jenis', $jenis)
             ->where('kode', $kode)
             ->where('fase', $fase)
@@ -443,13 +434,13 @@ class KompetensiController extends Controller
         $kd->update($validated);
 
         // Reload relasi
-        $kd->load('kurikulum', 'mataPelajaran');
+        $kd->load('kurikulumMataPelajaran.kurikulum', 'kurikulumMataPelajaran.mataPelajaran');
 
         // Response
         return ApiResponse::success([
             'id' => $kd->id,
-            'kurikulum' => $kd->kurikulum->nama_kurikulum,
-            'mata_pelajaran' => $kd->mataPelajaran->nama_pelajaran,
+            'kurikulum' => $kd->kurikulumMataPelajaran->kurikulum->nama_kurikulum,
+            'mata_pelajaran' => $kd->kurikulumMataPelajaran->mataPelajaran->nama_pelajaran,
             'judul_kompetensi' => $kd->judul_kompetensi,
             'jenis' => $kd->jenis,
             'kode' => $kd->kode,
@@ -489,41 +480,25 @@ class KompetensiController extends Controller
     }
 
     // data select
-    public function dataSelectKompetensi() {
-        // kurikulum
-        $data1 = Kurikulum::select('id', 'nama_kurikulum', 'tipe', 'status')->get();
-        if ($data1->isEmpty()) {
-            return ApiResponse::error('Not found', ['data' => 'Belum ada data kurikulum']);
-        }
-        $kurikulum = $data1->map(function ($k) {
-            return [
-                'kurikulum_id'      => $k->id,
-                'nama_kurikulum'    => $k->nama_kurikulum,
-                'tipe'              => $k->tipe,
-                'status'            => $k->status,
-            ];
-        })->values();
-        
-        // mata pelajaran
-        $data2 = MataPelajaran::select('id', 'nama_pelajaran', 'kode_mapel_diknas', 'kelompok', 'status')
+    public function dataSelectKompetensi() {        
+        $data1 = KurikulumMataPelajaran::with('kurikulum', 'mataPelajaran')
         ->where('status', 'aktif')
         ->get();
-        if ($data2->isEmpty()) {
-            return ApiResponse::error('Not found', ['data' => 'Belum ada mata pelajaran aktif']);
-        }    
-        $mataPelajaran = $data2->map(function ($mapel) {
+        if ($data1->isEmpty()) {
+            return ApiResponse::error('Not found', ['data' => 'Belum ada data kurikulum mata pelajaran']);
+        }
+        $kurmap = $data1->map(function ($k) {
             return [
-                'mata_pelajaran_id' => $mapel->id,
-                'nama_pelajaran'    => $mapel->nama_pelajaran,
-                'kode_mapel_diknas' => $mapel->kode_mapel_diknas,
-                'kelompok'          => $mapel->kelompok,
-                'status'            => $mapel->status,
+                'kurikulum_mata_pelajaran_id'  => $k->id,
+                'kurikulum'                    => $k->kurikulum->nama_kurikulum,
+                'mata_pelajaran'               => $k->mataPelajaran->nama_pelajaran,
+                'tingkat'                      => $k->tingkat,
+                'status'                       => $k->status_mata_pelajaran,
             ];
-        });
+        })->values();               
 
         return ApiResponse::success([
-            'kurikulum' => $kurikulum,
-            'mata_pelajaran' => $mataPelajaran
+            'kurikulum_mata_pelajaran' => $kurmap,
         ], 'Data select berhasil diambil');
     }
 }

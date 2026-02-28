@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Ekstrakurikuler;
-use App\Models\Kepegawaian;
 use App\Models\PelatihEkskul;
-use App\Models\TahunAkademik;
 use App\Helpers\ApiResponse;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
+// use Illuminate\Support\Facades\Validator;
+// use App\Models\Kepegawaian;
+// use App\Models\TahunAkademik;
 
 class EkstrakurikulerController extends Controller
 {
@@ -116,28 +117,49 @@ class EkstrakurikulerController extends Controller
 
 
     // ✅ SPA dan guru    
-    public function show($id)
+    public function show($id, Request $request)
     {
+        $request->validate([
+            'tahun_akademik_id'  => 'required|exists:tahun_akademik,id',
+        ], [
+            'tahun_akademik_id.required' => 'Tahun akademik wajib ditentukan terlebih dahulu',
+            'tahun_akademik_id.exists'  => 'Tahun akademik tidak ditemukan'
+        ]);
+
         $ekskul = Ekstrakurikuler::with([
-            'pembinaEkskul.pembina',
-            'pembinaEkskul.tahunAkademik',
-            'pelatihEkskul.pelatih',
-            'pelatihEkskul.tahunAkademik',
-            'siswaEkskul.siswa',
-            'siswaEkskul.tahunAkademik',
-        ])->find($id);
+            'pembinaEkskul' => function ($q) use ($request) {
+                $q->where('tahun_akademik_id', $request->tahun_akademik_id)
+                ->with(['pembina', 'tahunAkademik']);
+            },
+            'pelatihEkskul' => function ($q) use ($request) {
+                $q->where('tahun_akademik_id', $request->tahun_akademik_id)
+                ->with(['pelatih', 'tahunAkademik']);
+            },
+            'siswaEkskul' => function ($q) use ($request) {
+                $q->where('tahun_akademik_id', $request->tahun_akademik_id)
+                ->with(['siswa', 'tahunAkademik']);
+            },
+        ])
+        ->where('id', $id)
+        ->where(function ($q) use ($request) {
+            $q->whereHas('pembinaEkskul', function ($sub) use ($request) {
+                $sub->where('tahun_akademik_id', $request->tahun_akademik_id);
+            })
+            ->orWhereHas('pelatihEkskul', function ($sub) use ($request) {
+                $sub->where('tahun_akademik_id', $request->tahun_akademik_id);
+            })
+            ->orWhereHas('siswaEkskul', function ($sub) use ($request) {
+                $sub->where('tahun_akademik_id', $request->tahun_akademik_id);
+            });
+        })
+        ->first();
 
         if (!$ekskul) {
             return ApiResponse::error('Not found', ['id' => 'Id tidak ditemukaan']);
         }
 
-        // ambil semua tahun akademik yang terlibat
-        $tahunAkademikIds = collect()
-            ->merge($ekskul->pembinaEkskul->pluck('tahun_akademik_id'))
-            ->merge($ekskul->pelatihEkskul->pluck('tahun_akademik_id'))
-            ->merge($ekskul->siswaEkskul->pluck('tahun_akademik_id'))
-            ->unique()
-            ->values();
+        // ambil hanya tahun yang dipilih
+        $tahunAkademikIds = collect([$request->tahun_akademik_id]);
 
         $periode = $tahunAkademikIds->map(function ($taId) use ($ekskul) {
 
@@ -175,29 +197,29 @@ class EkstrakurikulerController extends Controller
                         'tahun_membina'=> $pembina?->tahunAkademik?->tahun_akademik,
                     ],
                     'pelatih' => [
-                    'pelatih_id'   => $pelatih?->pelatih->id,
-                    'pelatih_pivot_id'   => $pelatih?->id,
-                    'nama_pelatih' => $pelatih?->pelatih->nama,
-                    'tahun_melatih'=> $pelatih?->tahunAkademik?->tahun_akademik,
+                        'pelatih_id'   => $pelatih?->pelatih->id,
+                        'pelatih_pivot_id'   => $pelatih?->id,
+                        'nama_pelatih' => $pelatih?->pelatih->nama,
+                        'tahun_melatih'=> $pelatih?->tahunAkademik?->tahun_akademik,
                     ],
                     'siswa'        => $siswa ?? null,
                 ],
             ];
-        });
+    });
 
-        return response()->json([
-            'data' => [
-                [
-                    'id'           => $ekskul->id,
-                    'nama_ekskul'  => $ekskul->nama_ekstrakurikuler,
-                    'anggaran'     => $ekskul->anggaran ?? 0,
-                    'status'       => $ekskul->status,
-                    'status_aktif' => $ekskul->status_aktif,
-                    'periode'      => $periode,
-                ]
+    return response()->json([
+        'data' => [
+            [
+                'id'           => $ekskul->id,
+                'nama_ekskul'  => $ekskul->nama_ekstrakurikuler,
+                'anggaran'     => $ekskul->anggaran ?? 0,
+                'status'       => $ekskul->status,
+                'status_aktif' => $ekskul->status_aktif,
+                'periode'      => $periode,
             ]
-        ]);
-    }
+        ]
+    ]);
+}
 
 
     // ✅ store ekskul untuk spa (pegawai tidak karena tidak terkait anggota)

@@ -7,12 +7,64 @@ use App\Models\Prestasi;
 use App\Models\Siswa;
 use App\Models\TahunAkademik;
 use App\Helpers\ApiResponse;
-use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
+// use Illuminate\Validation\Rule;
+// use Illuminate\Support\Facades\Auth;
+// use Illuminate\Support\Facades\Validator;
 
 class PrestasiController extends Controller
 {
+    // spa/tu
+    // get prestasi pada tahun tertentu
+    public function index(Request $request) {
+        $validated = $request->validate([
+            'tahun_akademik_id'     => 'required|exists:tahun_akademik,id'
+        ], [
+            'tahun_akademik_id.required'    => 'Tahun akademik wajib ditentukan terlebih dahulu',
+            'tahun_akademik_id.exists'      => 'Tahun akademik tidak ditemukan',
+        ]);
+
+        $prestasi = Prestasi::where('tahun_akademik_id', $request->tahun_akademik_id)
+        ->with(['siswa', 'tahunAkademik'])
+        ->orderBy('id')
+        ->get();
+
+        if ($prestasi->isEmpty()) {
+            return ApiResponse::error('Tidak ada prestasi siswa pada tahun ini');
+        }
+
+        $formatted = $prestasi->groupBy('tahun_akademik_id')
+        ->map(function ($prs) {
+            $tahun = $prs->first()->tahunAkademik;
+
+            return [
+                'tahun_akademik_id' => $tahun->id,
+                'tahun_akademik'    => $tahun->tahun_akademik,
+                'status'            => $tahun->status,
+                'siswa'             => $prs->groupBy('siswa_id')
+                ->map(function ($pr) {
+                    $siswa = $pr->first()->siswa;
+
+                    return [
+                        'siswa_id'   => $siswa->id,
+                        'nama_siswa' => $siswa->nama,
+                        'nisn'       => $siswa->nisn,
+                        'nis'        => $siswa->nis,
+                        'prestasi'   => $pr->map(function ($p) {
+                            return [
+                                'prestasi_id'       => $p->id,
+                                'prestasi_diraih'   => $p->prestasi_diraih
+                            ];
+                        })->values(),
+                    ];
+                })->values(),
+            ];
+        })->values();
+
+        return ApiResponse::success($formatted, 'Data prestasi periode '.$prestasi->first()->tahunAkademik->tahun_akademik.' berhasil diambil');
+    }
+
+
     /**
      * ✅ spa/tu
      */

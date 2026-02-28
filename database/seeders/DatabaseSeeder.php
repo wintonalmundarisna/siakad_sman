@@ -595,7 +595,7 @@ class DatabaseSeeder extends Seeder
         Kurikulum::insert([
             [
                 'nama_kurikulum' => 'Kurikulum Tingkat Satuan Pendidikan (KTSP)',
-                'kode_kurikulum' => '2006',
+                'kode_kurikulum' => 'KTSP-2006',
                 'tipe' => 'KTSP',
                 'tahun_mulai' => 2006,
                 'tahun_selesai' => 2012,
@@ -606,7 +606,7 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'nama_kurikulum' => 'Kurikulum 2013',
-                'kode_kurikulum' => '2013',
+                'kode_kurikulum' => 'KUR-2013',
                 'tipe' => 'K13',
                 'tahun_mulai' => 2013,
                 'tahun_selesai' => 2021,
@@ -625,7 +625,7 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'nama_kurikulum' => 'Kurikulum Merdeka',
-                'kode_kurikulum' => '2022',
+                'kode_kurikulum' => 'K-M-2022',
                 'tipe' => 'MERDEKA',
                 'tahun_mulai' => 2022,
                 'tahun_selesai' => 2025,
@@ -1466,8 +1466,9 @@ class DatabaseSeeder extends Seeder
         Kompetensi::insert([
             [
                 // 1
-                'kurikulum_id' => 2, // K13
-                'mata_pelajaran_id' => 26, // Bahasa Sunda
+                // 'kurikulum_id' => 2, // K13
+                // 'mata_pelajaran_id' => 26, // Bahasa Sunda
+                'kurikulum_mata_pelajaran_id' => 1,
                 'judul_kompetensi' => 'Memahami Bahasa Sunda',
                 'jenis' => 'KD',                
                 'kode' => 'KD-1.1',
@@ -1479,8 +1480,9 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 // 2
-                'kurikulum_id' => 2, // K13
-                'mata_pelajaran_id' => 26,
+                // 'kurikulum_id' => 2, // K13
+                // 'mata_pelajaran_id' => 26,
+                'kurikulum_mata_pelajaran_id' => 1,
                 'judul_kompetensi' => 'Mahir berbahasa Sunda',
                 'jenis' => 'KD',                
                 'kode' => 'KD-1.2',
@@ -1497,8 +1499,9 @@ class DatabaseSeeder extends Seeder
             // MTK (10) (E)
             [
                 // 3
-                'kurikulum_id' => 3, // MERDEKA
-                'mata_pelajaran_id' => 5, // Matematika (10)
+                // 'kurikulum_id' => 3, // MERDEKA
+                // 'mata_pelajaran_id' => 5, // Matematika (10)
+                'kurikulum_mata_pelajaran_id' => 6,
                 'judul_kompetensi' => 'Pemahaman Konsep Aljabar dan Bilangan Real',
                 'jenis' => 'CP',                
                 'kode' => 'CP-MAT-10-E1',
@@ -1510,8 +1513,9 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 // 4
-                'kurikulum_id' => 3, // MERDEKA
-                'mata_pelajaran_id' => 5, // Matematika (10)
+                // 'kurikulum_id' => 3, // MERDEKA
+                // 'mata_pelajaran_id' => 5, // Matematika (10)
+                'kurikulum_mata_pelajaran_id' => 6,
                 'judul_kompetensi' => 'Representasi dan Komunikasi Matematis',
                 'jenis' => 'CP',                
                 'kode' => 'CP-MAT-10-E2',
@@ -1525,8 +1529,9 @@ class DatabaseSeeder extends Seeder
             // MTK (11) (F)
             [
                 // 5
-                'kurikulum_id' => 3, // MERDEKA
-                'mata_pelajaran_id' => 5, // Matematika (11)
+                // 'kurikulum_id' => 3, // MERDEKA
+                // 'mata_pelajaran_id' => 5, // Matematika (11)
+                'kurikulum_mata_pelajaran_id' => 16,
                 'judul_kompetensi' => 'Analisis Fungsi dan Trigonometri',
                 'jenis' => 'CP',                
                 'kode' => 'CP-MAT-11-F1',
@@ -1538,8 +1543,9 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 // 6
-                'kurikulum_id' => 3, // MERDEKA
-                'mata_pelajaran_id' => 5, // Matematika (11)
+                // 'kurikulum_id' => 3, // MERDEKA
+                // 'mata_pelajaran_id' => 5, // Matematika (11)
+                'kurikulum_mata_pelajaran_id' => 16,
                 'judul_kompetensi' => 'Penalaran dan Pemecahan Masalah Matematis',
                 'jenis' => 'CP',                
                 'kode' => 'CP-MAT-11-F2',
@@ -1553,8 +1559,9 @@ class DatabaseSeeder extends Seeder
             // MTK (12) (F)
             [
                 // 7
-                'kurikulum_id' => 3, // MERDEKA
-                'mata_pelajaran_id' => 5, // Matematika (12)
+                // 'kurikulum_id' => 3, // MERDEKA
+                // 'mata_pelajaran_id' => 5, // Matematika (12)
+                'kurikulum_mata_pelajaran_id' => 26,
                 'judul_kompetensi' => 'Penerapan Kalkulus dalam Pemecahan Masalah',
                 'jenis' => 'CP',                
                 'kode' => 'CP-MAT-12-F1',
@@ -1566,8 +1573,9 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 // 8
-                'kurikulum_id' => 3, // MERDEKA
-                'mata_pelajaran_id' => 5, // Matematika (12)
+                // 'kurikulum_id' => 3, // MERDEKA
+                // 'mata_pelajaran_id' => 5, // Matematika (12)
+                'kurikulum_mata_pelajaran_id' => 26,
                 'judul_kompetensi' => 'Analisis Data dan Peluang',
                 'jenis' => 'CP',                
                 'kode' => 'CP-MAT-12-F2',
@@ -1584,8 +1592,9 @@ class DatabaseSeeder extends Seeder
             // Indonesia (10) (E)
             [
                 // 9
-                'kurikulum_id' => 3, // MERDEKA
-                'mata_pelajaran_id' => 3, // B. Indo (10)
+                // 'kurikulum_id' => 3, // MERDEKA
+                // 'mata_pelajaran_id' => 3, // B. Indo (10)
+                'kurikulum_mata_pelajaran_id' => 4,
                 'judul_kompetensi' => 'Pemahaman dan Analisis Teks Informasi',
                 'jenis' => 'CP',                
                 'kode' => 'CP-IND-10-E1',
@@ -1597,8 +1606,9 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 // 10
-                'kurikulum_id' => 3, // MERDEKA
-                'mata_pelajaran_id' => 3, // B. Indo (10)
+                // 'kurikulum_id' => 3, // MERDEKA
+                // 'mata_pelajaran_id' => 3, // B. Indo (10)
+                'kurikulum_mata_pelajaran_id' => 4,
                 'judul_kompetensi' => 'Produksi Teks Informatif dan Komunikatif',
                 'jenis' => 'CP',                
                 'kode' => 'CP-IND-10-E2',
@@ -1612,8 +1622,9 @@ class DatabaseSeeder extends Seeder
             // Indo (11) (F)
             [
                 // 11
-                'kurikulum_id' => 3, // MERDEKA
-                'mata_pelajaran_id' => 3, // B. Indo (11)
+                // 'kurikulum_id' => 3, // MERDEKA
+                // 'mata_pelajaran_id' => 3, // B. Indo (11)
+                'kurikulum_mata_pelajaran_id' => 14,
                 'judul_kompetensi' => 'Analisis dan Evaluasi Teks Sastra dan Nonfiksi',
                 'jenis' => 'CP',                
                 'kode' => 'CP-IND-11-F1',
@@ -1625,8 +1636,9 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 // 12
-                'kurikulum_id' => 3, // MERDEKA
-                'mata_pelajaran_id' => 3, // B. Indo (11)
+                // 'kurikulum_id' => 3, // MERDEKA
+                // 'mata_pelajaran_id' => 3, // B. Indo (11)
+                'kurikulum_mata_pelajaran_id' => 14,
                 'judul_kompetensi' => 'Keterampilan Berbahasa untuk Berargumentasi',
                 'jenis' => 'CP',                
                 'kode' => 'CP-IND-11-F2',
@@ -1640,8 +1652,9 @@ class DatabaseSeeder extends Seeder
             // Indo (12) (F)
             [
                 // 13
-                'kurikulum_id' => 3, // MERDEKA
-                'mata_pelajaran_id' => 3, // B. Indo (12)
+                // 'kurikulum_id' => 3, // MERDEKA
+                // 'mata_pelajaran_id' => 3, // B. Indo (12)
+                'kurikulum_mata_pelajaran_id' => 24,
                 'judul_kompetensi' => 'Kreasi dan Apresiasi Teks Sastra dan Nonfiksi',
                 'jenis' => 'CP',                
                 'kode' => 'CP-IND-12-F1',
@@ -1653,8 +1666,9 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 // 14
-                'kurikulum_id' => 3, // MERDEKA
-                'mata_pelajaran_id' => 3, // B. Indo (12)
+                // 'kurikulum_id' => 3, // MERDEKA
+                // 'mata_pelajaran_id' => 3, // B. Indo (12)
+                'kurikulum_mata_pelajaran_id' => 24,
                 'judul_kompetensi' => 'Komunikasi Akademik dan Publik',
                 'jenis' => 'CP',                
                 'kode' => 'CP-IND-12-F2',
@@ -1671,8 +1685,9 @@ class DatabaseSeeder extends Seeder
             // Fisika (F) (11)
             [
                 // 15
-                'kurikulum_id' => 3, // MERDEKA
-                'mata_pelajaran_id' => 11, // Fisika (11)
+                // 'kurikulum_id' => 3, // MERDEKA
+                // 'mata_pelajaran_id' => 11, // Fisika (11)
+                'kurikulum_mata_pelajaran_id' => 32,
                 'judul_kompetensi' => 'Pemahaman Konsep dan Hukum Dasar Fisika',
                 'jenis' => 'CP',                
                 'kode' => 'CP-FIS-11-F1',
@@ -1684,8 +1699,9 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 // 16
-                'kurikulum_id' => 3, // MERDEKA
-                'mata_pelajaran_id' => 11, // Fisika (11)
+                // 'kurikulum_id' => 3, // MERDEKA
+                // 'mata_pelajaran_id' => 11, // Fisika (11)
+                'kurikulum_mata_pelajaran_id' => 32,
                 'judul_kompetensi' => 'Penerapan Metode Ilmiah dan Analisis Eksperimen',
                 'jenis' => 'CP',                
                 'kode' => 'CP-FIS-11-F2',
@@ -1699,8 +1715,9 @@ class DatabaseSeeder extends Seeder
             // Fisika (F) (12)
             [
                 // 17
-                'kurikulum_id' => 3, // MERDEKA
-                'mata_pelajaran_id' => 11, // Fisika (12)
+                // 'kurikulum_id' => 3, // MERDEKA
+                // 'mata_pelajaran_id' => 11, // Fisika (12)
+                'kurikulum_mata_pelajaran_id' => 36,
                 'judul_kompetensi' => 'Analisis Fenomena Fisika Lanjutan',
                 'jenis' => 'CP',                
                 'kode' => 'CP-FIS-12-F1',
@@ -1712,8 +1729,9 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 // 18
-                'kurikulum_id' => 3, // MERDEKA
-                'mata_pelajaran_id' => 11, // Fisika (12)
+                // 'kurikulum_id' => 3, // MERDEKA
+                // 'mata_pelajaran_id' => 11, // Fisika (12)
+                'kurikulum_mata_pelajaran_id' => 36,
                 'judul_kompetensi' => 'Pemodelan, Eksperimen, dan Aplikasi Fisika',
                 'jenis' => 'CP',                
                 'kode' => 'CP-FIS-12-F2',
@@ -1729,8 +1747,9 @@ class DatabaseSeeder extends Seeder
             // Ekonomi (F) (11)
             [
                 // 19
-                'kurikulum_id' => 3, // MERDEKA
-                'mata_pelajaran_id' => 15, // Ekonomi (11)
+                // 'kurikulum_id' => 3, // MERDEKA
+                // 'mata_pelajaran_id' => 15, // Ekonomi (11)
+                'kurikulum_mata_pelajaran_id' => 40,
                 'judul_kompetensi' => 'Pemahaman Konsep Dasar Ekonomi dan Permasalahan Ekonomi',
                 'jenis' => 'CP',                
                 'kode' => 'CP-EKN-11-F1',
@@ -1742,8 +1761,9 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 // 20
-                'kurikulum_id' => 3, // MERDEKA
-                'mata_pelajaran_id' => 15, // Ekonomi (11)
+                // 'kurikulum_id' => 3, // MERDEKA
+                // 'mata_pelajaran_id' => 15, // Ekonomi (11)
+                'kurikulum_mata_pelajaran_id' => 40,
                 'judul_kompetensi' => 'Analisis Kegiatan dan Pelaku Ekonomi dalam Sistem Perekonomian',
                 'jenis' => 'CP',                
                 'kode' => 'CP-EKN-11-F2',
@@ -1757,8 +1777,9 @@ class DatabaseSeeder extends Seeder
             // Ekonomi (F) (12)
             [
                 // 21
-                'kurikulum_id' => 3, // MERDEKA
-                'mata_pelajaran_id' => 15, // Ekonomi (12)
+                // 'kurikulum_id' => 3, // MERDEKA
+                // 'mata_pelajaran_id' => 15, // Ekonomi (12)
+                'kurikulum_mata_pelajaran_id' => 45,
                 'judul_kompetensi' => 'Ekonomi Makro dan Kebijakan Pemerintah',
                 'jenis' => 'CP',                
                 'kode' => 'CP-EKN-12-F1',
@@ -1770,8 +1791,9 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 // 22
-                'kurikulum_id' => 3, // MERDEKA
-                'mata_pelajaran_id' => 15, // Ekonomi (12)
+                // 'kurikulum_id' => 3, // MERDEKA
+                // 'mata_pelajaran_id' => 15, // Ekonomi (12)
+                'kurikulum_mata_pelajaran_id' => 45,
                 'judul_kompetensi' => 'Analisis Pembangunan Ekonomi dan Tantangan Global',
                 'jenis' => 'CP',                
                 'kode' => 'CP-EKN-12-F2',
@@ -1787,8 +1809,9 @@ class DatabaseSeeder extends Seeder
             // Jepang (F) (11)
             [
                 // 23
-                'kurikulum_id' => 3, // MERDEKA
-                'mata_pelajaran_id' => 20, // Jepang (11)
+                // 'kurikulum_id' => 3, // MERDEKA
+                // 'mata_pelajaran_id' => 20, // Jepang (11)
+                'kurikulum_mata_pelajaran_id' => 50,
                 'judul_kompetensi' => 'Pemahaman Dasar Bahasa Jepang dalam Konteks Kehidupan Sehari-hari',
                 'jenis' => 'CP',                
                 'kode' => 'CP-JPN-11-F1',
@@ -1800,8 +1823,9 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 // 24
-                'kurikulum_id' => 3, // MERDEKA
-                'mata_pelajaran_id' => 20, // Jepang (11)
+                // 'kurikulum_id' => 3, // MERDEKA
+                // 'mata_pelajaran_id' => 20, // Jepang (11)
+                'kurikulum_mata_pelajaran_id' => 50,
                 'judul_kompetensi' => 'Pemahaman Struktur Bahasa Jepang dan Budaya dalam Konteks Sederhana',
                 'jenis' => 'CP',                
                 'kode' => 'CP-JPN-11-F2',
@@ -1815,8 +1839,9 @@ class DatabaseSeeder extends Seeder
             // Jepang (F) (12)
             [
                 // 25
-                'kurikulum_id' => 3, // MERDEKA
-                'mata_pelajaran_id' => 16, // Jepang (12)
+                // 'kurikulum_id' => 3, // MERDEKA
+                // 'mata_pelajaran_id' => 16, // Jepang (12)
+                'kurikulum_mata_pelajaran_id' => 56,
                 'judul_kompetensi' => 'Penggunaan Bahasa Jepang untuk Komunikasi Fungsional',
                 'jenis' => 'CP',                
                 'kode' => 'CP-JPN-12-F1',
@@ -1828,8 +1853,9 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 // 26
-                'kurikulum_id' => 3, // MERDEKA
-                'mata_pelajaran_id' => 16, // Jepang (12)
+                // 'kurikulum_id' => 3, // MERDEKA
+                // 'mata_pelajaran_id' => 16, // Jepang (12)
+                'kurikulum_mata_pelajaran_id' => 56,
                 'judul_kompetensi' => 'Pemahaman Teks Sederhana dan Budaya Jepang dalam Konteks Global',
                 'jenis' => 'CP',                
                 'kode' => 'CP-JPN-12-F2',
@@ -3015,7 +3041,7 @@ class DatabaseSeeder extends Seeder
                 'link_opsional' => '',              
             ],        
             [
-                // 21
+                // 22
                 'kurikulum_mata_pelajaran_id' => 6, // K13 - MTK
                 'tahun_akademik_id' => 2, // 2024/2025
                 'semester_id' => 3, // Ganjil
@@ -3028,7 +3054,7 @@ class DatabaseSeeder extends Seeder
                 'link_opsional' => '',              
             ],        
             [
-                // 22
+                // 23
                 'kurikulum_mata_pelajaran_id' => 4, // K13 - Indo
                 'tahun_akademik_id' => 2,
                 'semester_id' => 3,
@@ -3043,7 +3069,7 @@ class DatabaseSeeder extends Seeder
 
             // Genap
             [
-                // 23
+                // 24
                 'kurikulum_mata_pelajaran_id' => 7, // merdeka - Sejarah
                 'tahun_akademik_id' => 2,
                 'semester_id' => 4,
@@ -3056,7 +3082,7 @@ class DatabaseSeeder extends Seeder
                 'link_opsional' => 'www.youtube.com', 
             ],                
             [
-                // 24
+                // 25
                 'kurikulum_mata_pelajaran_id' => 8, // merdeka - PJOK
                 'tahun_akademik_id' => 2,
                 'semester_id' => 4,
@@ -3164,7 +3190,7 @@ class DatabaseSeeder extends Seeder
             //     'link_opsional' => 'www.youtube.com', 
             // ],    
             [
-                // 25
+                // 26
                 'kurikulum_mata_pelajaran_id' => 9, // merdeka - Seni Budaya
                 'tahun_akademik_id' => 2,
                 'semester_id' => 3,
@@ -3177,7 +3203,7 @@ class DatabaseSeeder extends Seeder
                 'link_opsional' => 'www.youtube.com',                
             ],
             [
-                // 26
+                // 27
                 'kurikulum_mata_pelajaran_id' => 32, // Fisika
                 'tahun_akademik_id' => 2,
                 'semester_id' => 3,
@@ -3190,7 +3216,7 @@ class DatabaseSeeder extends Seeder
                 'link_opsional' => 'www.youtube.com',                
             ],
             [
-                // 27
+                // 28
                 'kurikulum_mata_pelajaran_id' => 50, // Bahasa Jepang
                 'tahun_akademik_id' => 2,
                 'semester_id' => 3,
@@ -3203,7 +3229,7 @@ class DatabaseSeeder extends Seeder
                 'link_opsional' => 'www.youtube.com',                
             ],
             [
-                // 28
+                // 29
                 'kurikulum_mata_pelajaran_id' => 54, // Bahasa Jerman
                 'tahun_akademik_id' => 2,
                 'semester_id' => 3,
@@ -3214,7 +3240,20 @@ class DatabaseSeeder extends Seeder
                 'jam_selesai' => '10:00',
                 'ruangan_id' => 2,
                 'link_opsional' => 'www.youtube.com', 
-            ],                       
+            ],             
+            [
+                // 30
+                'kurikulum_mata_pelajaran_id' => 6, // K13 - MTK
+                'tahun_akademik_id' => 1, // 2023/2024
+                'semester_id' => 1, // Ganjil
+                'hari' => 'Selasa',
+                'guru_id' => 9, // Guru MTK
+                'rombel_id' => 5, // XI-B-1
+                'jam_mulai' => '10:30',
+                'jam_selesai' => '12:30',
+                'ruangan_id' => 1,
+                'link_opsional' => '',              
+            ],              
 
             
         ]);              
@@ -3429,7 +3468,7 @@ class DatabaseSeeder extends Seeder
             ],                    
             // 2024/2025
             [
-                // 2
+                // 8
                 'guru_pengajar_id' => 9, /// Guru MTK
                 'jadwal_pelajaran_id' => 1, // MTK | 13/24 | Ganjil | X-A-1
                 'hari' => '2024-05-05', // Senin
@@ -3438,7 +3477,7 @@ class DatabaseSeeder extends Seeder
                 'semester_id' => 3 // Ganjil
             ],
             [
-                // 3
+                // 9
                 'guru_pengajar_id' => 9, /// Guru MTK
                 'jadwal_pelajaran_id' => 1,
                 'hari' => '2024-05-12',
@@ -3447,7 +3486,7 @@ class DatabaseSeeder extends Seeder
                 'semester_id' => 3 // Ganjil
             ],
             [
-                // 4
+                // 10
                 'guru_pengajar_id' => 9, /// Guru MTK
                 'jadwal_pelajaran_id' => 1,
                 'hari' => '2024-05-19',
@@ -3456,7 +3495,7 @@ class DatabaseSeeder extends Seeder
                 'semester_id' => 3 // Ganjil
             ],
             [
-                // 5
+                // 11
                 'guru_pengajar_id' => 9, /// Guru MTK
                 'jadwal_pelajaran_id' => 11,
                 'hari' => '2025-05-05',
@@ -3465,7 +3504,7 @@ class DatabaseSeeder extends Seeder
                 'semester_id' => 4  // Genap
             ],
             [
-                // 6
+                // 12
                 'guru_pengajar_id' => 9, /// Guru MTK
                 'jadwal_pelajaran_id' => 11,
                 'hari' => '2025-01-02',
@@ -3474,7 +3513,7 @@ class DatabaseSeeder extends Seeder
                 'semester_id' => 4  // Genap
             ],
             [
-                // 7
+                // 13
                 'guru_pengajar_id' => 9, /// Guru MTK
                 'jadwal_pelajaran_id' => 8,
                 'hari' => '2024-01-09',
@@ -3482,6 +3521,35 @@ class DatabaseSeeder extends Seeder
                 'tahun_akademik_id' => 2, // 24/25
                 'semester_id' => 4  // Genap
             ],                    
+
+            // Guru indones
+            [
+                // 2
+                'guru_pengajar_id' => 7, /// Guru Indon
+                'jadwal_pelajaran_id' => 23, // Indon
+                'hari' => '2024-05-05', // Senin
+                'status' => 'tidak hadir',                
+                'tahun_akademik_id' => 2, // 24/25
+                'semester_id' => 3 // Ganjil
+            ],
+            [
+                // 3
+                'guru_pengajar_id' => 7, /// Guru Indon
+                'jadwal_pelajaran_id' => 23,
+                'hari' => '2024-05-12',
+                'status' => 'hadir',                
+                'tahun_akademik_id' => 2, // 24/25
+                'semester_id' => 3 // Ganjil
+            ],
+            [
+                // 4
+                'guru_pengajar_id' => 7, /// Guru Indon
+                'jadwal_pelajaran_id' => 23,
+                'hari' => '2024-05-19',
+                'status' => 'tidak hadir',                
+                'tahun_akademik_id' => 2, // 24/25
+                'semester_id' => 3 // Ganjil
+            ],
         ]);
 
         /**
@@ -3493,7 +3561,7 @@ class DatabaseSeeder extends Seeder
             [
                 // 1
                 'siswa_id' => 2, // Winton
-                'rombel_id' => 2,  // X-B-1
+                'siswa_rombel_id' => 10,  // X-B-1
                 'jadwal_pelajaran_id' => 1, // MTK
                 'hari' => '2023-12-02',
                 'status' => 'hadir',
@@ -3502,9 +3570,9 @@ class DatabaseSeeder extends Seeder
                 'semester_id' => 1, // Ganjil
             ],            
             [
-                // 1
+                // 2
                 'siswa_id' => 2, // Winton
-                'rombel_id' => 2,  // X-B-1
+                'siswa_rombel_id' => 10,  // X-B-1
                 'jadwal_pelajaran_id' => 1, // MTK
                 'hari' => '2023-12-09',
                 'status' => 'alpa',
@@ -3513,9 +3581,9 @@ class DatabaseSeeder extends Seeder
                 'semester_id' => 1, // Ganjil
             ],            
             [
-                // 2
+                // 3
                 'siswa_id' => 2, // Winton
-                'rombel_id' => 2,  // X-B-1
+                'siswa_rombel_id' => 10,  // X-B-1
                 'jadwal_pelajaran_id' => 2, // Indonesia
                 'hari' => '2023-12-02',
                 'status' => 'izin',
@@ -3524,9 +3592,9 @@ class DatabaseSeeder extends Seeder
                 'semester_id' => 1, // Ganjil
             ],            
             [
-                // 3
+                // 4
                 'siswa_id' => 2, // Winton
-                'rombel_id' => 2,  // X-B-1
+                'siswa_rombel_id' => 10,  // X-B-1
                 'jadwal_pelajaran_id' => 3, // PAI
                 'hari' => '2023-12-03',
                 'status' => 'hadir',
@@ -3535,9 +3603,9 @@ class DatabaseSeeder extends Seeder
                 'semester_id' => 1, // Ganjil
             ],                        
             [
-                // 1
+                // 5
                 'siswa_id' => 2, // Winton
-                'rombel_id' => 2,  // X-B-1
+                'siswa_rombel_id' => 10,  // X-B-1
                 'jadwal_pelajaran_id' => 1, // MTK
                 'hari' => '2024-01-09',
                 'status' => 'hadir',
@@ -3546,9 +3614,9 @@ class DatabaseSeeder extends Seeder
                 'semester_id' => 2, // Genap
             ],            
             [
-                // 2
+                // 6
                 'siswa_id' => 2, // Winton
-                'rombel_id' => 2,  // XI-B-1
+                'siswa_rombel_id' => 10,  // XI-B-1
                 'jadwal_pelajaran_id' => 2, // Indonesia
                 'hari' => '2024-01-02',
                 'status' => 'izin',
@@ -3557,9 +3625,9 @@ class DatabaseSeeder extends Seeder
                 'semester_id' => 2, // Genap
             ],            
             [
-                // 3
+                // 7
                 'siswa_id' => 2, // Winton
-                'rombel_id' => 2,  // X-B-1
+                'siswa_rombel_id' => 10,  // X-B-1
                 'jadwal_pelajaran_id' => 3, // PAI
                 'hari' => '2024-01-03',
                 'status' => 'hadir',
@@ -3568,9 +3636,9 @@ class DatabaseSeeder extends Seeder
                 'semester_id' => 2, // Genap
             ],                        
             [
-                // 1
+                // 8
                 'siswa_id' => 2, // Winton
-                'rombel_id' => 5,  // X-B-1
+                'siswa_rombel_id' => 3, // XI-B-I
                 'jadwal_pelajaran_id' => 1, // MTK
                 'hari' => '2024-12-02',
                 'status' => 'hadir',
@@ -3579,9 +3647,9 @@ class DatabaseSeeder extends Seeder
                 'semester_id' => 3, // Ganjil
             ],            
             [
-                // 2
+                // 9
                 'siswa_id' => 2, // Winton
-                'rombel_id' => 5,  // XI-B-1
+                'siswa_rombel_id' => 3, // XI-B-I
                 'jadwal_pelajaran_id' => 2, // Indonesia
                 'hari' => '2023-12-02',
                 'status' => 'izin',
@@ -3590,9 +3658,9 @@ class DatabaseSeeder extends Seeder
                 'semester_id' => 3, // Ganjil
             ],            
             [
-                // 3
+                // 10
                 'siswa_id' => 2, // Winton
-                'rombel_id' => 5,  // X-B-1
+                'siswa_rombel_id' => 3, // XI-B-I
                 'jadwal_pelajaran_id' => 3, // PAI
                 'hari' => '2023-12-03',
                 'status' => 'hadir',
@@ -3601,9 +3669,9 @@ class DatabaseSeeder extends Seeder
                 'semester_id' => 3, // Ganjil
             ],                        
             [
-                // 1
+                // 11
                 'siswa_id' => 2, // Winton
-                'rombel_id' => 5,  // X-B-1
+                'siswa_rombel_id' => 3, // XI-B-I
                 'jadwal_pelajaran_id' => 1, // MTK
                 'hari' => '2024-01-02',
                 'status' => 'hadir',
@@ -3612,9 +3680,9 @@ class DatabaseSeeder extends Seeder
                 'semester_id' => 4, // Genap
             ],            
             [
-                // 2
+                // 12
                 'siswa_id' => 2, // Winton
-                'rombel_id' => 5,  // XI-B-1
+                'siswa_rombel_id' => 3, // XI-B-I
                 'jadwal_pelajaran_id' => 2, // Indonesia
                 'hari' => '2024-01-02',
                 'status' => 'izin',
@@ -3623,9 +3691,9 @@ class DatabaseSeeder extends Seeder
                 'semester_id' => 4, // Genap
             ],            
             [
-                // 3
+                // 13
                 'siswa_id' => 2, // Winton
-                'rombel_id' => 5,  // X-B-1
+                'siswa_rombel_id' => 3, // XI-B-I
                 'jadwal_pelajaran_id' => 3, // PAI
                 'hari' => '2024-01-03',
                 'status' => 'hadir',
@@ -3636,9 +3704,9 @@ class DatabaseSeeder extends Seeder
             
             // Bagas
             [
-                // 1
+                // 14
                 'siswa_id' => 1, // Bagas
-                'rombel_id' => 2,  // X-B-1
+                'siswa_rombel_id' => 9,  // X-B-1
                 'jadwal_pelajaran_id' => 1, // MTK
                 'hari' => '2023-12-02',
                 'status' => 'alpa',
@@ -3647,9 +3715,9 @@ class DatabaseSeeder extends Seeder
                 'semester_id' => 1, // Ganjil
             ],            
             [
-                // 2
+                // 15
                 'siswa_id' => 1, // Bagas
-                'rombel_id' => 2,  // XI-B-1
+                'siswa_rombel_id' => 9,  // XI-B-1
                 'jadwal_pelajaran_id' => 2, // Indonesia
                 'hari' => '2023-12-02',
                 'status' => 'hadir',
@@ -3658,9 +3726,9 @@ class DatabaseSeeder extends Seeder
                 'semester_id' => 1, // Ganjil
             ],            
             [
-                // 3
+                // 16
                 'siswa_id' => 1, // Bagas
-                'rombel_id' => 2,  // X-B-1
+                'siswa_rombel_id' => 9,  // X-B-1
                 'jadwal_pelajaran_id' => 3, // PAI
                 'hari' => '2023-12-03',
                 'status' => 'hadir',
@@ -3669,9 +3737,9 @@ class DatabaseSeeder extends Seeder
                 'semester_id' => 1, // Ganjil
             ],                        
             [
-                // 1
+                // 17
                 'siswa_id' => 1, // Bagas
-                'rombel_id' => 2,  // X-B-1
+                'siswa_rombel_id' => 9,  // X-B-1
                 'jadwal_pelajaran_id' => 1, // MTK
                 'hari' => '2024-01-02',
                 'status' => 'hadir',
@@ -3680,9 +3748,9 @@ class DatabaseSeeder extends Seeder
                 'semester_id' => 2, // Genap
             ],            
             [
-                // 2
+                // 18
                 'siswa_id' => 1, // Bagas
-                'rombel_id' => 2,  // XI-B-1
+                'siswa_rombel_id' => 9,  // XI-B-1
                 'jadwal_pelajaran_id' => 2, // Indonesia
                 'hari' => '2024-01-02',
                 'status' => 'izin',
@@ -3691,9 +3759,9 @@ class DatabaseSeeder extends Seeder
                 'semester_id' => 2, // Genap
             ],            
             [
-                // 3
+                // 19
                 'siswa_id' => 1, // Bagas
-                'rombel_id' => 2,  // X-B-1
+                'siswa_rombel_id' => 9,  // X-B-1
                 'jadwal_pelajaran_id' => 3, // PAI
                 'hari' => '2024-01-03',
                 'status' => 'hadir',
@@ -3702,9 +3770,9 @@ class DatabaseSeeder extends Seeder
                 'semester_id' => 2, // Genap
             ],                        
             [
-                // 1
+                // 20
                 'siswa_id' => 1, // Bagas
-                'rombel_id' => 5,  // X-B-1
+                'siswa_rombel_id' => 2, // XI-B-I
                 'jadwal_pelajaran_id' => 1, // MTK
                 'hari' => '2023-12-02',
                 'status' => 'hadir',
@@ -3713,9 +3781,9 @@ class DatabaseSeeder extends Seeder
                 'semester_id' => 3, // Ganjil
             ],            
             [
-                // 2
+                // 21
                 'siswa_id' => 1, // Bagas
-                'rombel_id' => 5,  // XI-B-1
+                'siswa_rombel_id' => 2, // XI-B-I
                 'jadwal_pelajaran_id' => 2, // Indonesia
                 'hari' => '2023-12-02',
                 'status' => 'izin',
@@ -3724,9 +3792,9 @@ class DatabaseSeeder extends Seeder
                 'semester_id' => 3, // Ganjil
             ],            
             [
-                // 3
+                // 22
                 'siswa_id' => 1, // Bagas
-                'rombel_id' => 5,  // X-B-1
+                'siswa_rombel_id' => 2, // XI-B-I
                 'jadwal_pelajaran_id' => 3, // PAI
                 'hari' => '2023-12-03',
                 'status' => 'sakit',
@@ -3735,9 +3803,9 @@ class DatabaseSeeder extends Seeder
                 'semester_id' => 3, // Ganjil
             ],                        
             [
-                // 1
+                // 23
                 'siswa_id' => 1, // Bagas
-                'rombel_id' => 5,  // X-B-1
+                'siswa_rombel_id' => 2, // XI-B-I
                 'jadwal_pelajaran_id' => 1, // MTK
                 'hari' => '2024-01-02',
                 'status' => 'alpa',
@@ -3746,9 +3814,9 @@ class DatabaseSeeder extends Seeder
                 'semester_id' => 4, // Genap
             ],            
             [
-                // 2
+                // 24
                 'siswa_id' => 1, // Bagas
-                'rombel_id' => 5,  // XI-B-1
+                'siswa_rombel_id' => 2, // XI-B-I
                 'jadwal_pelajaran_id' => 2, // Indonesia
                 'hari' => '2024-01-02',
                 'status' => 'izin',
@@ -3757,9 +3825,9 @@ class DatabaseSeeder extends Seeder
                 'semester_id' => 4, // Genap
             ],            
             [
-                // 3
+                // 25
                 'siswa_id' => 1, // Bagas
-                'rombel_id' => 5,  // X-B-1
+                'siswa_rombel_id' => 2, // XI-B-I
                 'jadwal_pelajaran_id' => 3, // PAI
                 'hari' => '2024-01-03',
                 'status' => 'hadir',
@@ -3768,11 +3836,11 @@ class DatabaseSeeder extends Seeder
                 'semester_id' => 4, // Genap
             ],    
 
-            // Yuli
+            // Sanita
             [
-                // 1
-                'siswa_id' => 5, // Yuli
-                'rombel_id' => 10,  // X-B-2
+                // 26
+                'siswa_id' => 3, // Sanita
+                'siswa_rombel_id' => 11, // X-B-I
                 'jadwal_pelajaran_id' => 1, // MTK
                 'hari' => '2023-12-02',
                 'status' => 'alpa',
@@ -3781,9 +3849,9 @@ class DatabaseSeeder extends Seeder
                 'semester_id' => 1, // Ganjil
             ],            
             [
-                // 2
-                'siswa_id' => 5, // Yuli
-                'rombel_id' => 10,  // XI-B-2
+                // 27
+                'siswa_id' => 3, // Sanita
+                'siswa_rombel_id' => 11, // X-B-I
                 'jadwal_pelajaran_id' => 2, // Indonesia
                 'hari' => '2023-12-02',
                 'status' => 'hadir',
@@ -3792,9 +3860,9 @@ class DatabaseSeeder extends Seeder
                 'semester_id' => 1, // Ganjil
             ],            
             [
-                // 3
-                'siswa_id' => 5, // Yuli
-                'rombel_id' => 10,  // X-B-2
+                // 28
+                'siswa_id' => 3, // Sanita
+                'siswa_rombel_id' => 11, // X-B-I
                 'jadwal_pelajaran_id' => 3, // PAI
                 'hari' => '2023-12-03',
                 'status' => 'hadir',
@@ -3803,9 +3871,9 @@ class DatabaseSeeder extends Seeder
                 'semester_id' => 1, // Ganjil
             ],                        
             [
-                // 1
-                'siswa_id' => 5, // Yuli
-                'rombel_id' => 10,  // X-B-2
+                // 29
+                'siswa_id' => 3, // Sanita
+                'siswa_rombel_id' => 11, // X-B-I
                 'jadwal_pelajaran_id' => 1, // MTK
                 'hari' => '2024-01-02',
                 'status' => 'hadir',
@@ -3814,9 +3882,9 @@ class DatabaseSeeder extends Seeder
                 'semester_id' => 2, // Genap
             ],            
             [
-                // 2
-                'siswa_id' => 5, // Yuli
-                'rombel_id' => 10,  // XI-B-2
+                // 30
+                'siswa_id' => 3, // Sanita
+                'siswa_rombel_id' => 11, // X-B-I
                 'jadwal_pelajaran_id' => 2, // Indonesia
                 'hari' => '2024-01-02',
                 'status' => 'izin',
@@ -3825,9 +3893,9 @@ class DatabaseSeeder extends Seeder
                 'semester_id' => 2, // Genap
             ],            
             [
-                // 3
-                'siswa_id' => 5, // Yuli
-                'rombel_id' => 10,  // X-B-2
+                // 31
+                'siswa_id' => 3, // Sanita
+                'siswa_rombel_id' => 11, // X-B-I
                 'jadwal_pelajaran_id' => 3, // PAI
                 'hari' => '2024-01-03',
                 'status' => 'hadir',
@@ -3836,9 +3904,9 @@ class DatabaseSeeder extends Seeder
                 'semester_id' => 2, // Genap
             ],                        
             [
-                // 1
-                'siswa_id' => 5, // Yuli
-                'rombel_id' => 14,  // X-B-1
+                // 32
+                'siswa_id' => 3, // Sanita
+                'siswa_rombel_id' => 7, // X-B-I
                 'jadwal_pelajaran_id' => 1, // MTK
                 'hari' => '2023-12-02',
                 'status' => 'hadir',
@@ -3847,9 +3915,9 @@ class DatabaseSeeder extends Seeder
                 'semester_id' => 3, // Ganjil
             ],            
             [
-                // 2
-                'siswa_id' => 5, // Yuli
-                'rombel_id' => 14,  // XII-B-2
+                // 33
+                'siswa_id' => 3, // Sanita
+                'siswa_rombel_id' => 7, // X-B-I
                 'jadwal_pelajaran_id' => 2, // Indonesia
                 'hari' => '2023-12-02',
                 'status' => 'izin',
@@ -3858,9 +3926,9 @@ class DatabaseSeeder extends Seeder
                 'semester_id' => 3, // Ganjil
             ],            
             [
-                // 3
-                'siswa_id' => 5, // Yuli
-                'rombel_id' => 14,  // XI-B-2
+                // 34
+                'siswa_id' => 3, // Sanita
+                'siswa_rombel_id' => 7, // X-B-I
                 'jadwal_pelajaran_id' => 3, // PAI
                 'hari' => '2023-12-03',
                 'status' => 'alpa',
@@ -3869,9 +3937,9 @@ class DatabaseSeeder extends Seeder
                 'semester_id' => 3, // Ganjil
             ],                        
             [
-                // 1
-                'siswa_id' => 5, // Yuli
-                'rombel_id' => 14,  // XI-B-2
+                // 35
+                'siswa_id' => 3, // Sanita
+                'siswa_rombel_id' => 7, // X-B-I
                 'jadwal_pelajaran_id' => 1, // MTK
                 'hari' => '2024-01-02',
                 'status' => 'alpa',
@@ -3880,9 +3948,9 @@ class DatabaseSeeder extends Seeder
                 'semester_id' => 4, // Genap
             ],            
             [
-                // 2
-                'siswa_id' => 5, // Yuli
-                'rombel_id' => 14,  // XII-B-2
+                // 36
+                'siswa_id' => 3, // Sanita
+                'siswa_rombel_id' => 7, // X-B-I
                 'jadwal_pelajaran_id' => 2, // Indonesia
                 'hari' => '2024-01-02',
                 'status' => 'izin',
@@ -3891,9 +3959,9 @@ class DatabaseSeeder extends Seeder
                 'semester_id' => 4, // Genap
             ],            
             [
-                // 3
-                'siswa_id' => 5, // Yuli
-                'rombel_id' => 14,  // XI-B-2
+                // 37
+                'siswa_id' => 3, // Sanita
+                'siswa_rombel_id' => 7, // X-B-I
                 'jadwal_pelajaran_id' => 3, // PAI
                 'hari' => '2024-01-03',
                 'status' => 'hadir',
@@ -3901,6 +3969,19 @@ class DatabaseSeeder extends Seeder
                 'tahun_akademik_id' => 2,
                 'semester_id' => 4, // Genap
             ],    
+            [,    
+            // 1
+            'kurikulum_mata_pelajaran_id' => 6, // K13 - MTK
+            'tahun_akademik_id' => 1, // 2023/2024
+            'semester_id' => 1, // Ganjil
+            'hari' => 'Minggu',
+            'guru_id' => 9, // Guru MTK
+            'rombel_id' => 1, // X-A-1
+            'jam_mulai' => '07:30',
+            'jam_selesai' => '08:30',
+            'ruangan_id' => 1,
+            'link_opsional' => '',              
+            ],                     
                       
         ]);        
 

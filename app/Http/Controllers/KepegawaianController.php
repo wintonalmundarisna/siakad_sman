@@ -297,9 +297,9 @@ class KepegawaianController extends Controller
 
     // CRUD
     // ✅ untuk spa/tu
-    public function index()
+    public function index(Request $request)
     {
-        $pegawai = Kepegawaian::all();
+        $pegawai = Kepegawaian::where('role', $request->role)->get();
 
         $formatted = $pegawai
             ->groupBy('status')

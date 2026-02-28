@@ -31,9 +31,9 @@ class AbsensiSiswa extends Model
         return $this->belongsTo(Semester::class, 'semester_id');
     }
 
-    public function rombel()
+    public function siswaRombel()
     {
-        return $this->belongsTo(Rombel::class, 'rombel_id');
+        return $this->belongsTo(SiswaRombel::class, 'siswa_rombel_id');
     }
     
 }

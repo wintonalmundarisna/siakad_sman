@@ -7,28 +7,66 @@ use App\Models\TahunAkademik;
 use App\Models\Semester;
 use App\Helpers\ApiResponse;
 use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
+// use Illuminate\Support\Facades\Auth;
+// use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 class TahunAkademikController extends Controller
 {
     /**
      * ✅ untuk spa
      */
+    // public function index()
+    // {
+    //     $ta = TahunAkademik::orderBy('tahun_akademik', 'asc')->get();
+
+    //     $formatted = $ta->map(function($item) {
+    //         return [
+    //             'id'                => $item->id ?? null,
+    //             'tahun_akademik'    => $item->tahun_akademik ?? null,                
+    //             'keterangan'        => $item->keterangan ?? null,
+    //             'status'            => $item->status ?? null,
+    //         ];
+    //     });
+
+    //     return ApiResponse::success($formatted, 'Daftar tahun akademik berhasil diambil');
+    // }
+
     public function index()
     {
-        $ta = TahunAkademik::orderBy('tahun_akademik', 'asc')->get();
+        $semesters = Semester::with('tahunAkademik')->get();
 
-        $formatted = $ta->map(function($item) {
-            return [
-                'id'                => $item->id ?? null,
-                'tahun_akademik'    => $item->tahun_akademik ?? null,                
-                'keterangan'        => $item->keterangan ?? null,
-                'status'            => $item->status ?? null,
-            ];
-        });
+        if ($semesters->isEmpty()) {
+            return ApiResponse::error(
+                'No data',
+                ['data' => 'Belum ada data semester']
+            );
+        }
 
-        return ApiResponse::success($formatted, 'Daftar tahun akademik berhasil diambil');
+        $formatted = $semesters
+            ->groupBy('tahun_akademik_id')
+            ->map(function ($group) {
+                $tahunAkademik = $group->first()->tahunAkademik;
+
+                return [
+                    'tahun_akademik_id' => $tahunAkademik->id,
+                    'tahun_akademik' => $tahunAkademik->tahun_akademik,
+                    'status_tahun_akademik' => $tahunAkademik->status,
+                    'semesters' => $group->map(function ($semester) {
+                        return [
+                            'semester_id' => $semester->id,
+                            'semester' => $semester->semester,
+                            'status_semester' => $semester->status,
+                        ];
+                    })->values(),
+                ];
+            })
+            ->values();
+
+        return ApiResponse::success(
+            $formatted,
+            'Daftar semester berhasil diambil'
+        );
     }
 
     /**
@@ -73,30 +111,30 @@ class TahunAkademikController extends Controller
     /**
      * ✅ untuk spa
      */
-    public function show(string $id)
-    {
-        $ta = TahunAkademik::with('semester')->find($id);
+    // public function show(string $id)
+    // {
+    //     $ta = TahunAkademik::with('semester')->find($id);
 
-        if (!$ta) {
-            return ApiResponse::error('Tahun akademik tidak ditemukan', ['id' => 'Data tidak ditemukan']);
-        }
+    //     if (!$ta) {
+    //         return ApiResponse::error('Tahun akademik tidak ditemukan', ['id' => 'Data tidak ditemukan']);
+    //     }
 
-        $formatted = [
-                'tahun_akademik_id' => $ta->id ?? null,
-                'tahun_akademik' => $ta->tahun_akademik ?? null,
-                'keterangan' => $ta->keterangan ?? null,
-                'status_tahun_akademik' => $ta->status ?? null,
-                'semester' => $ta->semester->map(function ($semester) {
-                    return [
-                        'semester_id' => $semester->id,   
-                        'semester' => $semester->semester,   
-                        'status_semester' => $semester->status,   
-                    ];
-                }) ?? null,                
-            ];
+    //     $formatted = [
+    //             'tahun_akademik_id' => $ta->id ?? null,
+    //             'tahun_akademik' => $ta->tahun_akademik ?? null,
+    //             'keterangan' => $ta->keterangan ?? null,
+    //             'status_tahun_akademik' => $ta->status ?? null,
+    //             'semester' => $ta->semester->map(function ($semester) {
+    //                 return [
+    //                     'semester_id' => $semester->id,   
+    //                     'semester' => $semester->semester,   
+    //                     'status_semester' => $semester->status,   
+    //                 ];
+    //             }) ?? null,                
+    //         ];
 
-        return ApiResponse::success($formatted, 'Detail tahun akademik berhasil diambil');
-    }
+    //     return ApiResponse::success($formatted, 'Detail tahun akademik berhasil diambil');
+    // }
 
     /**
      * ✅ untuk spa
@@ -172,11 +210,7 @@ class TahunAkademikController extends Controller
 
         if (!$ta) {
             return ApiResponse::error('Not found', ['id' => ['Data tidak ditemukan']], 404);
-        }
-
-        if ($ta->status == 'arsip') {
-            return ApiResponse::error('Not supported', ['id' => ['Tahun akademik sudah berstatus arsip']], 404);
-        }
+        }        
 
         $dipakaiSemester = $ta->semester()->exists();
 

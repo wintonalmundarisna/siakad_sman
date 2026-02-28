@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Helpers\ApiResponse;
 use App\Models\JadwalPelajaran;
 use App\Models\Kepegawaian;
-use App\Models\Rombel;
+// use App\Models\Rombel;
 use App\Models\Ruangan;
 use App\Models\KurikulumMataPelajaran;
 use App\Models\TahunAkademik;
@@ -247,8 +247,15 @@ class JadwalPelajaranController extends Controller
     /**
      * ✅ guru dan spa
      */
-    public function show(string $id)
+    public function show(string $id, Request $request)
     {
+        $request->validate([
+            'tahun_akademik_id'  => 'required|exists:tahun_akademik,id',
+        ], [
+            'tahun_akademik_id.required' => 'Tahun akademik wajib ditentukan terlebih dahulu',
+            'tahun_akademik_id.exists'  => 'Tahun akademik tidak ditemukan'
+        ]);
+
         $jadwal = JadwalPelajaran::with([
             'guru',
             'tahunAkademik',
@@ -259,6 +266,7 @@ class JadwalPelajaranController extends Controller
             'ruangan'
         ])
         ->where('guru_id', $id)
+        ->where('tahun_akademik_id', $request->tahun_akademik_id)
         ->get();
     
         if ($jadwal->isEmpty()) {
@@ -717,26 +725,26 @@ class JadwalPelajaranController extends Controller
 
 
         // rombel
-        $data4 = Rombel::with('kelas', 'jurusan')
-        ->where('status', 'aktif')
-        ->get();
+        // $data4 = Rombel::with('kelas', 'jurusan')
+        // ->where('status', 'aktif')
+        // ->get();
 
-        if ($data4->isEmpty()) {
-            return ApiResponse::error(
-                'Data kosong',
-                ['data' => 'Belum ada rombel aktif']
-            );
-        }    
+        // if ($data4->isEmpty()) {
+        //     return ApiResponse::error(
+        //         'Data kosong',
+        //         ['data' => 'Belum ada rombel aktif']
+        //     );
+        // }    
 
-        $rombel = $data4->map(function ($r) {
-            return [
-                'rombel_id'     => $r->id ?? null,
-                'nama_rombel'   => $r->nama_rombel ?? null,
-                'jurusan'       => $r->jurusan->nama_jurusan ?? null,
-                'kelas'         => $r->kelas->nama_kelas ?? null,
-                'tingkat'       => $r->kelas->tingkat ?? null,
-            ];
-        });
+        // $rombel = $data4->map(function ($r) {
+        //     return [
+        //         'rombel_id'     => $r->id ?? null,
+        //         'nama_rombel'   => $r->nama_rombel ?? null,
+        //         'jurusan'       => $r->jurusan->nama_jurusan ?? null,
+        //         'kelas'         => $r->kelas->nama_kelas ?? null,
+        //         'tingkat'       => $r->kelas->tingkat ?? null,
+        //     ];
+        // });
 
 
         // ruangan
@@ -762,7 +770,7 @@ class JadwalPelajaranController extends Controller
             [
                 'kurikulum_mata_pelajaran' => $kurmap,
                 'guru' => $guru,
-                'rombel' => $rombel,
+                // 'rombel' => $rombel,
                 'ruangan' => $ruangan,
             ],
             'Data select berhasil diambil'

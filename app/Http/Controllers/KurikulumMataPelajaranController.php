@@ -18,12 +18,13 @@ class KurikulumMataPelajaranController extends Controller
     /**
      * ✅ SPA
      */
-    public function index()
+    public function index(Request $request)
     {
         $kurmap = KurikulumMataPelajaran::with([
                 'kurikulum',
                 'mataPelajaran',
             ])
+            ->where('kurikulum_id', $request->kurikulum_id)
             ->orderBy('kurikulum_id')
             ->orderBy('tingkat')
             ->orderByRaw("

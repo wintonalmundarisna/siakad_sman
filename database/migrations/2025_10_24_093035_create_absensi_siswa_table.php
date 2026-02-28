@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('siswa_id')->constrained('siswas')->cascadeOnDelete();
             
-            $table->foreignId('rombel_id')->constrained('rombels');
+            $table->foreignId('siswa_rombel_id')->constrained('siswa_rombel');
             
             $table->foreignId('jadwal_pelajaran_id')->constrained('jadwal_pelajarans')->cascadeOnDelete();
             

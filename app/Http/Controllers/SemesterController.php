@@ -5,51 +5,52 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Semester;
 use App\Models\TahunAkademik;
-use Illuminate\Support\Facades\Validator;
 use App\Helpers\ApiResponse;
-use Illuminate\Support\Facades\Auth;
+// use Illuminate\Support\Facades\Validator;
+// use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 
 class SemesterController extends Controller
 {
     /**
      * ✅ Untuk spa
      */
-    public function index()
-    {
-        $semesters = Semester::with('tahunAkademik')->get();
+    // public function index()
+    // {
+    //     $semesters = Semester::with('tahunAkademik')->get();
 
-        if ($semesters->isEmpty()) {
-            return ApiResponse::error(
-                'No data',
-                ['data' => 'Belum ada data semester']
-            );
-        }
+    //     if ($semesters->isEmpty()) {
+    //         return ApiResponse::error(
+    //             'No data',
+    //             ['data' => 'Belum ada data semester']
+    //         );
+    //     }
 
-        $formatted = $semesters
-            ->groupBy('tahun_akademik_id')
-            ->map(function ($group) {
-                $tahunAkademik = $group->first()->tahunAkademik;
+    //     $formatted = $semesters
+    //         ->groupBy('tahun_akademik_id')
+    //         ->map(function ($group) {
+    //             $tahunAkademik = $group->first()->tahunAkademik;
 
-                return [
-                    'tahun_akademik_id' => $tahunAkademik->id,
-                    'tahun_akademik' => $tahunAkademik->tahun_akademik,
-                    'status_tahun_akademik' => $tahunAkademik->status,
-                    'semesters' => $group->map(function ($semester) {
-                        return [
-                            'semester_id' => $semester->id,
-                            'semester' => $semester->semester,
-                            'status_semester' => $semester->status,
-                        ];
-                    })->values(),
-                ];
-            })
-            ->values();
+    //             return [
+    //                 'tahun_akademik_id' => $tahunAkademik->id,
+    //                 'tahun_akademik' => $tahunAkademik->tahun_akademik,
+    //                 'status_tahun_akademik' => $tahunAkademik->status,
+    //                 'semesters' => $group->map(function ($semester) {
+    //                     return [
+    //                         'semester_id' => $semester->id,
+    //                         'semester' => $semester->semester,
+    //                         'status_semester' => $semester->status,
+    //                     ];
+    //                 })->values(),
+    //             ];
+    //         })
+    //         ->values();
 
-        return ApiResponse::success(
-            $formatted,
-            'Daftar semester berhasil diambil'
-        );
-    }
+    //     return ApiResponse::success(
+    //         $formatted,
+    //         'Daftar semester berhasil diambil'
+    //     );
+    // }
 
 
     /**
@@ -225,11 +226,7 @@ class SemesterController extends Controller
 
         if (!$semester) {
             return ApiResponse::error('Not found', ['id' => ['Data tidak ditemukan']], 404);
-        }
-
-        if ($semester->status == 'arsip') {
-            return ApiResponse::error('Not suported', ['data' => ['Semester sudah menjadi arsip']], 404);
-        }
+        }        
 
         $dipakaiJadwal = $semester->jadwalPelajarans()->exists();
         $dipakaiBerkas = $semester->dataBerkas()->exists();

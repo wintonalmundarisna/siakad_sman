@@ -110,11 +110,11 @@ Route::middleware('auth:kepegawaian')->group(function () {
     Route::apiResource('/spa/mata-pelajaran', MataPelajaranController::class);
 
     // ✅☑️ Tahun Akademik
-    Route::apiResource('/spa/tahun-akademik', TahunAkademikController::class);
+    Route::apiResource('/spa/tahun-akademik', TahunAkademikController::class)->except('show');
     
     // ✅☑️ Semester
-    Route::apiResource('/spa/semester', SemesterController::class);
-    Route::get('/spa/data-select/semester', [SemesterController::class, 'dataSelectSemester']);
+    Route::apiResource('/spa/semester', SemesterController::class)->except(['index', 'show']);
+    // Route::get('/spa/data-select/semester', [SemesterController::class, 'dataSelectSemester']);
     
     // ✅☑️ Kurikulum Mata Pelajran
     Route::apiResource('/spa/kurikulum-mata-pelajaran', KurikulumMataPelajaranController::class);
@@ -125,11 +125,11 @@ Route::middleware('auth:kepegawaian')->group(function () {
     Route::get('/spa/data-select/kompetensi', [KompetensiController::class, 'dataSelectKompetensi']);
 
     // ✅☑️ CRUD ATP Master
-    Route::apiResource('/spa/atp-master', AtpMasterController::class);     
-    Route::get('/spa/data-select/atp-master', [AtpMasterController::class, 'dataSelect']);     
+    Route::apiResource('/spa/atp-master', AtpMasterController::class)->except(['index', 'show']);
+    // Route::get('/spa/data-select/atp-master', [AtpMasterController::class, 'dataSelect']);     
     
     // ✅☑️ CRUD rombel
-    Route::apiResource('/spa/rombel', RombelController::class);    
+    Route::apiResource('/spa/rombel', RombelController::class)->except('index');    
     Route::get('/spa/rombel/aktif/{id}', [RombelController::class, 'dataTahunAktif']);       
     Route::get('/spa/data-select/rombel', [RombelController::class, 'dataSelect']);       
 
@@ -153,19 +153,23 @@ Route::middleware('auth:kepegawaian')->group(function () {
     Route::apiResource('/spa/atp', AlurTujuanPembelajaranController::class)->only(['index', 'show']);  
     Route::get('/spa/atp-disetujui', [AlurTujuanPembelajaranController::class, 'disetujui']);   
     Route::put('/spa/atp-disetujui/{id}', [AlurTujuanPembelajaranController::class, 'diterima']);   
+    Route::put('/spa/atp-batal-disetujui/{id}', [AlurTujuanPembelajaranController::class, 'batalDiterima']);   
     Route::put('/spa/atp-ditolak/{id}', [AlurTujuanPembelajaranController::class, 'ditolak']);  
 
     // ✅☑️ Absensi Pegawai Ke Sekolah    
+    Route::get('/spa/absensi/pegawai/data-select', [AbsensiPegawaiController::class, 'dataSelect']);
     Route::get('/spa/absensi/pegawai/sekolah/export', [AbsensiPegawaiController::class, 'export']);
     Route::delete('/spa/absensi/pegawai/sekolah/destroy/{id?}', [AbsensiPegawaiController::class, 'destroyData']);
     Route::apiResource('/spa/absensi/pegawai/sekolah', AbsensiPegawaiController::class)->except('store', 'destroy');  
 
     // ✅☑️ Absensi guru ke Pelajaran
+    Route::get('/spa/absensi/guru/pelajaran/data-select', [AbsensiPelajaranController::class, 'dataSelect']);
     Route::get('/spa/absensi/guru/pelajaran/export', [AbsensiPelajaranController::class, 'export']);
     Route::delete('/spa/absensi/guru/pelajaran/destroy/{id?}', [AbsensiPelajaranController::class, 'destroyData']);
     Route::apiResource('/spa/guru/absensi/pelajaran', AbsensiPelajaranController::class)->except('store', 'destroy');  
 
     // ✅☑️ Absensi Siswa ke Pelajaran
+    Route::get('/spa/absensi/siswa/pelajaran/data-select', [AbsensiSiswaController::class, 'dataSelect']);
     Route::get('/spa/absensi/siswa/pelajaran/export', [AbsensiSiswaController::class, 'export']);
     Route::get('/spa/absensi/siswa/pelajaran/zip', [AbsensiSiswaController::class, 'exportBerkasZip']);
     Route::delete('/spa/absensi/siswa/pelajaran/destroy/{id?}', [AbsensiSiswaController::class, 'destroyData']);

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\AtpMaster;
-use App\Models\Kompetensi;
+// use App\Models\Kompetensi;
 use App\Helpers\ApiResponse;
 use Illuminate\Validation\Rule;
 
@@ -13,39 +13,39 @@ class AtpMasterController extends Controller
     /**
      * spa/tu/guru
      */
-    public function index()
-    {
-        $atp = AtpMaster::with('kompetensi')->get();
+    // public function index()
+    // {
+    //     $atp = AtpMaster::with('kompetensi')->get();
 
-        if ($atp->isEmpty()) {
-            return ApiResponse::error('Not found', ['Data' => 'Belum ada data ATP']);
-        }
+    //     if ($atp->isEmpty()) {
+    //         return ApiResponse::error('Not found', ['Data' => 'Belum ada data ATP']);
+    //     }
 
-        $formatted = $atp->groupBy('status')
-        ->map(function ($a) {
-            return [
-                'status' => $a->first()->status,
-                'kompetensi' => $a->groupBy('kompetensi_id')
-                ->map(function ($komp) {
-                    return [
-                        'kompetensi_id' => $komp->first()->kompetensi->id,
-                        'judul_kompetensi' => $komp->first()->kompetensi->judul_kompetensi,
-                        'fase' => $komp->first()->kompetensi->fase ?? null,
-                        'tingkat' => $komp->first()->kompetensi->tingkat ?? null,
-                        'atp' => $komp->map (function ($tp) {
-                            return [
-                                'atp_id' => $tp->id,
-                                'urutan' => $tp->urutan,
-                                'tujuan_pembelajaran' => $tp->tujuan_pembelajaran,
-                            ];
-                        })->values(),
-                    ];
-                })->values(),                
-            ];
-        })->values();
+    //     $formatted = $atp->groupBy('status')
+    //     ->map(function ($a) {
+    //         return [
+    //             'status' => $a->first()->status,
+    //             'kompetensi' => $a->groupBy('kompetensi_id')
+    //             ->map(function ($komp) {
+    //                 return [
+    //                     'kompetensi_id' => $komp->first()->kompetensi->id,
+    //                     'judul_kompetensi' => $komp->first()->kompetensi->judul_kompetensi,
+    //                     'fase' => $komp->first()->kompetensi->fase ?? null,
+    //                     'tingkat' => $komp->first()->kompetensi->tingkat ?? null,
+    //                     'atp' => $komp->map (function ($tp) {
+    //                         return [
+    //                             'atp_id' => $tp->id,
+    //                             'urutan' => $tp->urutan,
+    //                             'tujuan_pembelajaran' => $tp->tujuan_pembelajaran,
+    //                         ];
+    //                     })->values(),
+    //                 ];
+    //             })->values(),                
+    //         ];
+    //     })->values();
 
-        return ApiResponse::success($formatted, 'ATP Master berhasil diambil');
-    }
+    //     return ApiResponse::success($formatted, 'ATP Master berhasil diambil');
+    // }
 
     /**
      * spa/tu
@@ -99,35 +99,35 @@ class AtpMasterController extends Controller
     /**
      * spa/tu/guru
      */
-    public function show(string $id)
-    {
-        $atp = AtpMaster::with('kompetensi.kurikulum', 'kompetensi.mataPelajaran')->find($id);
+    // public function show(string $id)
+    // {
+    //     $atp = AtpMaster::with('kompetensi.kurikulum', 'kompetensi.mataPelajaran')->find($id);
 
-        if (!$atp) {
-            return ApiResponse::error('Not found', ['data' => 'Data tidak ditemukan']);
-        }
+    //     if (!$atp) {
+    //         return ApiResponse::error('Not found', ['data' => 'Data tidak ditemukan']);
+    //     }
 
-        $formatted = [
-            'kurikulum_id' => $atp->kompetensi->kurikulum->id,
-            'kurikulum' => $atp->kompetensi->kurikulum->tipe,
-            'kompetensi' => [
-                'kompetensi_id' => $atp->kompetensi->id,
-                'mata_pelajaran' => $atp->kompetensi->mataPelajaran->nama_pelajaran,
-                'judul_kompetensi' => $atp->kompetensi->judul_kompetensi,
-                'fase' => $atp->kompetensi->fase,
-                'status_kompetensi' => $atp->kompetensi->status,
-                'deskripsi' => $atp->kompetensi->deskripsi,
-                'atp_master' => [
-                    'atp_id' => $atp->id,
-                    'urutan' => $atp->urutan,
-                    'tujuan_pembelajaran' => $atp->tujuan_pembelajaran,
-                    'status_atp' => $atp->status,
-                ],
-            ],
-        ];
+    //     $formatted = [
+    //         'kurikulum_id' => $atp->kompetensi->kurikulum->id,
+    //         'kurikulum' => $atp->kompetensi->kurikulum->tipe,
+    //         'kompetensi' => [
+    //             'kompetensi_id' => $atp->kompetensi->id,
+    //             'mata_pelajaran' => $atp->kompetensi->mataPelajaran->nama_pelajaran,
+    //             'judul_kompetensi' => $atp->kompetensi->judul_kompetensi,
+    //             'fase' => $atp->kompetensi->fase,
+    //             'status_kompetensi' => $atp->kompetensi->status,
+    //             'deskripsi' => $atp->kompetensi->deskripsi,
+    //             'atp_master' => [
+    //                 'atp_id' => $atp->id,
+    //                 'urutan' => $atp->urutan,
+    //                 'tujuan_pembelajaran' => $atp->tujuan_pembelajaran,
+    //                 'status_atp' => $atp->status,
+    //             ],
+    //         ],
+    //     ];
 
-        return ApiResponse::success($formatted, 'Detail ATP Master berhasil diambil');
-    }
+    //     return ApiResponse::success($formatted, 'Detail ATP Master berhasil diambil');
+    // }
 
     /**
      * Update the specified resource in storage.
@@ -215,24 +215,24 @@ class AtpMasterController extends Controller
     }
 
     // spa/tu
-    public function dataSelect() {
-        $data1 = Kompetensi::with('mataPelajaran', 'kurikulum')->where('status', 'aktif')->get();
+    // public function dataSelect() {
+    //     $data1 = Kompetensi::with('mataPelajaran', 'kurikulum')->where('status', 'aktif')->get();
 
-        $kompetensi = $data1->groupBy('jenis')
-        ->map(function ($komp) {
-            return [
-                'jenis'             => $komp->first()->jenis,
-                'daftar_kompetensi' => $komp->map(function ($k) {
-                    return [
-                        'kompetensi_id'    => $k->id,
-                        'judul_kompetensi' => $k->judul_kompetensi,
-                        'mata_pelajaran'   => $k->mataPelajaran->nama_pelajaran,
-                        'kurikulum'        => $k->kurikulum->tipe,
-                    ];
-                })->values(),
-            ];
-        })->values();
+    //     $kompetensi = $data1->groupBy('jenis')
+    //     ->map(function ($komp) {
+    //         return [
+    //             'jenis'             => $komp->first()->jenis,
+    //             'daftar_kompetensi' => $komp->map(function ($k) {
+    //                 return [
+    //                     'kompetensi_id'    => $k->id,
+    //                     'judul_kompetensi' => $k->judul_kompetensi,
+    //                     'mata_pelajaran'   => $k->mataPelajaran->nama_pelajaran,
+    //                     'kurikulum'        => $k->kurikulum->tipe,
+    //                 ];
+    //             })->values(),
+    //         ];
+    //     })->values();
 
-        return ApiResponse::success($kompetensi, 'Data select berhasil diambil');
-    }
+    //     return ApiResponse::success($kompetensi, 'Data select berhasil diambil');
+    // }
 }

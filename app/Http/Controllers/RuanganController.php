@@ -8,35 +8,44 @@ use App\Models\Gedung;
 use App\Models\Ruangan;
 use Illuminate\Validation\Rule;
 use App\Helpers\ApiResponse;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
+// use Illuminate\Support\Facades\Validator;
+// use Illuminate\Support\Facades\Auth;
 
 class RuanganController extends Controller
 {
     /**
      * spa/tu
      */
-    public function index()
-    {
-        $ruangan = Ruangan::with('gedung')->get();        
+    // public function index()
+    // {
+    //     $ruangan = Ruangan::with('gedung')->get();        
 
-        if (!$ruangan) {
-            return ApiResponse::error('Not found', ['data' => 'Data ruangan tidak ditemukan']);
-        }
+    //     if (!$ruangan) {
+    //         return ApiResponse::error('Not found', ['data' => 'Data ruangan tidak ditemukan']);
+    //     }
 
-        $formatted = $ruangan->map(function ($item) {
-            return [
-                'id' => $item->id ?? null,
-                'nama_ruangan' => $item->nama_ruangan ?? null,
-                'kode_ruangan' => $item->kode_ruangan ?? null,
-                'jenis_ruangan' => $item->jenis_ruangan ?? null,
-                'lantai' => $item->lantai ?? null,
-                'status' => $item->status ?? null,
-            ];
-        });
+    //     $formatted = $ruangan->groupBy('gedung_id')
+    //     ->map(function ($item) {
+    //         return [
+    //             'gedung_id' => $item->first()->gedung->id,
+    //             'gedung'    => $item->first()->gedung->nama_gedung,
+    //             'status'    => $item->first()->gedung->status,
+    //             'ruangans' => $item->map(function ($i) {
+    //                 return [
+    //                     'ruangan_id'    => $i->id ?? null,
+    //                     'nama_ruangan'  => $i->nama_ruangan ?? null,
+    //                     'kode_ruangan'  => $i->kode_ruangan ?? null,
+    //                     'jenis_ruangan' => $i->jenis_ruangan ?? null,
+    //                     'lantai'        => $i->lantai ?? null,                        
+    //                     'status'        => $i->status ?? null,
+    //                 ];
+    //             })->values(),
+    //         ];
+    //     })->values();
 
-        return ApiResponse::success($formatted, 'Daftar ruangan berhasil diambil');
-    }
+    //     return ApiResponse::success($formatted, 'Daftar ruangan berhasil diambil');
+    // }
     
     /**
      * spa/tu

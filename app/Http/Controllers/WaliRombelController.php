@@ -4,12 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Kepegawaian;
-use App\Models\Rombel;
 use App\Models\WaliRombel;
 use App\Models\TahunAkademik;
 use App\Helpers\ApiResponse;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
+// use App\Models\Rombel;
+// use Illuminate\Support\Facades\Auth;
+// use Illuminate\Support\Facades\Validator;
 
 class WaliRombelController extends Controller
 {
@@ -17,8 +17,15 @@ class WaliRombelController extends Controller
      * ✅ spa/tu
      * get guru dan histori menjadi wali
      */
-    public function show(string $id)
+    public function show(string $id, Request $request)
     {
+        $request->validate([
+            'tahun_akademik_id'  => 'required|exists:tahun_akademik,id',
+        ], [
+            'tahun_akademik_id.required' => 'Tahun akademik wajib ditentukan terlebih dahulu',
+            'tahun_akademik_id.exists'  => 'Tahun akademik tidak ditemukan'
+        ]);
+
         // 1. Ambil semua data wali rombel berdasarkan guru
         $waliRombel = WaliRombel::with([
             'wali',
@@ -27,6 +34,7 @@ class WaliRombelController extends Controller
             'tahunAkademik'
         ])
         ->where('wali_rombel_id', $id)
+        ->where('tahun_akademik_id', $request->tahun_akademik_id)
         ->get();
 
         if ($waliRombel->isEmpty()) {
@@ -304,22 +312,22 @@ class WaliRombelController extends Controller
         });
 
         // semua rombel
-        $data2 = Rombel::with('kelas', 'jurusan')->where('status', 'aktif')->get();
+        // $data2 = Rombel::with('kelas', 'jurusan')->where('status', 'aktif')->get();
 
-        $rombel = $data2->map(function ($r) {
-            return [
-                'rombel_id' => $r->id,
-                'nama_rombel' => $r->nama_rombel,
-                'kelas' => $r->kelas->nama_kelas,
-                'jurusan' => $r->jurusan->nama_jurusan ?? null,
-                'tingkat' => $r->kelas->tingkat,
-            ];
-        })->values();
+        // $rombel = $data2->map(function ($r) {
+        //     return [
+        //         'rombel_id' => $r->id,
+        //         'nama_rombel' => $r->nama_rombel,
+        //         'kelas' => $r->kelas->nama_kelas,
+        //         'jurusan' => $r->jurusan->nama_jurusan ?? null,
+        //         'tingkat' => $r->kelas->tingkat,
+        //     ];
+        // })->values();
 
         return ApiResponse::success(
             [
                 'guru' => $guru,
-                'rombel' => $rombel,
+                // 'rombel' => $rombel,
             ],
             'Data select berhasil diambil'
         );

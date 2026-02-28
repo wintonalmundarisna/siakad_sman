@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('kompetensi', function (Blueprint $table) {
             $table->id();
         
-            $table->foreignId('kurikulum_id')->constrained('kurikulum')->cascadeOnDelete(); // gabungan
-
-            $table->foreignId('mata_pelajaran_id')->constrained('mata_pelajarans')->cascadeOnDelete(); // gabungan
+            $table->foreignId('kurikulum_mata_pelajaran_id')
+            ->constrained('kurikulum_mata_pelajaran')
+            ->cascadeOnDelete();
             
             $table->string('judul_kompetensi'); // Misal: "Aljabar Linear"
 
@@ -35,8 +35,8 @@ return new class extends Migration
             $table->enum('status', ['aktif', 'arsip'])->default('aktif');
 
             $table->unique([
-                'kurikulum_id',
-                'mata_pelajaran_id',
+                // 'kurikulum_id',
+                'kurikulum_mata_pelajaran_id',
                 'jenis',
                 'kode',
                 'tingkat',
@@ -44,9 +44,9 @@ return new class extends Migration
             ], 'unik_k13');
 
             $table->unique([
-                'kurikulum_id',
+                // 'kurikulum_id',
+                'kurikulum_mata_pelajaran_id',
                 'jenis',
-                'mata_pelajaran_id',
                 'kode',
                 'fase',
             ], 'unik_merdeka');

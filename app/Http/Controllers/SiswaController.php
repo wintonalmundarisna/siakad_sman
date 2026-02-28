@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Kelas;
 use App\Models\Siswa;
+use App\Models\SiswaRombel;
 use App\Helpers\ApiResponse;
 use Illuminate\Http\Request;
-use App\Models\MataPelajaran;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password; // Mengimpor facade Password untuk fitur reset password
 use Illuminate\Support\Facades\Validator;
+// use App\Models\Kelas;
+// use App\Models\MataPelajaran;
 
 class SiswaController extends Controller
 {
@@ -249,41 +250,65 @@ class SiswaController extends Controller
 
     // CRUD
     // ✅ get all siswa untuk spa
-    public function index()
+    public function index(Request $request)
     {
-        $siswa = Siswa::select(
-                'id',
-                'nama',
-                'nisn',
-                'nis',                
-                'status'
-            )
-            ->orderBy('status')
-            ->orderBy('nama')
-            ->get();
-
-        if ($siswa->isEmpty()) {
-            return ApiResponse::error('Not found', ['data' => 'Data siswa kosong']);
+        $siswaRombel = SiswaRombel::with([
+                'siswa',
+                'rombel' => function ($query) {
+                    $query->orderBy('nama_rombel', 'asc'); // urutkan rombel A-Z
+                },
+                'rombel.jurusan',
+                'tahunAkademik'
+            ])
+            ->where('tahun_akademik_id', $request->tahun_akademik_id)
+            ->get()
+            ->sortBy(function ($item) {
+                return $item->rombel->nama_rombel ?? '';
+            }); // pastikan collection juga terurut
+    
+        if ($siswaRombel->isEmpty()) {
+            return ApiResponse::error('Not found', [
+                'data' => 'Tidak ada data siswa pada tahun ini'
+            ]);
         }
-
-        $grouped = $siswa
-            ->groupBy('status')
-            ->map(function ($items, $status) {
+    
+        $grouped = $siswaRombel->groupBy('tahun_akademik_id')
+            ->map(function ($siswaRombel) {
+    
+                $tahun = $siswaRombel->first()->tahunAkademik;
+    
                 return [
-                    'status' => $status,
-                    'total' => $items->count(),
-                    'siswa' => $items->map(function ($item) {
-                        return [
-                            'siswa_id' => $item->id,
-                            'nama' => $item->nama,
-                            'nisn' => $item->nisn,
-                            'nis' => $item->nis,                                                        
-                        ];
-                    })->values(),
+                    'tahun_akademik_id' => $tahun->id,
+                    'tahun_akademik'    => $tahun->tahun_akademik,
+                    'status'            => $tahun->status,
+                    'rombels'           => $siswaRombel
+                        ->groupBy('rombel_id')
+                        ->sortBy(function ($group) {
+                            return $group->first()->rombel->nama_rombel ?? '';
+                        }) // urutkan rombel setelah grouping
+                        ->map(function ($siswaR) {
+    
+                            $rombel = $siswaR->first()->rombel;
+    
+                            return [
+                                'rombel_id' => $rombel->id,
+                                'rombel'    => $rombel->nama_rombel,
+                                'jurusan'   => $rombel->jurusan->nama_jurusan ?? null,
+                                'siswas'    => $siswaR->map(function ($siswa) {
+                                    return [
+                                        'siswa_id'     => $siswa->siswa->id,
+                                        'nama'         => $siswa->siswa->nama,
+                                        'nisn'         => $siswa->siswa->nisn,
+                                        'nis'          => $siswa->siswa->nis,
+                                        'status_akhir' => $siswa->status_akhir ?? null,
+                                        'catatan'      => $siswa->catatan ?? null,
+                                    ];
+                                })->values(),
+                            ];
+                        })->values(),
                 ];
-            })
-            ->values();
-
+            })->values();
+    
         return ApiResponse::success($grouped, 'Daftar siswa berhasil diambil');
     }
  
@@ -292,23 +317,7 @@ class SiswaController extends Controller
     public function show($id)
     {
         $siswa = Siswa::with([
-            'siswaRombels.rombel.jurusan',
-            // 'siswaRombels.tahunAkademik',
-
-            // 'siswaRombels.rombel.waliRombels.wali',
-            // 'siswaRombels.rombel.waliRombels.tahunAkademik',
-
-            // 'siswaRombels.rombel.jadwalPelajarans.semester.tahunAkademik',
-            // 'siswaRombels.rombel.jadwalPelajarans.guru',
-            // 'siswaRombels.rombel.jadwalPelajarans.ruangan',
-            // 'siswaRombels.rombel.jadwalPelajarans.kurikulumMataPelajaran.mataPelajaran',
-
-            // 'ekskulSiswa.tahunAkademik',
-            // 'ekskulSiswa.ekstrakurikuler',
-            // 'ekskulSiswa.ekstrakurikuler.pembinaEkskul.pembina',
-            // 'ekskulSiswa.ekstrakurikuler.pelatihEkskul.pelatih',
-
-            // 'prestasis.tahunAkademik',
+            'siswaRombels.rombel.jurusan',            
         ])->find($id);
 
         if (!$siswa) {
@@ -331,157 +340,7 @@ class SiswaController extends Controller
                 $siswa->siswaRombels
                     ->sortByDesc('tahun_akademik_id')
                     ->first()?->rombel?->jurusan
-            )->nama_jurusan ?? null,            
-            
-            // =========================
-            // HISTORI ROMBEL
-            // =========================
-            // 'histori_rombel' => $siswa->siswaRombels->map(function ($row) {
-
-            //     $rombel = $row->rombel;
-            //     $tahunAkademik = $row->tahunAkademik;
-
-            //     // wali rombel sesuai rombel + tahun akademik
-            //     $waliRombel = $rombel?->waliRombels
-            //         ->where('tahun_akademik_id', $tahunAkademik?->id)
-            //         ->first();
-
-            //     return [
-            //         'rombel_id' => $rombel?->id,
-            //         'nama_rombel' => $rombel?->nama_rombel,
-            //         'jurusan_rombel' => $rombel?->jurusan?->nama_jurusan,
-                    
-            //         'kelas' => $rombel?->kelas?->nama_kelas,
-            //         'tingkat' => $rombel?->kelas?->tingkat,
-                    
-            //         'wali_rombel' => $waliRombel?->wali?->nama,
-                    
-            //         'tahun_studi' => $tahunAkademik?->tahun_akademik,
-            //         'status_tahun_studi' => $tahunAkademik?->status,
-
-            //         'status_akhir' => $row->status_akhir ?? null,
-            //         'catatan' => $row->catatan ?? null,
-
-            //         // =========================
-            //         // JADWAL PELAJARAN
-            //         // =========================
-            //         'histori_jadwal_pelajaran' => $rombel?->jadwalPelajarans
-            //         ->whereNotNull('semester_id')
-            //         ->groupBy(fn ($j) => $j->semester?->tahun_akademik_id)
-            //         ->map(function ($jadwalPerTahun) {
-                
-            //             $tahunAkademik = $jadwalPerTahun->first()?->semester?->tahunAkademik;
-                
-            //             return [
-            //                 'tahun_akademik_id' => $tahunAkademik?->id,
-            //                 'tahun_akademik' => $tahunAkademik?->tahun_akademik,
-                
-            //                 'semester' => $jadwalPerTahun
-            //                     ->groupBy('semester_id')
-            //                     ->map(function ($jadwalPerSemester) {
-                
-            //                         $semester = $jadwalPerSemester->first()?->semester;
-                
-            //                         return [
-            //                             'semester_id' => $semester?->id,
-            //                             'semester' => $semester?->semester,
-                
-            //                             'jadwal' => $jadwalPerSemester->map(function ($j) {
-            //                                 return [
-            //                                     'jadwal_pelajaran_id' => $j->id,
-            //                                     'mata_pelajaran' => $j->kurikulumMataPelajaran?->mataPelajaran?->nama_pelajaran,
-            //                                     'kode_mata_pelajaran' => $j->kurikulumMataPelajaran?->mataPelajaran?->kode_mapel_diknas,
-            //                                     'status_mata_pelajaran' => $j->kurikulumMataPelajaran?->status_mata_pelajaran,
-            //                                     'kelompok_mata_pelajaran' => $j->kurikulumMataPelajaran?->mataPelajaran?->kelompok,
-            //                                     'tingkat' => $j->kurikulumMataPelajaran?->tingkat,
-            //                                     'nilai_kkm' => $j->kurikulumMataPelajaran?->nilai_kkm,
-            //                                     'hari' => $j->hari,
-            //                                     'guru_pengajar' => $j->guru?->nama,
-            //                                     'jam_mulai' => $j->jam_mulai,
-            //                                     'jam_selesai' => $j->jam_selesai,
-            //                                     'ruangan' => $j->ruangan?->nama_ruangan,
-            //                                     'link_opsional' => $j->link_opsional,
-            //                                 ];
-            //                             })->values(),
-            //                         ];
-            //                     })->values(),
-            //             ];
-            //         })->values(),                
-            //     ];
-            // })->values(),
-
-            // =========================
-            // HISTORI EKSTRAKURIKULER
-            // =========================
-            // 'histori_ekstrakurikuler' => $siswa->ekskulSiswa
-            // ->groupBy('tahun_akademik_id')
-            // ->map(function ($items) {
-
-            //     $tahun = $items->first()->tahunAkademik;
-
-            //     return [
-            //         'tahun_akademik_ekskul_id' => $tahun?->id,
-            //         'tahun_akademik_ekskul' => $tahun?->tahun_akademik,
-            //         'status_tahun_akademik_ekskul' => $tahun?->status,
-
-            //         'ekstrakurikuler' => $items->map(function ($row) use ($tahun) {
-
-            //             $ekskul = $row->ekstrakurikuler;
-
-            //             // ===== PEMBINA (HISTORIS) =====
-            //             $pembinaEkskul = $ekskul?->pembinaEkskul
-            //                 ->where('tahun_akademik_id', $tahun?->id)
-            //                 ->first();
-
-            //             // ===== PELATIH (HISTORIS) =====
-            //             $pelatihEkskul = $ekskul?->pelatihEkskul
-            //                 ->where('tahun_akademik_id', $tahun?->id)
-            //                 ->first();
-
-            //             return [
-            //                 'ekskul_id' => $ekskul?->id,
-            //                 'nama_ekskul' => $ekskul?->nama_ekstrakurikuler,
-
-            //                 // === PEMBINA ===
-            //                 'pembina_id' => $pembinaEkskul?->pembina?->id,
-            //                 'pembina' => $pembinaEkskul?->pembina?->nama,
-
-            //                 // === PELATIH ===
-            //                 'pelatih_id' => $pelatihEkskul?->pelatih?->id,
-            //                 'pelatih' => $pelatihEkskul?->pelatih?->nama,
-
-            //                 'anggaran_ekskul' => $ekskul?->anggaran,
-            //                 'status_ekskul' => $ekskul?->status,
-
-            //                 'sikap' => $row->sikap,
-            //                 'status_aktif' => $row->status,
-            //             ];
-            //         })->values(),
-            //     ];
-            // })->values(),
-
-
-            // =========================
-            // HISTORI PRESTASI
-            // =========================
-            // 'histori_prestasi' => $siswa->prestasis
-            //     ->groupBy('tahun_akademik_id')
-            //     ->map(function ($items) {
-            //         $tahun = $items->first()->tahunAkademik;
-
-            //         return [
-            //             'tahun_akademik_prestasi_id' => $tahun->id,
-            //             'tahun_akademik_prestasi' => $tahun->tahun_akademik,
-            //             'status_tahun_akademik_prestasi' => $tahun->status,
-
-            //             'prestasi' => $items->map(function ($row) {
-            //                 return [
-            //                     'prestasi_id' => $row->id,
-            //                     'prestasi_diraih' => $row->prestasi_diraih,
-            //                 ];
-            //             })->values(),
-            //         ];
-            //     })->values(),
+            )->nama_jurusan ?? null,                                    
         ];
 
         return ApiResponse::success($formatted, 'Detail siswa berhasil diambil');

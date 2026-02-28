@@ -291,11 +291,7 @@ class KurikulumController extends Controller
 
         if (!$kurikulum) {
             return ApiResponse::error('Kurikulum tidak ditemukan', ['id' => ['Data tidak ditemukan']], 404);
-        }
-
-        if ($kurikulum->status == 'arsip') {
-            return ApiResponse::error('Tidak bisa', ['data' => ['Tidak bisa hapus data arsip']], 404);
-        }
+        }        
 
         // Cek apakah kurikulum sedang digunakan oleh kompetensi dasar
         if ($kurikulum->kompetensi()->exists()) {

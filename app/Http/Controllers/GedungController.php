@@ -4,17 +4,18 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Gedung;
-use App\Models\Ruangan;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Response;
-use ZipArchive;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
 use App\Helpers\ApiResponse;
-use Illuminate\Support\Facades\Validator;
-use File;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
+// use Illuminate\Support\Facades\Validator;
+// use Illuminate\Support\Facades\Response;
+// use Illuminate\Support\Facades\Auth;
+// use App\Models\Ruangan;
+// use ZipArchive;
+// use File;
 
 class GedungController extends Controller
 {
@@ -152,15 +153,10 @@ class GedungController extends Controller
                 'ruangan' => $gedung->ruangan->map(function ($item) {
                     return [
                         'id' => $item->id ?? null,
-                        'kode_ruangan' => $item->kode_ruangan ?? null,
                         'nama_ruangan' => $item->nama_ruangan ?? null,
+                        'kode_ruangan' => $item->kode_ruangan ?? null,
                         'jenis_ruangan' => $item->jenis_ruangan ?? null,
                         'lantai' => $item->lantai ?? null,
-                        'kapasitas' => $item->kapasitas ?? null,
-                        'luas_ruangan' => $item->luas_ruangan ?? null,
-                        'kondisi' => $item->kondisi ?? null,
-                        'fasilitas' => $item->fasilitas ?? null,
-                        'keterangan' => $item->keterangan ?? null,
                         'status_ruangan' => $item->status ?? null,
                     ];
                 }),

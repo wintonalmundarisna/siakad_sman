@@ -4,14 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
 use App\Helpers\ApiResponse;
 use App\Models\AlurTujuanPembelajaran;
 use App\Models\Kompetensi;
 use App\Models\TahunAkademik;
-use App\Models\Kepegawaian;
 use App\Models\Semester;
-use Illuminate\Support\Facades\DB;
+// use Illuminate\Support\Facades\Validator;
+// use Illuminate\Support\Facades\DB;
+// use App\Models\Kepegawaian;
 
 // di hal 143
 class AlurTujuanPembelajaranController extends Controller
@@ -652,6 +652,30 @@ class AlurTujuanPembelajaranController extends Controller
         ]);
 
         return ApiResponse::success(null, 'ATP disetujui dan dikunci');
+    }
+
+    // ✅ spa
+    public function batalDiterima($id)
+    {
+        $atp = AlurTujuanPembelajaran::findOrFail($id);
+
+        // Cegah ajukan ulang
+        if ($atp->approval_status !== 'disetujui') {
+            return ApiResponse::error(
+                'Tidak valid',
+                ['status' => 'Hanya bisa dibatalkan jika status sudah disetujui'],
+                422
+            );
+        }
+
+        $atp->update([
+            'approval_status' => 'diajukan',
+            'approved_by' => null,
+            'approved_at' => null,
+            'is_locked' => false,
+        ]);
+
+        return ApiResponse::success(null, 'ATP berhasil diajukan ulang');
     }
 
 

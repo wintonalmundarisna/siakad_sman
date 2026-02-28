@@ -11,15 +11,15 @@ class Kompetensi extends Model
     protected $table = 'kompetensi';
     protected $guarded = ['id'];
 
-    public function kurikulum()
+    public function KurikulumMataPelajaran()
     {
-        return $this->belongsTo(Kurikulum::class, 'kurikulum_id');
+        return $this->belongsTo(KurikulumMataPelajaran::class, 'kurikulum_mata_pelajaran_id');
     }
     
-    public function mataPelajaran()
-    {
-        return $this->belongsTo(MataPelajaran::class, 'mata_pelajaran_id');
-    }
+    // public function mataPelajaran()
+    // {
+    //     return $this->belongsTo(MataPelajaran::class, 'mata_pelajaran_id');
+    // }
 
      // 1 Kompetensi punya banyak ATP Master
      public function atpMasters()

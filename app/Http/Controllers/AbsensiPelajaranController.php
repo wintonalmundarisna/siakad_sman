@@ -4,16 +4,19 @@ namespace App\Http\Controllers;
 use App\Models\AbsensiPelajaran;
 use App\Models\JadwalPelajaran;
 use App\Models\Kelas;
+// use App\Models\TahunAkademik;
+use App\Models\Semester;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Helpers\ApiResponse;
-use Illuminate\Support\Facades\Validator;
-use File;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Response;
+use Illuminate\Validation\ValidationException;
+// use File;
+// use Illuminate\Support\Str;
+// use Illuminate\Support\Facades\Response;
+// use Illuminate\Support\Facades\Validator;
 use App\Exports\AbsensiPelajaranExport;
 
 class AbsensiPelajaranController extends Controller
@@ -21,47 +24,115 @@ class AbsensiPelajaranController extends Controller
     /**
      * ✅ Untuk super admin
      */    
-    public function index()
+    public function index(Request $request)
     {
-        $absensis = AbsensiPelajaran::with([
-            'tahunAkademik',
-            'guru',
-        ])
-        ->orderBy('hari', 'asc')
-        ->get();
+        $request->validate([
+            'tahun_akademik_id' => 'required|exists:tahun_akademik,id',
+            'semester_id'       => 'required|exists:semester,id',
+        ], [
+            'tahun_akademik_id.required' => 'Tahun akademik harus ditentukan terlebih dahulu',
+            'tahun_akademik_id.exists'   => 'Tahun akademik tidak ditemukan',
+            'semester_id.required'       => 'Semester harus ditentukan terlebih dahulu',
+            'semester_id.exists'         => 'Semester tidak ditemukan',
+        ]);
 
-        if ($absensis->isEmpty()) {
-            return ApiResponse::error('No data', ['data' => 'Belum ada data absensi']);
+        $absen = AbsensiPelajaran::with([
+                'guru',
+                'tahunAkademik',
+                'semester',
+                'jadwalPelajaran.kurikulumMataPelajaran.mataPelajaran',
+            ])
+            ->where('tahun_akademik_id', $request->tahun_akademik_id)
+            ->where('semester_id', $request->semester_id)
+            ->orderBy('hari', 'asc')
+            ->get();
+
+        if ($absen->isEmpty()) {
+            return ApiResponse::error(
+                'Not found',
+                'Data absensi tidak ditemukan'
+            );
         }
 
-        $data = $absensis
+        $formatted = $absen
             ->groupBy('tahun_akademik_id')
-            ->map(function ($tahunGroup) {
+            ->map(function ($tahunItems) {
 
-                $tahun = $tahunGroup->first()->tahunAkademik;
+                $tahunAkademik = $tahunItems->first()->tahunAkademik;
 
                 return [
-                    'tahun_akademik_id' => $tahun->id,
-                    'tahun_akademik' => $tahun->tahun_akademik,
-                    'status_tahun_akademik' => $tahun->status,
+                    'tahun_akademik_id'       => $tahunAkademik->id ?? null,
+                    'tahun_akademik'          => $tahunAkademik->tahun_akademik ?? null,
+                    'status_tahun_akademik'   => $tahunAkademik->status ?? null,
 
-                    'guru' => $tahunGroup
-                        ->groupBy('guru_pengajar_id')
-                        ->map(function ($guruGroup) {
+                    'semesters' => $tahunItems
+                        ->groupBy('semester_id')
+                        ->map(function ($semesterItems) use ($tahunItems) {
 
-                            $guru = $guruGroup->first()->guru;
-
-                            $hadir = $guruGroup->where('status', 'hadir')->count();
-
-                            $tidakHadir = $guruGroup
-                                ->whereIn('status', ['tidak hadir'])
-                                ->count();
+                            $semester = $semesterItems->first()->semester;
 
                             return [
-                                'guru_id' => $guru->id,
-                                'nama_guru' => $guru->nama,
-                                'hadir_pertahun' => $hadir,
-                                'tidak_hadir_pertahun' => $tidakHadir,
+                                'semester_id'     => $semester->id ?? null,
+                                'semester'        => $semester->semester ?? null,
+                                'status_semester' => $semester->status ?? null,
+
+                                'guru' => $semesterItems
+                                    ->groupBy('guru_pengajar_id')
+                                    ->map(function ($guruItems) use ($tahunItems) {
+
+                                        $guru = $guruItems->first()->guru;
+
+                                        return [
+                                            'guru_pengajar_id'   => $guru->id ?? null,
+                                            'nama_guru' => $guru->nama ?? null,
+                                            'nip'       => $guru->nip ?? null,
+                                            'nuptk'     => $guru->nuptk ?? null,
+                                            'role'      => $guru->role ?? null,
+
+                                            // total per tahun (semua semester dalam tahun tsb)
+                                            'hadir_per_tahun' =>
+                                                $tahunItems
+                                                    ->where('guru_pengajar_id', $guru->id)
+                                                    ->where('status', 'hadir')
+                                                    ->count(),
+
+                                            'tidak_hadir_per_tahun' =>
+                                                $tahunItems
+                                                    ->where('guru_pengajar_id', $guru->id)
+                                                    ->where('status', 'tidak hadir')
+                                                    ->count(),
+
+                                            // total per semester
+                                            'hadir_per_semester' =>
+                                                $guruItems
+                                                    ->where('status', 'hadir')
+                                                    ->count(),
+
+                                            'tidak_hadir_per_semester' =>
+                                                $guruItems
+                                                    ->where('status', 'tidak hadir')
+                                                    ->count(),
+
+                                            'absensi' => $guruItems
+                                                ->sortBy('hari')
+                                                ->map(function ($abs) {
+
+                                                    $mataPelajaran =
+                                                        $abs->jadwalPelajaran
+                                                            ?->kurikulumMataPelajaran
+                                                            ?->mataPelajaran;
+
+                                                    return [
+                                                        'absensi_id' => $abs->id ?? null,
+                                                        'hari'      => Carbon::parse($abs->hari)->translatedFormat('l, d F Y') ?? null,
+                                                        'status'     => $abs->status ?? null,
+                                                        'mengajar'   => $mataPelajaran->nama_pelajaran ?? null,
+                                                    ];
+                                                })
+                                                ->values(),
+                                        ];
+                                    })
+                                    ->values(),
                             ];
                         })
                         ->values(),
@@ -69,7 +140,10 @@ class AbsensiPelajaranController extends Controller
             })
             ->values();
 
-        return ApiResponse::success($data, 'Rekap absensi per guru berhasil diambil');
+        return ApiResponse::success(
+            $formatted,
+            'Absensi berhasil diambil'
+        );
     }
 
 
@@ -149,8 +223,15 @@ class AbsensiPelajaranController extends Controller
 
 
     // ✅ spa: get guru dan seluruh absennya
-    public function show($id)
+    public function show($id, Request $request)
     {
+        $request->validate([
+            'tahun_akademik_id'  => 'required|exists:tahun_akademik,id',
+        ], [
+            'tahun_akademik_id.required' => 'Tahun akademik wajib ditentukan terlebih dahulu',
+            'tahun_akademik_id.exists'  => 'Tahun akademik tidak ditemukan'
+        ]);
+
         $absens = AbsensiPelajaran::with([
             'guru',
             'tahunAkademik',
@@ -161,6 +242,7 @@ class AbsensiPelajaranController extends Controller
             'jadwalPelajaran.semester',
         ])
         ->where('guru_pengajar_id', $id)
+        ->where('tahun_akademik_id', $request->tahun_akademik_id)
         ->orderBy('hari', 'asc')
         ->get();
 
@@ -365,12 +447,12 @@ class AbsensiPelajaranController extends Controller
         ];
 
         // data untuk select
-        $tahun_akademik = TahunAkademik::where('status', 'aktif')->get();
+        // $tahun_akademik = TahunAkademik::where('status', 'aktif')->get();
 
         return ApiResponse::success(
             [
                 'data' => $result,
-                'data_untuk_select' => $tahun_akademik,
+                // 'data_untuk_select' => $tahun_akademik,
             ],
             'Absensi berhasil diambil'
         );
@@ -524,5 +606,34 @@ class AbsensiPelajaranController extends Controller
         }
 
         return Excel::download(new AbsensiPelajaranExport($ids), 'absensi-pelajaran-guru.xlsx');
+    }
+
+    public function dataSelect() {        
+
+        $data2 = Semester::with('tahunAkademik')->get();
+
+        if ($data2->isEmpty()) {
+            return ApiResponse::error('Belum ada data tahun dan semester');
+        }
+
+        $formatted = $data2->groupBy('tahun_akademik_id')
+        ->map(function ($tasem) {
+            return [
+                'tahun_akademik_id' => $tasem->first()->tahunAkademik->id,
+                'tahun_akademik'    => $tasem->first()->tahunAkademik->tahun_akademik,
+                'status'            => $tasem->first()->tahunAkademik->status,
+                'semester'          => $tasem->map(function ($semester) {
+                    return [
+                        'semester_id'   => $semester->id,
+                        'semester'      => $semester->semester,
+                        'status'        => $semester->status,
+                    ];
+                })->values(),
+            ];
+        })->values();
+
+        return ApiResponse::success([
+            'tahun_semester' => $formatted,
+        ], 'Data select berhasil diambil');
     }
 }

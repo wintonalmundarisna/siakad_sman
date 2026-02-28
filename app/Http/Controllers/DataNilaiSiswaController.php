@@ -2,23 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Exports\LegerExport;
-use App\Helpers\ApiResponse;
+// use App\Exports\LegerExport;
+// use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
-use App\Models\DataNilaiSiswa;
-use App\Models\Rapor;
-use App\Models\Semester;
-use App\Models\TahunAkademik;
-use App\Models\Rombel;
-use App\Models\Kelas;
-use App\Models\AbsensiSiswa;
-use App\Models\SiswaRombel;
+// use App\Models\DataNilaiSiswa;
+// use App\Models\Rapor;
+// use App\Models\Semester;
+// use App\Models\TahunAkademik;
+// use App\Models\Rombel;
+// use App\Models\Kelas;
+// use App\Models\AbsensiSiswa;
+// use App\Models\SiswaRombel;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 // use Illuminate\Support\Facades\Validator;
 // use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\ValidationException;
+// use Illuminate\Support\Facades\Auth;
+// use Illuminate\Validation\ValidationException;
 use Maatwebsite\Excel\Facades\Excel;
 // use PDF;
 
@@ -33,6 +33,13 @@ class DataNilaiSiswaController extends Controller
             'tahun_akademik_id' => 'required|exists:tahun_akademik,id',
             'semester_id'       => 'required|exists:semester,id',
             'kelas_id'          => 'required|exists:kelas,id',
+        ], [
+            'tahun_akademik_id.required'    => 'Tahun akademik harus ditentukan terlebih dahulu',
+            'tahun_akademik_id.exists'      => 'Tahun akademik tidak ditemukan',
+            'semester_id.required'          => 'Semester harus ditentukan terlebih dahulu',
+            'semester_id.exists'            => 'Semester tidak ditemukan',
+            'kelas_id.required'             => 'Kelas harus ditentukan terlebih dahulu',
+            'kelas_id.exists'               => 'Kelas tidak ditemukan',
         ]);
     
         $tahun = TahunAkademik::select('id','tahun_akademik','status')
