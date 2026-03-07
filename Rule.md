@@ -105,6 +105,7 @@ U.B.A.H:
 
 - Absensi Siswa-Pelajaran   : ✅ Get All                  | Penentuan tahun dan semester
                               ✅ Histori Absensi          | Penentuan siswa dan tahun
+                              ✅ Export ke excel          | Penentuan tahun dan semester (gajadi per id, tapi langsung semua siswa dalam semester dan tahun yang telah ditentukan)
                             
 - Ekstrakurikuler           : ✅ Get Detail Ekskul        | Penentuan tahun
 
@@ -348,12 +349,12 @@ SPA:
 Hasil Debug Program:
 
 Winton:
-- ❌ Excel harus diberi heading + table header + fix kolom + bg + kutip + no (center):
+- Excel harus diberi heading + table header + fix kolom + bg + kutip + no (center):
   - ✅ PSB
   - ✅ Leger
-  - ❌ Absensi Siswa
+  - ✅ Absensi Siswa
   - ❌ Absensi Pegawai
-  - ❌ Absensi Guru - Pelajaran
+  - ✅ Absensi Guru - Pelajaran
   - ❌ Keuangan
 - ✅ Import excel psb dihapus aja
 - ✅ Import zip berkas psb dihapus aja

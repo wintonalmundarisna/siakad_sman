@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\AbsensiPelajaran;
 use App\Models\JadwalPelajaran;
 use App\Models\Kelas;
-// use App\Models\TahunAkademik;
+use App\Models\TahunAkademik;
 use App\Models\Semester;
 
 use Illuminate\Http\Request;
@@ -587,12 +587,16 @@ class AbsensiPelajaranController extends Controller
      * Beberapa data = GET /absensi/pegawai/pelajaran/export?ids[]=3&ids[]=5&ids[]=10
      * Satu data = GET /absensi/pegawai/pelajaran/export?ids[]=7
      */
+    // ! Masuk sini dan exportnya, tinggal run dan periksa
     public function export(Request $request)
     {
-        $ids = $request->input('ids'); // bisa null atau array        
+        $ids = $request->input('ids'); 
+        $tahun_id = $request->input('tahun_akademik_id');
+        $semester_id = $request->input('semester_id');
 
-         // Validasi ID jika ada
-         if ($ids) {
+        // Validasi jika export berdasarkan ID
+        if ($ids) {
+
             $validIds = AbsensiPelajaran::whereIn('id', $ids)->pluck('id')->toArray();
             $missingIds = array_diff($ids, $validIds);
 
@@ -605,7 +609,23 @@ class AbsensiPelajaranController extends Controller
             }
         }
 
-        return Excel::download(new AbsensiPelajaranExport($ids), 'absensi-pelajaran-guru.xlsx');
+        $tahunAkademik = TahunAkademik::find($tahun_id);
+        $tahun = str_replace(['/','\\',' '], '_', $tahunAkademik->tahun_akademik);
+
+        if (!$tahunAkademik) {
+            return ApiResponse::error('Tahun akademik tidak ditemukan');
+        }
+
+        $semester = Semester::find($semester_id);
+
+        if (!$semester) {
+            return ApiResponse::error('Semester tidak ditemukan');
+        }
+
+        return Excel::download(
+            new AbsensiPelajaranExport($tahun_id, $semester_id),
+            'Absensi_Guru_'.$semester->semester.'_'.$tahun.'.xlsx'
+        );
     }
 
     public function dataSelect() {        

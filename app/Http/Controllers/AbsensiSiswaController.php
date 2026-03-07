@@ -196,7 +196,7 @@ public function index(Request $request)
 
 
 
-    private function simpanFoto($file, $folder, $nama_siswa)
+    private function simpanFoto($file, $folder, $nama_siswa, $status)
     {
         $extension = $file->getClientOriginalExtension();
         $uuid = substr(Str::uuid(), 0, 3);
@@ -204,7 +204,7 @@ public function index(Request $request)
 
         $disk = 'public';
         $subfolder = 'bukti';
-        $namaFile = "{$uuid}-{$namaSiswaSlug}.{$extension}";
+        $namaFile = "{$uuid}-{$namaSiswaSlug}-{$status}.{$extension}";
 
         // Simpan file di dalam subfolder
         $path = $file->storeAs($subfolder, $namaFile, $disk);
@@ -262,7 +262,8 @@ public function index(Request $request)
                 $validated['bukti'] = $this->simpanFoto(
                     $request->file('bukti'),
                     'bukti', // folder penyimpanan
-                    $siswa->nama
+                    $siswa->nama,
+                    $request->status
                 );
             }   
 
@@ -616,12 +617,9 @@ public function index(Request $request)
      */
     public function update(Request $request, string $id)
     {
-        $absensi = AbsensiSiswa::with([
-            'siswa',
+        $absensi = AbsensiSiswa::with([            
             'tahunAkademik',
-            'semester',
-            'rombel',
-            'jadwalPelajaran.kurikulumMataPelajaran.mataPelajaran',
+            'semester',            
         ])->find($id);
 
         if (!$absensi) {
@@ -629,21 +627,21 @@ public function index(Request $request)
         }
 
         // jika tahun_akademik dan semester pada jadwal sudah arsip maka tidak boleh
-        if (!$absensi->semester || $absensi->semester->status === 'arsip') {
-            return ApiResponse::error(
-                'Not supported',
-                ['data' => ['Absensi sudah berstatus arsip']],
-                404
-            );
-        }     
+        // if (!$absensi->semester || $absensi->semester->status === 'arsip') {
+        //     return ApiResponse::error(
+        //         'Not supported',
+        //         ['data' => ['Absensi sudah berstatus arsip']],
+        //         404
+        //     );
+        // }     
         
-         if (!$absensi->tahunAkademik || $absensi->tahunAkademik->status === 'arsip') {
-            return ApiResponse::error(
-                'Not supported',
-                ['data' => ['Absensi sudah berstatus arsip']],
-                404
-            );
-        }     
+        //  if (!$absensi->tahunAkademik || $absensi->tahunAkademik->status === 'arsip') {
+        //     return ApiResponse::error(
+        //         'Not supported',
+        //         ['data' => ['Absensi sudah berstatus arsip']],
+        //         404
+        //     );
+        // }     
         
         $validated = $request->validate([                
             'status' => 'sometimes|required|in:hadir,izin,sakit,alpa',
@@ -666,6 +664,7 @@ public function index(Request $request)
                 $request->file('bukti'),
                 'bukti',      // folder
                 $request->siswa->nama ?? $absensi->siswa->nama, // nama file
+                $request->status
             );
         
             try {
@@ -687,7 +686,7 @@ public function index(Request $request)
         $absensi->load([
             'tahunAkademik',
             'semester',
-            'rombel',
+            'siswaRombel.rombel',
             'jadwalPelajaran.kurikulumMataPelajaran.mataPelajaran',
         ]);        
 
@@ -696,7 +695,7 @@ public function index(Request $request)
         return ApiResponse::success([
             'id' => $absensi->id ?? null,
             'siswa' => $absensi->siswa->nama ?? null,                
-            'rombel' => $absensi->rombel->nama_rombel ?? null,
+            'rombel' => $absensi->siswaRombel->rombel->nama_rombel ?? null,
             'mata_pelajaran' => $mapel->nama_pelajaran ?? null,               
             'hari' => Carbon::parse($absensi->hari)->translatedFormat('l, d F Y') ?? null,
             'status_kehadiran' => $absensi->status ?? null,       
@@ -825,13 +824,16 @@ public function index(Request $request)
 
 
 
-    // ✅ Export data
+    // ✅ Export data    
     public function export(Request $request)
     {
-        $ids = $request->input('ids'); // bisa null atau array        
+        $ids = $request->input('ids'); 
+        $tahun_id = $request->input('tahun_akademik_id');
+        $semester_id = $request->input('semester_id');
 
-         // Validasi ID jika ada
-         if ($ids) {
+        // Validasi jika export berdasarkan ID
+        if ($ids) {
+
             $validIds = AbsensiSiswa::whereIn('id', $ids)->pluck('id')->toArray();
             $missingIds = array_diff($ids, $validIds);
 
@@ -844,7 +846,23 @@ public function index(Request $request)
             }
         }
 
-        return Excel::download(new AbsensiSiswaExport($ids), 'absensi-pelajaran-siswa.xlsx');
+        $tahunAkademik = TahunAkademik::find($tahun_id);
+        $tahun = str_replace(['/','\\',' '], '_', $tahunAkademik->tahun_akademik);
+
+        if (!$tahunAkademik) {
+            return ApiResponse::error('Tahun akademik tidak ditemukan');
+        }
+
+        $semester = Semester::find($semester_id);
+
+        if (!$semester) {
+            return ApiResponse::error('Semester tidak ditemukan');
+        }
+
+        return Excel::download(
+            new AbsensiSiswaExport($tahun_id, $semester_id),
+            'Absensi_Siswa_'.$semester->semester.'_'.$tahun.'.xlsx'
+        );
     }
 
     /**
@@ -854,48 +872,94 @@ public function index(Request $request)
      */       
     public function exportBerkasZip(Request $request)
     {
-        $ids = $request->input('ids');
-        $absList = $ids ? AbsensiSiswa::whereIn('id', $ids)->get() : AbsensiSiswa::all();
+        $request->validate([
+            'tahun_akademik_id' => 'required|exists:tahun_akademik,id',
+            'semester_id' => 'required|exists:semester,id',
+        ]);
 
-        $zipFileName = 'absensi-pelajaran-siswa.zip';
+        $ids = $request->input('ids');
+        $tahunId = $request->tahun_akademik_id;
+        $semesterId = $request->semester_id;
+
+        $query = AbsensiSiswa::where('tahun_akademik_id', $tahunId)
+            ->where('semester_id', $semesterId);
+
+        if ($ids) {
+            $query->whereIn('id', $ids);
+        }
+
+        $absList = $query->get();
+
+        $tahunAkademik = TahunAkademik::find($tahunId);
+        $tahun = str_replace(['/','\\',' '], '_', $tahunAkademik->tahun_akademik);
+
+        if (!$tahunAkademik) {
+            return ApiResponse::error('Tahun akademik tidak ditemukan');
+        }
+
+        $semester = Semester::find($semesterId);
+
+        if (!$semester) {
+            return ApiResponse::error('Semester tidak ditemukan');
+        }
+
+
+        $zipFileName = 'Absensi_Siswa_'.$semester->semester.'_'.$tahun.'.zip';
         $tempZipPath = tempnam(sys_get_temp_dir(), 'zip_absensi_siswa_');
 
         $zip = new \ZipArchive;
+
         if ($zip->open($tempZipPath, \ZipArchive::CREATE | \ZipArchive::OVERWRITE) !== true) {
-            return response()->json(['error' => 'Tidak dapat membuat file ZIP'], 500);
+            return response()->json([
+                'error' => 'Tidak dapat membuat file ZIP'
+            ], 500);
         }
 
         foreach ($absList as $abs) {
+
             $files = [
                 'bukti' => $abs->bukti,
             ];
 
             foreach ($files as $label => $relativePath) {
-                if (!$relativePath) continue;
-            
+
+                if (!$relativePath) {
+                    continue;
+                }
+
                 $parts = explode('/', $relativePath, 2);
-                if (count($parts) < 2) continue;
-            
+
+                if (count($parts) < 2) {
+                    continue;
+                }
+
                 $disk = $parts[0]; // public / private
                 $pathInDisk = $parts[1];
-            
-                if (!in_array($disk, ['public', 'private'])) continue;
-                if (!Storage::disk($disk)->exists($pathInDisk)) continue;
-            
+
+                if (!in_array($disk, ['public', 'private'])) {
+                    continue;
+                }
+
+                if (!Storage::disk($disk)->exists($pathInDisk)) {
+                    continue;
+                }
+
                 $fullPath = Storage::disk($disk)->path($pathInDisk);
+
                 $filenameInZip = $relativePath;
-            
+
                 $zip->addFile($fullPath, $filenameInZip);
-            }            
+            }
         }
 
         $zip->close();
 
         if (!file_exists($tempZipPath)) {
-            return response()->json(['error' => 'Gagal membuat file ZIP, periksa kembali ketersediaan foto'], 500);
+            return response()->json([
+                'error' => 'Gagal membuat file ZIP, periksa kembali ketersediaan file bukti'
+            ], 500);
         }
 
-        // Kirim file ZIP (hapus otomatis setelah dikirim)
         return response()->download($tempZipPath, $zipFileName, [
             'Content-Type' => 'application/zip',
         ])->deleteFileAfterSend(true);

@@ -664,7 +664,7 @@ class PsbController extends Controller
 
         try {
             // Kirim file langsung sebagai download response
-            return Excel::download(new PsbExport($ids), 'data_psb_'.now()->year.'.xlsx');
+            return Excel::download(new PsbExport($ids), 'Data_PSB_'.now()->year.'.xlsx');
         } catch (\Exception $e) {
             // Tangani error ekspor
             return response()->json([
@@ -686,7 +686,7 @@ class PsbController extends Controller
         $ids = $request->input('id');
         $psbList = $ids ? Psb::whereIn('id', $ids)->get() : Psb::all();
 
-        $zipFileName = 'berkas_psb_'.now()->year.'.zip';
+        $zipFileName = 'Berkas_PSB_'.now()->year.'.zip';
         $tempZipPath = tempnam(sys_get_temp_dir(), 'zip_psb_');
 
         $zip = new \ZipArchive;
