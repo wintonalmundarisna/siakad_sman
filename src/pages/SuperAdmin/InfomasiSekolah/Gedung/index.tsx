@@ -4,13 +4,12 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { SidebarSuperAdmin } from "@/components/SidebarSuperAdmin";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
-import { Loader2Icon, PenBoxIcon, PlusIcon, SearchIcon, Trash2Icon } from "lucide-react";
+import { Eye, Loader2Icon, PenBoxIcon, PlusIcon, SearchIcon, Trash2Icon } from "lucide-react";
 import Footer from "@/pages/Footer";
 import { Link } from "react-router-dom";
 import api from "@/api/axios";
 import Swal from "sweetalert2";
 import { Input } from "@/components/ui/input";
-import { DialogDetailGedung } from "./DialogDetailGedung";
 import { Badge } from "@/components/ui/badge";
 import type { GetAllGedung } from "@/types/gedung";
 
@@ -52,12 +51,18 @@ const DataGedung = () => {
       setFilteredData(dataGedung);
     } else {
       const lower = searchTerm.toLowerCase();
-      setFilteredData(dataGedung.filter((item) => item.nama_gedung.toLowerCase().includes(lower) || item.kode_gedung.toLowerCase().includes(lower)));
+      setFilteredData(
+        dataGedung.filter(
+          (item) =>
+            item.nama_gedung.toLowerCase().includes(lower) ||
+            item.kode_gedung.toLowerCase().includes(lower)
+        )
+      );
     }
     setCurrentPage(1);
   }, [searchTerm, dataGedung]);
 
-  // Pagination logic
+  // Pagination
   const totalPages = Math.ceil(filteredData.length / rowsPerPage);
   const paginated = useMemo(() => {
     const start = (currentPage - 1) * rowsPerPage;
@@ -87,7 +92,6 @@ const DataGedung = () => {
 
       if (res.data.status === "success") {
         setDataGedung((prev) => prev.filter((j) => j.id !== id));
-
         Swal.fire({
           icon: "success",
           title: "Berhasil!",
@@ -95,57 +99,43 @@ const DataGedung = () => {
           showConfirmButton: false,
           timer: 1800,
         });
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "Gagal menghapus!",
-          text: res.data.message || "Terjadi kesalahan saat menghapus gedung.",
-        });
       }
     } catch (err: any) {
-      if (err.response?.data?.status === "error") {
-        Swal.fire({
-          icon: "error",
-          title: "Gagal menghapus!",
-          text: err.response.data.message || "Gedung tidak ditemukan.",
-        });
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "Koneksi gagal!",
-          text: "Terjadi kesalahan koneksi ke server.",
-        });
-      }
-      console.error("Gagal menghapus gedung:", err);
+      Swal.fire({
+        icon: "error",
+        title: "Gagal menghapus!",
+        text: err.response?.data?.message || "Gedung tidak ditemukan.",
+      });
     } finally {
       setLoading(false);
     }
   };
 
-const getStatusBadge = (status: string) => {
-  let color = "";
-
-  if (status === "aktif") color = "bg-green-100 text-green-700 border-green-300";
-  else color = "bg-gray-100 text-gray-600 border-gray-300";
-
-  return (
-    <Badge variant="outline" className={`${color}`}>
-      {status}
-    </Badge>
-  );
-};
-
+  const getStatusBadge = (status: string) => {
+    const color =
+      status === "aktif"
+        ? "bg-green-100 text-green-700 border-green-300"
+        : "bg-gray-100 text-gray-600 border-gray-300";
+    return (
+      <Badge variant="outline" className={color}>
+        {status}
+      </Badge>
+    );
+  };
 
   return (
     <SidebarProvider>
       <SidebarSuperAdmin isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
 
-      <main className={`w-full min-h-screen bg-background transition-all duration-300 ${isCollapsed ? "md:ml-16" : "md:ml-[300px]"}`}>
+      <main
+        className={`w-full min-h-screen bg-background transition-all duration-300 ${
+          isCollapsed ? "md:ml-16" : "md:ml-[300px]"
+        }`}
+      >
         <PageTitle title="Data Gedung" />
         <div className="mx-auto p-4 sm:px-6 lg:px-8">
           <h1 className="text-3xl font-bold mb-6">Data Gedung</h1>
 
-          {/* Loading State */}
           {loading ? (
             <div className="flex flex-col items-center justify-center h-64 text-gray-600">
               <Loader2Icon className="animate-spin mb-2" size={28} />
@@ -153,7 +143,7 @@ const getStatusBadge = (status: string) => {
             </div>
           ) : (
             <>
-              {/* Tombol Tambah */}
+              {/* Tombol Tambah + Search */}
               <div className="mb-6 flex flex-col md:flex-row justify-between items-center gap-4 w-full">
                 <Link to="/superadmin/informasi-sekolah/gedung/create" className="w-full md:w-auto">
                   <Button className="bg-primary w-full mx-auto">
@@ -164,18 +154,26 @@ const getStatusBadge = (status: string) => {
 
                 <div className="relative w-full md:w-1/3">
                   <SearchIcon className="absolute left-2.5 top-2.5 text-gray-400" size={18} />
-                  <Input type="text" placeholder="Cari gedung..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="pl-8" />
+                  <Input
+                    type="text"
+                    placeholder="Cari gedung..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="pl-8"
+                  />
                 </div>
               </div>
 
-              {/* Tabel Data */}
+              {/* Tabel */}
               <div className="w-full overflow-x-auto rounded">
                 <Table className="min-w-full border border-gray-200 rounded shadow-sm bg-white">
                   <TableHeader className="bg-primary">
                     <TableRow>
                       <TableHead className="text-center font-semibold text-white">No</TableHead>
                       <TableHead className="font-semibold text-white">Foto Gedung</TableHead>
-                      <TableHead className="font-semibold text-white text-center">Kode Gedung</TableHead>
+                      <TableHead className="font-semibold text-white text-center">
+                        Kode Gedung
+                      </TableHead>
                       <TableHead className="font-semibold text-white">Nama Gedung</TableHead>
                       <TableHead className="font-semibold text-white text-center">Status</TableHead>
                       <TableHead className="text-center font-semibold text-white">Aksi</TableHead>
@@ -185,8 +183,13 @@ const getStatusBadge = (status: string) => {
                   <TableBody>
                     {paginated.length > 0 ? (
                       paginated.map((gedung, index) => (
-                        <TableRow key={gedung.id} className="hover:bg-indigo-50 even:bg-gray-50 border-b border-gray-100">
-                          <TableCell className="text-center font-medium">{(currentPage - 1) * rowsPerPage + index + 1}</TableCell>
+                        <TableRow
+                          key={gedung.id}
+                          className="hover:bg-indigo-50 even:bg-gray-50 border-b border-gray-100"
+                        >
+                          <TableCell className="text-center font-medium">
+                            {(currentPage - 1) * rowsPerPage + index + 1}
+                          </TableCell>
                           <TableCell>
                             {gedung.foto_gedung ? (
                               <img
@@ -201,31 +204,51 @@ const getStatusBadge = (status: string) => {
                                 }}
                               />
                             ) : (
-                              <div className="w-16 h-16 bg-gray-200 rounded flex items-center justify-center text-gray-400 text-xs">No Image</div>
+                              <div className="w-16 h-16 bg-gray-200 rounded flex items-center justify-center text-gray-400 text-xs">
+                                No Image
+                              </div>
                             )}
                           </TableCell>
-                          <TableCell className="text-center">{gedung.kode_gedung || "Tidak ada data"}</TableCell>
-                          <TableCell>{gedung.nama_gedung || "Tidak ada data"}</TableCell>
-                          <TableCell className="text-center">{getStatusBadge(gedung.status) || "Tidak ada data"}</TableCell>
-                          <TableCell className="flex gap-1 justify-center">
-                            {/* Tombol Detail */}
-                            <DialogDetailGedung gedungId={gedung.id} />
+                          <TableCell className="text-center">
+                            {gedung.kode_gedung || "-"}
+                          </TableCell>
+                          <TableCell>{gedung.nama_gedung || "-"}</TableCell>
+                          <TableCell className="text-center">
+                            {getStatusBadge(gedung.status)}
+                          </TableCell>
+                          <TableCell>
+                            <div className="flex gap-1 justify-center">
+                              {/* ✅ Tombol Detail → ke halaman DetailGedung */}
+                              <Link
+                                to={`/superadmin/informasi-sekolah/gedung/${gedung.id}`}
+                              >
+                                <Button variant="outline" size="sm">
+                                  <Eye size={16} />
+                                </Button>
+                              </Link>
 
-                            <Link to={`/superadmin/informasi-sekolah/gedung/edit/${gedung.id}`}>
-                              <Button className="bg-primary" size="sm">
-                                <PenBoxIcon size={16} />
+                              <Link
+                                to={`/superadmin/informasi-sekolah/gedung/edit/${gedung.id}`}
+                              >
+                                <Button className="bg-primary" size="sm">
+                                  <PenBoxIcon size={16} />
+                                </Button>
+                              </Link>
+
+                              <Button
+                                className="bg-muted-foreground hover:bg-muted-foreground/90"
+                                size="sm"
+                                onClick={() => handleDelete(gedung.id)}
+                              >
+                                <Trash2Icon size={16} />
                               </Button>
-                            </Link>
-
-                            <Button className="bg-muted-foreground hover:bg-muted-foreground/90" size="sm" onClick={() => handleDelete(gedung.id)}>
-                              <Trash2Icon size={16} />
-                            </Button>
+                            </div>
                           </TableCell>
                         </TableRow>
                       ))
                     ) : (
                       <TableRow>
-                        <TableCell colSpan={10} className="text-center text-gray-500 py-4">
+                        <TableCell colSpan={6} className="text-center text-gray-500 py-4">
                           Tidak ada data gedung yang ditemukan
                         </TableCell>
                       </TableRow>
@@ -254,13 +277,21 @@ const getStatusBadge = (status: string) => {
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <Button size="sm" disabled={currentPage === 1} onClick={() => handlePageChange(currentPage - 1)}>
+                  <Button
+                    size="sm"
+                    disabled={currentPage === 1}
+                    onClick={() => handlePageChange(currentPage - 1)}
+                  >
                     Prev
                   </Button>
                   <span className="text-sm">
                     Halaman <strong>{currentPage}</strong> dari <strong>{totalPages || 1}</strong>
                   </span>
-                  <Button size="sm" disabled={currentPage === totalPages || totalPages === 0} onClick={() => handlePageChange(currentPage + 1)}>
+                  <Button
+                    size="sm"
+                    disabled={currentPage === totalPages || totalPages === 0}
+                    onClick={() => handlePageChange(currentPage + 1)}
+                  >
                     Next
                   </Button>
                 </div>

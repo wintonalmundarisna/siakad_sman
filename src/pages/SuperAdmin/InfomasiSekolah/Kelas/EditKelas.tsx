@@ -21,142 +21,72 @@ const EditKelas = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [formData, setFormData] = useState({
-    nama_kelas: "",
-    kode_kelas: "",
-    tingkat: "",
-    status: "aktif",
-  });
-
+  const [formData, setFormData] = useState({ nama_kelas: "", kode_kelas: "", tingkat: "", status: "aktif" });
   const [errors, setErrors] = useState<FormErrors>({});
   const navigate = useNavigate();
 
-  // Ambil data kelas berdasarkan ID
+  // ── Fetch ──────────────────────────────────────────────────────────────────
+  // FIX: backend show() return kelas_id, nama_kelas, kode_kelas, tingkat, status
   useEffect(() => {
     const fetchKelas = async () => {
       try {
         setIsLoading(true);
-
         const res = await api.get(`/spa/kelas/${id}`);
-        if (res.data.status !== "success") {
-          Swal.fire({
-            icon: "error",
-            title: "Gagal!",
-            text: res.data.message || "Data kelas tidak ditemukan.",
+        if (res.data.status === "success") {
+          const kelas = res.data.data;
+          setFormData({
+            nama_kelas: kelas.nama_kelas ?? "",
+            kode_kelas: kelas.kode_kelas ?? "",
+            tingkat: kelas.tingkat?.toString() ?? "",
+            status: kelas.status ?? "aktif",
           });
-          navigate("/superadmin/informasi-sekolah/kelas");
-          return;
         }
-
-        const kelas = res.data.data;
-
-        setFormData({
-          nama_kelas: kelas.nama_kelas ?? "",
-          kode_kelas: kelas.kode_kelas ?? "",
-          tingkat: kelas.tingkat?.toString() ?? "",
-          status: kelas.status ?? "aktif",
-        });
-      } catch (error) {
-        console.error(error);
-        Swal.fire({
-          icon: "error",
-          title: "Koneksi gagal!",
-          text: "Tidak dapat terhubung ke server.",
-        });
+      } catch (err: any) {
+        Swal.fire({ icon: "error", title: "Koneksi gagal!", text: "Tidak dapat terhubung ke server." });
         navigate("/superadmin/informasi-sekolah/kelas");
       } finally {
         setIsLoading(false);
       }
     };
+    if (id) fetchKelas();
+  }, [id]);
 
-    if (id) {
-      fetchKelas();
-    }
-  }, [id, navigate]);
-
+  // ── Submit ─────────────────────────────────────────────────────────────────
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setErrors({});
-    setLoading(true);
 
-    // Validasi sederhana di sisi frontend
     const newErrors: FormErrors = {};
-
-    if (!formData.nama_kelas.trim()) {
-      newErrors.nama_kelas = ["Nama kelas wajib diisi"];
-    }
-
-    if (!formData.kode_kelas.trim()) {
-      newErrors.kode_kelas = ["Kode kelas wajib diisi"];
-    }
-
-    if (!formData.tingkat) {
-      newErrors.tingkat = ["Tingkat kelas wajib dipilih"];
-    }
-
-    // Jika ada error → hentikan submit dan tampilkan pesan
+    if (!formData.nama_kelas.trim()) newErrors.nama_kelas = ["Nama kelas wajib diisi"];
+    if (!formData.kode_kelas.trim()) newErrors.kode_kelas = ["Kode kelas wajib diisi"];
+    if (!formData.tingkat) newErrors.tingkat = ["Tingkat kelas wajib dipilih"];
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
-      setLoading(false);
-
-      Swal.fire({
-        icon: "warning",
-        title: "Validasi Gagal!",
-        text: "Semua field wajib diisi.",
-        confirmButtonColor: "#EAB308",
-      });
-
       return;
     }
 
+    setLoading(true);
     try {
-      const payload = {
+      const res = await api.put(`/spa/kelas/${id}`, {
         nama_kelas: formData.nama_kelas,
         kode_kelas: formData.kode_kelas,
         tingkat: Number(formData.tingkat),
         status: formData.status,
-      };
-
-      const res = await api.put(`/spa/kelas/${id}`, payload);
+      });
 
       if (res.data.status === "success") {
-        Swal.fire({
-          icon: "success",
-          title: "Berhasil!",
-          text: res.data.message || "Data kelas berhasil diperbarui.",
-          showConfirmButton: false,
-          timer: 1800,
-        }).then(() => {
-          navigate("/superadmin/informasi-sekolah/kelas");
-        });
-      } else if (res.data.status === "error" && res.data.errors) {
-        setErrors(res.data.errors);
-        Swal.fire({
-          icon: "error",
-          title: "Validasi Gagal!",
-          text: "Periksa kembali form Anda.",
-        });
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "Gagal menyimpan!",
-          text: res.data.message || "Terjadi kesalahan saat memperbarui kelas.",
-        });
+        Swal.fire({ icon: "success", title: "Berhasil!", text: res.data.message || "Data kelas berhasil diperbarui.", showConfirmButton: false, timer: 1800 }).then(() => navigate("/superadmin/informasi-sekolah/kelas"));
       }
     } catch (err: any) {
-      if (err.response?.data?.errors) {
-        setErrors(err.response.data.errors);
-        Swal.fire({
-          icon: "error",
-          title: "Validasi Gagal!",
-          text: err.response.data.message || "Periksa kembali form Anda.",
-        });
+      const status = err.response?.status;
+      const data = err.response?.data;
+      if (status === 422 && data?.errors) {
+        setErrors(data.errors);
+      } else if (status === 404) {
+        Swal.fire({ icon: "error", title: "Tidak Ditemukan", text: "Data kelas tidak ditemukan." });
+        navigate("/superadmin/informasi-sekolah/kelas");
       } else {
-        Swal.fire({
-          icon: "error",
-          title: "Koneksi gagal!",
-          text: "Tidak dapat terhubung ke server.",
-        });
+        Swal.fire({ icon: "error", title: "Koneksi gagal!", text: data?.message || "Tidak dapat terhubung ke server." });
       }
     } finally {
       setLoading(false);
@@ -166,11 +96,7 @@ const EditKelas = () => {
   return (
     <SidebarProvider>
       <SidebarSuperAdmin isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
-
-      <main
-        className={`w-full min-h-screen bg-background transition-all duration-300
-        ${isCollapsed ? "md:ml-16" : "md:ml-[300px]"}`}
-      >
+      <main className={`w-full min-h-screen bg-background transition-all duration-300 ${isCollapsed ? "md:ml-16" : "md:ml-[300px]"}`}>
         <PageTitle title="Edit Kelas" />
         <div className="mx-auto p-4 sm:px-6 lg:px-8">
           <h1 className="text-3xl font-bold mb-6">Edit Kelas</h1>
@@ -189,8 +115,8 @@ const EditKelas = () => {
                     Nama Kelas <span className="text-red-500">*</span>
                   </label>
                   <input
+                    id="nama_kelas"
                     type="text"
-                    name="nama_kelas"
                     placeholder="Contoh: X, XI, XII"
                     value={formData.nama_kelas}
                     onChange={(e) => setFormData({ ...formData, nama_kelas: e.target.value })}
@@ -205,8 +131,8 @@ const EditKelas = () => {
                     Kode Kelas <span className="text-red-500">*</span>
                   </label>
                   <input
+                    id="kode_kelas"
                     type="text"
-                    name="kode_kelas"
                     placeholder="Contoh: K10, K11, K12"
                     value={formData.kode_kelas}
                     onChange={(e) => setFormData({ ...formData, kode_kelas: e.target.value })}
@@ -220,7 +146,7 @@ const EditKelas = () => {
                   <label htmlFor="tingkat" className="block font-semibold text-foreground">
                     Tingkat <span className="text-red-500">*</span>
                   </label>
-                  <select name="tingkat" value={formData.tingkat} onChange={(e) => setFormData({ ...formData, tingkat: e.target.value })} className="border p-2 w-full mt-2 rounded focus:outline-none focus:ring-2 focus:ring-primary">
+                  <select id="tingkat" value={formData.tingkat} onChange={(e) => setFormData({ ...formData, tingkat: e.target.value })} className="border p-2 w-full mt-2 rounded focus:outline-none focus:ring-2 focus:ring-primary">
                     <option value="">Pilih Tingkat</option>
                     <option value="10">10</option>
                     <option value="11">11</option>
@@ -229,28 +155,25 @@ const EditKelas = () => {
                   {errors.tingkat && <p className="text-red-500 text-sm mt-1">{errors.tingkat[0]}</p>}
                 </div>
 
-                {/* Status */}
+                {/* Status — backend: in:aktif,arsip */}
                 <div className="mb-6">
                   <label htmlFor="status" className="block font-semibold text-foreground">
                     Status <span className="text-red-500">*</span>
                   </label>
-                  <select name="status" value={formData.status} onChange={(e) => setFormData({ ...formData, status: e.target.value })} className="border p-2 w-full mt-2 rounded focus:outline-none focus:ring-2 focus:ring-primary">
+                  <select id="status" value={formData.status} onChange={(e) => setFormData({ ...formData, status: e.target.value })} className="border p-2 w-full mt-2 rounded focus:outline-none focus:ring-2 focus:ring-primary">
                     <option value="aktif">Aktif</option>
                     <option value="arsip">Arsip</option>
                   </select>
                   {errors.status && <p className="text-red-500 text-sm mt-1">{errors.status[0]}</p>}
                 </div>
 
-                {/* Tombol Aksi */}
                 <div className="flex gap-2">
                   <Button type="submit" disabled={loading} className="bg-primary flex items-center gap-2">
-                    <FilePlus size={18} />
-                    {loading ? "Menyimpan..." : "Simpan Perubahan"}
+                    <FilePlus size={18} /> {loading ? "Menyimpan..." : "Simpan Perubahan"}
                   </Button>
                   <Link to="/superadmin/informasi-sekolah/kelas">
                     <Button type="button" className="bg-muted-foreground flex items-center gap-2 hover:bg-muted-foreground/90">
-                      <CircleXIcon size={18} />
-                      Batal
+                      <CircleXIcon size={18} /> Batal
                     </Button>
                   </Link>
                 </div>
@@ -258,7 +181,6 @@ const EditKelas = () => {
             </div>
           )}
         </div>
-
         <Footer />
       </main>
     </SidebarProvider>

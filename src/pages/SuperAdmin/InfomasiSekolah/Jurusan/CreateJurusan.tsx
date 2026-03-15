@@ -20,7 +20,6 @@ const CreateJurusan = () => {
     nama_jurusan: "",
     kode_jurusan: "",
   });
-
   const [errors, setErrors] = useState<FormErrors>({});
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -42,21 +41,24 @@ const CreateJurusan = () => {
           timer: 1800,
         });
         navigate("/superadmin/informasi-sekolah/jurusan");
-      } else if (res.data.status === "error" && res.data.errors) {
-        setErrors(res.data.errors);
+      }
+    } catch (err: any) {
+      const status = err.response?.status;
+      const data = err.response?.data;
+
+      if (status === 422 && data?.errors) {
+        // Validasi error dari backend (nama_jurusan.required, kode_jurusan.unique, dll)
+        setErrors(data.errors);
+      } else if (status === 422 && data?.errors?.role) {
+        // Bukan super admin
+        Swal.fire({ icon: "error", title: "Akses Ditolak", text: data.errors.role[0] });
       } else {
         Swal.fire({
           icon: "error",
-          title: "Gagal menyimpan!",
-          text: res.data.message || "Terjadi kesalahan saat menyimpan data jurusan.",
+          title: "Koneksi gagal!",
+          text: data?.message || "Tidak dapat terhubung ke server.",
         });
       }
-    } catch {
-      Swal.fire({
-        icon: "error",
-        title: "Koneksi gagal!",
-        text: "Tidak dapat terhubung ke server.",
-      });
     } finally {
       setLoading(false);
     }
@@ -66,10 +68,7 @@ const CreateJurusan = () => {
     <SidebarProvider>
       <SidebarSuperAdmin isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
 
-      <main
-        className={`w-full min-h-screen bg-background transition-all duration-300
-        ${isCollapsed ? "md:ml-16" : "md:ml-[300px]"}`}
-      >
+      <main className={`w-full min-h-screen bg-background transition-all duration-300 ${isCollapsed ? "md:ml-16" : "md:ml-[300px]"}`}>
         <PageTitle title="Tambah Jurusan" />
         <div className="mx-auto p-4 sm:px-6 lg:px-8">
           <h1 className="text-3xl font-bold mb-6">Tambah Jurusan</h1>
@@ -82,6 +81,7 @@ const CreateJurusan = () => {
                   Kode Jurusan
                 </label>
                 <input
+                  id="kode_jurusan"
                   type="text"
                   name="kode_jurusan"
                   placeholder="cth: AKL / FIS / SBD"
@@ -98,6 +98,7 @@ const CreateJurusan = () => {
                   Nama Jurusan
                 </label>
                 <input
+                  id="nama_jurusan"
                   type="text"
                   name="nama_jurusan"
                   placeholder="cth: IPA / IPS / Bahasa"
@@ -124,7 +125,6 @@ const CreateJurusan = () => {
             </form>
           </div>
         </div>
-
         <Footer />
       </main>
     </SidebarProvider>

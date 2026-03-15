@@ -5,7 +5,7 @@ import { SidebarSuperAdmin } from "@/components/SidebarSuperAdmin";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Loader2Icon, PlusIcon, SearchIcon, Trash2Icon, Upload, FileSpreadsheet, FolderArchive, EyeIcon, PenBoxIcon } from "lucide-react";
+import { Loader2Icon, PlusIcon, SearchIcon, Trash2Icon, FileSpreadsheet, FolderArchive, EyeIcon, PenBoxIcon } from "lucide-react";
 import Footer from "@/pages/Footer";
 import { Link } from "react-router-dom";
 import type { Psb } from "@/types/psb";
@@ -201,77 +201,77 @@ const DataPsb = () => {
   };
 
   // Import Excel
-  const handleImportExcel = async () => {
-    const { value: file } = await Swal.fire({
-      title: "Pilih file Excel",
-      input: "file",
-      inputAttributes: {
-        accept: ".xlsx,.xls",
-      },
-      showCancelButton: true,
-      confirmButtonText: "Import",
-      cancelButtonText: "Batal",
-    });
+  // const handleImportExcel = async () => {
+  //   const { value: file } = await Swal.fire({
+  //     title: "Pilih file Excel",
+  //     input: "file",
+  //     inputAttributes: {
+  //       accept: ".xlsx,.xls",
+  //     },
+  //     showCancelButton: true,
+  //     confirmButtonText: "Import",
+  //     cancelButtonText: "Batal",
+  //   });
 
-    if (file) {
-      try {
-        setLoading(true);
-        await psbService.importExcel(file);
-        await fetchData();
+  //   if (file) {
+  //     try {
+  //       setLoading(true);
+  //       await psbService.importExcel(file);
+  //       await fetchData();
 
-        Swal.fire({
-          icon: "success",
-          title: "Import berhasil!",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-      } catch (error: any) {
-        Swal.fire({
-          icon: "error",
-          title: "Import gagal!",
-          text: error.response?.data?.message || "Terjadi kesalahan saat mengimpor data.",
-        });
-      } finally {
-        setLoading(false);
-      }
-    }
-  };
+  //       Swal.fire({
+  //         icon: "success",
+  //         title: "Import berhasil!",
+  //         showConfirmButton: false,
+  //         timer: 1500,
+  //       });
+  //     } catch (error: any) {
+  //       Swal.fire({
+  //         icon: "error",
+  //         title: "Import gagal!",
+  //         text: error.response?.data?.message || "Terjadi kesalahan saat mengimpor data.",
+  //       });
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   }
+  // };
 
   // Import Berkas ZIP
-  const handleImportBerkasZip = async () => {
-    const { value: file } = await Swal.fire({
-      title: "Pilih file ZIP berkas",
-      input: "file",
-      inputAttributes: {
-        accept: ".zip",
-      },
-      showCancelButton: true,
-      confirmButtonText: "Import",
-      cancelButtonText: "Batal",
-    });
+  // const handleImportBerkasZip = async () => {
+  //   const { value: file } = await Swal.fire({
+  //     title: "Pilih file ZIP berkas",
+  //     input: "file",
+  //     inputAttributes: {
+  //       accept: ".zip",
+  //     },
+  //     showCancelButton: true,
+  //     confirmButtonText: "Import",
+  //     cancelButtonText: "Batal",
+  //   });
 
-    if (file) {
-      try {
-        setLoading(true);
-        await psbService.importBerkasZip(file);
+  //   if (file) {
+  //     try {
+  //       setLoading(true);
+  //       await psbService.importBerkasZip(file);
 
-        Swal.fire({
-          icon: "success",
-          title: "Import berkas berhasil!",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-      } catch (error: any) {
-        Swal.fire({
-          icon: "error",
-          title: "Import gagal!",
-          text: error.response?.data?.message || "Terjadi kesalahan saat mengimpor berkas.",
-        });
-      } finally {
-        setLoading(false);
-      }
-    }
-  };
+  //       Swal.fire({
+  //         icon: "success",
+  //         title: "Import berkas berhasil!",
+  //         showConfirmButton: false,
+  //         timer: 1500,
+  //       });
+  //     } catch (error: any) {
+  //       Swal.fire({
+  //         icon: "error",
+  //         title: "Import gagal!",
+  //         text: error.response?.data?.message || "Terjadi kesalahan saat mengimpor berkas.",
+  //       });
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   }
+  // };
 
   return (
     <SidebarProvider>
@@ -329,15 +329,15 @@ const DataPsb = () => {
                     Export Terpilih Berkas
                   </Button>
 
-                  <Button variant="outline" onClick={handleImportExcel}>
+                  {/* <Button variant="outline" onClick={handleImportExcel}>
                     <Upload size={18} />
                     Import Excel
-                  </Button>
+                  </Button> */}
 
-                  <Button variant="outline" onClick={handleImportBerkasZip}>
+                  {/* <Button variant="outline" onClick={handleImportBerkasZip}>
                     <Upload size={18} />
                     Import Berkas ZIP
-                  </Button>
+                  </Button> */}
                 </div>
 
                 <div className="relative w-full md:w-1/3">

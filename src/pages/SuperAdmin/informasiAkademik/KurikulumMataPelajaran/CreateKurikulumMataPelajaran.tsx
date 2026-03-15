@@ -100,7 +100,7 @@ const CreateKurikulumMataPelajaran = () => {
           timer: 1800,
         });
 
-        navigate("/superadmin/informasi-akademik/kurikulum-mata-pelajaran");
+        navigate("/superadmin/informasi-sekolah/kurikulum-mata-pelajaran");
       }
     } catch (error: any) {
       const errorStatus = error.response?.status;
@@ -293,7 +293,7 @@ const CreateKurikulumMataPelajaran = () => {
                     <FilePlus size={18} />
                     {loading ? "Menyimpan..." : "Simpan"}
                   </Button>
-                  <Link to="/superadmin/informasi-akademik/kurikulum-mata-pelajaran">
+                  <Link to="/superadmin/informasi-sekolah/kurikulum-mata-pelajaran">
                     <Button type="button" className="bg-muted-foreground flex items-center gap-2 hover:bg-muted-foreground/90">
                       <CircleXIcon size={18} />
                       Batal

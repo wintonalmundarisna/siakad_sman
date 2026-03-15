@@ -175,7 +175,7 @@ const EditKurikulumMataPelajaran = () => {
           title: "Gagal memuat data!",
           text: error.response?.data?.message || error.message || "Terjadi kesalahan saat mengambil data.",
         });
-        navigate("/superadmin/informasi-akademik/kurikulum-mata-pelajaran");
+        navigate("/superadmin/informasi-sekolah/kurikulum-mata-pelajaran");
       } finally {
         setLoadingData(false);
       }
@@ -277,7 +277,7 @@ const EditKurikulumMataPelajaran = () => {
           showConfirmButton: false,
         });
 
-        navigate("/superadmin/informasi-akademik/kurikulum-mata-pelajaran");
+        navigate("/superadmin/informasi-sekolah/kurikulum-mata-pelajaran");
       }
     } catch (error: any) {
       const errorStatus = error.response?.status;
@@ -512,7 +512,7 @@ const EditKurikulumMataPelajaran = () => {
                     {loading ? "Menyimpan..." : "Simpan Perubahan"}
                   </Button>
 
-                  <Link to="/superadmin/informasi-akademik/kurikulum-mata-pelajaran">
+                  <Link to="/superadmin/informasi-sekolah/kurikulum-mata-pelajaran">
                     <Button type="button" className="bg-muted-foreground flex items-center gap-2 hover:bg-muted-foreground/90">
                       <CircleXIcon size={18} />
                       Batal

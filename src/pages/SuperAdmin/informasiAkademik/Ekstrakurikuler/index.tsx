@@ -3,7 +3,7 @@ import PageTitle from "@/components/PageTitle";
 import { SidebarSuperAdmin } from "@/components/SidebarSuperAdmin";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
-import { SearchIcon, Loader2Icon, PlusIcon, PenBoxIcon, Trash2Icon } from "lucide-react";
+import { SearchIcon, Loader2Icon, PlusIcon, PenBoxIcon, Trash2Icon, EyeIcon } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Footer from "@/pages/Footer";
 import { Input } from "@/components/ui/input";
@@ -71,7 +71,13 @@ const DataEkstrakurikuler = () => {
       if (res.data.status === "success") {
         setDataEkskul((prev) => prev.filter((e) => e.id !== id));
         setFilteredEkskul((prev) => prev.filter((e) => e.id !== id));
-        Swal.fire({ icon: "success", title: "Berhasil!", text: "Data ekstrakurikuler berhasil dihapus.", showConfirmButton: false, timer: 1800 });
+        Swal.fire({
+          icon: "success",
+          title: "Berhasil!",
+          text: "Data ekstrakurikuler berhasil dihapus.",
+          showConfirmButton: false,
+          timer: 1800,
+        });
       }
     } catch (err: any) {
       Swal.fire({
@@ -88,7 +94,7 @@ const DataEkstrakurikuler = () => {
   const statusColor = (status: string) => {
     if (status === "wajib") return "bg-red-100 text-red-800";
     if (status === "pilihan") return "bg-blue-100 text-blue-800";
-    return "bg-purple-100 text-purple-800"; // jurusan
+    return "bg-purple-100 text-purple-800";
   };
 
   const statusAktifColor = (s: string) => (s === "aktif" ? "bg-green-100 text-green-800" : "bg-gray-200 text-gray-600");
@@ -129,50 +135,67 @@ const DataEkstrakurikuler = () => {
               </div>
 
               {/* Cards */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {filteredEkskul.length > 0 ? (
-                  filteredEkskul.map((ekskul) => (
-                    <Card className="w-full" key={ekskul.id}>
-                      <CardHeader>
+              {filteredEkskul.length === 0 ? (
+                <div className="text-center text-gray-500 py-12 col-span-3">Tidak ada data ekstrakurikuler.</div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {filteredEkskul.map((ekskul) => (
+                    <Card className="w-full hover:shadow-md transition-shadow" key={ekskul.id}>
+                      <CardHeader className="pb-3">
                         <div className="flex justify-between items-start gap-2">
-                          <CardTitle className="text-xl font-bold text-primary">{ekskul.nama_ekskul}</CardTitle>
-                          <div className="flex gap-2 shrink-0">
+                          <CardTitle className="text-lg font-bold text-primary leading-tight">{ekskul.nama_ekskul}</CardTitle>
+                          {/* Aksi */}
+                          <div className="flex gap-1.5 shrink-0">
+                            {/* Detail */}
+                            {/* <Link to={`/superadmin/informasi-akademik/ekstrakurikuler/detail/${ekskul.id}`}>
+                              <Button variant="outline" size="sm" title="Lihat Detail">
+                                <EyeIcon size={14} />
+                              </Button>
+                            </Link> */}
+                            {/* Edit */}
                             <Link to={`/superadmin/informasi-akademik/ekstrakurikuler/edit/${ekskul.id}`}>
-                              <span className="text-primary cursor-pointer">
-                                <PenBoxIcon size={16} />
-                              </span>
+                              <Button className="bg-primary" size="sm" title="Edit">
+                                <PenBoxIcon size={14} />
+                              </Button>
                             </Link>
-                            <span className="text-muted-foreground cursor-pointer" onClick={() => handleDelete(ekskul.id)}>
-                              <Trash2Icon size={16} />
-                            </span>
+                            {/* Hapus */}
+                            <Button className="bg-muted-foreground hover:bg-muted-foreground/90" size="sm" title="Hapus" onClick={() => handleDelete(ekskul.id)}>
+                              <Trash2Icon size={14} />
+                            </Button>
                           </div>
                         </div>
                       </CardHeader>
 
                       <CardContent>
-                        <div className="grid gap-3 py-2 text-sm">
-                          <div className="flex justify-between items-center flex-wrap gap-2">
+                        <div className="grid gap-3 py-1 text-sm">
+                          <div className="flex justify-between items-center">
                             <span className="font-semibold text-gray-700">Anggaran</span>
-                            <span>{formatRupiah(Number(ekskul.anggaran))}</span>
+                            <span className="text-gray-800">{formatRupiah(Number(ekskul.anggaran))}</span>
                           </div>
                           <Separator />
-                          <div className="flex justify-between items-center flex-wrap gap-2">
+                          <div className="flex justify-between items-center">
                             <span className="font-semibold text-gray-700">Jenis</span>
                             <Badge className={`text-xs ${statusColor(ekskul.status)}`}>{statusLabel(ekskul.status)}</Badge>
                           </div>
                           <Separator />
-                          <div className="flex justify-between items-center flex-wrap gap-2">
+                          <div className="flex justify-between items-center">
                             <span className="font-semibold text-gray-700">Status</span>
                             <Badge className={`text-xs ${statusAktifColor(ekskul.status_aktif)}`}>{ekskul.status_aktif === "aktif" ? "Aktif" : "Arsip"}</Badge>
                           </div>
                         </div>
+
+                        {/* Shortcut ke detail */}
+                        <Link to={`/superadmin/informasi-akademik/ekstrakurikuler/detail/${ekskul.id}`} className="block mt-4">
+                          <Button variant="outline" className="w-full gap-2 text-sm" size="sm">
+                            <EyeIcon size={14} />
+                            Lihat Pembina, Pelatih & Siswa
+                          </Button>
+                        </Link>
                       </CardContent>
                     </Card>
-                  ))
-                ) : (
-                  <p className="text-center text-gray-500 py-4 col-span-3">Tidak ada data ekstrakurikuler.</p>
-                )}
-              </div>
+                  ))}
+                </div>
+              )}
             </>
           )}
         </div>

@@ -1,182 +1,281 @@
 import { useEffect, useMemo, useState } from "react";
 import PageTitle from "@/components/PageTitle";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { SidebarSuperAdmin } from "@/components/SidebarSuperAdmin";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
-import { Loader2Icon, PlusIcon, SearchIcon, EyeIcon } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
 import Footer from "@/pages/Footer";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import api from "@/api/axios";
 import Swal from "sweetalert2";
-import { Input } from "@/components/ui/input";
-import type { SiswaSelect } from "@/types/prestasiSiswa";
+import { Loader2Icon, PlusIcon, PencilIcon, Trash2Icon, TrophyIcon, SearchIcon } from "lucide-react";
+
+// ─── Types ────────────────────────────────────────────────────────────────────
+
+interface TahunAkademikSelect {
+  tahun_akademik_id: number;
+  tahun_akademik: string;
+  status_tahun_akademik: "aktif" | "arsip";
+}
+
+interface PrestasiItem {
+  prestasi_id: number;
+  prestasi_diraih: string;
+}
+
+interface SiswaPrestasiRow {
+  siswa_id: number;
+  nama_siswa: string;
+  nisn: string;
+  nis: string;
+  prestasi: PrestasiItem[];
+}
+
+// ─── Badge ────────────────────────────────────────────────────────────────────
+
+const tahunBadge = (s: string) => (s === "aktif" ? "bg-emerald-100 text-emerald-800" : "bg-slate-100 text-slate-600");
+
+// ─── Main Component ───────────────────────────────────────────────────────────
 
 const DataPrestasiSiswa = () => {
-  const navigate = useNavigate();
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const [dataSiswa, setDataSiswa] = useState<SiswaSelect[]>([]);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [loading, setLoading] = useState(true);
+
+  // Tahun akademik untuk filter
+  const [tahunList, setTahunList] = useState<TahunAkademikSelect[]>([]);
+  const [selectedTahun, setSelectedTahun] = useState<string>("");
+  const [selectLoaded, setSelectLoaded] = useState(false);
+
+  // Data prestasi
+  const [rows, setRows] = useState<SiswaPrestasiRow[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [loadingSelect, setLoadingSelect] = useState(true);
+
+  // Search
   const [searchTerm, setSearchTerm] = useState("");
 
-  // ── FETCH data select siswa ────────────────────────────────
+  // ── Load tahun akademik dari data-select ──────────────────
   useEffect(() => {
-    const fetchData = async () => {
+    const load = async () => {
       try {
-        setLoading(true);
+        setLoadingSelect(true);
         const res = await api.get("/spa/data-select/siswa/prestasi");
         if (res.data.status === "success") {
-          setDataSiswa(res.data.data.siswa);
+          const tahunData: TahunAkademikSelect[] = res.data.data.tahun_akademik ?? [];
+          setTahunList(tahunData);
+
+          const aktif = tahunData.find((t) => t.status_tahun_akademik === "aktif");
+          const defaultId = aktif ? String(aktif.tahun_akademik_id) : tahunData[0] ? String(tahunData[0].tahun_akademik_id) : "";
+          setSelectedTahun(defaultId);
+          setSelectLoaded(true);
         }
-      } catch (error: any) {
-        if (error.response?.status !== 404) {
-          Swal.fire({
-            icon: "error",
-            title: "Gagal memuat data!",
-            text: error.response?.data?.message || "Tidak dapat memuat data siswa.",
-          });
-        }
+      } catch {
+        Swal.fire({ icon: "error", title: "Gagal", text: "Tidak dapat memuat data tahun akademik." });
       } finally {
-        setLoading(false);
+        setLoadingSelect(false);
       }
     };
-    fetchData();
+    load();
   }, []);
 
-  // ── SEARCH ────────────────────────────────────────────────
-  const filteredData = useMemo(() => {
-    if (!searchTerm.trim()) return dataSiswa;
-    const lower = searchTerm.toLowerCase();
-    return dataSiswa.filter((s) => s.nama_siswa.toLowerCase().includes(lower) || s.nisn.toLowerCase().includes(lower) || s.nis.toLowerCase().includes(lower));
-  }, [searchTerm, dataSiswa]);
-
-  // ── PAGINATION ────────────────────────────────────────────
-  const totalPages = Math.ceil(filteredData.length / rowsPerPage);
-  const paginated = useMemo(() => {
-    const start = (currentPage - 1) * rowsPerPage;
-    return filteredData.slice(start, start + rowsPerPage);
-  }, [filteredData, currentPage, rowsPerPage]);
-
-  const handlePageChange = (page: number) => {
-    if (page >= 1 && page <= totalPages) setCurrentPage(page);
+  // ── Fetch prestasi berdasarkan tahun ─────────────────────
+  const fetchPrestasi = async (tahunId: string) => {
+    if (!tahunId) {
+      setRows([]);
+      return;
+    }
+    setLoading(true);
+    try {
+      const res = await api.get("/spa/prestasi", {
+        params: { tahun_akademik_id: Number(tahunId) },
+      });
+      if (res.data.status === "success") {
+        const periode = res.data.data?.[0];
+        setRows(periode?.siswa ?? []);
+      } else {
+        setRows([]);
+      }
+    } catch {
+      setRows([]);
+    } finally {
+      setLoading(false);
+    }
   };
 
+  useEffect(() => {
+    if (selectLoaded && selectedTahun) fetchPrestasi(selectedTahun);
+  }, [selectedTahun, selectLoaded]);
+
+  // ── Search ────────────────────────────────────────────────
+  const filtered = useMemo(() => {
+    if (!searchTerm.trim()) return rows;
+    const lower = searchTerm.toLowerCase();
+    return rows.filter((r) => r.nama_siswa.toLowerCase().includes(lower) || r.nisn.toLowerCase().includes(lower) || r.nis.toLowerCase().includes(lower));
+  }, [rows, searchTerm]);
+
+  // ── Hapus ─────────────────────────────────────────────────
+  const handleDelete = async (prestasiId: number, namaPrestasi: string) => {
+    const c = await Swal.fire({
+      icon: "warning",
+      title: "Hapus Prestasi?",
+      html: `Prestasi <b>"${namaPrestasi}"</b> akan dihapus dan tidak dapat dikembalikan.`,
+      showCancelButton: true,
+      confirmButtonText: "Ya, hapus",
+      cancelButtonText: "Batal",
+      confirmButtonColor: "#4F46E5",
+    });
+    if (!c.isConfirmed) return;
+    try {
+      await api.delete(`/spa/prestasi/${prestasiId}`);
+      Swal.fire({
+        icon: "success",
+        title: "Berhasil dihapus",
+        timer: 1200,
+        showConfirmButton: false,
+      });
+      await fetchPrestasi(selectedTahun);
+    } catch (err: any) {
+      Swal.fire({
+        icon: "error",
+        title: "Gagal!",
+        text: err.response?.data?.message ?? "Terjadi kesalahan.",
+      });
+    }
+  };
+
+  const selectedTahunObj = tahunList.find((t) => String(t.tahun_akademik_id) === selectedTahun);
+
+  // ── Render ────────────────────────────────────────────────
   return (
     <SidebarProvider>
       <SidebarSuperAdmin isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
 
       <main className={`w-full min-h-screen bg-background transition-all duration-300 ${isCollapsed ? "md:ml-16" : "md:ml-[300px]"}`}>
         <PageTitle title="Data Prestasi Siswa" />
+
         <div className="mx-auto p-4 sm:px-6 lg:px-8">
           <h1 className="text-3xl font-bold mb-6">Data Prestasi Siswa</h1>
 
-          {loading ? (
+          {loadingSelect ? (
             <div className="flex flex-col items-center justify-center h-64 text-gray-600">
               <Loader2Icon className="animate-spin mb-2" size={28} />
               <p className="text-lg font-medium">Memuat data...</p>
             </div>
           ) : (
-            <>
-              {/* Tombol Tambah & Search */}
-              <div className="mb-6 flex flex-col md:flex-row justify-between items-center gap-4 w-full">
-                <Link to="/superadmin/informasi-akademik/prestasi-siswa/create">
-                  <Button className="bg-primary w-full md:w-auto">
-                    <PlusIcon size={18} className="mr-1" />
-                    Tambah Prestasi Siswa
-                  </Button>
-                </Link>
+            <div className="space-y-5">
+              {/* ── Toolbar ── */}
+              <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                {/* Kiri: Tambah + Filter Tahun */}
+                <div className="flex flex-wrap items-center gap-3">
+                  <Link to="/superadmin/informasi-akademik/prestasi-siswa/create">
+                    <Button className="bg-primary gap-2">
+                      <PlusIcon size={16} /> Tambah Prestasi
+                    </Button>
+                  </Link>
 
-                <div className="relative w-full md:w-1/3">
-                  <SearchIcon className="absolute left-2.5 top-2.5 text-gray-400" size={18} />
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm font-medium text-gray-600 whitespace-nowrap">Tahun:</span>
+                    <Select value={selectedTahun} onValueChange={setSelectedTahun}>
+                      <SelectTrigger className="w-52">
+                        <SelectValue placeholder="Pilih Tahun" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectLabel>Tahun Akademik</SelectLabel>
+                          {tahunList.map((t) => (
+                            <SelectItem key={t.tahun_akademik_id} value={String(t.tahun_akademik_id)}>
+                              {t.tahun_akademik}
+                              {t.status_tahun_akademik === "aktif" && " (Aktif)"}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                    {selectedTahunObj && <Badge className={`text-xs ${tahunBadge(selectedTahunObj.status_tahun_akademik)}`}>{selectedTahunObj.status_tahun_akademik}</Badge>}
+                  </div>
+                </div>
+
+                {/* Kanan: Search */}
+                <div className="relative w-full md:w-64">
+                  <SearchIcon className="absolute left-2.5 top-2.5 text-gray-400" size={16} />
                   <Input
-                    type="text"
-                    placeholder="Cari nama, NISN, atau NIS..."
+                    placeholder="Cari nama, NISN, NIS..."
                     value={searchTerm}
                     onChange={(e) => {
                       setSearchTerm(e.target.value);
-                      setCurrentPage(1);
                     }}
-                    className="pl-8"
+                    className="pl-8 text-sm"
                   />
                 </div>
               </div>
 
-              {/* Tabel */}
-              <div className="w-full overflow-x-auto rounded">
-                <Table className="min-w-full border border-gray-200 rounded shadow-sm bg-white">
-                  <TableHeader className="bg-primary">
-                    <TableRow>
-                      <TableHead className="text-center font-semibold text-white w-12">No</TableHead>
-                      <TableHead className="font-semibold text-white">Nama Siswa</TableHead>
-                      <TableHead className="font-semibold text-white">NISN</TableHead>
-                      <TableHead className="font-semibold text-white">NIS</TableHead>
-                      <TableHead className="text-center font-semibold text-white">Aksi</TableHead>
-                    </TableRow>
-                  </TableHeader>
-
-                  <TableBody>
-                    {paginated.length > 0 ? (
-                      paginated.map((siswa, index) => (
-                        <TableRow key={siswa.siswa_id} className="hover:bg-indigo-50 even:bg-gray-50 border-b border-gray-100">
-                          <TableCell className="text-center font-medium">{(currentPage - 1) * rowsPerPage + index + 1}</TableCell>
-                          <TableCell className="font-medium">{siswa.nama_siswa}</TableCell>
-                          <TableCell className="text-gray-500">{siswa.nisn}</TableCell>
-                          <TableCell className="text-gray-500">{siswa.nis}</TableCell>
-                          <TableCell className="text-center">
-                            <Button size="sm" variant="outline" title="Lihat Histori Prestasi" onClick={() => navigate(`/superadmin/informasi-akademik/prestasi-siswa/histori/${siswa.siswa_id}`)}>
-                              <EyeIcon size={15} className="mr-1" />
-                              Histori
-                            </Button>
-                          </TableCell>
-                        </TableRow>
-                      ))
-                    ) : (
-                      <TableRow>
-                        <TableCell colSpan={5} className="text-center text-gray-500 py-8">
-                          {searchTerm ? "Tidak ada siswa yang sesuai pencarian" : "Tidak ada data siswa"}
-                        </TableCell>
-                      </TableRow>
-                    )}
-                  </TableBody>
-                </Table>
-              </div>
-
-              {/* Pagination */}
-              <div className="flex flex-col md:flex-row justify-between items-center mt-6 gap-4">
-                <div className="flex items-center gap-2 text-sm text-gray-600">
-                  <span>Tampilkan:</span>
-                  <select
-                    value={rowsPerPage}
-                    onChange={(e) => {
-                      setRowsPerPage(Number(e.target.value));
-                      setCurrentPage(1);
-                    }}
-                    className="border border-gray-300 rounded px-2 py-1"
-                  >
-                    <option value="10">10</option>
-                    <option value="50">50</option>
-                    <option value="100">100</option>
-                  </select>
-                  <span>data per halaman</span>
+              {/* ── Data ── */}
+              {loading ? (
+                <div className="flex items-center justify-center h-40 text-gray-400 gap-2">
+                  <Loader2Icon className="animate-spin" size={20} />
+                  <span>Memuat data prestasi...</span>
                 </div>
-
-                <div className="flex items-center gap-2">
-                  <Button size="sm" disabled={currentPage === 1} onClick={() => handlePageChange(currentPage - 1)}>
-                    Prev
-                  </Button>
-                  <span className="text-sm">
-                    Halaman <strong>{currentPage}</strong> dari <strong>{totalPages || 1}</strong>
-                  </span>
-                  <Button size="sm" disabled={currentPage === totalPages || totalPages === 0} onClick={() => handlePageChange(currentPage + 1)}>
-                    Next
-                  </Button>
+              ) : filtered.length === 0 ? (
+                <div className="text-center py-16 border border-dashed border-gray-200 rounded-xl bg-white">
+                  <TrophyIcon size={40} className="mx-auto mb-3 text-gray-300" />
+                  <p className="text-gray-500 font-medium">{rows.length === 0 ? "Belum ada data prestasi pada periode ini" : "Tidak ada siswa yang sesuai pencarian"}</p>
+                  {rows.length === 0 && <p className="text-sm text-gray-400 mt-1">Klik "Tambah Prestasi" untuk menambahkan</p>}
                 </div>
-              </div>
-            </>
+              ) : (
+                <div className="space-y-3">
+                  {filtered.map((siswa) => (
+                    <div key={siswa.siswa_id} className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+                      {/* Header siswa */}
+                      <div className="px-5 py-3 bg-gray-50 border-b border-gray-100 flex items-center justify-between">
+                        <div>
+                          <p className="font-semibold text-gray-800 text-sm">{siswa.nama_siswa}</p>
+                          <p className="text-xs text-gray-500">
+                            NISN: {siswa.nisn} · NIS: {siswa.nis}
+                          </p>
+                        </div>
+                        <Badge className="bg-indigo-100 text-indigo-700 text-xs">{siswa.prestasi.length} prestasi</Badge>
+                      </div>
+
+                      {/* List prestasi */}
+                      <div className="divide-y divide-gray-50">
+                        {siswa.prestasi.map((p, idx) => (
+                          <div key={p.prestasi_id} className="px-5 py-3 flex items-center justify-between hover:bg-indigo-50/40 transition-colors">
+                            <div className="flex items-start gap-3">
+                              <TrophyIcon size={15} className="text-yellow-500 shrink-0 mt-0.5" />
+                              <span className="text-sm text-gray-700">
+                                <span className="text-gray-400 mr-1.5">{idx + 1}.</span>
+                                {p.prestasi_diraih}
+                              </span>
+                            </div>
+                            <div className="flex gap-1.5 shrink-0 ml-4">
+                              <Link
+                                to={`/superadmin/informasi-akademik/prestasi-siswa/edit/${p.prestasi_id}`}
+                                state={{
+                                  siswa_id: siswa.siswa_id,
+                                  tahun_akademik_id: Number(selectedTahun),
+                                  prestasi_diraih: p.prestasi_diraih,
+                                }}
+                              >
+                                <Button size="sm"className="h-7 px-2" title="Edit prestasi">
+                                  <PencilIcon size={12} />
+                                </Button>
+                              </Link>
+                              <Button size="sm" className="bg-muted-foreground hover:bg-muted-foreground/90 h-7 px-2" title="Hapus prestasi" onClick={() => handleDelete(p.prestasi_id, p.prestasi_diraih)}>
+                                <Trash2Icon size={12} />
+                              </Button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           )}
         </div>
+
         <Footer />
       </main>
     </SidebarProvider>

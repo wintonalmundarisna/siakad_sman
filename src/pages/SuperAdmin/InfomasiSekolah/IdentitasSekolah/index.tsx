@@ -5,7 +5,7 @@ import { SidebarProvider } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import Footer from "@/pages/Footer";
 import { Link } from "react-router-dom";
-import type { IdentitasSekolah } from "@/types";
+import type { IdentitasSekolah } from "@/types/identitasSekolah";
 import api from "@/api/axios";
 import Swal from "sweetalert2";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";

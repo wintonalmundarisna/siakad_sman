@@ -66,10 +66,22 @@ export default function EditIdentitasSekolah() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await api.get(`/spa/identitas-sekolah/${id}`);
+        // Gunakan endpoint index, bukan show
+        const res = await api.get(`/spa/identitas-sekolah`);
 
         if (res.data.status === "success") {
-          const data = res.data.data;
+          // Cari data berdasarkan id
+          const data = res.data.data.find((item: any) => item.id === Number(id));
+
+          if (!data) {
+            Swal.fire({
+              icon: "error",
+              title: "Data tidak ditemukan!",
+              text: "Identitas sekolah tidak ditemukan.",
+            });
+            navigate("/superadmin/informasi-sekolah/identitas-sekolah");
+            return;
+          }
 
           setFormData({
             npsn: data.npsn || "",

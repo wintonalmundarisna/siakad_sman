@@ -1,11 +1,28 @@
 import { useState, useEffect } from "react";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Eye, Loader2, GraduationCap, Trophy, Calendar, BookOpen } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Eye,
+  Loader2,
+  GraduationCap,
+  Trophy,
+  BookOpen,
+  ClipboardList,
+  Users,
+  ExternalLink,
+  KeyRound,
+} from "lucide-react";
+import { Link } from "react-router-dom";
 import type { KepegawaianDetail } from "@/types/kepegawaian";
 import api from "@/api/axios";
 
@@ -38,6 +55,9 @@ export function DialogDetailKepegawaian({ kepegawaianId }: DialogDetailKepegawai
     }
   };
 
+  // Hanya guru yang punya link wali rombel, jadwal pelajaran, absensi guru-pelajaran
+  const isGuru = detail?.role === "guru";
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -46,13 +66,15 @@ export function DialogDetailKepegawaian({ kepegawaianId }: DialogDetailKepegawai
         </Button>
       </DialogTrigger>
 
-      <DialogContent className="sm:max-w-[950px] max-h-[85vh] overflow-y-auto">
+      <DialogContent className="sm:max-w-[600px] max-h-[85vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold text-primary flex items-center gap-2">
-            <GraduationCap className="w-6 h-6" />
+          <DialogTitle className="text-xl font-bold text-primary flex items-center gap-2">
+            <GraduationCap className="w-5 h-5" />
             Detail Kepegawaian
           </DialogTitle>
-          <DialogDescription>Informasi lengkap mengenai data kepegawaian dan historinya.</DialogDescription>
+          <DialogDescription>
+            Informasi data kepegawaian dan tautan ke histori terkait.
+          </DialogDescription>
         </DialogHeader>
 
         {loading ? (
@@ -61,222 +83,117 @@ export function DialogDetailKepegawaian({ kepegawaianId }: DialogDetailKepegawai
             <p className="text-sm text-gray-500">Memuat data...</p>
           </div>
         ) : detail ? (
-          <Tabs defaultValue="info" className="w-full">
-            <TabsList className="grid w-full grid-cols-4">
-              <TabsTrigger value="info">Info Dasar</TabsTrigger>
-              <TabsTrigger value="rombel">Wali Rombel</TabsTrigger>
-              <TabsTrigger value="ekskul">Ekskul</TabsTrigger>
-              <TabsTrigger value="jadwal">Jadwal</TabsTrigger>
-            </TabsList>
+          <div className="space-y-5 py-2">
 
-            {/* TAB 1: Info Dasar */}
-            <TabsContent value="info" className="space-y-4">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-lg">Informasi Pribadi</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  <div className="grid grid-cols-2 gap-3 text-sm">
-                    <div className="flex justify-between">
-                      <span className="font-semibold text-gray-700">NIP</span>
-                      <span className="text-gray-900">{detail.nip ?? "-"}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="font-semibold text-gray-700">NUPTK</span>
-                      <span className="text-gray-900">{detail.nuptk ?? "-"}</span>
-                    </div>
-                  </div>
-                  <Separator />
-                  <div className="flex justify-between text-sm">
-                    <span className="font-semibold text-gray-700">Nama Lengkap</span>
-                    <span className="text-gray-900">{detail.nama}</span>
-                  </div>
-                  <Separator />
-                  <div className="flex justify-between text-sm">
-                    <span className="font-semibold text-gray-700">Email</span>
-                    <span className="text-gray-900">{detail.email ?? "-"}</span>
-                  </div>
-                  <Separator />
-                  <div className="flex justify-between text-sm">
-                    <span className="font-semibold text-gray-700">Role</span>
-                    <Badge variant="outline" className="capitalize">
-                      {detail.role.replace("_", " ")}
-                    </Badge>
-                  </div>
-                  <Separator />
-                  <div className="flex justify-between text-sm">
-                    <span className="font-semibold text-gray-700">Status</span>
-                    <Badge className={detail.status === "aktif" ? "bg-green-100 text-green-700 border-green-300" : "bg-red-100 text-red-700 border-red-300"}>{detail.status}</Badge>
-                  </div>
-                  <Separator />
-                  <div className="flex justify-between text-sm">
-                    <span className="font-semibold text-gray-700">Keterangan</span>
-                    <span className="text-gray-900">{detail.keterangan ?? "-"}</span>
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
+            {/* ── Info Dasar ── */}
+            <Card>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-base">Informasi Pribadi</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3 text-sm">
+                <InfoRow label="Nama Lengkap" value={detail.nama} />
+                <Separator />
+                <InfoRow label="NIP" value={detail.nip} />
+                <Separator />
+                <InfoRow label="NUPTK" value={detail.nuptk} />
+                <Separator />
+                <InfoRow label="Email" value={detail.email} />
+                <Separator />
+                <div className="flex justify-between items-center">
+                  <span className="font-semibold text-gray-700">Role</span>
+                  <Badge variant="outline" className="capitalize">
+                    {detail.role?.replace("_", " ") ?? "-"}
+                  </Badge>
+                </div>
+                <Separator />
+                <div className="flex justify-between items-center">
+                  <span className="font-semibold text-gray-700">Status</span>
+                  <Badge
+                    className={
+                      detail.status === "aktif"
+                        ? "bg-green-100 text-green-700 border-green-300"
+                        : "bg-red-100 text-red-700 border-red-300"
+                    }
+                  >
+                    {detail.status}
+                  </Badge>
+                </div>
+                <Separator />
+                <InfoRow label="Keterangan" value={detail.keterangan} />
+              </CardContent>
+            </Card>
 
-            {/* TAB 2: Histori Wali Rombel */}
-            <TabsContent value="rombel" className="space-y-4">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-lg flex items-center gap-2">
-                    <GraduationCap className="w-5 h-5" />
-                    Histori Wali Rombel
-                  </CardTitle>
-                  <CardDescription>Riwayat menjadi wali kelas di berbagai tahun akademik</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  {detail.histori_wali_rombel && detail.histori_wali_rombel.length > 0 ? (
-                    <div className="space-y-3">
-                      {detail.histori_wali_rombel.map((item, idx) => (
-                        <div key={idx} className="border rounded-lg p-4 hover:bg-gray-50 transition">
-                          <div className="flex justify-between items-start mb-2">
-                            <div>
-                              <p className="font-semibold text-primary">{item.nama_rombel}</p>
-                              <p className="text-sm text-gray-600">
-                                {item.nama_kelas} - Tingkat {item.tingkat_kelas}
-                              </p>
-                              {item.jurusan_kelas && <p className="text-sm text-gray-600">{item.jurusan_kelas}</p>}
-                            </div>
-                            <Badge variant="outline">{item.tahun_akademik_rombel}</Badge>
-                          </div>
-                          <Badge className={item.status_tahun_akademik_rombel === "aktif" ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-700"}>{item.status_tahun_akademik_rombel}</Badge>
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <p className="text-center text-gray-500 py-6">Tidak ada histori wali rombel</p>
-                  )}
-                </CardContent>
-              </Card>
-            </TabsContent>
+            {/* ── Link Histori ── */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-base">Lihat Histori</CardTitle>
+              </CardHeader>
+              <CardContent className="flex flex-col gap-3">
 
-            {/* TAB 3: Histori Ekskul */}
-            <TabsContent value="ekskul" className="space-y-4">
-              {/* Pelatih */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-lg flex items-center gap-2">
-                    <Trophy className="w-5 h-5" />
-                    Histori Pelatih Ekstrakurikuler
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  {detail.histori_pelatih_ekskul && detail.histori_pelatih_ekskul.length > 0 ? (
-                    <div className="space-y-3">
-                      {detail.histori_pelatih_ekskul.map((item, idx) => (
-                        <div key={idx} className="border rounded-lg p-4 hover:bg-gray-50 transition">
-                          <div className="flex justify-between items-start">
-                            <div>
-                              <p className="font-semibold text-primary">{item.nama_ekskul}</p>
-                              <p className="text-sm text-gray-600">{item.tahun_akademik_melatih}</p>
-                            </div>
-                            <Badge className={item.status_tahun_akademik_melatih === "aktif" ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-700"}>{item.status_tahun_akademik_melatih}</Badge>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <p className="text-center text-gray-500 py-6">Tidak ada histori pelatih ekskul</p>
-                  )}
-                </CardContent>
-              </Card>
+                {/* ── Semua role: Absensi Pegawai, Pembina, Pelatih ── */}
+                <LinkButton
+                  to={`/superadmin/informasi-laporan-umum/absensi-pegawai?kepegawaian_id=${kepegawaianId}`}
+                  icon={<ClipboardList size={15} />}
+                  label="Histori Absensi Pegawai"
+                  onClick={() => setOpen(false)}
+                />
+                <LinkButton
+                  to={`/superadmin/informasi-akademik/pembina-ekskul/histori/${kepegawaianId}`}
+                  icon={<Trophy size={15} />}
+                  label="Histori Membina Ekstrakurikuler"
+                  onClick={() => setOpen(false)}
+                />
+                <LinkButton
+                  to={`/superadmin/informasi-akademik/pelatih-ekskul/histori/${kepegawaianId}`}
+                  icon={<Trophy size={15} />}
+                  label="Histori Melatih Ekstrakurikuler"
+                  onClick={() => setOpen(false)}
+                />
 
-              {/* Pembina */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-lg flex items-center gap-2">
-                    <Trophy className="w-5 h-5" />
-                    Histori Pembina Ekstrakurikuler
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  {detail.histori_pembina_ekstrakurikuler && detail.histori_pembina_ekstrakurikuler.length > 0 ? (
-                    <div className="space-y-3">
-                      {detail.histori_pembina_ekstrakurikuler.map((item, idx) => (
-                        <div key={idx} className="border rounded-lg p-4 hover:bg-gray-50 transition">
-                          <div className="flex justify-between items-start">
-                            <div>
-                              <p className="font-semibold text-primary">{item.nama_ekstrakurikuler}</p>
-                              <p className="text-sm text-gray-600">{item.tahun_akademik_membina}</p>
-                            </div>
-                            <Badge className={item.status_tahun_akademik_membina === "aktif" ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-700"}>{item.status_tahun_akademik_membina}</Badge>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <p className="text-center text-gray-500 py-6">Tidak ada histori pembina ekskul</p>
-                  )}
-                </CardContent>
-              </Card>
-            </TabsContent>
+                {/* ── Khusus Guru ── */}
+                {isGuru && (
+                  <>
+                    <Separator />
+                    <p className="text-xs text-gray-400 pt-1">Khusus Guru</p>
+                    <LinkButton
+                      to={`/superadmin/informasi-sekolah/wali-rombel?kepegawaian_id=${kepegawaianId}`}
+                      icon={<Users size={15} />}
+                      label="Histori Menjadi Wali Rombel"
+                      onClick={() => setOpen(false)}
+                    />
+                    <LinkButton
+                      to={`/superadmin/informasi-akademik/jadwal-pelajaran-guru?kepegawaian_id=${kepegawaianId}`}
+                      icon={<BookOpen size={15} />}
+                      label="Histori Jadwal Pelajaran"
+                      onClick={() => setOpen(false)}
+                    />
+                    <LinkButton
+                      to={`/superadmin/informasi-laporan-umum/absensi-pelajaran?kepegawaian_id=${kepegawaianId}`}
+                      icon={<ClipboardList size={15} />}
+                      label="Histori Absensi Guru - Pelajaran"
+                      onClick={() => setOpen(false)}
+                    />
+                  </>
+                )}
 
-            {/* TAB 4: Histori Jadwal Pelajaran */}
-            <TabsContent value="jadwal" className="space-y-4">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-lg flex items-center gap-2">
-                    <BookOpen className="w-5 h-5" />
-                    Histori Jadwal Pelajaran
-                  </CardTitle>
-                  <CardDescription>Riwayat mengajar di berbagai tahun akademik dan semester</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  {detail.histori_jadwal_pelajaran && detail.histori_jadwal_pelajaran.length > 0 ? (
-                    <div className="space-y-4">
-                      {detail.histori_jadwal_pelajaran.map((tahun, tIdx) => (
-                        <div key={tIdx} className="border rounded-lg p-4 bg-gray-50">
-                          <div className="flex items-center justify-between mb-3">
-                            <div className="flex items-center gap-2">
-                              <Calendar className="w-4 h-4 text-primary" />
-                              <span className="font-semibold">{tahun.tahun_akademik}</span>
-                            </div>
-                            <Badge className={tahun.status_tahun_akademik === "aktif" ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-700"}>{tahun.status_tahun_akademik}</Badge>
-                          </div>
+              </CardContent>
+            </Card>
+            {/* ── Ubah Password ── */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-base">Keamanan Akun</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <LinkButton
+                  to={`/superadmin/informasi-sekolah/kepegawaian/ubah-password/${kepegawaianId}`}
+                  icon={<KeyRound size={15} />}
+                  label="Ubah Password"
+                  onClick={() => setOpen(false)}
+                />
+              </CardContent>
+            </Card>
 
-                          {tahun.semester.map((sem, sIdx) => (
-                            <div key={sIdx} className="mt-3 bg-white rounded-lg p-3">
-                              <div className="flex justify-between items-center mb-2">
-                                <span className="font-medium text-sm">Semester {sem.semester}</span>
-                                <Badge variant="outline" className="text-xs">
-                                  {sem.status_semester}
-                                </Badge>
-                              </div>
-
-                              <div className="space-y-2">
-                                {sem.jadwal.map((jdw, jIdx) => (
-                                  <div key={jIdx} className="border-l-4 border-primary pl-3 py-2 text-sm">
-                                    <p className="font-semibold text-primary">{jdw.mata_pelajaran.nama_pelajaran}</p>
-                                    <p className="text-gray-600">
-                                      {jdw.hari} • {jdw.jam_mulai} - {jdw.jam_selesai}
-                                    </p>
-                                    <p className="text-gray-600">
-                                      Rombel: {jdw.rombel?.nama_rombel ?? "-"} • Ruangan: {jdw.ruangan ? `${jdw.ruangan.kode_ruangan} - ${jdw.ruangan.nama_ruangan}` : "-"}
-                                    </p>
-
-                                    {(jdw.mata_pelajaran?.jurusan_pelajaran || jdw.mata_pelajaran?.tingkat_pelajaran || jdw.mata_pelajaran?.kkm) && (
-                                      <p className="text-gray-600 text-xs">
-                                        {jdw.mata_pelajaran.jurusan_pelajaran ?? "-"} • Tingkat {jdw.mata_pelajaran.tingkat_pelajaran ?? "-"} • KKM: {jdw.mata_pelajaran.kkm ?? "-"}
-                                      </p>
-                                    )}
-                                  </div>
-                                ))}
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <p className="text-center text-gray-500 py-6">Tidak ada histori jadwal pelajaran</p>
-                  )}
-                </CardContent>
-              </Card>
-            </TabsContent>
-          </Tabs>
+          </div>
         ) : (
           <p className="text-center text-gray-500 py-8">Data tidak ditemukan</p>
         )}
@@ -284,3 +201,37 @@ export function DialogDetailKepegawaian({ kepegawaianId }: DialogDetailKepegawai
     </Dialog>
   );
 }
+
+// ─── Helper Components ─────────────────────────────────────────────────────────
+
+const InfoRow = ({ label, value }: { label: string; value?: string | null }) => (
+  <div className="flex justify-between items-center">
+    <span className="font-semibold text-gray-700">{label}</span>
+    <span className="text-gray-900 text-right max-w-[60%]">{value ?? "-"}</span>
+  </div>
+);
+
+const LinkButton = ({
+  to,
+  icon,
+  label,
+  onClick,
+}: {
+  to: string;
+  icon: React.ReactNode;
+  label: string;
+  onClick?: () => void;
+}) => (
+  <Link to={to} onClick={onClick}>
+    <Button
+      variant="outline"
+      className="w-full justify-between text-sm font-normal hover:bg-indigo-50 hover:border-indigo-300"
+    >
+      <span className="flex items-center gap-2">
+        {icon}
+        {label}
+      </span>
+      <ExternalLink size={14} className="text-gray-400" />
+    </Button>
+  </Link>
+);

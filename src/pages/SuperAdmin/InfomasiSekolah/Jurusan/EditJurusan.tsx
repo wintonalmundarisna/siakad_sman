@@ -19,102 +19,101 @@ const EditJurusan = () => {
   const { id } = useParams<{ id: string }>();
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [formData, setFormData] = useState({
     nama_jurusan: "",
     kode_jurusan: "",
     status: "aktif",
   });
-
   const [errors, setErrors] = useState<FormErrors>({});
   const navigate = useNavigate();
 
-  // Ambil data jurusan berdasarkan ID
+  // ── Fetch data jurusan ──────────────────────────────────────────────────────
+  // FIX: backend show() return key 'id' (bukan 'jurusan_id'), response pakai res.data.data
   useEffect(() => {
     const fetchJurusan = async () => {
       try {
         setIsLoading(true);
-
         const res = await api.get(`/spa/jurusan/${id}`);
-        if (res.data.status !== "success") {
-          Swal.fire({
-            icon: "error",
-            title: "Gagal!",
-            text: res.data.message || "Data jurusan tidak ditemukan.",
+
+        if (res.data.status === "success") {
+          const jurusan = res.data.data;
+          setFormData({
+            nama_jurusan: jurusan.nama_jurusan ?? "",
+            kode_jurusan: jurusan.kode_jurusan ?? "",
+            status: jurusan.status ?? "aktif",
           });
-          return;
+        } else {
+          Swal.fire({ icon: "error", title: "Gagal!", text: res.data.message || "Data jurusan tidak ditemukan." });
+          navigate("/superadmin/informasi-sekolah/jurusan");
         }
-
-        const jurusan = res.data.data;
-
-        // Set form data
-        setFormData({
-          nama_jurusan: jurusan.nama_jurusan ?? "",
-          kode_jurusan: jurusan.kode_jurusan ?? "",
-          status: jurusan.status ?? "aktif",
-        });
-      } catch (error) {
-        console.error(error);
-        Swal.fire({
-          icon: "error",
-          title: "Koneksi gagal!",
-          text: "Tidak dapat terhubung ke server.",
-        });
+      } catch (err: any) {
+        if (err.response?.status === 404) {
+          Swal.fire({ icon: "error", title: "Tidak Ditemukan", text: "Jurusan tidak ditemukan." });
+        } else {
+          Swal.fire({ icon: "error", title: "Koneksi gagal!", text: "Tidak dapat terhubung ke server." });
+        }
+        navigate("/superadmin/informasi-sekolah/jurusan");
       } finally {
         setIsLoading(false);
       }
     };
 
-    fetchJurusan();
+    if (id) fetchJurusan();
   }, [id]);
 
-  // Handle submit update jurusan
+  // ── Handle submit update ────────────────────────────────────────────────────
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setErrors({});
     setLoading(true);
 
     try {
-      const payload = {
+      const res = await api.put(`/spa/jurusan/${id}`, {
         nama_jurusan: formData.nama_jurusan,
         kode_jurusan: formData.kode_jurusan,
         status: formData.status,
-      };
-
-      const res = await api.put(`/spa/jurusan/${id}`, payload);
+      });
 
       if (res.data.status === "success") {
-        Swal.fire("Berhasil", res.data.message, "success").then(() => {
-          navigate("/superadmin/informasi-sekolah/jurusan");
-        });
-      } else if (res.data.errors) {
-        setErrors(res.data.errors);
-      } else {
         Swal.fire({
-          icon: "error",
-          title: "Gagal menyimpan!",
-          text: res.data.message || "Terjadi kesalahan saat memperbarui jurusan.",
-        });
+          icon: "success",
+          title: "Berhasil!",
+          text: res.data.message || "Data jurusan berhasil diperbarui.",
+          showConfirmButton: false,
+          timer: 1800,
+        }).then(() => navigate("/superadmin/informasi-sekolah/jurusan"));
       }
-    } catch {
-      Swal.fire({
-        icon: "error",
-        title: "Koneksi gagal!",
-        text: "Tidak dapat terhubung ke server.",
-      });
+    } catch (err: any) {
+      const status = err.response?.status;
+      const data = err.response?.data;
+
+      if (status === 422 && data?.errors) {
+        const errs = data.errors;
+        if (errs.role) {
+          // Bukan super admin
+          Swal.fire({ icon: "error", title: "Akses Ditolak", text: errs.role[0] });
+        } else {
+          // Validasi field: nama_jurusan, kode_jurusan, status
+          setErrors(errs);
+        }
+      } else if (status === 404) {
+        Swal.fire({ icon: "error", title: "Tidak Ditemukan", text: "Jurusan tidak ditemukan." });
+        navigate("/superadmin/informasi-sekolah/jurusan");
+      } else {
+        Swal.fire({ icon: "error", title: "Koneksi gagal!", text: data?.message || "Tidak dapat terhubung ke server." });
+      }
     } finally {
       setLoading(false);
     }
   };
 
+  // ── Render ──────────────────────────────────────────────────────────────────
   return (
     <SidebarProvider>
       <SidebarSuperAdmin isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
 
-      <main
-        className={`w-full min-h-screen bg-background transition-all duration-300
-        ${isCollapsed ? "md:ml-16" : "md:ml-[300px]"}`}
-      >
+      <main className={`w-full min-h-screen bg-background transition-all duration-300 ${isCollapsed ? "md:ml-16" : "md:ml-[300px]"}`}>
         <PageTitle title="Edit Jurusan" />
         <div className="mx-auto p-4 sm:px-6 lg:px-8">
           <h1 className="text-3xl font-bold mb-6">Edit Jurusan</h1>
@@ -133,6 +132,7 @@ const EditJurusan = () => {
                     Kode Jurusan
                   </label>
                   <input
+                    id="kode_jurusan"
                     type="text"
                     name="kode_jurusan"
                     placeholder="cth: AKL / FIS / SBD"
@@ -148,7 +148,15 @@ const EditJurusan = () => {
                   <label htmlFor="nama_jurusan" className="block font-semibold text-foreground">
                     Nama Jurusan
                   </label>
-                  <input type="text" name="nama_jurusan" placeholder="cth: IPA" value={formData.nama_jurusan} onChange={(e) => setFormData({ ...formData, nama_jurusan: e.target.value })} className="border p-2 w-full mt-2 rounded" />
+                  <input
+                    id="nama_jurusan"
+                    type="text"
+                    name="nama_jurusan"
+                    placeholder="cth: IPA / IPS / Bahasa"
+                    value={formData.nama_jurusan}
+                    onChange={(e) => setFormData({ ...formData, nama_jurusan: e.target.value })}
+                    className="border p-2 w-full mt-2 rounded"
+                  />
                   {errors.nama_jurusan && <p className="text-red-500 text-sm mt-1">{errors.nama_jurusan[0]}</p>}
                 </div>
 
@@ -157,13 +165,12 @@ const EditJurusan = () => {
                   <label htmlFor="status" className="block font-semibold text-foreground">
                     Status
                   </label>
-
-                  <select name="status" value={formData.status} onChange={(e) => setFormData({ ...formData, status: e.target.value })} className="border p-2 w-full mt-2 rounded" required>
+                  {/* FIX: backend validate 'in:aktif,arsip' — pastikan value sesuai */}
+                  <select id="status" name="status" value={formData.status} onChange={(e) => setFormData({ ...formData, status: e.target.value })} className="border p-2 w-full mt-2 rounded" required>
                     <option value="">Pilih Status</option>
                     <option value="aktif">Aktif</option>
                     <option value="arsip">Arsip</option>
                   </select>
-
                   {errors.status && <p className="text-red-500 text-sm mt-1">{errors.status[0]}</p>}
                 </div>
 
@@ -184,7 +191,6 @@ const EditJurusan = () => {
             </div>
           )}
         </div>
-
         <Footer />
       </main>
     </SidebarProvider>

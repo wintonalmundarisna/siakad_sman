@@ -5,9 +5,32 @@ import { Separator } from "@/components/ui/separator";
 import { EyeIcon, Loader2Icon } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import type { JurusanDetail, JurusanDetailResponse } from "@/types/jurusan";
+import { useNavigate } from "react-router-dom";
 import api from "@/api/axios";
 import Swal from "sweetalert2";
+
+// ── Types sesuai response backend JurusanController::show() ──────────────────
+interface RombelAktif {
+  rombel_id: number;
+  nama_rombel: string;
+  status: string;
+}
+
+interface KelasItem {
+  kelas_id: number;
+  nama_kelas: string;
+  tingkat: string | number | null;
+  status: string;
+  rombel_aktif: RombelAktif[];
+}
+
+interface JurusanDetail {
+  id: number;
+  nama_jurusan: string;
+  kode_jurusan: string;
+  status: string;
+  kelas: KelasItem[];
+}
 
 interface DialogDetailJurusanProps {
   jurusanId: number;
@@ -17,8 +40,8 @@ export function DialogDetailJurusan({ jurusanId }: DialogDetailJurusanProps) {
   const [open, setOpen] = useState(false);
   const [jurusan, setJurusan] = useState<JurusanDetail | null>(null);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
-  // Fetch data saat dialog dibuka
   useEffect(() => {
     if (open && jurusanId) {
       fetchJurusanDetail();
@@ -28,32 +51,28 @@ export function DialogDetailJurusan({ jurusanId }: DialogDetailJurusanProps) {
   const fetchJurusanDetail = async () => {
     try {
       setLoading(true);
-      const res = await api.get<JurusanDetailResponse>(`/spa/jurusan/${jurusanId}`);
-
+      const res = await api.get(`/spa/jurusan/${jurusanId}`);
       if (res.data.status === "success") {
         setJurusan(res.data.data);
       }
     } catch (error: any) {
       console.error("Gagal mengambil detail jurusan:", error);
-
       if (error.response?.status === 404) {
-        Swal.fire({
-          icon: "error",
-          title: "Tidak Ditemukan",
-          text: "Jurusan tidak ditemukan",
-        });
+        Swal.fire({ icon: "error", title: "Tidak Ditemukan", text: "Jurusan tidak ditemukan" });
       } else {
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: "Gagal mengambil detail jurusan",
-        });
+        Swal.fire({ icon: "error", title: "Error", text: "Gagal mengambil detail jurusan" });
       }
-
       setOpen(false);
     } finally {
       setLoading(false);
     }
+  };
+
+  // Tutup dialog lalu navigate ke halaman detail tahun aktif rombel
+  // Backend: RombelController::dataTahunAktif($id) → GET /spa/rombel/{id}/tahun-aktif
+  const handleLihatRombel = (rombelId: number) => {
+    setOpen(false);
+    navigate(`/superadmin/informasi-sekolah/rombel/aktif/${rombelId}`);
   };
 
   return (
@@ -70,7 +89,6 @@ export function DialogDetailJurusan({ jurusanId }: DialogDetailJurusanProps) {
           <DialogDescription>Informasi lengkap mengenai jurusan yang dipilih.</DialogDescription>
         </DialogHeader>
 
-        {/* Loading State */}
         {loading ? (
           <div className="flex flex-col items-center justify-center py-8 text-gray-600">
             <Loader2Icon className="animate-spin mb-2" size={32} />
@@ -94,18 +112,16 @@ export function DialogDetailJurusan({ jurusanId }: DialogDetailJurusanProps) {
 
               <div className="flex justify-between items-center">
                 <span className="font-semibold text-gray-700">Status</span>
-                <Badge className={jurusan.status === "aktif" ? "bg-green-100 text-green-700 border-green-300" : "bg-gray-100 text-gray-700 border-gray-300"}>
-                  {jurusan.status}
-                </Badge>
+                <Badge className={jurusan.status === "aktif" ? "bg-green-100 text-green-700 border-green-300" : "bg-gray-100 text-gray-700 border-gray-300"}>{jurusan.status}</Badge>
               </div>
             </div>
 
             {/* Daftar Kelas & Rombel */}
-            {jurusan.details && jurusan.details.length > 0 ? (
+            {jurusan.kelas && jurusan.kelas.length > 0 ? (
               <div className="mt-4">
                 <h3 className="font-semibold text-gray-700 mb-3">Daftar Kelas & Rombongan Belajar</h3>
                 <Accordion type="single" collapsible className="w-full">
-                  {jurusan.details.map((kelas) => (
+                  {jurusan.kelas.map((kelas) => (
                     <AccordionItem key={kelas.kelas_id} value={`kelas-${kelas.kelas_id}`}>
                       <AccordionTrigger className="hover:no-underline">
                         <div className="flex items-center gap-2">
@@ -113,31 +129,30 @@ export function DialogDetailJurusan({ jurusanId }: DialogDetailJurusanProps) {
                           <Badge variant="outline" className="text-xs">
                             Tingkat {kelas.tingkat}
                           </Badge>
-                          <Badge
-                            variant="outline"
-                            className={kelas.status === "aktif" ? "text-xs bg-green-50 text-green-700" : "text-xs bg-gray-50"}
-                          >
+                          <Badge variant="outline" className={kelas.status === "aktif" ? "text-xs bg-green-50 text-green-700" : "text-xs bg-gray-50"}>
                             {kelas.status}
                           </Badge>
                         </div>
                       </AccordionTrigger>
                       <AccordionContent>
                         <div className="pl-4 space-y-2">
-                          {kelas.rombel && kelas.rombel.length > 0 ? (
+                          {kelas.rombel_aktif && kelas.rombel_aktif.length > 0 ? (
                             <div className="grid gap-2">
                               <p className="text-sm font-semibold text-gray-600">Rombongan Belajar:</p>
-                              {kelas.rombel.map((rombel) => (
-                                <div
-                                  key={rombel.rombel_id}
-                                  className="flex items-center justify-between bg-gray-50 p-2 rounded border border-gray-200"
-                                >
-                                  <span className="text-sm">{rombel.nama_rombel}</span>
-                                  <Badge
-                                    variant="outline"
-                                    className={rombel.status === "aktif" ? "text-xs bg-green-100 text-green-700" : "text-xs"}
-                                  >
-                                    {rombel.status}
-                                  </Badge>
+                              {kelas.rombel_aktif.map((rombel) => (
+                                <div key={rombel.rombel_id} className="flex items-center justify-between bg-gray-50 p-2 rounded border border-gray-200">
+                                  <div className="flex items-center gap-2">
+                                    <span className="text-sm">{rombel.nama_rombel}</span>
+                                    <Badge variant="outline" className={rombel.status === "aktif" ? "text-xs bg-green-100 text-green-700" : "text-xs"}>
+                                      {rombel.status}
+                                    </Badge>
+                                  </div>
+
+                                  {/* Ketentuan: masing-masing rombel → button Detail Tahun Aktif */}
+                                  <Button size="sm" variant="outline" className="text-xs" onClick={() => handleLihatRombel(rombel.rombel_id)}>
+                                    <EyeIcon size={13} className="mr-1" />
+                                    Detail Tahun Aktif
+                                  </Button>
                                 </div>
                               ))}
                             </div>

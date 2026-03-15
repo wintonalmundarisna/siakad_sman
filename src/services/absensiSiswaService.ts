@@ -1,6 +1,6 @@
 import api from "@/api/axios";
 import type { TahunAkademikAbsensiSiswa, DetailAbsensiSiswaData, UpdateAbsensiSiswaResponse, AbsensiSiswaSelf, CreateAbsensiSiswaRequest, CreateAbsensiSiswaResponse } from "@/types/absensiSiswa";
-import type { MataPelajaran } from "@/types";
+import type { MataPelajaran } from "@/types/mataPelajaran";
 
 interface ApiResponse<T> {
   status: string;
