@@ -10,7 +10,7 @@ import { Select, SelectContent, /*SelectGroup,*/ SelectItem, /*SelectLabel,*/ Se
 import { Input } from "@/components/ui/input";
 import { Link } from "react-router-dom";
 import api from "@/api/axios";
-import type { Siswa } from "@/types";
+import type { Siswa } from "@/types/siswa";
 import { DialogDetailSiswa } from "./DialogDetailSiswa";
 import Swal from "sweetalert2";
 import { Badge } from "@/components/ui/badge";

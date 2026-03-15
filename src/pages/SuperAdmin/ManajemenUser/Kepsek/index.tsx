@@ -10,7 +10,7 @@ import { Select, SelectContent, /*SelectGroup,*/ SelectItem, /*SelectLabel,*/ Se
 import { Input } from "@/components/ui/input";
 import { Link } from "react-router-dom";
 import api from "@/api/axios";
-import type { Pegawai } from "@/types";
+import type { Kepegawaian, KepegawaianDetail } from "@/types/kepegawaian";
 import Swal from "sweetalert2";
 import { DialogDetailKepsek } from "./DialogDetailKepsek";
 import { Badge } from "@/components/ui/badge";
@@ -19,9 +19,9 @@ const UserKepsek = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [loading, setLoading] = useState(true);
   // const [selecttedNisn, setSelectedNisn] = useState<string | null>(null);
-  const [filtered, setFiltered] = useState<Pegawai[]>([]);
+  const [filtered, setFiltered] = useState<Kepegawaian[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [pegawai, setPegawai] = useState<Pegawai[]>([]);
+  const [pegawai, setPegawai] = useState<Kepegawaian[]>([]);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -32,7 +32,7 @@ const UserKepsek = () => {
         setLoading(true);
         const res = await api.get("/spa/kepegawaian");
         if (res.data.status === "success") {
-          const userPegawai = res.data.data.filter((p: Pegawai) => p.role === "kepsek");
+          const userPegawai = res.data.data.filter((p: Kepegawaian) => p.role === "kepsek");
           setPegawai(userPegawai);
           setFiltered(userPegawai);
         }
@@ -231,7 +231,7 @@ const UserKepsek = () => {
                           <TableCell>{pegawai.role}</TableCell>
                           <TableCell className="flex gap-1 justify-center">
                             {/* Tombol Detail */}
-                            <DialogDetailKepsek kepsek={pegawai} />
+                            <DialogDetailKepsek kepsek={pegawai as KepegawaianDetail} />
 
                             <Link to={`/superadmin/manajemen-user/kepsek/edit/${pegawai.id}`}>
                               <Button className="bg-primary" size="sm">

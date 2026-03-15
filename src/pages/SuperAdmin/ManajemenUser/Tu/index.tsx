@@ -10,7 +10,7 @@ import { Select, SelectContent, /*SelectGroup,*/ SelectItem, /*SelectLabel,*/ Se
 import { Input } from "@/components/ui/input";
 import { Link } from "react-router-dom";
 import api from "@/api/axios";
-import type { Pegawai } from "@/types";
+import type { Kepegawaian } from "@/types/kepegawaian";
 import Swal from "sweetalert2";
 import { DialogDetailTu } from "./DialogDetailTu";
 import { Badge } from "@/components/ui/badge";
@@ -19,9 +19,9 @@ const UserTu = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [loading, setLoading] = useState(true);
   // const [selecttedNisn, setSelectedNisn] = useState<string | null>(null);
-  const [filtered, setFiltered] = useState<Pegawai[]>([]);
+  const [filtered, setFiltered] = useState<Kepegawaian[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [pegawai, setPegawai] = useState<Pegawai[]>([]);
+  const [pegawai, setPegawai] = useState<Kepegawaian[]>([]);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -32,7 +32,7 @@ const UserTu = () => {
         setLoading(true);
         const res = await api.get("/spa/kepegawaian");
         if (res.data.status === "success") {
-          const userPegawai = res.data.data.filter((p: Pegawai) => p.role === "tu");
+          const userPegawai = res.data.data.filter((p: Kepegawaian) => p.role === "tu");
           setPegawai(userPegawai);
           setFiltered(userPegawai);
         }

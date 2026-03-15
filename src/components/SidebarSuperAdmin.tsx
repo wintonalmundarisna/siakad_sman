@@ -1,5 +1,5 @@
 import { SidebarHeader, SidebarFooter, SidebarGroup, SidebarGroupLabel, SidebarGroupContent, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarMenuSub, SidebarMenuSubItem, SidebarMenuSubButton } from "@/components/ui/sidebar";
-import { Home, Users, School, FileText, GraduationCap, ClipboardList, Settings, ChevronDown, LogOut, PanelLeftClose, PanelLeftOpen, Menu } from "lucide-react";
+import { Home, School, FileText, GraduationCap, ClipboardList, Settings, ChevronDown, LogOut, PanelLeftClose, PanelLeftOpen, Menu } from "lucide-react";
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
@@ -83,7 +83,7 @@ export function SidebarSuperAdmin({ isCollapsed, setIsCollapsed }: { isCollapsed
               <SidebarGroupContent>
                 <SidebarMenu>
                   {/* Manajemen User */}
-                  <SidebarMenuItem>
+                  {/* <SidebarMenuItem>
                     <SidebarMenuButton
                       onClick={() => toggleDropdown("manajemen-user")}
                       className={cn("hover:bg-primary/10 hover:text-primary rounded-md justify-between py-2 px-3 transition-colors", location.pathname.includes("/superadmin/manajemen-user") && "bg-primary/10 text-primary")}
@@ -113,7 +113,7 @@ export function SidebarSuperAdmin({ isCollapsed, setIsCollapsed }: { isCollapsed
                         ))}
                       </SidebarMenuSub>
                     )}
-                  </SidebarMenuItem>
+                  </SidebarMenuItem> */}
 
                   {/* Informasi Sekolah */}
                   <SidebarMenuItem>

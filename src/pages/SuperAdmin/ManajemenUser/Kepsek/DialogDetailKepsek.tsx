@@ -1,11 +1,11 @@
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import type { Pegawai } from "@/types";
+import type { KepegawaianDetail } from "@/types/kepegawaian";
 import { EyeIcon } from "lucide-react";
 
 interface DialogDetailKepsekProps {
-  kepsek: Pegawai;
+  kepsek: KepegawaianDetail;
 }
 
 export function DialogDetailKepsek({ kepsek }: DialogDetailKepsekProps) {

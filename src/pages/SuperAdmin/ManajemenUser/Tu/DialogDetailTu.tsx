@@ -1,11 +1,11 @@
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import type { Pegawai } from "@/types";
+import type { Kepegawaian } from "@/types/kepegawaian";
 import { EyeIcon } from "lucide-react";
 
 interface DialogDetailTuProps {
-  tu: Pegawai;
+  tu: Kepegawaian;
 }
 
 export function DialogDetailTu({ tu }: DialogDetailTuProps) {
@@ -63,7 +63,7 @@ export function DialogDetailTu({ tu }: DialogDetailTuProps) {
             <span>{tu.keterangan ?? "-"}</span>
           </div>
           <Separator />
-          
+
           <div className="flex justify-between">
             <span className="font-semibold text-gray-700">Role</span>
             <span>{tu.role ?? "-"}</span>

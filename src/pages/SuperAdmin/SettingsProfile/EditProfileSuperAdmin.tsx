@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import Footer from "@/pages/Footer";
 import Swal from "sweetalert2";
 import api from "@/api/axios";
-import type { Pegawai } from "@/types";
+import type { Kepegawaian } from "@/types/kepegawaian";
 import { CircleXIcon, Save, Loader2Icon } from "lucide-react";
 
 interface ApiResponse<T> {
@@ -52,7 +52,7 @@ const EditProfileSuperAdmin = () => {
       try {
         setLoading(true);
 
-        const res = await api.get<ApiResponse<Pegawai>>("/spa/show/diri");
+        const res = await api.get<ApiResponse<Kepegawaian>>("/spa/show/diri");
 
         if (res.data.status !== "success") {
           await Swal.fire({

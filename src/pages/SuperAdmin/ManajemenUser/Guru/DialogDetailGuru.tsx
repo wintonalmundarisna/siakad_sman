@@ -1,11 +1,11 @@
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import type { Pegawai } from "@/types";
+import type { KepegawaianDetail } from "@/types/kepegawaian";
 import { EyeIcon } from "lucide-react";
 
 interface DialogDetailGuruProps {
-  guru: Pegawai;
+  guru: KepegawaianDetail;
 }
 
 export function DialogDetailGuru({ guru }: DialogDetailGuruProps) {
@@ -45,13 +45,13 @@ export function DialogDetailGuru({ guru }: DialogDetailGuruProps) {
 
           <div className="flex justify-between">
             <span className="font-semibold text-gray-700">Nama Kelas</span>
-            <span>{guru.kelas?.nama_kelas ?? "-"}</span>
+            <span>{guru.rombels?.map((rombel) => rombel.kelas?.nama_kelas).join(", ") ?? "-"}</span>
           </div>
           <Separator />
 
           <div className="flex justify-between">
             <span className="font-semibold text-gray-700">Jam Masuk</span>
-            <span>{guru.kelas?.jam_masuk ?? "-"}</span>
+            <span>{guru.jadwalPelajarans?.map((jadwal) => jadwal.jam_mulai).join(", ") ?? "-"}</span>
           </div>
           <Separator />
 
@@ -66,7 +66,7 @@ export function DialogDetailGuru({ guru }: DialogDetailGuruProps) {
             <span>{guru.keterangan ?? "-"}</span>
           </div>
           <Separator />
-          
+
           <div className="flex justify-between">
             <span className="font-semibold text-gray-700">Role</span>
             <span>{guru.role ?? "-"}</span>

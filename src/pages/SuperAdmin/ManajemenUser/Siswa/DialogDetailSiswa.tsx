@@ -2,7 +2,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { EyeIcon } from "lucide-react";
-import type { Siswa } from "@/types";
+import type { Siswa } from "@/types/siswa";
 
 interface DialogDetailSiswaProps {
   siswa: Siswa;

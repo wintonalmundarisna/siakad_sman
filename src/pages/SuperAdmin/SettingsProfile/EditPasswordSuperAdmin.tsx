@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import Footer from "@/pages/Footer";
 import Swal from "sweetalert2";
 import api from "@/api/axios";
-import type { Pegawai } from "@/types";
+import type { Kepegawaian } from "@/types/kepegawaian";
 import { CircleXIcon, FilePlus, Loader2Icon } from "lucide-react";
 
 interface ApiResponse<T> {
@@ -20,7 +20,7 @@ const EditPasswordSuperAdmin = () => {
   // const navigate = useNavigate();
 
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const [pegawai, setPegawai] = useState<Pegawai | null>(null);
+  const [pegawai, setPegawai] = useState<Kepegawaian | null>(null);
 
   const [passwordLama, setPasswordLama] = useState("");
   const [passwordBaru, setPasswordBaru] = useState("");
@@ -63,7 +63,7 @@ const EditPasswordSuperAdmin = () => {
       try {
         setLoading(true);
 
-        const res = await api.get<ApiResponse<Pegawai>>("/spa/show/diri");
+        const res = await api.get<ApiResponse<Kepegawaian>>("/spa/show/diri");
 
         if (res.data.status !== "success") {
           return Swal.fire("Error", res.data.message || "Gagal mengambil data", "error");

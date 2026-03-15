@@ -22,16 +22,16 @@ import CreateJurusan from "@/pages/SuperAdmin/InfomasiSekolah/Jurusan/CreateJuru
 import EditJurusan from "@/pages/SuperAdmin/InfomasiSekolah/Jurusan/EditJurusan";
 import DataSiswa from "@/pages/SuperAdmin/informasiAkademik/Siswa";
 import EditSiswa from "@/pages/SuperAdmin/informasiAkademik/Siswa/EditSiswa";
-import UserSiswa from "@/pages/SuperAdmin/ManajemenUser/Siswa";
-import EditUserSiswa from "@/pages/SuperAdmin/ManajemenUser/Siswa/EditUserSiswa";
-import UserGuru from "@/pages/SuperAdmin/ManajemenUser/Guru";
-import EditUserGuru from "@/pages/SuperAdmin/ManajemenUser/Guru/EditUserGuru";
-import UserKepsek from "@/pages/SuperAdmin/ManajemenUser/Kepsek";
-import EditUserKepsek from "@/pages/SuperAdmin/ManajemenUser/Kepsek/EditUserKepsek";
-import UserTu from "@/pages/SuperAdmin/ManajemenUser/Tu";
-import EditUserTu from "@/pages/SuperAdmin/ManajemenUser/Tu/EditUserTu";
-import UserStaff from "@/pages/SuperAdmin/ManajemenUser/Staff";
-import EditUserStaff from "@/pages/SuperAdmin/ManajemenUser/Staff/EditUserStaff";
+// import UserSiswa from "@/pages/SuperAdmin/ManajemenUser/Siswa";
+// import EditUserSiswa from "@/pages/SuperAdmin/ManajemenUser/Siswa/EditUserSiswa";
+// import UserGuru from "@/pages/SuperAdmin/ManajemenUser/Guru";
+// import EditUserGuru from "@/pages/SuperAdmin/ManajemenUser/Guru/EditUserGuru";
+// import UserKepsek from "@/pages/SuperAdmin/ManajemenUser/Kepsek";
+// import EditUserKepsek from "@/pages/SuperAdmin/ManajemenUser/Kepsek/EditUserKepsek";
+// import UserTu from "@/pages/SuperAdmin/ManajemenUser/Tu";
+// import EditUserTu from "@/pages/SuperAdmin/ManajemenUser/Tu/EditUserTu";
+// import UserStaff from "@/pages/SuperAdmin/ManajemenUser/Staff";
+// import EditUserStaff from "@/pages/SuperAdmin/ManajemenUser/Staff/EditUserStaff";
 import EditPasswordSuperAdmin from "@/pages/SuperAdmin/SettingsProfile/EditPasswordSuperAdmin";
 import DataEkstrakurikuler from "@/pages/SuperAdmin/informasiAkademik/Ekstrakurikuler";
 import CreateEkskul from "@/pages/SuperAdmin/informasiAkademik/Ekstrakurikuler/CreateEkskul";
@@ -191,7 +191,7 @@ export default function AppRoutes() {
         />
         {/* USER MANAJEMEN */}
         {/* Data User Siswa */}
-        <Route
+        {/* <Route
           path="/superadmin/manajemen-user/siswa"
           element={
             <ProtectedRoute roles={["super_admin"]}>
@@ -206,9 +206,9 @@ export default function AppRoutes() {
               <EditUserSiswa />
             </ProtectedRoute>
           }
-        />
+        /> */}
         {/* Data User Guru */}
-        <Route
+        {/* <Route
           path="/superadmin/manajemen-user/guru"
           element={
             <ProtectedRoute roles={["super_admin"]}>
@@ -223,9 +223,9 @@ export default function AppRoutes() {
               <EditUserGuru />
             </ProtectedRoute>
           }
-        />
+        /> */}
         {/* Data User Kepsek */}
-        <Route
+        {/* <Route
           path="/superadmin/manajemen-user/kepsek"
           element={
             <ProtectedRoute roles={["super_admin"]}>
@@ -240,9 +240,9 @@ export default function AppRoutes() {
               <EditUserKepsek />
             </ProtectedRoute>
           }
-        />
+        /> */}
         {/* Data User Tu */}
-        <Route
+        {/* <Route
           path="/superadmin/manajemen-user/tu"
           element={
             <ProtectedRoute roles={["super_admin"]}>
@@ -257,9 +257,9 @@ export default function AppRoutes() {
               <EditUserTu />
             </ProtectedRoute>
           }
-        />
+        /> */}
         {/* Data User Staff */}
-        <Route
+        {/* <Route
           path="/superadmin/manajemen-user/staff"
           element={
             <ProtectedRoute roles={["super_admin"]}>
@@ -274,8 +274,9 @@ export default function AppRoutes() {
               <EditUserStaff />
             </ProtectedRoute>
           }
-        />
+        /> */}
         {/* Data User Ortu */}
+
         {/* INFORMASI SEKOLAH */}
         {/* Data Kepegawaian */}
         <Route

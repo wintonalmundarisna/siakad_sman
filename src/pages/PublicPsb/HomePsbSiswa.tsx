@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import BannerSekolah from "@/assets/Banner-image-psb.png";
 import { Link } from "react-router-dom";
 import Footer from "../Footer";
-import type { TahunAkademik } from "@/types";
+import type { TahunAkademik } from "@/types/tahunAkademik";
 import { useEffect, useState } from "react";
 import api from "@/api/axios";
 import Swal from "sweetalert2";
