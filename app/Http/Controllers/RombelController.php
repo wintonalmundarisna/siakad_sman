@@ -314,6 +314,7 @@ class RombelController extends Controller
                 ->where('tahun_akademik_id', $ta->id)
                 ->map(function ($sr) {
                     return [
+                        'siswa_rombel_id' => $sr->id, // PERBAIKAN
                         'siswa_id'     => $sr->siswa?->id,
                         'nama_siswa'   => $sr->siswa?->nama,
                         'nisn'         => $sr->siswa?->nisn,
@@ -339,7 +340,10 @@ class RombelController extends Controller
                         'semester'    => $semester?->semester,
                         'jadwal_pelajaran' => $jadwals->map(function ($j) {
                             return [
-                                'jadwal_id'      => $j->id,
+                                'jadwal_pelajaran_id'      => $j->id, // PERBAIKAN (rename)
+                                'kurikulum_mata_pelajaran_id'      => $j->kurikulumMataPelajaran->id, // PERBAIKAN
+                                'guru_id'  => $j->guru?->id, // PERBAIKAN
+                                'ruangan_id'  => $j->ruangan?->id, // PERBAIKAN
                                 'mata_pelajaran' => $j->kurikulumMataPelajaran
                                     ?->mataPelajaran
                                     ?->nama_pelajaran,
@@ -361,6 +365,7 @@ class RombelController extends Controller
                 'status_tahun_akademik' => $ta->status,
     
                 'wali' => $wali ? [
+                    'wali_rombel_id'  => $wali->id, // PERBAIKAN
                     'wali_id'   => $wali->wali?->id,
                     'nama_wali' => $wali->wali?->nama,
                 ] : null,

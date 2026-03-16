@@ -521,34 +521,41 @@ class AbsensiPegawaiController extends Controller
      */
     public function export(Request $request)
     {
-        $ids = $request->input('ids');
+        $ids = $request->input('ids'); 
+        $tahun_id = $request->input('tahun_akademik_id');
+        $semester_id = $request->input('semester_id');
 
-        // WAJIB array & tidak kosong
-        if (!$ids || !is_array($ids)) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'ID absensi wajib dikirim dalam bentuk array',
-            ], 422);
+        // Validasi jika export berdasarkan ID
+        if ($ids) {
+
+            $validIds = AbsensiPegawai::whereIn('id', $ids)->pluck('id')->toArray();
+            $missingIds = array_diff($ids, $validIds);
+
+            if (count($missingIds) > 0) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Beberapa ID tidak ditemukan',
+                    'missing_ids' => array_values($missingIds),
+                ], 404);
+            }
         }
 
-        // Ambil ID yang valid
-        $validIds = AbsensiPegawai::whereIn('id', $ids)->pluck('id')->toArray();
+        $tahunAkademik = TahunAkademik::find($tahun_id);
+        $tahun = str_replace(['/','\\',' '], '_', $tahunAkademik->tahun_akademik);
 
-        // Cari ID yang tidak ada
-        $missingIds = array_values(array_diff($ids, $validIds));
-
-        if (!empty($missingIds)) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Beberapa ID absensi tidak ditemukan',
-                'missing_ids' => $missingIds,
-            ], 404);
+        if (!$tahunAkademik) {
+            return ApiResponse::error('Tahun akademik tidak ditemukan');
         }
 
-        // ✅ SEMUA ID VALID → EXPORT
+        $semester = Semester::find($semester_id);
+
+        if (!$semester) {
+            return ApiResponse::error('Semester tidak ditemukan');
+        }
+
         return Excel::download(
-            new AbsensiPegawaiExport($validIds),
-            'absensi-pegawai-harian.xlsx'
+            new AbsensiPegawaiExport($tahun_id, $semester_id),
+            'Absensi_Pegawai_'.$semester->semester.'_'.$tahun.'.xlsx'
         );
     }
 

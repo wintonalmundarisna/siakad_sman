@@ -586,8 +586,7 @@ class AbsensiPelajaranController extends Controller
      * Semua data = GET /absensi/pegawai/pelajaran/export
      * Beberapa data = GET /absensi/pegawai/pelajaran/export?ids[]=3&ids[]=5&ids[]=10
      * Satu data = GET /absensi/pegawai/pelajaran/export?ids[]=7
-     */
-    // ! Masuk sini dan exportnya, tinggal run dan periksa
+     */    
     public function export(Request $request)
     {
         $ids = $request->input('ids'); 

@@ -136,140 +136,134 @@ SPA:
 
 --------------------------------------------------------------------------------
 
-- ✅ Register
+- ✅☑️ Register
 
 --------------------------------------------------------------------------------
 
-- ✅ Login
+- ✅☑️ Login
 
 --------------------------------------------------------------------------------
 
 - ✅ Get Detail Diri
-  - Logout
-  - Ubah Pass Diri
-  - Update Diri
-  - Lupa Pass
+  - ☑️ Logout
+  - ☑️ Ubah Pass Diri
+  - ☑️ Update Diri
+  - ☑️ Lupa Pass
 
 --------------------------------------------------------------------------------
 
-- ✅ identitas sekolah
-  - CRUD
+- ✅☑️ identitas sekolah
+  - ☑️ CRUD
 
 --------------------------------------------------------------------------------
 
-- ✅ Gedung
-  - CRUD
-  - Pada halaman detail gedung, berikan button "tambah ruangan" (silakan gunakan id gedung yang sedang di get sebagai data select)
-    - Masing-masing ruangan diberi button "detail", "update", dan "delete" yang mengarah ke Ruangan: Get Detail, Update, dan Delete. (gunakan id gedung yang sedang di get untuk data select)
-
---------------------------------------------------------------------------------
-
-- ✅ Ruangan
-  - CRUD
+- ✅☑️ Gedung
+  - ☑️ CRUD
+  - ☑️ Pada halaman detail gedung, berikan button "tambah ruangan" (silakan gunakan id gedung yang sedang di get sebagai data select)
+    - ☑️ Masing-masing ruangan diberi button "detail", "update", dan "delete" yang mengarah ke Ruangan: Get Detail, Update, dan Delete. (gunakan id gedung yang sedang di get untuk data select)
 
 --------------------------------------------------------------------------------
 
 - ✅ Kepegawaian
-  - Guru
-    - Ubah Password
-    - Create
-    - Update
-    - Delete
-    - Get All
-    - Get Detail => kasih aja button di detail buat ngelink ke bawah ini
-      - Wali rombel                     : histori menjadi wali
-      - Guru jadwal pelajaran           : histori jadwal
-      - Absensi pegawai                 : histori absensi
-      - Absensi guru - pelajaran        : histori absensi
-      - Pembina eksktrakurikuler        : Histori membina
-      - Pelatih ekstrakurikuler         : Histori melatih
+  - ☑️ Guru
+    - ☑️ Ubah Password
+    - ☑️ Create
+    - ☑️ Update
+    - ☑️ Delete
+    - ☑️ Get All
+    - ☑️ Get Detail => kasih aja button di detail buat ngelink ke bawah ini
+      - ❌ Wali rombel                     : histori menjadi wali
+      - ☑️ Guru jadwal pelajaran           : histori jadwal
+      - ❌ Absensi pegawai                 : histori absensi
+      - ❌ Absensi guru - pelajaran        : histori absensi
+      - ❌ Pembina eksktrakurikuler        : Histori membina
+      - ❌ Pelatih ekstrakurikuler         : Histori melatih
 
   - Staff
-    - Ubah Password
-    - Create
-    - Update
-    - Delete
-    - Get All
+    - ☑️ Ubah Password
+    - ☑️ Create
+    - ☑️ Update
+    - ☑️ Delete
+    - ☑️ Get All
     - Get Detail => kasih aja button di detail buat ngelink ke bawah ini      
-      - Absensi pegawai                 : histori absensi      
-      - Pembina eksktrakurikuler        : Histori membina
-      - Pelatih ekstrakurikuler         : Histori melatih        
+      - ❌ Absensi pegawai                 : histori absensi      
+      - ❌ Pembina eksktrakurikuler        : Histori membina
+      - ❌ Pelatih ekstrakurikuler         : Histori melatih        
 
 --------------------------------------------------------------------------------
 
 - ✅ Penerimaan Siswa Baru
-  - CRUD
-  - Export
-  - Import
+  - ❌ CRUD
+  - ✅ Export  
 
 --------------------------------------------------------------------------------
 
 - ✅ Siswa
-  - Ubah Pass
-  - Create
-  - Update
-  - Delete
-  - Get All
+  - ☑️ Ubah Pass
+  - ☑️ Create
+  - ☑️ Update
+  - ☑️ Delete
+  - ☑️ Get All
   - Get Detail => Kasih button di halaman detail buat ngelink ke bawah ini
-    - Siswa rombel                    : Histori rombel
-    - Siswa jadwal pelajaran          : Histori jadwal
-    - Absensi Siswa - Pelajaran       : Histori absensi
-    - Siswa - Ekstrakurikuler         : Histori ikut ekskul
-    - Prestasi                        : Histori prestasi
-    - Data Nilai Siswa                : Cetak satu siswa dan semua nilainya (Ini belum fix)
+    - ❌ Siswa rombel                    : Histori rombel
+    - ❌ Siswa jadwal pelajaran          : Histori jadwal
+    - ❌ Absensi Siswa - Pelajaran       : Histori absensi
+    - ❌ Siswa - Ekstrakurikuler         : Histori ikut ekskul
+    - ❌ Prestasi                        : Histori prestasi
+    - ❌ Data Nilai Siswa                : Cetak satu siswa dan semua nilainya (Ini belum fix)
 
 --------------------------------------------------------------------------------
 
 - ✅ Jurusan
-  - CRUD
-  - Pada halaman detail, masing-masing rombel dikasih button untuk diarahkan ke Rombel: Detail Tahun Aktif
+  - ☑️ CRUD
+  - ☑️ Pada halaman detail, masing-masing rombel dikasih button untuk diarahkan ke Rombel: Detail Tahun Aktif
 
 --------------------------------------------------------------------------------
 
 - ✅ Kelas
-  - CRUD
+  - ☑️ CRUD
   - Get Detail (halaman baru untuk show detail kelas):
-    - Kasih button create rombel di halaman detail kelas ini ==> Rombel: Create
-    - Masing masing rombel dikasih button update, delete, detail ==> Rombel: Update, Delete, Detail Tahun Aktif
-    - Saat klik detail rombel maka masuk ke halaman **(detail rombel)** ==> Rombel: Detail Tahun Aktif (diliat ini hasil runnya gimana)
-      - Kalo belum ada data, kosongin halaman atau beri pesan "belum ada data pada tahun ini"
-      - mau ada data atau engga, buat button Create wali di halaman ini **(detail rombel)** ==> Wali Rombel: Create (gunakan id rombel yang sedang di get, data select pakai yang ada di wali rombel)
-        - after create wali nanti muncul list wali pada halaman ini **(detail rombel)**, kasih button update dan delete
-      - Mau ada data atau engga, buat button create siswa rombel sebelah create wali di halaman ini **(detail rombel)** ==> Siswa Rombel: Create
-        - After create siswa nanti muncul list siswa pada halaman ini, kasih button update dan delete masing-masingnya
-      - Mau ada data atau engga, buat button create guru jadwal pelajaran di halaman ini ==> Guru Jadwal Pelajaran: create
-        - After create jadwal nanti muncul list jadwal pada halaman ini, kasih button update dan delete
-      - Mau ada data atau engga, buat button sebelah create jadwal untuk lihat histori per periode ==> Rombel: Detail Histori            
+    - ☑️ Kasih button create rombel di halaman detail kelas ini ==> Rombel: Create
+    - ☑️ Masing masing rombel dikasih button update, delete, detail ==> Rombel: Update, Delete, Detail Tahun Aktif
+    - ☑️ Saat klik detail rombel maka masuk ke halaman **(detail rombel)** ==> Rombel: Detail Tahun Aktif (diliat ini hasil runnya gimana)
+      - ☑️ Kalo belum ada data, kosongin halaman atau beri pesan "belum ada data pada tahun ini"
+      - ☑️ mau ada data atau engga, buat button Create wali di halaman ini **(detail rombel)** ==> Wali Rombel: Create (gunakan id rombel yang sedang di get, data select pakai yang ada di wali rombel)
+        - ☑️ after create wali nanti muncul list wali pada halaman ini **(detail rombel)**, kasih button update dan delete
+      - ☑️ Mau ada data atau engga, buat button create siswa rombel sebelah create wali di halaman ini **(detail rombel)** ==> Siswa Rombel: Create
+        - ☑️ After create siswa nanti muncul list siswa pada halaman ini, kasih button update dan delete masing-masingnya
+      - ☑️ Mau ada data atau engga, buat button create guru jadwal pelajaran di halaman ini ==> Guru Jadwal Pelajaran: create
+        - ☑️ After create jadwal nanti muncul list jadwal pada halaman ini, kasih button update dan delete
+      - ❌ Mau ada data atau engga, buat button sebelah tulisan "Informasi Rombel" untuk lihat histori per periode ==> Rombel: Detail Histori            
 
 --------------------------------------------------------------------------------
 
 - ✅ Kurikulum
-  - CRUD
-  - Pada halaman detail, kasih button "Lihat Mata Pelajaran" buat mengarah ke:
-    - Kurikulum Mata Pelajaran: Get All (gunakan id kurikulum yang sedang di get)    
+  - ☑️ CRUD
+  - ☑️ Pada halaman detail, kasih button "Lihat Mata Pelajaran" buat mengarah ke:
+    - ☑️ Kurikulum Mata Pelajaran: Get All (gunakan id kurikulum yang sedang di get)    
 
 --------------------------------------------------------------------------------
 
 - ✅ Mata Pelajaran (Master Data)
-  - CRUD  
+  - ☑️ CRUD  
 
 --------------------------------------------------------------------------------
 
 - ✅ Tahun Akademik
-  - Create
-  - Update
-  - Delete
-  - Get Detail: Akan dihapus dari backend karna get all sudah mencukupi
-  - Get All: Bikin jadi card/tabel, tahun dan semester satu paket, lalu masing-masing card diberi button dibawah ini:
+  - ☑️ Create
+  - ☑️ Update
+  - ☑️ Delete
+  - ☑️ Get Detail: Akan dihapus dari backend karna get all sudah mencukupi
+  - ☑️ Get All: Bikin jadi card/tabel, tahun dan semester satu paket, lalu masing-masing card diberi button dibawah ini:
     - Semester
-      - Kasih button create semester di masing-masing card tahun akademik (gunakan id tahun yang sedang di get)
-      - kasih button update dan delete pada masing-masing semester      
+      - ☑️ Kasih button create semester di masing-masing card tahun akademik (gunakan id tahun yang sedang di get)
+      - ☑️ kasih button update dan delete pada masing-masing semester      
 
 --------------------------------------------------------------------------------
 
 - ✅ Kurikulum_mata_pelajaran
-  - CRUD
-  - Pada halaman detail, kasih button "Lihat Kompetensi" untuk mengarah ke Kompetensi: Get All    
+  - ☑️ CRUD
+  - ☑️ Pada halaman detail, kasih button "Lihat Kompetensi" untuk mengarah ke Kompetensi: Get All    
 
 --------------------------------------------------------------------------------
 
@@ -286,14 +280,14 @@ SPA:
 --------------------------------------------------------------------------------
 
 - ✅ Guru jadwal pelajaran
-  - Get all: Ini buat memudahkan admin ngecek kebenaran semua jadwal tanpa harus liat rombel satu persatu
+  - ☑️ Get all: Ini buat memudahkan admin ngecek kebenaran semua jadwal tanpa harus liat rombel satu persatu
 
 --------------------------------------------------------------------------------
 
 - ✅ Alur Tujuan Pembelajaran (Penerapan ATP Master) => Jadi guru consume atp_master per semester, nanti spa yang pantau apakah cocok diterapkan pada semester ini atau tidak
-  - Get All Diajukan
+  - ☑️ Get All Diajukan
     - Kasih button "disetujui" dan "ditolak" pada masing-masing atp
-  - Get all disetujui
+  - ☑️ Get all disetujui
     - Kasih button "batal disetujui" pada masing-masing atp
 
 --------------------------------------------------------------------------------
@@ -313,19 +307,24 @@ SPA:
 --------------------------------------------------------------------------------
 
 - ✅ Ekstrakurikuler
-  - CRUD
+  - ☑️ CRUD
   - Detail:
-    - Pada halaman detail ekskul, tambahkan button "tambah pembina" yang mengarah ke => Pembina Ekskul: Menjadikan Pembina
-      - After create nanti balik ke halaman detail ekstrakurikuler dan tampil siapa pembinanya per periode, kasih button update dan delete pada masing-masingnya (histori membina jangan dibuat kerna sudah ada di kepegawaian atas)
-    - Pada halaman detail ekskul, tambahkan button "tambah pelatih" yang mengarah ke => Pelatih Ekskul: Menjadikan Pelatih
-      - After create nanti balik ke halaman detail ekstrakurikuler dan tampil siapa pelatihnya per periode, kasih button update dan delete pada masing-masingnya (histori jangan)
-    - Pada halaman detail ekskul, tambahkan button "tambah siswa" yang mengarah ke => Siswa Ekskul: Siswa didaftarkan ekskul
-      - After cereate nanti balik ke halaman detail ekstrakurikuler dan tampil siapa siswanya per periode, kasih button update dan delete pada masing-masingnya (histori jangan)
+    - ☑️ Pada halaman detail ekskul, tambahkan button "tambah pembina" yang mengarah ke => Pembina Ekskul: Menjadikan Pembina
+      - ☑️ After create nanti balik ke halaman detail ekstrakurikuler dan tampil siapa pembinanya per periode, kasih button update dan delete pada masing-masingnya (histori membina jangan dibuat kerna sudah ada di kepegawaian atas)
+    - ☑️ Pada halaman detail ekskul, tambahkan button "tambah pelatih" yang mengarah ke => Pelatih Ekskul: Menjadikan Pelatih
+      - ☑️ After create nanti balik ke halaman detail ekstrakurikuler dan tampil siapa pelatihnya per periode, kasih button update dan delete pada masing-masingnya (histori jangan)
+    - ☑️ Pada halaman detail ekskul, tambahkan button "tambah siswa" yang mengarah ke => Siswa Ekskul: Siswa didaftarkan ekskul
+      - ☑️ After create nanti balik ke halaman detail ekstrakurikuler dan tampil siapa siswanya per periode, kasih button update dan delete pada masing-masingnya (histori jangan)
 
 --------------------------------------------------------------------------------
 
 - ✅ Prestasi
-  - CRUD (yang histori jangan karna di siswa atas sudah ada)
+  - ☑️ CRUD (yang histori jangan karna di siswa atas sudah ada)
+
+--------------------------------------------------------------------------------
+
+
+- Keuangan
 
 --------------------------------------------------------------------------------
 
@@ -389,3 +388,64 @@ Ryan
 - Alur Tujuan Pembelajaran juga lihat di atas bagian alur
 - ❌ Data Siswa
 - ❌ Bikinyang bisa dan tidak bisa masing-masing fitur, misal tahun akademik bisa dihapus pas arsip tapi gabisa pas udah di consume semester
+
+
+
+
+<!-- Urutan -->
+
+// Data Master (Dibuat sekali)
+- Register
+
+- Login
+
+- Identitas Sekolah
+
+- Gedung
+    Ruangan
+
+- Jurusan
+
+- Mata Pelajaran
+
+- Kurikulum
+    Kurikulum Mata Pelajaran    
+        Kompetensi
+            Atp master
+            
+- Kepegawaian
+    Guru
+    Staff
+
+- Siswa
+
+
+// Data Akademik (Harus dikelola tiap tahun / semester)
+- Tahun Akademik
+    Semester
+
+- Penerimaan Siswa Baru
+
+- Kelas
+    Rombel
+
+- Guru - Jadwal Pelajaran
+
+- Alur Tujuan Pembelajaran (Consume ATP Master)
+
+- Ekstrakurikuler
+    Siswa Ekskul
+    Pembina
+    Pelatih
+
+    
+// Data Laporan Umum
+- Absensi Pegawai
+
+- Absensi Guru - Pelajaran
+
+- Absensi 
+
+- Prestasi
+
+- Keuangan
