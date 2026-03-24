@@ -3,8 +3,9 @@
 namespace App\Exports;
 
 use App\Models\Rombel;
-use App\Models\SiswaRombel;
 use App\Models\DataNilaiSiswa;
+// use App\Models\WaliRombel;
+use App\Models\SiswaRombel;
 use App\Models\AbsensiSiswa;
 use App\Models\Kelas;
 use App\Models\TahunAkademik;
@@ -104,8 +105,12 @@ class LegerExport implements WithMultipleSheets
             
             $jumlahMapel = $this->mapelList->count();
 
+            // $rerata = $jumlahMapel > 0
+            //     ? round($totalNilai / $jumlahMapel, 2)
+            //     : 0;
+
             $rerata = $jumlahMapel > 0
-                ? round($totalNilai / $jumlahMapel, 2)
+                ? $totalNilai / $jumlahMapel
                 : 0;
             
             $totalpAR->push([
@@ -167,7 +172,7 @@ class LegerExport implements WithMultipleSheets
     {
         $sheets = [];
         $rombels = Rombel::where('kelas_id', $this->kelas->id)
-            ->with('jurusan')
+            ->with(['jurusan', 'waliRombels.wali'])
             ->get();
         foreach ($rombels as $rombel) {
             $sheets[] = new class(
@@ -260,8 +265,12 @@ class LegerExport implements WithMultipleSheets
                             $total += $nilai;
                         }
 
+                        // $rerata = count($this->mapelList)
+                        //     ? round($total / count($this->mapelList), 2)
+                        //     : 0;
+
                         $rerata = count($this->mapelList)
-                            ? round($total / count($this->mapelList), 2)
+                            ? $total / count($this->mapelList)
                             : 0;
 
                         $abs = $this->allAbsensi[$siswaId] ?? null;
@@ -364,8 +373,12 @@ class LegerExport implements WithMultipleSheets
                         $columnValues = collect($sortedRows)
                             ->pluck("nilai_mapel.$i");
 
+                        // $rerataRow[] = $columnValues->count()
+                        //     ? round($columnValues->avg(), 2)
+                        //     : 0;
+
                         $rerataRow[] = $columnValues->count()
-                            ? round($columnValues->avg(), 2)
+                            ? $columnValues->avg()
                             : 0;
 
                         $maxRow[] = $columnValues->count()
@@ -400,7 +413,7 @@ class LegerExport implements WithMultipleSheets
                     return [
                         AfterSheet::class => function (AfterSheet $event) {
                             $sheet = $event->sheet->getDelegate();
-                            $sheet->insertNewRowBefore(1, 6);
+                            $sheet->insertNewRowBefore(1, 6);        
 
                             // Merge
                             // ===============================
@@ -468,6 +481,12 @@ class LegerExport implements WithMultipleSheets
                             $highestColumn = $alpaCol; // STOP sampai kolom Alpa saja
                             $highestRow = $sheet->getHighestRow();
 
+                            // Untuk desimal rata-rata agar tidak dibulatkan                            
+                            $sheet->getStyle("{$rerataCol}9:{$rerataCol}{$highestRow}")
+                            ->getNumberFormat()
+                            ->setFormatCode('0.00');
+
+
                             // Auto width semua kolom
                             $highestColumnIndex = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($highestColumn);
 
@@ -533,12 +552,22 @@ class LegerExport implements WithMultipleSheets
                             if (!empty($this->rombel->jurusan)) {
                                 $jurusan = ' / JURUSAN ' . $this->rombel->jurusan->nama_jurusan;
                             }
+
+                            // ambil wali
+                            $waliText = optional(
+                                $this->rombel
+                                    ->waliRombelByTahun($this->tahunAkademik->id)
+                                    ?->wali
+                            )->nama;
+                            
+                            $waliText = $waliText ? ' / ' . $waliText : '';
+
                             // --- KOP (Header Info) ---
                             $sheet->setCellValue('A1', 'LEGER NILAI RAPOR SISWA');
                             $sheet->setCellValue('A2', 'TAHUN PELAJARAN ' . $this->tahunAkademik->tahun_akademik . ' SEMESTER ' . $this->semester->semester);
                             $sheet->setCellValue('A3', 'SEKOLAH : SMAN 42 JAKARTA'); 
                             $sheet->setCellValue('A4', 'KELAS : ' . $this->kelas->nama_kelas . ' (' . $this->kelas->tingkat . ')');
-                            $sheet->setCellValue('A5', 'ROMBEL : ' . $this->rombel->nama_rombel . $jurusan);
+                            $sheet->setCellValue('A5', 'ROMBEL : ' . $this->rombel->nama_rombel . $jurusan . $waliText);
                             // Merge cells untuk kop
                             $sheet->mergeCells("A1:{$highestColumn}1");
                             $sheet->mergeCells("A2:{$highestColumn}2");
@@ -594,6 +623,11 @@ class LegerExport implements WithMultipleSheets
                             $maxRowNum    = $highestRow - 1;
                             $minRowNum    = $highestRow;
 
+                            // agar tidak dibulatkan
+                            $sheet->getStyle("E{$rerataRowNum}:{$endMapelCol}{$rerataRowNum}")
+                            ->getNumberFormat()
+                            ->setFormatCode('0.00');
+
                             // Merge Columns A to D
                             $sheet->mergeCells("A{$rerataRowNum}:D{$rerataRowNum}");
                             $sheet->mergeCells("A{$maxRowNum}:D{$maxRowNum}");
@@ -607,6 +641,13 @@ class LegerExport implements WithMultipleSheets
                             $sheet->getStyle("A{$rerataRowNum}:D{$rerataRowNum}")->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
                             $sheet->getStyle("A{$maxRowNum}:D{$maxRowNum}")->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
                             $sheet->getStyle("A{$minRowNum}:D{$minRowNum}")->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+
+                            $sheet->getStyle("A{$rerataRowNum}:{$highestColumn}{$rerataRowNum}")
+                                ->getFont()->setBold(true);
+                            $sheet->getStyle("A{$maxRowNum}:{$highestColumn}{$maxRowNum}")
+                                ->getFont()->setBold(true);
+                            $sheet->getStyle("A{$minRowNum}:{$highestColumn}{$minRowNum}")
+                                ->getFont()->setBold(true);
 
                             // ===========================================
                             // BORDER STOP AT MAPEL COLUMNS ONLY
@@ -671,7 +712,7 @@ class LegerExport implements WithMultipleSheets
                             $sheet->getPageMargins()->setTop(0.5);
                             $sheet->getPageMargins()->setBottom(0.5);
                             $sheet->getPageMargins()->setLeft(0.5);
-                            $sheet->getPageMargins()->setRight(0.5);
+                            $sheet->getPageMargins()->setRight(0.5);                            
                         }
                     ];                    
                 }

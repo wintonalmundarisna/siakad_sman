@@ -97,13 +97,13 @@ class AbsensiSiswaExport implements WithMultipleSheets
 
 
                         // Pengaturan berikut menyebabkan tidak bisa import karna cut path
-                        $bukti = $items->pluck('bukti')
-                        ->filter()
-                        ->map(function ($item) {
-                            return basename($item);
-                        })
-                        ->unique()
-                        ->implode("\n");
+                        // $bukti = $items->pluck('bukti')
+                        // ->filter()
+                        // ->map(function ($item) {
+                        //     return basename($item);
+                        // })
+                        // ->unique()
+                        // ->implode("\n");
 
                         return [
                             'nama'=>$nama,
@@ -111,7 +111,7 @@ class AbsensiSiswaExport implements WithMultipleSheets
                             'sakit'=>$sakit,
                             'izin'=>$izin,
                             'alpa'=>$alpa,
-                            'bukti'=>$bukti
+                            // 'bukti'=>$bukti
                         ];
 
                     })->sortBy('nama')->values();
@@ -124,7 +124,7 @@ class AbsensiSiswaExport implements WithMultipleSheets
                             $item['sakit'],
                             $item['izin'],
                             $item['alpa'],
-                            $item['bukti'],
+                            // $item['bukti'],
                         ];
                     });
                 }
@@ -138,7 +138,7 @@ class AbsensiSiswaExport implements WithMultipleSheets
                         'Sakit',
                         'Izin',
                         'Alpa',
-                        'Bukti',
+                        // 'Bukti',
                     ];
                 }
 
@@ -196,7 +196,8 @@ class AbsensiSiswaExport implements WithMultipleSheets
                             ===============================
                             */
 
-                            $sheet->getStyle('A5:G5')->applyFromArray([
+                            // $sheet->getStyle('A5:G5')->applyFromArray([
+                            $sheet->getStyle('A5:F5')->applyFromArray([
                                 'font'=>[
                                     'bold'=>true,
                                     'color'=>['rgb'=>'FFFFFF']
@@ -231,9 +232,9 @@ class AbsensiSiswaExport implements WithMultipleSheets
                             ===============================
                             */
 
-                            $sheet->getStyle('G6:G'.$highestRow)
-                                ->getAlignment()
-                                ->setWrapText(true);
+                            // $sheet->getStyle('G6:G'.$highestRow)
+                            //     ->getAlignment()
+                            //     ->setWrapText(true);
 
                             /*
                             ===============================
@@ -241,7 +242,7 @@ class AbsensiSiswaExport implements WithMultipleSheets
                             ===============================
                             */
 
-                            $range='A5:G'.$highestRow;
+                            $range='A5:F'.$highestRow;
 
                             $sheet->getStyle($range)->applyFromArray([
                                 'borders'=>[

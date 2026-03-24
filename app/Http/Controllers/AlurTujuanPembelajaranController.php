@@ -22,7 +22,8 @@ class AlurTujuanPembelajaranController extends Controller
     public function index()
     {
         $atps = AlurTujuanPembelajaran::with([
-            'atpMaster.kompetensi.mataPelajaran',
+            // 'atpMaster.kompetensi.mataPelajaran',
+            'atpMaster.kompetensi.kurikulumMataPelajaran.mataPelajaran', //Perbaikan
             'tahunAkademik',
             'semesterRelasi',
             'approved',
@@ -44,7 +45,8 @@ class AlurTujuanPembelajaranController extends Controller
 
                 return [
                     'kompetensi_id'     => $kompetensi->id,
-                    'mata_pelajaran'    => $kompetensi->mataPelajaran->nama_pelajaran ?? null,
+                    // 'mata_pelajaran'    => $kompetensi->mataPelajaran->nama_pelajaran ?? null,
+                'mata_pelajaran' => $kompetensi->kurikulumMataPelajaran?->mataPelajaran?->nama_pelajaran ?? null, //Perbaikan
                     'judul_kompetensi'  => $kompetensi->judul_kompetensi,
                     'jenis_kompetensi'  => $kompetensi->jenis,
                     'fase'              => $kompetensi->fase,
@@ -124,7 +126,8 @@ class AlurTujuanPembelajaranController extends Controller
     public function disetujui()
     {
         $atps = AlurTujuanPembelajaran::with([
-            'atpMaster.kompetensi.mataPelajaran',
+            // 'atpMaster.kompetensi.mataPelajaran',
+            'atpMaster.kompetensi.kurikulumMataPelajaran.mataPelajaran', //Perbaikan
             'tahunAkademik',
             'semesterRelasi',
             'approved',
@@ -146,7 +149,8 @@ class AlurTujuanPembelajaranController extends Controller
 
                 return [
                     'kompetensi_id'     => $kompetensi->id,
-                    'mata_pelajaran'    => $kompetensi->mataPelajaran->nama_pelajaran ?? null,
+                    // 'mata_pelajaran'    => $kompetensi->mataPelajaran->nama_pelajaran ?? null,
+                    'mata_pelajaran' => $kompetensi->kurikulumMataPelajaran?->mataPelajaran?->nama_pelajaran ?? null, //PERBAIKAN
                     'judul_kompetensi'  => $kompetensi->judul_kompetensi,
                     'jenis_kompetensi'  => $kompetensi->jenis,
                     'fase'              => $kompetensi->fase,

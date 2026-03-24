@@ -4681,7 +4681,7 @@ class DatabaseSeeder extends Seeder
                 'kurikulum_mata_pelajaran_id' => 4, // B.Indo
                 'tahun_akademik_id' => 1,
                 'semester_id' => 1,
-                'jenis_penilaian'  => 'PTS',
+                'jenis_penilaian'  => 'Susulan PTS',
                 'point_absensi' => 60,
                 'point_tugas' => 60,
                 'point_uts' => 40,
@@ -4717,7 +4717,7 @@ class DatabaseSeeder extends Seeder
                 'kurikulum_mata_pelajaran_id' => 3, // PPKn
                 'tahun_akademik_id' => 1,
                 'semester_id' => 2,
-                'jenis_penilaian'  => 'PAS',
+                'jenis_penilaian'  => 'Remedial PAS',
                 'point_absensi' => 60,
                 'point_tugas' => 80,
                 'point_uts' => 0,

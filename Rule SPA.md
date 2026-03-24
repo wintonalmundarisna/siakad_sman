@@ -210,7 +210,7 @@ SPA:
     - ❌ Absensi Siswa - Pelajaran       : Histori absensi
     - ❌ Siswa - Ekstrakurikuler         : Histori ikut ekskul
     - ❌ Prestasi                        : Histori prestasi
-    - ❌ Data Nilai Siswa                : Cetak satu siswa dan semua nilainya (Ini belum fix)
+    - ❌ Data Nilai Siswa                : Histori Rapor
 
 --------------------------------------------------------------------------------
 
@@ -324,12 +324,12 @@ SPA:
 --------------------------------------------------------------------------------
 
 
-- Keuangan
+- ✅ Keuangan
 
 --------------------------------------------------------------------------------
 
 - ❌ Data Nilai Siswa:
-  - Belum jadi    
+  - 
 
 
       ___  
@@ -352,9 +352,9 @@ Winton:
   - ✅ PSB
   - ✅ Leger
   - ✅ Absensi Siswa
-  - ❌ Absensi Pegawai
+  - ✅ Absensi Pegawai
   - ✅ Absensi Guru - Pelajaran
-  - ❌ Keuangan
+  - ✅ Keuangan
 - ✅ Import excel psb dihapus aja
 - ✅ Import zip berkas psb dihapus aja
 - ✅ Kurikulum        : Status arsip boleh dihapus
@@ -388,6 +388,13 @@ Ryan
 - Alur Tujuan Pembelajaran juga lihat di atas bagian alur
 - ❌ Data Siswa
 - ❌ Bikinyang bisa dan tidak bisa masing-masing fitur, misal tahun akademik bisa dihapus pas arsip tapi gabisa pas udah di consume semester
+
+
+
+
+
+
+
 
 
 

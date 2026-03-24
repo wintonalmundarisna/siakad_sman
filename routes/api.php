@@ -200,9 +200,10 @@ Route::middleware('auth:kepegawaian')->group(function () {
     Route::get('/spa/data-nilai-siswa/leger', [DataNilaiSiswaController::class, 'index']);   
     Route::get('/spa/data-nilai-siswa/export/leger', [DataNilaiSiswaController::class, 'export']);   
     
-    Route::get('/spa/data-nilai-siswa/{id}', [DataNilaiSiswaController::class, 'semuaNilaiSatuSiswa']);
-    Route::get('/spa/data-nilai-siswa/cetak/{id}', [DataNilaiSiswaController::class, 'cetakSemuaNilaiSatuSiswa']);
-    Route::get('/spa/data-nilai-siswa/select-referensi', [DataNilaiSiswaController::class, 'selectDanReferensi']);   
+    // Route::get('/spa/nilai-siswa/aktif', [DataNilaiSiswaController::class, 'selectDanReferensi']);   
+    Route::get('/spa/data-select/rapor', [DataNilaiSiswaController::class, 'dataSelectSatuSiswa']);   
+    Route::get('/spa/data-nilai-siswa/rapor/{id}', [DataNilaiSiswaController::class, 'semuaNilaiSatuSiswa']);
+    Route::get('/spa/data-nilai-siswa/export/rapor', [DataNilaiSiswaController::class, 'cetakRapor']);
     
     // ✅ Keuangan
     Route::delete('/spa/keuangan/destroy/{id?}', [KeuanganController::class, 'destroyData']);

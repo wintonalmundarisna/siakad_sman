@@ -168,6 +168,7 @@ class AbsensiPegawaiController extends Controller
 
             $mataPelajaran = JadwalPelajaran::where('guru_id', $pegawai->id)->first();            
             $tahunAkademik = TahunAkademik::where('status', 'aktif')->first();            
+            $semester = Semester::where('status', 'aktif')->first();            
 
             // gabisa absen 2x pada hari yang sama
             $hari = AbsensiPegawai::where('guru_id', $pegawai->id)
@@ -181,9 +182,10 @@ class AbsensiPegawaiController extends Controller
             $absensi = AbsensiPegawai::create(
                 [
                     'guru_id' => $pegawai->id,
-                    'mata_pelajaran_id' => $mataPelajaran->mata_pelajaran_id ?? null,
+                    'jadwal_pelajaran_id' => $mataPelajaran->mata_pelajaran_id ?? null,
                     'hari' => Carbon::today()->toDateString(),
                     'tahun_akademik_id' => $tahunAkademik->id ?? null,
+                    'semester_id' => $semester->id ?? null,
                     'status' => $validated['status']
                 ]
             );

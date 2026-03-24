@@ -2,25 +2,27 @@
 
 namespace App\Http\Controllers;
 
-// use App\Exports\LegerExport;
-// use App\Helpers\ApiResponse;
+use App\Exports\LegerExport;
+use App\Exports\SatuSiswaSemuaNilaiExport;
+use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
-// use App\Models\DataNilaiSiswa;
-// use App\Models\Rapor;
-// use App\Models\Semester;
-// use App\Models\TahunAkademik;
-// use App\Models\Rombel;
-// use App\Models\Kelas;
-// use App\Models\AbsensiSiswa;
+use App\Models\DataNilaiSiswa;
+use App\Models\Rapor;
+use App\Models\Semester;
+use App\Models\TahunAkademik;
+use App\Models\Rombel;
+use App\Models\Kelas;
+use App\Models\AbsensiSiswa;
 // use App\Models\SiswaRombel;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 // use Illuminate\Support\Facades\Validator;
 // use Illuminate\Validation\Rule;
-// use Illuminate\Support\Facades\Auth;
-// use Illuminate\Validation\ValidationException;
-use Maatwebsite\Excel\Facades\Excel;
+// use App\Models\Siswa;
 // use PDF;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
+use Maatwebsite\Excel\Facades\Excel;
 
 class DataNilaiSiswaController extends Controller
 {
@@ -329,14 +331,18 @@ class DataNilaiSiswaController extends Controller
 
     // cetak leger
     public function export(Request $request) {    
-        $kelas = Kelas::find($request->kelas_id);
+        $kelas          = Kelas::find($request->kelas_id);
+        $semester       = Semester::find($request->semester_id);
+        $tahunAkademik  = TahunAkademik::find($request->tahun_akademik_id);
+        $tahun          = str_replace(['/','\\',' '], '_', $tahunAkademik->tahun_akademik);
+
         return Excel::download(
             new LegerExport(
                 $request->tahun_akademik_id,
                 $request->semester_id,
-                $request->kelas_id   // 10 / 11 / 12
-            ),
-            'Leger-Kelas-'.$kelas->nama_kelas.'.xlsx'
+                $request->kelas_id
+            ),            
+            'Leger_'.$kelas->nama_kelas.'_'.$semester->semester.'_'.$tahun.'.xlsx'
         );
     }
 
@@ -490,6 +496,8 @@ class DataNilaiSiswaController extends Controller
                 'rombel_id'     => $last->siswaRombel->rombel->id ?? null,
                 'nama_rombel'   => $last->siswaRombel->rombel->nama_rombel ?? null,
                 'jurusan'       => $last->siswaRombel->rombel->jurusan->nama_jurusan ?? null,
+                'status_akhir'  => $last->siswaRombel->status_akhir ?? null,
+                'catatan'       => $last->siswaRombel->catatan ?? null,
             ],
 
             'tahun_akademik' => $nilai
@@ -583,102 +591,31 @@ class DataNilaiSiswaController extends Controller
     }
 
     
-    // Export/Cetak excel satu siswa semua mapel (bukan leger)
-    public function cetakSemuaNilaiSatuSiswa(Request $request, $siswaId)
+    // Export excel satu siswa semua mapel (rapor)
+    // ! masuk sini, jangan pakai pdf, tapi pakai SatuSiswaSemuaNilaiExport
+    // ! user cukup tentukan tahun, semester dan jenis, nanti dicetak massal
+    // ! tiap sheet excel berisi satu siswa dan semua nilainya
+    public function cetakRapor(Request $request)
     {
-        // $request->validate([
-        //     'tahun' => 'required|integer',
-        //     'semester' => 'required|integer',
-        //     'jenis' => 'required|string',
-        // ]);
+        $tahunAkademik  = TahunAkademik::find($request->tahun_akademik_id);
+        $tahun          = str_replace(['/','\\',' '], '_', $tahunAkademik->tahun_akademik);
+        $semester       = Semester::find($request->semester_id);
 
-        // $siswa = Siswa::with('siswaRombels.rombel')
-        //     ->findOrFail($siswaId);
+        $rombel         = Rombel::find($request->rombel_id);
 
-        // $nilai = DataNilaiSiswa::with('kurikulumMataPelajaran.mataPelajaran')
-        //     ->where('siswa_id', $siswaId)
-        //     ->where('tahun_akademik_id', $request->tahun)
-        //     ->where('semester_id', $request->semester)
-        //     ->where('jenis_penilaian', $request->jenis)
-        //     ->orderBy('kurikulum_mata_pelajaran_id')
-        //     ->get();
+        if (!$rombel) {
+            return ApiResponse::error('Rombel tidak ditemukan');
+        }
 
-        // if ($nilai->isEmpty()) {
-        //     return response()->json([
-        //         'message' => 'Nilai tidak ditemukan'
-        //     ], 404);
-        // }
-
-        // $pdf = PDF::loadView('pdf.nilai_siswa', [
-        //     'siswa' => $siswa,
-        //     'nilai' => $nilai,
-        //     'jenis' => $request->jenis,
-        //     'semester' => $request->semester
-        // ]);
-
-        // return $pdf->download('Laporan_Nilai_'.$siswa->nama.'.pdf');
-
-        // $request->validate([
-        //     'tahun_akademik_id' => 'required|exists:tahun_akademik,id',
-        //     'semester_id'       => 'required|exists:semester,id',
-        //     'jenis_rapor'       => 'required|in:PTS,PAS'
-        // ], [
-        //     'tahun_akademik_id.required'    => 'Tahun akademik wajib ditentkan',
-        //     'tahun_akademik_id.exists'      => 'Tahun akademik tidak ditemukan',
-        //     'semester_id.required'          => 'Semester wajib ditentkan',
-        //     'semester_id.exists'            => 'Semester tidak ditemukan',
-        //     'jenis_rapor.required'          => 'Jenis rapor wajib ditentkan',
-        //     'jenis_rapor.in'                => 'Pilihan jenis rapor hanya PTS dan PAS',
-        // ]);
-
-        // $data = Rapor::with([
-        //     'tahunAkademik',
-        //     'semester',
-        //     'siswaRombel.rombel',
-        //     'waliRombel.rombel',
-        //     'siswa',
-        // ])
-        // ->where('tahun_akademik_id', $request->tahun_akademik_id)
-        // ->where('semester_id', $request->semester_id)
-        // ->where('jenis_rapor', $request->jenis_rapor)
-        // ->get();
-
-        // if ($data->isEmpty()) {
-        //     return ApiResponse::error('Not found', 'Belum ada data');
-        // }
-
-        // $formatted = $data->groupBy('tahun_akademik_id')
-        // ->map(function ($raporSiswa) {
-        //     $tahunAkademik = $raporSiswa->first()->tahunAkademik;
-
-        //     return [
-        //         'tahun_akademik_id' => $tahunAkademik->id,
-        //         'tahun_akademik'    => $tahunAkademik->tahun_akademik,
-        //         'status_tahun'      => $tahunAkademik->status,
-        //         'semeester'         => $raporSiswa->groupBy('semester_id')
-        //         ->map(function ($rapor) {
-        //             $semester = $rapor->first()->semester;
-
-        //             return [
-        //                 'semester_id'       => $semester->id,
-        //                 'semester'          => $semester->semester,
-        //                 'status_semester'   => $status->semester,
-        //                 'rombel'            => $rapor->groupBy('siswa_rombel_id.rombel')
-        //                 ->map(function ($rpr) {
-        //                     $rombel     = $rpr->first()->siswaRombel->rombel;
-        //                     $waliRombel = $rpr->first()->waliRombel->wali;
-
-        //                     return [
-        //                         'rombel_id' => $rombel->id,
-        //                         'rombel'    => $rombel->nama_rombel,
-        //                         'wali'      => $waliRombel->nama,
-        //                         ''
-        //                     ];
-        //                 })->values(),
-        //             ];
-        //         })->values(),
-        //     ];
-        // })->values();
+        return Excel::download(
+            new SatuSiswaSemuaNilaiExport(
+                $request->tahun_akademik_id,
+                $request->semester_id,
+                $request->rombel_id,
+                $request->jenis_penilaian
+            ),            
+            'Rapor_'.$rombel->nama_rombel.'_'.$semester->semester.'_'.$tahun.'.xlsx'            
+        );
     }
 
 
@@ -934,62 +871,75 @@ class DataNilaiSiswaController extends Controller
         ], 422);
     }    
 
-    // spa/tu/guru (digunakan untuk mengambil absensi)
-    public function selectDanReferensi()
-    {
-        // ambil hanya siswa rombel pada tahun akademik yang aktif
-        $data = SiswaRombel::with([
-                'tahunAkademik',
-                'rombel.kelas',
-                'siswa',
-            ])
-            ->whereHas('tahunAkademik', function ($ta) {
-                $ta->where('status', 'aktif');
-            })
-            ->get();
 
-        if ($data->isEmpty()) {
-            return ApiResponse::error('Not found', 'Belum ada data siswa dan rombel pada tahun aktif');
-        }
 
-        $siswaRombel = $data->groupBy('tahun_akademik_id')
-            ->sortKeys()
-            ->map(function ($siswaRmbl) {
+    // spa/tu/guru hanya mengambil siswa yang aktif di tahun dan semester aktif
+    // http://127.0.0.1:8000/api/spa/nilai-siswa/aktif
+    /**
+     * Ini hanya mengambil siswa yang aktif saja. Berikan button/link yang mengarah ke API dibawah ini untuk melihat absensi siswa per tahun dan per semester yang nantinya digunakan sebagai bahan pertimbangan guru dalam mengisi kolom point_absensi.
+     * Ini juga digunakan sebagai data select (biar sekalian) karna mengandung siswa_id, tahun, dan rombel. berikan button lagi dengan nama "input nilai" atau bebas terserah di sebelah/sejajar dengan button yang atas, yang nantinya diarahkan ke form create data nilai siswa untuk guru
+     * Link API (id siswa):
+     * http://127.0.0.1:8000/api/spa/absensi/siswa/pelajaran/200
+     * Nanti sebenernya ada button lagi. sejajar sama dua button di atas. itu referensi nilai tugas harian. tapi karna lms belum jadi, maka saat ini isi manual dulu point_tugas
+     */
+    // public function selectDanReferensi()
+    // {
+    //     // ambil hanya siswa rombel pada tahun akademik yang aktif
+    //     $data = SiswaRombel::with([
+    //             'tahunAkademik',
+    //             'rombel.kelas',
+    //             'siswa',
+    //         ])
+    //         ->whereHas('tahunAkademik', function ($ta) {
+    //             $ta->where('status', 'aktif');
+    //         })
+    //         ->get();
 
-                $tahun = $siswaRmbl->first()->tahunAkademik;
+    //     if ($data->isEmpty()) {
+    //         return ApiResponse::error('Not found', 'Belum ada data siswa dan rombel pada tahun aktif');
+    //     }
 
-                return [
-                    'tahun_akademik_id' => $tahun->id,
-                    'tahun_akademik'    => $tahun->tahun_akademik,
-                    'status_tahun'      => $tahun->status,
+    //     $siswaRombel = $data->groupBy('tahun_akademik_id')
+    //         ->sortKeys()
+    //         ->map(function ($siswaRmbl) {
 
-                    'rombel' => $siswaRmbl->groupBy('rombel_id')
-                        ->sortKeys()
-                        ->map(function ($siswaR) {
+    //             $tahun = $siswaRmbl->first()->tahunAkademik;
 
-                            $rombel = $siswaR->first()->rombel;
+    //             return [
+    //                 'tahun_akademik_id' => $tahun->id,
+    //                 'tahun_akademik'    => $tahun->tahun_akademik,
+    //                 'status_tahun'      => $tahun->status,
 
-                            return [
-                                'rombel_id' => $rombel->id,
-                                'rombel'    => $rombel->nama_rombel,
+    //                 'rombel' => $siswaRmbl->groupBy('rombel_id')
+    //                     ->sortKeys()
+    //                     ->map(function ($siswaR) {
 
-                                'siswa' => $siswaR->map(function ($item) {
-                                    return [
-                                        'siswa_id'     => $item->siswa->id,
-                                        'nama'         => $item->siswa->nama,
-                                        'nisn'         => $item->siswa->nisn,
-                                        'nis'          => $item->siswa->nis,
-                                        'status_akhir' => $item->status_akhir,
-                                        'catatan'      => $item->catatan,
-                                    ];
-                                })->values(),
-                            ];
-                        })->values(),
-                ];
-            })->values();
+    //                         $rombel = $siswaR->first()->rombel;
 
-        return ApiResponse::success($siswaRombel, 'Data select dan referensi absensi berhasil diambil');
-    }    
+    //                         return [
+    //                             'rombel_id' => $rombel->id,
+    //                             'rombel'    => $rombel->nama_rombel,
+
+    //                             'siswa' => $siswaR->map(function ($item) {
+    //                                 return [
+    //                                     'siswa_id'     => $item->siswa->id,
+    //                                     'nama'         => $item->siswa->nama,
+    //                                     'nisn'         => $item->siswa->nisn,
+    //                                     'nis'          => $item->siswa->nis,
+    //                                     'status_akhir' => $item->status_akhir,
+    //                                     'catatan'      => $item->catatan,
+    //                                 ];
+    //                             })->values(),
+    //                         ];
+    //                     })->values(),
+    //             ];
+    //         })->values();
+
+    //     return ApiResponse::success($siswaRombel, 'Siswa pada tahun aktif berhasil diambil');
+    // }    
+
+
+
 
     // ✅ untuk leger/index
     public function dataSelect() {        
@@ -1026,15 +976,65 @@ class DataNilaiSiswaController extends Controller
                 'tingkat'   => $kls->tingkat,
                 'status'    => $kls->status,
             ];
+        })->values();        
+
+        return ApiResponse::success([
+            'tahun_dan_semester'    => $tahunDanSemester,
+            'kelas'                 => $kelas,            
+        ], 'Data select leger berhasil diambil');
+    }
+
+    public function dataSelectSatuSiswa() {      
+        $data2 = Semester::with('tahunAkademik')->get();
+
+        if ($data2->isEmpty()) {
+            return ApiResponse::error('Not found', 'Belum ada data tahun akademik dan semester');
+        }
+
+        $tahunDanSemester = $data2->groupBy('tahun_akademik_id')
+        ->map(function ($tahunAkademik) {
+            return [
+                'tahun_akademik_id' => $tahunAkademik->first()->tahunAkademik->id,
+                'tahun_akademik'    => $tahunAkademik->first()->tahunAkademik->tahun_akademik,
+                'status'            => $tahunAkademik->first()->tahunAkademik->status,
+                'semester'          => $tahunAkademik->map(function ($taSemester) {
+                    return [
+                        'semester_id'   => $taSemester->id,
+                        'semester'      => $taSemester->semester,
+                        'status'        => $taSemester->status,
+                    ];
+                })->values(),
+            ];
+        })->values();
+        
+
+        $jenis = [
+            'PTS'   => 'PTS',
+            'PAS'   => 'PAS',
+            'Susulan PTS'   => 'Susulan PTS',
+            'Susulan PAS'   => 'Susulan PAS',
+            'Remedial PTS'   => 'Remedial PTS',
+            'Remedial PAS'   => 'Remedial PAS'
+        ];
+
+        $data3 = Rombel::get();
+
+        if ($data3->isEmpty()) {
+            return ApiResponse::error('Not found', 'Belum ada rombel');
+        }
+
+        $rombel = $data3->map(function ($rmbl) {
+            return [
+                'rombel_id'     => $rmbl->id,
+                'nama_rombel'   => $rmbl->nama_rombel,
+                'jurusan'       => $rmbl->jurusan->nama_jurusan ?? null
+            ];
         })->values();
 
         return ApiResponse::success([
-            'tahun_dan_smeester'    => $tahunDanSemester,
-            'kelas'                 => $kelas
-        ], 'Data select leger berhasil diambil');
+            'tahun_dan_semester'    => $tahunDanSemester,
+            'rombel'                => $rombel,
+            'jenis_penilaian'       => $jenis
+        ], 'Data select rapor berhasil diambil');
     }
 }
-
-
-// ! tinggal rerata, maksimal, minimal bawah
-// ! export leger. no, nama, nisn, nis itu merge atasnya

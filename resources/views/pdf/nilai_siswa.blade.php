@@ -29,6 +29,11 @@
             <td>{{ $siswa->nis }}</td>
         </tr>
         <tr>
+            <td>NISN</td>
+            <td>:</td>
+            <td>{{ $siswa->nis }}</td>
+        </tr>
+        <tr>
             <td>Kelas</td>
             <td>:</td>
             <td>{{ $siswa->siswaRombel->rombel->nama ?? '-' }}</td>

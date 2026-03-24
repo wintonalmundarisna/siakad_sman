@@ -125,6 +125,7 @@ public function index(Request $request)
                         return [
                             'semester_id' => $semester->id ?? null,
                             'semester'    => $semester->semester ?? null,
+                            'status_semester'    => $semester->status ?? null,
 
                             'rombels' => $semesterItems
                                 ->groupBy(fn ($item) => $item->siswaRombel?->rombel?->id)

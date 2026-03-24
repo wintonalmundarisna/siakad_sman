@@ -205,7 +205,7 @@ class KeuanganController extends Controller
 
         try {
             // Kirim file langsung sebagai download response
-            return Excel::download(new KeuanganExport($ids), 'data_keuangan.xlsx');
+            return Excel::download(new KeuanganExport($ids), 'Data_Keuangan.xlsx');
         } catch (\Exception $e) {
             // Tangani error ekspor
             return response()->json([
