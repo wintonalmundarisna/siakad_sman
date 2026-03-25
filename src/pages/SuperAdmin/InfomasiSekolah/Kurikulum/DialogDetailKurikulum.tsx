@@ -116,7 +116,7 @@ export function DialogDetailKurikulum({ kurikulum }: DialogDetailKurikulumProps)
             <div className="pt-2 border-t mt-2">
               <Button className="w-full bg-primary flex items-center gap-2" onClick={handleLihatMataPelajaran}>
                 <BookOpenIcon size={16} />
-                Lihat Mata Pelajaran
+                Lihat Kurikulum Mata Pelajaran
               </Button>
             </div>
           </>

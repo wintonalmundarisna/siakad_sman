@@ -1,15 +1,5 @@
-/**
- * DetailKompetensi
- * Route: /superadmin/informasi-sekolah/kompetensi/:id?kurikulum_mata_pelajaran_id=X
- *
- * CRUD ATP Master inline (Dialog) karena:
- * - GET /spa/atp-master/:id → di-comment di backend (tidak tersedia)
- * - GET /spa/data-select/atp-master → di-comment di backend (tidak tersedia)
- * - kompetensi_id sudah diketahui dari halaman ini
- * - Semua data yang dibutuhkan untuk create/edit sudah ada di state lokal
- */
 import { useEffect, useState } from "react";
-import { useParams, useNavigate, useSearchParams, Link } from "react-router-dom";
+import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import PageTitle from "@/components/PageTitle";
 import { SidebarSuperAdmin } from "@/components/SidebarSuperAdmin";
 import { SidebarProvider } from "@/components/ui/sidebar";
@@ -40,6 +30,7 @@ interface AtpMaster {
 
 interface KompetensiDetail {
   kompetensi_id: number;
+  kurikulumId: number;
   kurikulum: string;
   mata_pelajaran: string;
   judul_kompetensi: string;
@@ -99,9 +90,9 @@ const DetailKompetensi = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   const kurmapId = searchParams.get("kurikulum_mata_pelajaran_id") || "";
-  const backUrl  = kurmapId
-    ? `/superadmin/informasi-sekolah/kompetensi?kurikulum_mata_pelajaran_id=${kurmapId}`
-    : "/superadmin/informasi-sekolah/kompetensi";
+  const kurikulumId = searchParams.get("kurikulum_id") || "";
+
+  const backUrl = kurmapId ? `/superadmin/informasi-sekolah/kompetensi?kurikulum_mata_pelajaran_id=${kurmapId}&kurikulum_id=${kurikulumId}` : "/superadmin/informasi-sekolah/kompetensi";
 
   // ── Detail state ─────────────────────────────────────────────────────────────
   const [data, setData]       = useState<KompetensiDetail | null>(null);
@@ -146,6 +137,12 @@ const DetailKompetensi = () => {
     if (!id) { navigate(backUrl); return; }
     fetchDetail();
   }, [id]);
+
+  useEffect(() => {
+    if (data && !kurikulumId) {
+      navigate(`/superadmin/informasi-sekolah/kompetensi/${id}?kurikulum_mata_pelajaran_id=${kurmapId}&kurikulum_id=${data.kurikulumId}`, { replace: true });
+    }
+  }, [data]);
 
   // ── Dialog helpers ────────────────────────────────────────────────────────────
   const openCreateDialog = () => {
@@ -346,17 +343,18 @@ const DetailKompetensi = () => {
           <div className="flex items-start gap-3 mb-6">
             <Button variant="outline" size="sm" onClick={() => navigate(backUrl)} className="mt-1">
               <ArrowLeft size={16} />
+              Kembali
             </Button>
             <div className="flex-1">
               <h1 className="text-3xl font-bold">Detail Kompetensi</h1>
               <p className="text-sm text-muted-foreground mt-0.5">Informasi lengkap kompetensi yang dipilih</p>
             </div>
-            <Link to={`/superadmin/informasi-sekolah/kompetensi/edit/${data.kompetensi_id}${kurmapId ? `?kurikulum_mata_pelajaran_id=${kurmapId}` : ""}`}>
+            {/* <Link to={`/superadmin/informasi-sekolah/kompetensi/edit/${data.kompetensi_id}?kurikulum_mata_pelajaran_id=${kurmapId}&kurikulum_id=${data.kurikulumId}`}>
               <Button className="bg-primary gap-2">
                 <PenBoxIcon size={16} />
                 Edit
               </Button>
-            </Link>
+            </Link> */}
           </div>
 
           {/* ── Card Info Kompetensi ── */}

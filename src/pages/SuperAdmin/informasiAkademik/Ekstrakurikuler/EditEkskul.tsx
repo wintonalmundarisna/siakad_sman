@@ -39,9 +39,11 @@ const EditEkskul = () => {
     const fetchData = async () => {
       try {
         setIsLoading(true);
-        // getDetail: response { data: [ EkskulDetail ] }
-        const res = await api.get(`/spa/ekstrakurikuler/${id}`);
-        const detail = res.data.data?.[0];
+        // ✅ Pakai index, lalu filter by id
+        const res = await api.get("/spa/ekstrakurikuler");
+        const list = res.data.data ?? [];
+        const detail = list.find((e: any) => String(e.id) === String(id));
+
         if (detail) {
           setFormData({
             nama_ekstrakurikuler: detail.nama_ekskul ?? "",
@@ -49,6 +51,9 @@ const EditEkskul = () => {
             status: detail.status ?? "",
             status_aktif: detail.status_aktif ?? "",
           });
+        } else {
+          Swal.fire({ icon: "error", title: "Data tidak ditemukan!" });
+          navigate("/superadmin/informasi-akademik/ekstrakurikuler");
         }
       } catch {
         Swal.fire({ icon: "error", title: "Gagal!", text: "Tidak dapat memuat data ekstrakurikuler." });

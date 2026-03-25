@@ -10,7 +10,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import Footer from "@/pages/Footer";
 import api from "@/api/axios";
 import Swal from "sweetalert2";
-import { Loader2Icon, PlusIcon, PencilIcon, Trash2Icon, UserIcon, UsersIcon, TrophyIcon, ChevronLeftIcon } from "lucide-react";
+import { Loader2Icon, PlusIcon, PenBoxIcon, Trash2Icon, UserIcon, UsersIcon, TrophyIcon, ChevronLeftIcon } from "lucide-react";
 import { formatRupiah } from "@/utils/formatRupiah";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -447,7 +447,7 @@ const DetailEkstrakurikuler = () => {
 
       const raw = unwrapArray(res.data);
       // Debug: lihat key lengkap dari item pertama
-      if (raw.length > 0) console.log("[TahunAkademik] keys:", Object.keys(raw[0]), "| item[0]:", raw[0]);
+      // if (raw.length > 0) console.log("[TahunAkademik] keys:", Object.keys(raw[0]), "| item[0]:", raw[0]);
 
       if (raw.length === 0) return "";
 
@@ -753,7 +753,7 @@ const DetailEkstrakurikuler = () => {
                             })
                           }
                         >
-                          <PencilIcon size={13} />
+                          <PenBoxIcon size={13} />
                         </Button>
                         <Button size="sm" className="bg-muted-foreground hover:bg-muted-foreground/90" onClick={() => deletePembina(periodeData.anggota.pembina.pembina_pivot_id!, periodeData.anggota.pembina.nama_pembina!)}>
                           <Trash2Icon size={13} />
@@ -801,7 +801,7 @@ const DetailEkstrakurikuler = () => {
                             })
                           }
                         >
-                          <PencilIcon size={13} />
+                          <PenBoxIcon size={13} />
                         </Button>
                         <Button size="sm" className="bg-muted-foreground hover:bg-muted-foreground/90" onClick={() => deletePelatih(periodeData.anggota.pelatih.pelatih_pivot_id!, periodeData.anggota.pelatih.nama_pelatih!)}>
                           <Trash2Icon size={13} />
@@ -870,7 +870,7 @@ const DetailEkstrakurikuler = () => {
                                     })
                                   }
                                 >
-                                  <PencilIcon size={12} />
+                                  <PenBoxIcon size={12} />
                                 </Button>
                                 <Button size="sm" className="bg-muted-foreground hover:bg-muted-foreground/90 h-7 px-2" onClick={() => deleteSiswa(siswa.siswa_pivot_id, siswa.nama_siswa)}>
                                   <Trash2Icon size={12} />

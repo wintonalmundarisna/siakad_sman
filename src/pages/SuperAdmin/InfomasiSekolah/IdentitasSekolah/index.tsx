@@ -98,7 +98,7 @@ const DataIdentitasSekolah = () => {
         <div className="mx-auto p-6 sm:px-8 lg:px-10">
           {/* Header Section */}
           <div className="mb-8">
-            <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-primary to-indigo-600 bg-clip-text text-transparent">Data Identitas Sekolah</h1>
+            <h1 className="text-4xl font-bold mb-2">Data Identitas Sekolah</h1>
             <p className="text-gray-600">Kelola informasi dan identitas sekolah Anda</p>
           </div>
 

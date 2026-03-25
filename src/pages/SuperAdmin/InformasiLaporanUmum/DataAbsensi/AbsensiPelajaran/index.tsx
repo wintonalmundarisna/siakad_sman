@@ -59,7 +59,7 @@ interface AbsensiItem {
   nama_guru: string;
   nip: string | null;
   role: string | null;
-  mata_pelajaran: string | null;
+  mengajar: string | null;
   hari: string;
   status: "hadir" | "tidak hadir";
   tahun_akademik: string;
@@ -89,7 +89,7 @@ const flattenData = (rawData: any[]): AbsensiItem[] => {
             nama_guru:                guruItem.nama_guru,
             nip:                      guruItem.nip ?? null,
             role:                     guruItem.role ?? null,
-            mata_pelajaran:           abs.mata_pelajaran ?? null,
+            mengajar:           abs.mengajar ?? null,
             hari:                     abs.hari,
             status:                   abs.status,
             tahun_akademik:           taGroup.tahun_akademik,
@@ -202,7 +202,7 @@ const DataAbsensiPelajaran = () => {
     return dataFlat.filter(
       (item) =>
         item.nama_guru.toLowerCase().includes(lower) ||
-        (item.mata_pelajaran ?? "").toLowerCase().includes(lower) ||
+        (item.mengajar ?? "").toLowerCase().includes(lower) ||
         item.hari.toLowerCase().includes(lower) ||
         (item.nip ?? "").toLowerCase().includes(lower)
     );
@@ -347,7 +347,9 @@ const DataAbsensiPelajaran = () => {
                   <div className="flex-1">
                     <label className="block text-sm font-semibold text-gray-700 mb-1">Tahun Akademik</label>
                     <Select value={selectedTahun} onValueChange={handleTahunChange}>
-                      <SelectTrigger><SelectValue placeholder="-- pilih tahun akademik --" /></SelectTrigger>
+                      <SelectTrigger>
+                        <SelectValue placeholder="-- pilih tahun akademik --" />
+                      </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>
                           <SelectLabel>Pilih Tahun Akademik</SelectLabel>
@@ -366,8 +368,17 @@ const DataAbsensiPelajaran = () => {
 
                   <div className="flex-1">
                     <label className="block text-sm font-semibold text-gray-700 mb-1">Semester</label>
-                    <Select value={selectedSemester} onValueChange={(val) => { setSelectedSemester(val); setCurrentPage(1); }} disabled={!selectedTahun || semesterOptions.length === 0}>
-                      <SelectTrigger><SelectValue placeholder="-- pilih semester --" /></SelectTrigger>
+                    <Select
+                      value={selectedSemester}
+                      onValueChange={(val) => {
+                        setSelectedSemester(val);
+                        setCurrentPage(1);
+                      }}
+                      disabled={!selectedTahun || semesterOptions.length === 0}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="-- pilih semester --" />
+                      </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>
                           <SelectLabel>Pilih Semester</SelectLabel>
@@ -388,7 +399,16 @@ const DataAbsensiPelajaran = () => {
                     <label className="block text-sm font-semibold text-gray-700 mb-1">Cari</label>
                     <div className="relative">
                       <SearchIcon className="absolute left-3 top-2.5 text-gray-400" size={16} />
-                      <Input placeholder="Cari nama, mata pelajaran, tanggal..." value={searchTerm} onChange={(e) => { setSearchTerm(e.target.value); setCurrentPage(1); }} className="pl-9" disabled={dataFlat.length === 0} />
+                      <Input
+                        placeholder="Cari nama, mata pelajaran, tanggal..."
+                        value={searchTerm}
+                        onChange={(e) => {
+                          setSearchTerm(e.target.value);
+                          setCurrentPage(1);
+                        }}
+                        className="pl-9"
+                        disabled={dataFlat.length === 0}
+                      />
                     </div>
                   </div>
                 </div>
@@ -400,24 +420,39 @@ const DataAbsensiPelajaran = () => {
                   <Card className="border-blue-200">
                     <CardContent className="pt-5">
                       <div className="flex items-center gap-3">
-                        <div className="p-3 bg-blue-100 rounded-full"><UserCheck className="text-blue-600" size={22} /></div>
-                        <div><p className="text-sm text-gray-500">Total Hadir</p><p className="text-2xl font-bold text-blue-600">{stats.hadir}</p></div>
+                        <div className="p-3 bg-blue-100 rounded-full">
+                          <UserCheck className="text-blue-600" size={22} />
+                        </div>
+                        <div>
+                          <p className="text-sm text-gray-500">Total Hadir</p>
+                          <p className="text-2xl font-bold text-blue-600">{stats.hadir}</p>
+                        </div>
                       </div>
                     </CardContent>
                   </Card>
                   <Card className="border-red-200">
                     <CardContent className="pt-5">
                       <div className="flex items-center gap-3">
-                        <div className="p-3 bg-red-100 rounded-full"><XCircle className="text-red-600" size={22} /></div>
-                        <div><p className="text-sm text-gray-500">Total Tidak Hadir</p><p className="text-2xl font-bold text-red-600">{stats.tidakHadir}</p></div>
+                        <div className="p-3 bg-red-100 rounded-full">
+                          <XCircle className="text-red-600" size={22} />
+                        </div>
+                        <div>
+                          <p className="text-sm text-gray-500">Total Tidak Hadir</p>
+                          <p className="text-2xl font-bold text-red-600">{stats.tidakHadir}</p>
+                        </div>
                       </div>
                     </CardContent>
                   </Card>
                   <Card className="border-green-200">
                     <CardContent className="pt-5">
                       <div className="flex items-center gap-3">
-                        <div className="p-3 bg-green-100 rounded-full"><CalendarCheck className="text-green-600" size={22} /></div>
-                        <div><p className="text-sm text-gray-500">Persentase Kehadiran</p><p className="text-2xl font-bold text-green-600">{stats.persen}%</p></div>
+                        <div className="p-3 bg-green-100 rounded-full">
+                          <CalendarCheck className="text-green-600" size={22} />
+                        </div>
+                        <div>
+                          <p className="text-sm text-gray-500">Persentase Kehadiran</p>
+                          <p className="text-2xl font-bold text-green-600">{stats.persen}%</p>
+                        </div>
                       </div>
                     </CardContent>
                   </Card>
@@ -442,11 +477,11 @@ const DataAbsensiPelajaran = () => {
                       <Trash2Icon size={16} className="mr-1" /> Hapus Terpilih ({selectedIds.length})
                     </Button>
                     <Button variant="outline" size="sm" onClick={() => handleExport(false)}>
-                      <FileSpreadsheet size={16} className="mr-1" /> Export Semua
+                      <FileSpreadsheet size={16} className="mr-1" /> Export Absensi
                     </Button>
-                    <Button variant="outline" size="sm" onClick={() => handleExport(true)} disabled={selectedIds.length === 0}>
+                    {/* <Button variant="outline" size="sm" onClick={() => handleExport(true)} disabled={selectedIds.length === 0}>
                       <FileSpreadsheet size={16} className="mr-1" /> Export Terpilih
-                    </Button>
+                    </Button> */}
                   </div>
 
                   {/* ── Tabel ── */}
@@ -486,12 +521,10 @@ const DataAbsensiPelajaran = () => {
                                 {item.role && <p className="text-xs text-gray-400 capitalize">{item.role}</p>}
                               </TableCell>
                               <TableCell className="text-sm text-gray-500">{item.nip ?? "—"}</TableCell>
-                              <TableCell className="text-sm">{item.mata_pelajaran ?? "—"}</TableCell>
+                              <TableCell className="text-sm">{item.mengajar ? <span>{item.mengajar}</span> : <span className="text-xs text-gray-300 italic">Tidak tercatat</span>}</TableCell>
                               <TableCell className="text-sm">{item.hari}</TableCell>
                               <TableCell>
-                                <Badge className={item.status === "hadir" ? "bg-green-100 text-green-700 hover:bg-green-100" : "bg-red-100 text-red-700 hover:bg-red-100"}>
-                                  {item.status}
-                                </Badge>
+                                <Badge className={item.status === "hadir" ? "bg-green-100 text-green-700 hover:bg-green-100" : "bg-red-100 text-red-700 hover:bg-red-100"}>{item.status}</Badge>
                               </TableCell>
                               <TableCell className="text-center text-sm">
                                 <span className="text-green-600 font-medium">{item.hadir_per_semester}</span>
@@ -519,7 +552,14 @@ const DataAbsensiPelajaran = () => {
                     <div className="flex flex-col md:flex-row justify-between items-center mt-5 gap-4">
                       <div className="flex items-center gap-2 text-sm text-gray-600">
                         <span>Tampilkan:</span>
-                        <select value={rowsPerPage} onChange={(e) => { setRowsPerPage(Number(e.target.value)); setCurrentPage(1); }} className="border border-gray-300 rounded px-2 py-1 text-sm">
+                        <select
+                          value={rowsPerPage}
+                          onChange={(e) => {
+                            setRowsPerPage(Number(e.target.value));
+                            setCurrentPage(1);
+                          }}
+                          className="border border-gray-300 rounded px-2 py-1 text-sm"
+                        >
                           <option value={10}>10</option>
                           <option value={50}>50</option>
                           <option value={100}>100</option>
@@ -527,9 +567,15 @@ const DataAbsensiPelajaran = () => {
                         <span>per halaman · total {filteredData.length} data</span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <Button size="sm" disabled={currentPage === 1} onClick={() => setCurrentPage((p) => p - 1)}>Prev</Button>
-                        <span className="text-sm">Halaman <strong>{currentPage}</strong> dari <strong>{totalPages || 1}</strong></span>
-                        <Button size="sm" disabled={currentPage >= totalPages} onClick={() => setCurrentPage((p) => p + 1)}>Next</Button>
+                        <Button size="sm" disabled={currentPage === 1} onClick={() => setCurrentPage((p) => p - 1)}>
+                          Prev
+                        </Button>
+                        <span className="text-sm">
+                          Halaman <strong>{currentPage}</strong> dari <strong>{totalPages || 1}</strong>
+                        </span>
+                        <Button size="sm" disabled={currentPage >= totalPages} onClick={() => setCurrentPage((p) => p + 1)}>
+                          Next
+                        </Button>
                       </div>
                     </div>
                   )}
@@ -551,15 +597,31 @@ const DataAbsensiPelajaran = () => {
             {editingRow && (
               <div className="space-y-4 py-2">
                 <div className="bg-gray-50 rounded-lg p-4 space-y-2 text-sm">
-                  <div className="flex justify-between"><span className="text-gray-500">Nama Guru</span><span className="font-semibold">{editingRow.nama_guru}</span></div>
-                  <div className="flex justify-between"><span className="text-gray-500">Mata Pelajaran</span><span className="font-semibold">{editingRow.mata_pelajaran ?? "—"}</span></div>
-                  <div className="flex justify-between"><span className="text-gray-500">Tanggal</span><span className="font-semibold">{editingRow.hari}</span></div>
-                  <div className="flex justify-between"><span className="text-gray-500">Semester</span><span className="font-semibold">{editingRow.semester} · {editingRow.tahun_akademik}</span></div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-500">Nama Guru</span>
+                    <span className="font-semibold">{editingRow.nama_guru}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-500">Mata Pelajaran</span>
+                    <span className="font-semibold">{editingRow.mengajar ?? "—"}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-500">Tanggal</span>
+                    <span className="font-semibold">{editingRow.hari}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-500">Semester</span>
+                    <span className="font-semibold">
+                      {editingRow.semester} · {editingRow.tahun_akademik}
+                    </span>
+                  </div>
                 </div>
                 <div>
                   <label className="block text-sm font-semibold mb-1">Status Kehadiran</label>
                   <Select value={editStatus} onValueChange={(v: "hadir" | "tidak hadir") => setEditStatus(v)}>
-                    <SelectTrigger className="w-full"><SelectValue /></SelectTrigger>
+                    <SelectTrigger className="w-full">
+                      <SelectValue />
+                    </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="hadir">Hadir</SelectItem>
                       <SelectItem value="tidak hadir">Tidak Hadir</SelectItem>

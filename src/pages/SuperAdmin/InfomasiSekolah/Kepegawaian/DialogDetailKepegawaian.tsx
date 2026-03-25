@@ -1,27 +1,10 @@
 import { useState, useEffect } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Eye,
-  Loader2,
-  GraduationCap,
-  Trophy,
-  BookOpen,
-  ClipboardList,
-  Users,
-  ExternalLink,
-  KeyRound,
-} from "lucide-react";
+import { Eye, Loader2, GraduationCap, Trophy, BookOpen, ClipboardList, Users, ExternalLink, KeyRound } from "lucide-react";
 import { Link } from "react-router-dom";
 import type { KepegawaianDetail } from "@/types/kepegawaian";
 import api from "@/api/axios";
@@ -72,9 +55,7 @@ export function DialogDetailKepegawaian({ kepegawaianId }: DialogDetailKepegawai
             <GraduationCap className="w-5 h-5" />
             Detail Kepegawaian
           </DialogTitle>
-          <DialogDescription>
-            Informasi data kepegawaian dan tautan ke histori terkait.
-          </DialogDescription>
+          <DialogDescription>Informasi data kepegawaian dan tautan ke histori terkait.</DialogDescription>
         </DialogHeader>
 
         {loading ? (
@@ -84,7 +65,6 @@ export function DialogDetailKepegawaian({ kepegawaianId }: DialogDetailKepegawai
           </div>
         ) : detail ? (
           <div className="space-y-5 py-2">
-
             {/* ── Info Dasar ── */}
             <Card>
               <CardHeader className="pb-3">
@@ -108,15 +88,7 @@ export function DialogDetailKepegawaian({ kepegawaianId }: DialogDetailKepegawai
                 <Separator />
                 <div className="flex justify-between items-center">
                   <span className="font-semibold text-gray-700">Status</span>
-                  <Badge
-                    className={
-                      detail.status === "aktif"
-                        ? "bg-green-100 text-green-700 border-green-300"
-                        : "bg-red-100 text-red-700 border-red-300"
-                    }
-                  >
-                    {detail.status}
-                  </Badge>
+                  <Badge className={detail.status === "aktif" ? "bg-green-100 text-green-700 border-green-300" : "bg-red-100 text-red-700 border-red-300"}>{detail.status}</Badge>
                 </div>
                 <Separator />
                 <InfoRow label="Keterangan" value={detail.keterangan} />
@@ -129,53 +101,21 @@ export function DialogDetailKepegawaian({ kepegawaianId }: DialogDetailKepegawai
                 <CardTitle className="text-base">Lihat Histori</CardTitle>
               </CardHeader>
               <CardContent className="flex flex-col gap-3">
-
                 {/* ── Semua role: Absensi Pegawai, Pembina, Pelatih ── */}
-                <LinkButton
-                  to={`/superadmin/informasi-laporan-umum/absensi-pegawai?kepegawaian_id=${kepegawaianId}`}
-                  icon={<ClipboardList size={15} />}
-                  label="Histori Absensi Pegawai"
-                  onClick={() => setOpen(false)}
-                />
-                <LinkButton
-                  to={`/superadmin/informasi-akademik/pembina-ekskul/histori/${kepegawaianId}`}
-                  icon={<Trophy size={15} />}
-                  label="Histori Membina Ekstrakurikuler"
-                  onClick={() => setOpen(false)}
-                />
-                <LinkButton
-                  to={`/superadmin/informasi-akademik/pelatih-ekskul/histori/${kepegawaianId}`}
-                  icon={<Trophy size={15} />}
-                  label="Histori Melatih Ekstrakurikuler"
-                  onClick={() => setOpen(false)}
-                />
+                <LinkButton to={`/superadmin/informasi-sekolah/kepegawaian/absensi-pegawai/histori/${kepegawaianId}`} icon={<ClipboardList size={15} />} label="Histori Absensi Pegawai" onClick={() => setOpen(false)} />
+                <LinkButton to={`/superadmin/informasi-sekolah/kepegawaian/pembina-ekskul/histori/${kepegawaianId}`} icon={<Trophy size={15} />} label="Histori Membina Ekstrakurikuler" onClick={() => setOpen(false)} />
+                <LinkButton to={`/superadmin/informasi-sekolah/kepegawaian/pelatih-ekskul/histori/${kepegawaianId}`} icon={<Trophy size={15} />} label="Histori Melatih Ekstrakurikuler" onClick={() => setOpen(false)} />
 
                 {/* ── Khusus Guru ── */}
                 {isGuru && (
                   <>
                     <Separator />
                     <p className="text-xs text-gray-400 pt-1">Khusus Guru</p>
-                    <LinkButton
-                      to={`/superadmin/informasi-sekolah/wali-rombel?kepegawaian_id=${kepegawaianId}`}
-                      icon={<Users size={15} />}
-                      label="Histori Menjadi Wali Rombel"
-                      onClick={() => setOpen(false)}
-                    />
-                    <LinkButton
-                      to={`/superadmin/informasi-akademik/jadwal-pelajaran-guru?kepegawaian_id=${kepegawaianId}`}
-                      icon={<BookOpen size={15} />}
-                      label="Histori Jadwal Pelajaran"
-                      onClick={() => setOpen(false)}
-                    />
-                    <LinkButton
-                      to={`/superadmin/informasi-laporan-umum/absensi-pelajaran?kepegawaian_id=${kepegawaianId}`}
-                      icon={<ClipboardList size={15} />}
-                      label="Histori Absensi Guru - Pelajaran"
-                      onClick={() => setOpen(false)}
-                    />
+                    <LinkButton to={`/superadmin/informasi-sekolah/kepegawaian/wali-rombel/histori/${kepegawaianId}`} icon={<Users size={15} />} label="Histori Menjadi Wali Rombel" onClick={() => setOpen(false)} />
+                    <LinkButton to={`/superadmin/informasi-sekolah/kepegawaian/jadwal-pelajaran-guru/histori/${kepegawaianId}`} icon={<BookOpen size={15} />} label="Histori Jadwal Pelajaran" onClick={() => setOpen(false)} />
+                    <LinkButton to={`/superadmin/informasi-sekolah/kepegawaian/absensi-pelajaran/histori/${kepegawaianId}`} icon={<ClipboardList size={15} />} label="Histori Absensi Guru - Pelajaran" onClick={() => setOpen(false)} />
                   </>
                 )}
-
               </CardContent>
             </Card>
             {/* ── Ubah Password ── */}
@@ -184,15 +124,9 @@ export function DialogDetailKepegawaian({ kepegawaianId }: DialogDetailKepegawai
                 <CardTitle className="text-base">Keamanan Akun</CardTitle>
               </CardHeader>
               <CardContent>
-                <LinkButton
-                  to={`/superadmin/informasi-sekolah/kepegawaian/ubah-password/${kepegawaianId}`}
-                  icon={<KeyRound size={15} />}
-                  label="Ubah Password"
-                  onClick={() => setOpen(false)}
-                />
+                <LinkButton to={`/superadmin/informasi-sekolah/kepegawaian/ubah-password/${kepegawaianId}`} icon={<KeyRound size={15} />} label="Ubah Password" onClick={() => setOpen(false)} />
               </CardContent>
             </Card>
-
           </div>
         ) : (
           <p className="text-center text-gray-500 py-8">Data tidak ditemukan</p>
@@ -211,22 +145,9 @@ const InfoRow = ({ label, value }: { label: string; value?: string | null }) => 
   </div>
 );
 
-const LinkButton = ({
-  to,
-  icon,
-  label,
-  onClick,
-}: {
-  to: string;
-  icon: React.ReactNode;
-  label: string;
-  onClick?: () => void;
-}) => (
+const LinkButton = ({ to, icon, label, onClick }: { to: string; icon: React.ReactNode; label: string; onClick?: () => void }) => (
   <Link to={to} onClick={onClick}>
-    <Button
-      variant="outline"
-      className="w-full justify-between text-sm font-normal hover:bg-indigo-50 hover:border-indigo-300"
-    >
+    <Button variant="outline" className="w-full justify-between text-sm font-normal hover:bg-indigo-50 hover:border-indigo-300">
       <span className="flex items-center gap-2">
         {icon}
         {label}

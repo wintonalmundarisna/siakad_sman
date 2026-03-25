@@ -409,9 +409,30 @@ const DataAbsensiSiswa = () => {
         params: { tahun_akademik_id: Number(selectedTahun), semester_id: Number(selectedSemester) },
         responseType: "blob",
       });
+
+      // Cek apakah response adalah error JSON (bukan file ZIP)
+      const contentType = res.headers["content-type"] ?? "";
+      if (contentType.includes("application/json")) {
+        const text = await res.data.text();
+        const json = JSON.parse(text);
+        Swal.fire({ icon: "error", title: "Export ZIP gagal!", text: json.message || "Terjadi kesalahan." });
+        return;
+      }
+
       downloadBlob(res.data, "bukti-absensi-siswa.zip");
       Swal.fire({ icon: "success", title: "Export ZIP berhasil!", showConfirmButton: false, timer: 1500 });
     } catch (err: any) {
+      // Jika error, coba baca pesan dari blob
+      if (err.response?.data instanceof Blob) {
+        const text = await err.response.data.text();
+        try {
+          const json = JSON.parse(text);
+          Swal.fire({ icon: "error", title: "Export ZIP gagal!", text: json.message || json.error || "Terjadi kesalahan." });
+        } catch {
+          Swal.fire({ icon: "error", title: "Export ZIP gagal!", text: "Terjadi kesalahan server." });
+        }
+        return;
+      }
       Swal.fire({ icon: "error", title: "Export ZIP gagal!", text: err.response?.data?.message || "Terjadi kesalahan." });
     }
   };
@@ -586,7 +607,7 @@ const DataAbsensiSiswa = () => {
                       <Trash2Icon size={16} className="mr-1" /> Hapus Terpilih ({selectedIds.length})
                     </Button>
                     <Button variant="outline" size="sm" onClick={handleExportExcel}>
-                      <FileSpreadsheet size={16} className="mr-1" /> Export Excel
+                      <FileSpreadsheet size={16} className="mr-1" /> Export Absensi
                     </Button>
                     <Button variant="outline" size="sm" onClick={handleExportZip}>
                       <FileArchive size={16} className="mr-1" /> Export ZIP Bukti

@@ -5,7 +5,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { SidebarSuperAdmin } from "@/components/SidebarSuperAdmin";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
-import { Loader2Icon, PenBoxIcon, PlusIcon, SearchIcon, Trash2Icon, ChevronDownIcon, ChevronRightIcon, EyeIcon, ArrowLeft } from "lucide-react";
+import { Loader2Icon, PenBoxIcon, PlusIcon, SearchIcon, Trash2Icon, ChevronDownIcon, ChevronRightIcon, EyeIcon, ArrowLeft, ArrowLeftIcon } from "lucide-react";
 import Footer from "@/pages/Footer";
 import api from "@/api/axios";
 import Swal from "sweetalert2";
@@ -50,6 +50,7 @@ const DataKompetensi = () => {
 
   const [searchParams] = useSearchParams();
   const kurmapIdParam = searchParams.get("kurikulum_mata_pelajaran_id");
+  const kurikulumId = searchParams.get("kurikulum_id");
 
   // ── Fetch ────────────────────────────────────────────────────────────────────
   const fetchData = async () => {
@@ -203,7 +204,7 @@ const DataKompetensi = () => {
   };
 
   // URL tambah — bawa kurmapIdParam agar Create bisa pre-select + redirect balik
-  const createUrl = kurmapIdParam ? `/superadmin/informasi-sekolah/kompetensi/create?kurikulum_mata_pelajaran_id=${kurmapIdParam}` : "/superadmin/informasi-sekolah/kompetensi/create";
+  const createUrl = kurmapIdParam ? `/superadmin/informasi-sekolah/kompetensi/create?kurikulum_mata_pelajaran_id=${kurmapIdParam}&kurikulum_id=${kurikulumId}` : "/superadmin/informasi-sekolah/kompetensi/create";
 
   // ── Search filter ────────────────────────────────────────────────────────────
   const filteredData = dataKompetensi
@@ -253,6 +254,10 @@ const DataKompetensi = () => {
 
         <div className="mx-auto p-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-3 mb-6">
+            <Button variant="outline" onClick={() => navigate(kurikulumId ? `/superadmin/informasi-sekolah/kurikulum-mata-pelajaran?kurikulum_id=${kurikulumId}` : `/superadmin/informasi-sekolah/kurikulum-mata-pelajaran`)}>
+              <ArrowLeftIcon size={16} />
+              Kembali
+            </Button>
             <h1 className="text-3xl font-bold">Data Kompetensi</h1>
           </div>
 
@@ -360,13 +365,13 @@ const DataKompetensi = () => {
                                                 <TableCell>
                                                   <div className="flex gap-1 justify-center">
                                                     {/* Detail — halaman baru */}
-                                                    <Link to={`/superadmin/informasi-sekolah/kompetensi/${komp.kompetensi_id}${kurmapIdParam ? `?kurikulum_mata_pelajaran_id=${kurmapIdParam}` : ""}`}>
+                                                    <Link to={`/superadmin/informasi-sekolah/kompetensi/${komp.kompetensi_id}?kurikulum_mata_pelajaran_id=${kurmapIdParam}&kurikulum_id=${kurikulumId}`}>
                                                       <Button variant="outline" size="sm" title="Detail">
                                                         <EyeIcon size={14} />
                                                       </Button>
                                                     </Link>
                                                     {/* Edit */}
-                                                    <Link to={`/superadmin/informasi-sekolah/kompetensi/edit/${komp.kompetensi_id}${kurmapIdParam ? `?kurikulum_mata_pelajaran_id=${kurmapIdParam}` : ""}`}>
+                                                    <Link to={`/superadmin/informasi-sekolah/kompetensi/edit/${komp.kompetensi_id}?kurikulum_mata_pelajaran_id=${kurmapIdParam}&kurikulum_id=${kurikulumId}`}>
                                                       <Button className="bg-primary" size="sm" title="Edit">
                                                         <PenBoxIcon size={14} />
                                                       </Button>

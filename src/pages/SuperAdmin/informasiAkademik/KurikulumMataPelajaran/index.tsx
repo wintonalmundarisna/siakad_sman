@@ -5,7 +5,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { SidebarSuperAdmin } from "@/components/SidebarSuperAdmin";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
-import { Loader2Icon, PenBoxIcon, PlusIcon, SearchIcon, Trash2Icon, ChevronDownIcon, ChevronRightIcon, EyeIcon } from "lucide-react";
+import { Loader2Icon, PenBoxIcon, PlusIcon, SearchIcon, Trash2Icon, ChevronDownIcon, ChevronRightIcon, EyeIcon, ArrowLeftIcon } from "lucide-react";
 import Footer from "@/pages/Footer";
 import { Link } from "react-router-dom";
 import api from "@/api/axios";
@@ -235,11 +235,19 @@ const DataKurikulumMataPelajaran = () => {
       <main className={`w-full min-h-screen bg-background transition-all duration-300 ${isCollapsed ? "md:ml-16" : "md:ml-[300px]"}`}>
         <PageTitle title="Data Kurikulum Mata Pelajaran" />
         <div className="mx-auto p-4 sm:px-6 lg:px-8">
-          <h1 className="text-3xl font-bold mb-6">
-            Data Kurikulum Mata Pelajaran
-            {/* ✅ Label jika dibuka dari filter kurikulum tertentu */}
-            {kurikulumIdParam && filteredData.length > 0 && <span className="ml-3 text-base font-normal text-gray-500">— {filteredData[0]?.kurikulum}</span>}
-          </h1>
+          <div className="flex gap-2">
+            <Link to="/superadmin/informasi-sekolah/kurikulum">
+              <Button variant="outline">
+                <ArrowLeftIcon size={20} />
+                Kembali
+              </Button>
+            </Link>
+            <h1 className="text-3xl font-bold mb-6">
+              Data Kurikulum Mata Pelajaran
+              {/* ✅ Label jika dibuka dari filter kurikulum tertentu */}
+              {kurikulumIdParam && filteredData.length > 0 && <span className="ml-3 text-base font-normal text-gray-500">— {filteredData[0]?.kurikulum}</span>}
+            </h1>
+          </div>
 
           {loading ? (
             <div className="flex flex-col items-center justify-center h-64 text-gray-600">
@@ -329,7 +337,7 @@ const DataKurikulumMataPelajaran = () => {
                                             </TableCell>
                                             <TableCell className="flex gap-1 justify-center">
                                               {mapel.kurikulum_mata_pelajaran_id ? (
-                                                <DialogDetailKurmap kurmapId={mapel.kurikulum_mata_pelajaran_id} />
+                                                <DialogDetailKurmap kurmapId={mapel.kurikulum_mata_pelajaran_id} kurikulumId={kurikulum.kurikulum_id} />
                                               ) : (
                                                 <Button variant="outline" size="sm" disabled>
                                                   <EyeIcon size={16} />

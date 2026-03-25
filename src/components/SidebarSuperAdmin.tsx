@@ -79,7 +79,7 @@ export function SidebarSuperAdmin({ isCollapsed, setIsCollapsed }: { isCollapsed
               </SidebarMenuButton>
 
               {/* Data Master */}
-              {!isCollapsed && <SidebarGroupLabel className="text-xs uppercase text-muted-foreground mt-1">Data Mater</SidebarGroupLabel>}
+              {!isCollapsed && <SidebarGroupLabel className="text-xs uppercase text-muted-foreground mt-1">Data Master</SidebarGroupLabel>}
               <SidebarGroupContent>
                 <SidebarMenu>
                   {/* Manajemen User */}
@@ -135,43 +135,43 @@ export function SidebarSuperAdmin({ isCollapsed, setIsCollapsed }: { isCollapsed
                         {/* Item biasa */}
                         <SidebarMenuSubItem>
                           <SidebarMenuSubButton asChild className={cn("hover:bg-primary rounded-md px-3 py-1.5 text-sm", location.pathname.includes("/superadmin/informasi-sekolah/identitas-sekolah") && "bg-primary text-white font-medium")}>
-                            <Link to="/superadmin/informasi-sekolah/identitas-sekolah">Data Identitas Sekolah</Link>
-                          </SidebarMenuSubButton>
-                        </SidebarMenuSubItem>
-
-                        <SidebarMenuSubItem>
-                          <SidebarMenuSubButton asChild className={cn("hover:bg-primary rounded-md px-3 py-1.5 text-sm", location.pathname.includes("/superadmin/informasi-sekolah/kurikulum") && "bg-primary text-white font-medium")}>
-                            <Link to="/superadmin/informasi-sekolah/kurikulum">Data Kurikulum</Link>
-                          </SidebarMenuSubButton>
-                        </SidebarMenuSubItem>
-
-                        <SidebarMenuSubItem>
-                          <SidebarMenuSubButton asChild className={cn("hover:bg-primary rounded-md px-3 py-1.5 text-sm", location.pathname.includes("/superadmin/informasi-sekolah/tahun-akademik") && "bg-primary text-white font-medium")}>
-                            <Link to="/superadmin/informasi-sekolah/tahun-akademik">Data Tahun Akademik</Link>
+                            <Link to="/superadmin/informasi-sekolah/identitas-sekolah">Identitas Sekolah</Link>
                           </SidebarMenuSubButton>
                         </SidebarMenuSubItem>
 
                         <SidebarMenuSubItem>
                           <SidebarMenuSubButton asChild className={cn("hover:bg-primary rounded-md px-3 py-1.5 text-sm", location.pathname.includes("/superadmin/informasi-sekolah/gedung") && "bg-primary text-white font-medium")}>
-                            <Link to="/superadmin/informasi-sekolah/gedung">Data Gedung</Link>
-                          </SidebarMenuSubButton>
-                        </SidebarMenuSubItem>
-
-                        <SidebarMenuSubItem>
-                          <SidebarMenuSubButton asChild className={cn("hover:bg-primary rounded-md px-3 py-1.5 text-sm", location.pathname.includes("/superadmin/informasi-sekolah/kepegawaian") && "bg-primary text-white font-medium")}>
-                            <Link to="/superadmin/informasi-sekolah/kepegawaian">Data Kepegawaian</Link>
+                            <Link to="/superadmin/informasi-sekolah/gedung">Gedung</Link>
                           </SidebarMenuSubButton>
                         </SidebarMenuSubItem>
 
                         <SidebarMenuSubItem>
                           <SidebarMenuSubButton asChild className={cn("hover:bg-primary rounded-md px-3 py-1.5 text-sm", location.pathname.includes("/superadmin/informasi-sekolah/jurusan") && "bg-primary text-white font-medium")}>
-                            <Link to="/superadmin/informasi-sekolah/jurusan">Data Jurusan</Link>
+                            <Link to="/superadmin/informasi-sekolah/jurusan">Jurusan</Link>
                           </SidebarMenuSubButton>
                         </SidebarMenuSubItem>
 
                         <SidebarMenuSubItem>
-                          <SidebarMenuSubButton asChild className={cn("hover:bg-primary rounded-md px-3 py-1.5 text-sm", location.pathname.includes("/superadmin/informasi-sekolah/kelas") && "bg-primary text-white font-medium")}>
-                            <Link to="/superadmin/informasi-sekolah/kelas">Data Kelas</Link>
+                          <SidebarMenuSubButton asChild className={cn("hover:bg-primary rounded-md px-3 py-1.5 text-sm", location.pathname.includes("/superadmin/informasi-sekolah/mata-pelajaran") && "bg-primary text-white font-medium")}>
+                            <Link to="/superadmin/informasi-sekolah/mata-pelajaran">Mata Pelajaran</Link>
+                          </SidebarMenuSubButton>
+                        </SidebarMenuSubItem>
+
+                        <SidebarMenuSubItem>
+                          <SidebarMenuSubButton asChild className={cn("hover:bg-primary rounded-md px-3 py-1.5 text-sm", location.pathname.includes("/superadmin/informasi-sekolah/kurikulum") && "bg-primary text-white font-medium")}>
+                            <Link to="/superadmin/informasi-sekolah/kurikulum">Kurikulum</Link>
+                          </SidebarMenuSubButton>
+                        </SidebarMenuSubItem>
+
+                        <SidebarMenuSubItem>
+                          <SidebarMenuSubButton asChild className={cn("hover:bg-primary rounded-md px-3 py-1.5 text-sm", location.pathname.includes("/superadmin/informasi-sekolah/kepegawaian") && "bg-primary text-white font-medium")}>
+                            <Link to="/superadmin/informasi-sekolah/kepegawaian">Kepegawaian</Link>
+                          </SidebarMenuSubButton>
+                        </SidebarMenuSubItem>
+
+                        <SidebarMenuSubItem>
+                          <SidebarMenuSubButton asChild className={cn("hover:bg-primary rounded-md px-3 py-1.5 text-sm", location.pathname.includes("/superadmin/informasi-sekolah/siswa") && "bg-primary text-white font-medium")}>
+                            <Link to="/superadmin/informasi-sekolah/siswa">Siswa</Link>
                           </SidebarMenuSubButton>
                         </SidebarMenuSubItem>
                       </SidebarMenuSub>
@@ -199,23 +199,29 @@ export function SidebarSuperAdmin({ isCollapsed, setIsCollapsed }: { isCollapsed
                     {!isCollapsed && openDropdown === "data-akademik" && (
                       <SidebarMenuSub className="ml-4 mt-1 space-y-1">
                         <SidebarMenuSubItem>
-                          <SidebarMenuSubButton asChild className={cn("hover:bg-primary rounded-md px-3 py-1.5 text-sm", location.pathname.includes("/superadmin/informasi-akademik/mata-pelajaran") && "bg-primary text-white font-medium")}>
-                            <Link to="/superadmin/informasi-akademik/mata-pelajaran">Data Mata Pelajaran</Link>
+                          <SidebarMenuSubButton asChild className={cn("hover:bg-primary rounded-md px-3 py-1.5 text-sm", location.pathname.includes("/superadmin/informasi-akademik/tahun-akademik") && "bg-primary text-white font-medium")}>
+                            <Link to="/superadmin/informasi-akademik/tahun-akademik">Tahun Akademik & Semester</Link>
                           </SidebarMenuSubButton>
                         </SidebarMenuSubItem>
 
                         <SidebarMenuSubItem>
+                          <SidebarMenuSubButton asChild className={cn("hover:bg-primary rounded-md px-3 py-1.5 text-sm", location.pathname.includes("/superadmin/informasi-akademik/kelas") && "bg-primary text-white font-medium")}>
+                            <Link to="/superadmin/informasi-akademik/kelas">Kelas</Link>
+                          </SidebarMenuSubButton>
+                        </SidebarMenuSubItem>
+
+                        {/* <SidebarMenuSubItem>
                           <SidebarMenuSubButton asChild className={cn("hover:bg-primary rounded-md px-3 py-1.5 text-sm", location.pathname.includes("/superadmin/informasi-akademik/penilaian") && "bg-primary text-white font-medium")}>
                             <Link to="/superadmin/informasi-akademik/penilaian">Data Penilaian</Link>
                           </SidebarMenuSubButton>
-                        </SidebarMenuSubItem>
+                        </SidebarMenuSubItem> */}
 
                         <SidebarMenuSubItem>
                           <SidebarMenuSubButton
                             asChild
                             className={cn("hover:bg-primary rounded-md px-3 py-1.5 text-sm", location.pathname.includes("/superadmin/informasi-akademik/jadwal-pelajaran-guru") && "bg-primary text-white font-medium")}
                           >
-                            <Link to="/superadmin/informasi-akademik/jadwal-pelajaran-guru">Data Jadwal Pelajaran Guru</Link>
+                            <Link to="/superadmin/informasi-akademik/jadwal-pelajaran-guru">Jadwal Pelajaran Guru</Link>
                           </SidebarMenuSubButton>
                         </SidebarMenuSubItem>
 
@@ -229,13 +235,12 @@ export function SidebarSuperAdmin({ isCollapsed, setIsCollapsed }: { isCollapsed
                         </SidebarMenuSubItem>
 
                         {/* SUBMENU NESTED — LMS       */}
-                        <SidebarMenuSubItem>
+                        {/* <SidebarMenuSubItem>
                           <SidebarMenuSubButton onClick={() => toggleSubDropdown("lms")} className="hover:bg-primary rounded-md px-3 py-1.5 text-sm justify-between w-full">
                             <span>Data LMS</span>
                             <ChevronDown className={cn("h-4 w-4 transition-transform", openSubDropdown === "lms" && "rotate-180")} />
                           </SidebarMenuSubButton>
 
-                          {/* SUBMENU LEVEL 2 */}
                           {!isCollapsed && openSubDropdown === "lms" && (
                             <SidebarMenuSub className="ml-4 mt-1 space-y-1">
                               <SidebarMenuSubItem>
@@ -257,18 +262,12 @@ export function SidebarSuperAdmin({ isCollapsed, setIsCollapsed }: { isCollapsed
                               </SidebarMenuSubItem>
                             </SidebarMenuSub>
                           )}
-                        </SidebarMenuSubItem>
+                        </SidebarMenuSubItem> */}
 
                         {/* SUBMENU BIASA */}
                         <SidebarMenuSubItem>
-                          <SidebarMenuSubButton asChild className={cn("hover:bg-primary rounded-md px-3 py-1.5 text-sm", location.pathname.includes("/superadmin/informasi-akademik/siswa") && "bg-primary text-white font-medium")}>
-                            <Link to="/superadmin/informasi-akademik/siswa">Data Siswa</Link>
-                          </SidebarMenuSubButton>
-                        </SidebarMenuSubItem>
-
-                        <SidebarMenuSubItem>
                           <SidebarMenuSubButton asChild className={cn("hover:bg-primary rounded-md px-3 py-1.5 text-sm", location.pathname.includes("/superadmin/informasi-akademik/ekstrakurikuler") && "bg-primary text-white font-medium")}>
-                            <Link to="/superadmin/informasi-akademik/ekstrakurikuler">Data Ekstrakurikuler</Link>
+                            <Link to="/superadmin/informasi-akademik/ekstrakurikuler">Ekstrakurikuler</Link>
                           </SidebarMenuSubButton>
                         </SidebarMenuSubItem>
 
@@ -277,12 +276,38 @@ export function SidebarSuperAdmin({ isCollapsed, setIsCollapsed }: { isCollapsed
                             <Link to="/superadmin/informasi-akademik/ekstrakurikuler">Data Ekstrakurikuler</Link>
                           </SidebarMenuSubButton>
                         </SidebarMenuSubItem> */}
+                      </SidebarMenuSub>
+                    )}
+                  </SidebarMenuItem>
 
-                        <SidebarMenuSubItem>
-                          <SidebarMenuSubButton asChild className={cn("hover:bg-primary rounded-md px-3 py-1.5 text-sm", location.pathname.includes("/superadmin/informasi-akademik/prestasi-siswa") && "bg-primary text-white font-medium")}>
-                            <Link to="/superadmin/informasi-akademik/prestasi-siswa">Data Prestasi</Link>
-                          </SidebarMenuSubButton>
-                        </SidebarMenuSubItem>
+                  {/* Data PSB Online (Penerimaan Siswa Baru) */}
+                  {!isCollapsed && <SidebarGroupLabel className="text-xs uppercase text-muted-foreground mt-1">Data PSB Online</SidebarGroupLabel>}
+                  {/* Data PSB Online */}
+                  <SidebarMenuItem>
+                    <SidebarMenuButton
+                      onClick={() => toggleDropdown("psb-online")}
+                      className={cn("hover:bg-primary/10 hover:text-primary rounded-md justify-between py-2 px-3 transition-colors", location.pathname.includes("/superadmin/psb") && "bg-primary/10 text-primary")}
+                    >
+                      <span className="flex items-center gap-2">
+                        <ClipboardList className="h-4 w-4" />
+                        {!isCollapsed && "Informasi PSB Online"}
+                      </span>
+                      {!isCollapsed && <ChevronDown className={cn("h-4 w-4 transition-transform", openDropdown === "psb-online" && "rotate-180")} />}
+                    </SidebarMenuButton>
+
+                    {!isCollapsed && openDropdown === "psb-online" && (
+                      <SidebarMenuSub className="ml-4 mt-1 space-y-1">
+                        {[
+                          // { to: "/superadmin/siswa", label: "Data Halaman" },
+                          // { to: "/superadmin/guru", label: "Kode Aktivasi" },
+                          { to: "/superadmin/psb", label: "Pendaftaran Siswa" },
+                        ].map((item) => (
+                          <SidebarMenuSubItem key={item.to}>
+                            <SidebarMenuSubButton asChild className={cn("hover:bg-primary rounded-md px-3 py-1.5 text-sm", location.pathname.includes(item.to) && "bg-primary text-white font-medium")}>
+                              <Link to={item.to}>{item.label}</Link>
+                            </SidebarMenuSubButton>
+                          </SidebarMenuSubItem>
+                        ))}
                       </SidebarMenuSub>
                     )}
                   </SidebarMenuItem>
@@ -313,7 +338,7 @@ export function SidebarSuperAdmin({ isCollapsed, setIsCollapsed }: { isCollapsed
                             onClick={() => toggleSubDropdown("absensi")}
                             className={cn("hover:bg-primary/10 hover:text-primary rounded-md justify-between py-2 px-3 transition-colors", location.pathname.includes("/superadmin/informasi-laporan-umum") && "bg-primary/10 text-primary")}
                           >
-                            <span>Data Absensi</span>
+                            <span>Absensi</span>
                             <ChevronDown className={cn("h-4 w-4 transition-transform", openSubDropdown === "absensi" && "rotate-180")} />
                           </SidebarMenuSubButton>
 
@@ -334,7 +359,7 @@ export function SidebarSuperAdmin({ isCollapsed, setIsCollapsed }: { isCollapsed
                                   asChild
                                   className={cn("hover:bg-primary rounded-md px-3 py-1.5 text-sm", location.pathname.includes("/superadmin/informasi-laporan-umum/absensi-pelajaran") && "bg-primary text-white font-medium")}
                                 >
-                                  <Link to="/superadmin/informasi-laporan-umum/absensi-pelajaran">Pelajaran</Link>
+                                  <Link to="/superadmin/informasi-laporan-umum/absensi-pelajaran">Guru - Pelajaran</Link>
                                 </SidebarMenuSubButton>
                               </SidebarMenuSubItem>
 
@@ -343,7 +368,7 @@ export function SidebarSuperAdmin({ isCollapsed, setIsCollapsed }: { isCollapsed
                                   asChild
                                   className={cn("hover:bg-primary rounded-md px-3 py-1.5 text-sm", location.pathname.includes("/superadmin/informasi-laporan-umum/absensi-siswa") && "bg-primary text-white font-medium")}
                                 >
-                                  <Link to="/superadmin/informasi-laporan-umum/absensi-siswa">Siswa</Link>
+                                  <Link to="/superadmin/informasi-laporan-umum/absensi-siswa">Siswa - Pelajaran</Link>
                                 </SidebarMenuSubButton>
                               </SidebarMenuSubItem>
                             </SidebarMenuSub>
@@ -351,36 +376,42 @@ export function SidebarSuperAdmin({ isCollapsed, setIsCollapsed }: { isCollapsed
                         </SidebarMenuSubItem>
 
                         {/* SUBMENU BIASA */}
-                        <SidebarMenuSubItem>
+                        {/* <SidebarMenuSubItem>
                           <SidebarMenuSubButton
                             asChild
                             className={cn("hover:bg-primary rounded-md px-3 py-1.5 text-sm", location.pathname.includes("/superadmin/informasi-laporan-umum/berkas-administrasi") && "bg-primary text-white font-medium")}
                           >
                             <Link to="/superadmin/informasi-laporan-umum/berkas-administrasi">Data Berkas Administrasi</Link>
                           </SidebarMenuSubButton>
-                        </SidebarMenuSubItem>
+                        </SidebarMenuSubItem> */}
 
-                        <SidebarMenuSubItem>
+                        {/* <SidebarMenuSubItem>
                           <SidebarMenuSubButton asChild className={cn("hover:bg-primary rounded-md px-3 py-1.5 text-sm", location.pathname.includes("/superadmin/informasi-laporan-umum/nilai-raport") && "bg-primary text-white font-medium")}>
                             <Link to="/superadmin/informasi-laporan-umum/nilai-raport">Data Nilai Raport</Link>
                           </SidebarMenuSubButton>
-                        </SidebarMenuSubItem>
+                        </SidebarMenuSubItem> */}
 
-                        <SidebarMenuSubItem>
+                        {/* <SidebarMenuSubItem>
                           <SidebarMenuSubButton
                             asChild
                             className={cn("hover:bg-primary rounded-md px-3 py-1.5 text-sm", location.pathname.includes("/superadmin/informasi-laporan-umum/laporan-nilai-siswa") && "bg-primary text-white font-medium")}
                           >
                             <Link to="/superadmin/informasi-laporan-umum/laporan-nilai-siswa">Laporan Nilai Siswa</Link>
                           </SidebarMenuSubButton>
-                        </SidebarMenuSubItem>
+                        </SidebarMenuSubItem> */}
 
-                        <SidebarMenuSubItem>
+                        {/* <SidebarMenuSubItem>
                           <SidebarMenuSubButton
                             asChild
                             className={cn("hover:bg-primary rounded-md px-3 py-1.5 text-sm", location.pathname.includes("/superadmin/informasi-laporan-umum/status-kepegawaian") && "bg-primary text-white font-medium")}
                           >
                             <Link to="/superadmin/informasi-laporan-umum/status-kepegawaian">Data Status Kepegawaian</Link>
+                          </SidebarMenuSubButton>
+                        </SidebarMenuSubItem> */}
+
+                        <SidebarMenuSubItem>
+                          <SidebarMenuSubButton asChild className={cn("hover:bg-primary rounded-md px-3 py-1.5 text-sm", location.pathname.includes("/superadmin/informasi-laporan-umum/prestasi-siswa") && "bg-primary text-white font-medium")}>
+                            <Link to="/superadmin/informasi-laporan-umum/prestasi-siswa">Prestasi</Link>
                           </SidebarMenuSubButton>
                         </SidebarMenuSubItem>
 
@@ -389,41 +420,9 @@ export function SidebarSuperAdmin({ isCollapsed, setIsCollapsed }: { isCollapsed
                             asChild
                             className={cn("hover:bg-primary rounded-md px-3 py-1.5 text-sm", location.pathname.includes("/superadmin/informasi-laporan-umum/data-keuangan") && "bg-primary text-white font-medium")}
                           >
-                            <Link to="/superadmin/informasi-laporan-umum/data-keuangan">Data keuangan</Link>
+                            <Link to="/superadmin/informasi-laporan-umum/data-keuangan">Keuangan</Link>
                           </SidebarMenuSubButton>
                         </SidebarMenuSubItem>
-                      </SidebarMenuSub>
-                    )}
-                  </SidebarMenuItem>
-
-                  {/* Data PSB Online (Penerimaan Siswa Baru) */}
-                  {!isCollapsed && <SidebarGroupLabel className="text-xs uppercase text-muted-foreground mt-1">Data PSB Online</SidebarGroupLabel>}
-                  {/* Data PSB Online */}
-                  <SidebarMenuItem>
-                    <SidebarMenuButton
-                      onClick={() => toggleDropdown("psb-online")}
-                      className={cn("hover:bg-primary/10 hover:text-primary rounded-md justify-between py-2 px-3 transition-colors", location.pathname.includes("/superadmin/psb") && "bg-primary/10 text-primary")}
-                    >
-                      <span className="flex items-center gap-2">
-                        <ClipboardList className="h-4 w-4" />
-                        {!isCollapsed && "Informasi PSB Online"}
-                      </span>
-                      {!isCollapsed && <ChevronDown className={cn("h-4 w-4 transition-transform", openDropdown === "psb-online" && "rotate-180")} />}
-                    </SidebarMenuButton>
-
-                    {!isCollapsed && openDropdown === "psb-online" && (
-                      <SidebarMenuSub className="ml-4 mt-1 space-y-1">
-                        {[
-                          // { to: "/superadmin/siswa", label: "Data Halaman" },
-                          // { to: "/superadmin/guru", label: "Kode Aktivasi" },
-                          { to: "/superadmin/psb", label: "Data Pendaftaran Siswa" },
-                        ].map((item) => (
-                          <SidebarMenuSubItem key={item.to}>
-                            <SidebarMenuSubButton asChild className={cn("hover:bg-primary rounded-md px-3 py-1.5 text-sm", location.pathname.includes(item.to) && "bg-primary text-white font-medium")}>
-                              <Link to={item.to}>{item.label}</Link>
-                            </SidebarMenuSubButton>
-                          </SidebarMenuSubItem>
-                        ))}
                       </SidebarMenuSub>
                     )}
                   </SidebarMenuItem>

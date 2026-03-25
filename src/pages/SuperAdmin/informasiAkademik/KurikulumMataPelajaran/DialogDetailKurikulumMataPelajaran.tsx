@@ -10,9 +10,10 @@ import type { KurikulumMataPelajaranDetail, KurmapDetailResponse } from "@/types
 
 interface DialogDetailKurmapProps {
   kurmapId: number;
+  kurikulumId: number;
 }
 
-export function DialogDetailKurmap({ kurmapId }: DialogDetailKurmapProps) {
+export function DialogDetailKurmap({ kurmapId, kurikulumId }: DialogDetailKurmapProps) {
   const [detailData, setDetailData] = useState<KurikulumMataPelajaranDetail | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -53,36 +54,50 @@ export function DialogDetailKurmap({ kurmapId }: DialogDetailKurmapProps) {
   // ✅ Navigate ke halaman kompetensi dengan filter kurikulum_mata_pelajaran_id
   const handleLihatKompetensi = () => {
     setOpen(false);
-    navigate(`/superadmin/informasi-sekolah/kompetensi?kurikulum_mata_pelajaran_id=${kurmapId}`);
+    navigate(`/superadmin/informasi-sekolah/kompetensi?kurikulum_mata_pelajaran_id=${kurmapId}&kurikulum_id=${kurikulumId}`);
   };
 
   const getStatusMapelBadgeClass = (status: string): string => {
     switch (status) {
-      case "wajib":   return "bg-blue-100 text-blue-700 border-blue-300";
-      case "pilihan": return "bg-purple-100 text-purple-700 border-purple-300";
-      case "jurusan": return "bg-orange-100 text-orange-700 border-orange-300";
-      case "mulok":   return "bg-teal-100 text-teal-700 border-teal-300";
-      default:        return "bg-gray-100 text-gray-700 border-gray-300";
+      case "wajib":
+        return "bg-blue-100 text-blue-700 border-blue-300";
+      case "pilihan":
+        return "bg-purple-100 text-purple-700 border-purple-300";
+      case "jurusan":
+        return "bg-orange-100 text-orange-700 border-orange-300";
+      case "mulok":
+        return "bg-teal-100 text-teal-700 border-teal-300";
+      default:
+        return "bg-gray-100 text-gray-700 border-gray-300";
     }
   };
 
   const getTipeKurikulumBadgeClass = (tipe: string): string => {
     switch (tipe) {
-      case "MERDEKA": return "bg-green-100 text-green-700 border-green-300";
-      case "K13":     return "bg-blue-100 text-blue-700 border-blue-300";
-      case "KTSP":    return "bg-purple-100 text-purple-700 border-purple-300";
-      default:        return "bg-gray-100 text-gray-700 border-gray-300";
+      case "MERDEKA":
+        return "bg-green-100 text-green-700 border-green-300";
+      case "K13":
+        return "bg-blue-100 text-blue-700 border-blue-300";
+      case "KTSP":
+        return "bg-purple-100 text-purple-700 border-purple-300";
+      default:
+        return "bg-gray-100 text-gray-700 border-gray-300";
     }
   };
 
   const getKelompokBadgeClass = (kelompok: string | null): string => {
     if (!kelompok) return "bg-gray-100 text-gray-700 border-gray-300";
     switch (kelompok.toLowerCase()) {
-      case "umum":   return "bg-indigo-100 text-indigo-700 border-indigo-300";
-      case "sains":  return "bg-cyan-100 text-cyan-700 border-cyan-300";
-      case "sosial": return "bg-amber-100 text-amber-700 border-amber-300";
-      case "bahasa": return "bg-pink-100 text-pink-700 border-pink-300";
-      default:       return "bg-gray-100 text-gray-700 border-gray-300";
+      case "umum":
+        return "bg-indigo-100 text-indigo-700 border-indigo-300";
+      case "sains":
+        return "bg-cyan-100 text-cyan-700 border-cyan-300";
+      case "sosial":
+        return "bg-amber-100 text-amber-700 border-amber-300";
+      case "bahasa":
+        return "bg-pink-100 text-pink-700 border-pink-300";
+      default:
+        return "bg-gray-100 text-gray-700 border-gray-300";
     }
   };
 
@@ -136,9 +151,7 @@ export function DialogDetailKurmap({ kurmapId }: DialogDetailKurmapProps) {
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <p className="text-sm font-medium text-muted-foreground">Tipe Kurikulum</p>
-                    <Badge className={getTipeKurikulumBadgeClass(detailData.kurikulum.tipe_kurikulum)}>
-                      {detailData.kurikulum.tipe_kurikulum}
-                    </Badge>
+                    <Badge className={getTipeKurikulumBadgeClass(detailData.kurikulum.tipe_kurikulum)}>{detailData.kurikulum.tipe_kurikulum}</Badge>
                   </div>
                   <div>
                     <p className="text-sm font-medium text-muted-foreground">ID Kurikulum</p>
@@ -164,9 +177,7 @@ export function DialogDetailKurmap({ kurmapId }: DialogDetailKurmapProps) {
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <p className="text-sm font-medium text-muted-foreground">Kelompok</p>
-                    <Badge className={getKelompokBadgeClass(detailData.mata_pelajaran.kelompok)}>
-                      {detailData.mata_pelajaran.kelompok || "-"}
-                    </Badge>
+                    <Badge className={getKelompokBadgeClass(detailData.mata_pelajaran.kelompok)}>{detailData.mata_pelajaran.kelompok || "-"}</Badge>
                   </div>
                   <div>
                     <p className="text-sm font-medium text-muted-foreground">Status Mata Pelajaran</p>
@@ -200,15 +211,11 @@ export function DialogDetailKurmap({ kurmapId }: DialogDetailKurmapProps) {
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <p className="text-sm font-medium text-muted-foreground">Status Mata Pelajaran</p>
-                    <Badge className={getStatusMapelBadgeClass(detailData.status_mata_pelajaran)}>
-                      {detailData.status_mata_pelajaran}
-                    </Badge>
+                    <Badge className={getStatusMapelBadgeClass(detailData.status_mata_pelajaran)}>{detailData.status_mata_pelajaran}</Badge>
                   </div>
                   <div>
                     <p className="text-sm font-medium text-muted-foreground">Status Kurmap</p>
-                    <Badge className={detailData.status_aktif_kurmap === "aktif" ? "bg-green-100 text-green-700 border-green-300" : "bg-gray-100 text-gray-700 border-gray-300"}>
-                      {detailData.status_aktif_kurmap}
-                    </Badge>
+                    <Badge className={detailData.status_aktif_kurmap === "aktif" ? "bg-green-100 text-green-700 border-green-300" : "bg-gray-100 text-gray-700 border-gray-300"}>{detailData.status_aktif_kurmap}</Badge>
                   </div>
                 </div>
               </CardContent>
@@ -216,10 +223,7 @@ export function DialogDetailKurmap({ kurmapId }: DialogDetailKurmapProps) {
 
             {/* ✅ Tombol Lihat Kompetensi */}
             <div className="pt-2 border-t">
-              <Button
-                className="w-full bg-primary flex items-center gap-2"
-                onClick={handleLihatKompetensi}
-              >
+              <Button className="w-full bg-primary flex items-center gap-2" onClick={handleLihatKompetensi}>
                 <GraduationCapIcon size={16} />
                 Lihat Kompetensi
               </Button>

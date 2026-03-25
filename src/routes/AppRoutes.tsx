@@ -14,14 +14,14 @@ import ProtectedRoute from "./ProtectedRoute";
 import { DashboardSuperAdmin } from "@/pages/SuperAdmin/DashboardSuperAdmin";
 
 // Super Admin pages
-import DataKelas from "../pages/SuperAdmin/InfomasiSekolah/Kelas";
-import CreateKelas from "@/pages/SuperAdmin/InfomasiSekolah/Kelas/CreateKelas";
-import EditKelas from "@/pages/SuperAdmin/InfomasiSekolah/Kelas/EditKelas";
+import DataKelas from "../pages/SuperAdmin/informasiAkademik/Kelas";
+import CreateKelas from "@/pages/SuperAdmin/informasiAkademik/Kelas/CreateKelas";
+import EditKelas from "@/pages/SuperAdmin/informasiAkademik/Kelas/EditKelas";
 import DataJurusan from "@/pages/SuperAdmin/InfomasiSekolah/Jurusan";
 import CreateJurusan from "@/pages/SuperAdmin/InfomasiSekolah/Jurusan/CreateJurusan";
 import EditJurusan from "@/pages/SuperAdmin/InfomasiSekolah/Jurusan/EditJurusan";
-import DataSiswa from "@/pages/SuperAdmin/informasiAkademik/Siswa";
-import EditSiswa from "@/pages/SuperAdmin/informasiAkademik/Siswa/EditSiswa";
+import DataSiswa from "@/pages/SuperAdmin/InfomasiSekolah/Siswa";
+import EditSiswa from "@/pages/SuperAdmin/InfomasiSekolah/Siswa/EditSiswa";
 // import UserSiswa from "@/pages/SuperAdmin/ManajemenUser/Siswa";
 // import EditUserSiswa from "@/pages/SuperAdmin/ManajemenUser/Siswa/EditUserSiswa";
 // import UserGuru from "@/pages/SuperAdmin/ManajemenUser/Guru";
@@ -40,10 +40,10 @@ import ForgotPassword from "@/pages/Auth/ForgotPassword";
 import ResetPassword from "@/pages/Auth/ResetPassword";
 import EditProfileSuperAdmin from "@/pages/SuperAdmin/SettingsProfile/EditProfileSuperAdmin";
 import CreateKepegawaian from "@/pages/SuperAdmin/InfomasiSekolah/Kepegawaian/CreateKepegawaian";
-import CreateSiswa from "@/pages/SuperAdmin/informasiAkademik/Siswa/CreateSiswa";
-import DataMataPelajaran from "@/pages/SuperAdmin/informasiAkademik/MataPelajaran";
-import CreateMataPelajaran from "@/pages/SuperAdmin/informasiAkademik/MataPelajaran/CreateMapel";
-import EditMataPelajaran from "@/pages/SuperAdmin/informasiAkademik/MataPelajaran/EditMapel";
+import CreateSiswa from "@/pages/SuperAdmin/InfomasiSekolah/Siswa/CreateSiswa";
+import DataMataPelajaran from "@/pages/SuperAdmin/InfomasiSekolah/MataPelajaran";
+import CreateMataPelajaran from "@/pages/SuperAdmin/InfomasiSekolah/MataPelajaran/CreateMapel";
+import EditMataPelajaran from "@/pages/SuperAdmin/InfomasiSekolah/MataPelajaran/EditMapel";
 import EditJadwalPelajaranSiswa from "@/pages/SuperAdmin/informasiAkademik/JadwalPelajaranSiswa/EditJadwalPelajaranSiswa";
 import DataJadwalPelajaranSiswa from "@/pages/SuperAdmin/informasiAkademik/JadwalPelajaranSiswa";
 import DataKurikulum from "@/pages/SuperAdmin/InfomasiSekolah/Kurikulum";
@@ -56,12 +56,12 @@ import DataIdentitasSekolah from "@/pages/SuperAdmin/InfomasiSekolah/IdentitasSe
 import CreateIdentitasSekolah from "@/pages/SuperAdmin/InfomasiSekolah/IdentitasSekolah/CreateIdentitasSekolah";
 import EditIdentitasSekolah from "@/pages/SuperAdmin/InfomasiSekolah/IdentitasSekolah/EditIdentitasSekolah";
 import PublicRoute from "./PublicRoute";
-import DataTahunAkademik from "@/pages/SuperAdmin/InfomasiSekolah/TahunAkademik";
-import CreateTahunAkademik from "@/pages/SuperAdmin/InfomasiSekolah/TahunAkademik/CreateTahunAkademik";
-import EditTahunAkademik from "@/pages/SuperAdmin/InfomasiSekolah/TahunAkademik/EditTahunAkademik";
-import DataPrestasiSiswa from "@/pages/SuperAdmin/informasiAkademik/PrestasiSiswa";
-import CreatePrestasiSiswa from "@/pages/SuperAdmin/informasiAkademik/PrestasiSiswa/CreatePrestasiSiswa";
-import EditPrestasiSiswa from "@/pages/SuperAdmin/informasiAkademik/PrestasiSiswa/EditPrestasiSiswa";
+import DataTahunAkademik from "@/pages/SuperAdmin/informasiAkademik/TahunAkademik";
+import CreateTahunAkademik from "@/pages/SuperAdmin/informasiAkademik/TahunAkademik/CreateTahunAkademik";
+import EditTahunAkademik from "@/pages/SuperAdmin/informasiAkademik/TahunAkademik/EditTahunAkademik";
+import DataPrestasiSiswa from "@/pages/SuperAdmin/InformasiLaporanUmum/PrestasiSiswa";
+import CreatePrestasiSiswa from "@/pages/SuperAdmin/InformasiLaporanUmum/PrestasiSiswa/CreatePrestasiSiswa";
+import EditPrestasiSiswa from "@/pages/SuperAdmin/InformasiLaporanUmum/PrestasiSiswa/EditPrestasiSiswa";
 import DataPsb from "@/pages/SuperAdmin/PSB";
 import DetailPsb from "@/pages/SuperAdmin/PSB/DetailPsb";
 import CreatePsb from "@/pages/SuperAdmin/PSB/CreatePsb";
@@ -78,26 +78,26 @@ import EditKeuangan from "@/pages/SuperAdmin/InformasiLaporanUmum/Keuangan/EditK
 import DetailKeuangan from "@/pages/SuperAdmin/InformasiLaporanUmum/Keuangan/DetailKeuangan";
 import DataKepegawaian from "@/pages/SuperAdmin/InfomasiSekolah/Kepegawaian";
 import EditKepegawaian from "@/pages/SuperAdmin/InfomasiSekolah/Kepegawaian/EditKepegawaian";
-import CreateSemester from "@/pages/SuperAdmin/InfomasiSekolah/Semester/CreateSemester";
-import EditSemester from "@/pages/SuperAdmin/InfomasiSekolah/Semester/EditSemester";
+import CreateSemester from "@/pages/SuperAdmin/informasiAkademik/Semester/CreateSemester";
+import EditSemester from "@/pages/SuperAdmin/informasiAkademik/Semester/EditSemester";
 import DataKurikulumMataPelajaran from "@/pages/SuperAdmin/informasiAkademik/KurikulumMataPelajaran";
 import CreateKurikulumMataPelajaran from "@/pages/SuperAdmin/informasiAkademik/KurikulumMataPelajaran/CreateKurikulumMataPelajaran";
 import EditKurikulumMataPelajaran from "@/pages/SuperAdmin/informasiAkademik/KurikulumMataPelajaran/EditKurikulumMataPelajaran";
 import AlurTujuanPembelajaran from "@/pages/SuperAdmin/informasiAkademik/AlurTujuanPembelajaran";
-import HistoriPrestasiSiswa from "@/pages/SuperAdmin/informasiAkademik/PrestasiSiswa/HistoriPrestasiSiswa";
+import HistoriPrestasiSiswa from "@/pages/SuperAdmin/InformasiLaporanUmum/PrestasiSiswa/HistoriPrestasiSiswa";
 import DetailGedung from "@/pages/SuperAdmin/InfomasiSekolah/Gedung/DetailGedung";
 import UbahPasswordKepegawaian from "@/pages/SuperAdmin/InfomasiSekolah/Kepegawaian/UbahPasswordKepegawaian";
-import UbahPasswordSiswa from "@/pages/SuperAdmin/informasiAkademik/Siswa/UbahPasswordSiswa";
-import DetailKelas from "@/pages/SuperAdmin/InfomasiSekolah/Kelas/DetailKelas";
-import DetailTahunAktifRombelKelas from "@/pages/SuperAdmin/InfomasiSekolah/Kelas/DetailtahunaktifrombelKelas";
-import CreateRombel from "@/pages/SuperAdmin/InfomasiSekolah/Kelas/Rombel/CreateRombel";
-import EditRombel from "@/pages/SuperAdmin/InfomasiSekolah/Kelas/Rombel/EditRombel";
-import CreateWaliRombel from "@/pages/SuperAdmin/InfomasiSekolah/Kelas/WaliRombel/CreateWaliRombel";
-import EditWaliRombel from "@/pages/SuperAdmin/InfomasiSekolah/Kelas/WaliRombel/EditWaliRombel";
-import CreateSiswaRombel from "@/pages/SuperAdmin/InfomasiSekolah/Kelas/SiswaRombel/CreateSiswaRombel";
-import EditSiswaRombel from "@/pages/SuperAdmin/InfomasiSekolah/Kelas/SiswaRombel/EditSiswaRombel";
-import CreateJadwalPelajaranGuruSpa from "@/pages/SuperAdmin/InfomasiSekolah/Kelas/JadwalPelajaranGuruSpa/CreateJadwalPelajaranGuruSpa";
-import EditJadwalPelajaranGuruSpa from "@/pages/SuperAdmin/InfomasiSekolah/Kelas/JadwalPelajaranGuruSpa/EditJadwalPelajaranGuruSpa";
+import UbahPasswordSiswa from "@/pages/SuperAdmin/InfomasiSekolah/Siswa/UbahPasswordSiswa";
+import DetailKelas from "@/pages/SuperAdmin/informasiAkademik/Kelas/DetailKelas";
+import DetailTahunAktifRombelKelas from "@/pages/SuperAdmin/informasiAkademik/Kelas/DetailtahunaktifrombelKelas";
+import CreateRombel from "@/pages/SuperAdmin/informasiAkademik/Kelas/Rombel/CreateRombel";
+import EditRombel from "@/pages/SuperAdmin/informasiAkademik/Kelas/Rombel/EditRombel";
+import CreateWaliRombel from "@/pages/SuperAdmin/informasiAkademik/Kelas/WaliRombel/CreateWaliRombel";
+import EditWaliRombel from "@/pages/SuperAdmin/informasiAkademik/Kelas/WaliRombel/EditWaliRombel";
+import CreateSiswaRombel from "@/pages/SuperAdmin/informasiAkademik/Kelas/SiswaRombel/CreateSiswaRombel";
+import EditSiswaRombel from "@/pages/SuperAdmin/informasiAkademik/Kelas/SiswaRombel/EditSiswaRombel";
+import CreateJadwalPelajaranGuruSpa from "@/pages/SuperAdmin/informasiAkademik/Kelas/JadwalPelajaranGuruSpa/CreateJadwalPelajaranGuruSpa";
+import EditJadwalPelajaranGuruSpa from "@/pages/SuperAdmin/informasiAkademik/Kelas/JadwalPelajaranGuruSpa/EditJadwalPelajaranGuruSpa";
 import DetailTahunAktifRombelJurusan from "@/pages/SuperAdmin/InfomasiSekolah/Jurusan/DetailTahunAktifRombelJurusan";
 import EditKompetensi from "@/pages/SuperAdmin/informasiAkademik/KompetensiDasar/EditKompetensiDasar";
 import CreateKompetensi from "@/pages/SuperAdmin/informasiAkademik/KompetensiDasar/CreateKompetensiDasar";
@@ -105,6 +105,17 @@ import DetailKompetensi from "@/pages/SuperAdmin/informasiAkademik/KompetensiDas
 import DataKompetensi from "@/pages/SuperAdmin/informasiAkademik/KompetensiDasar";
 import DataJadwalPelajaranGuruSpa from "@/pages/SuperAdmin/informasiAkademik/JadwalPelajaranGuruSpa";
 import DetailEkstrakurikuler from "@/pages/SuperAdmin/informasiAkademik/Ekstrakurikuler/DetailEkstrakurikuler";
+import HistoriAbsensiPegawai from "@/pages/SuperAdmin/InfomasiSekolah/Kepegawaian/HistoriAbsensiPegawai";
+import HistoriPembinaEkskul from "@/pages/SuperAdmin/InfomasiSekolah/Kepegawaian/HistoriPembinaEkskul";
+import HistoriPelatihEkskul from "@/pages/SuperAdmin/InfomasiSekolah/Kepegawaian/HistoriPelatihEkskul";
+import HistoriWaliRombel from "@/pages/SuperAdmin/InfomasiSekolah/Kepegawaian/HistoriWaliRombel";
+import HistoriJadwalPelajaran from "@/pages/SuperAdmin/InfomasiSekolah/Kepegawaian/HistoriJadwalPelajaran";
+import HistoriAbsensiPelajaran from "@/pages/SuperAdmin/InfomasiSekolah/Kepegawaian/HistoriAbsensiPelajaran";
+import HistoriRombelSiswa from "@/pages/SuperAdmin/InfomasiSekolah/Siswa/Historirombelsiswa";
+import HistoriJadwalSiswa from "@/pages/SuperAdmin/InfomasiSekolah/Siswa/Historijadwalsiswa";
+import HistoriAbsensiSiswa from "@/pages/SuperAdmin/InfomasiSekolah/Siswa/Historiabsensisiswa";
+import HistoriEkskulSiswa from "@/pages/SuperAdmin/InfomasiSekolah/Siswa/Historiekskulsiswa";
+import HistoriPrestasiSiswaReadOnly from "@/pages/SuperAdmin/InfomasiSekolah/Siswa/Historiprestasisiswa";
 
 export default function AppRoutes() {
   return (
@@ -276,7 +287,6 @@ export default function AppRoutes() {
           }
         /> */}
         {/* Data User Ortu */}
-
         {/* INFORMASI SEKOLAH */}
         {/* Data Kepegawaian */}
         <Route
@@ -311,9 +321,58 @@ export default function AppRoutes() {
             </ProtectedRoute>
           }
         />
+        {/* HISTORI */}
+        <Route
+          path="/superadmin/informasi-sekolah/kepegawaian/absensi-pegawai/histori/:id"
+          element={
+            <ProtectedRoute roles={["super_admin"]}>
+              <HistoriAbsensiPegawai />{" "}
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/superadmin/informasi-sekolah/kepegawaian/pembina-ekskul/histori/:id"
+          element={
+            <ProtectedRoute roles={["super_admin"]}>
+              <HistoriPembinaEkskul />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/superadmin/informasi-sekolah/kepegawaian/pelatih-ekskul/histori/:id"
+          element={
+            <ProtectedRoute roles={["super_admin"]}>
+              <HistoriPelatihEkskul />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/superadmin/informasi-sekolah/kepegawaian/wali-rombel/histori/:id"
+          element={
+            <ProtectedRoute roles={["super_admin"]}>
+              <HistoriWaliRombel />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/superadmin/informasi-sekolah/kepegawaian/jadwal-pelajaran-guru/histori/:id"
+          element={
+            <ProtectedRoute roles={["super_admin"]}>
+              <HistoriJadwalPelajaran />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/superadmin/informasi-sekolah/kepegawaian/absensi-pelajaran/histori/:id"
+          element={
+            <ProtectedRoute roles={["super_admin"]}>
+              <HistoriAbsensiPelajaran />
+            </ProtectedRoute>
+          }
+        />
         {/* Data Kelas */}
         <Route
-          path="/superadmin/informasi-sekolah/kelas"
+          path="/superadmin/informasi-akademik/kelas"
           element={
             <ProtectedRoute roles={["super_admin"]}>
               <DataKelas />
@@ -321,7 +380,7 @@ export default function AppRoutes() {
           }
         />
         <Route
-          path="/superadmin/informasi-sekolah/kelas/create"
+          path="/superadmin/informasi-akademik/kelas/create"
           element={
             <ProtectedRoute roles={["super_admin"]}>
               <CreateKelas />
@@ -329,7 +388,7 @@ export default function AppRoutes() {
           }
         />
         <Route
-          path="/superadmin/informasi-sekolah/kelas/edit/:id"
+          path="/superadmin/informasi-akademik/kelas/edit/:id"
           element={
             <ProtectedRoute roles={["super_admin"]}>
               <EditKelas />
@@ -337,7 +396,7 @@ export default function AppRoutes() {
           }
         />
         <Route
-          path="/superadmin/informasi-sekolah/kelas/:id"
+          path="/superadmin/informasi-akademik/kelas/:id"
           element={
             <ProtectedRoute roles={["super_admin"]}>
               <DetailKelas />
@@ -346,7 +405,7 @@ export default function AppRoutes() {
         />
         // ── Rombel (nested dalam Kelas, bukan halaman sidebar terpisah) ──────────────
         <Route
-          path="/superadmin/informasi-sekolah/rombel/create"
+          path="/superadmin/informasi-akademik/rombel/create"
           element={
             <ProtectedRoute roles={["super_admin"]}>
               <CreateRombel />
@@ -354,7 +413,7 @@ export default function AppRoutes() {
           }
         />
         <Route
-          path="/superadmin/informasi-sekolah/rombel/edit/:id"
+          path="/superadmin/informasi-akademik/rombel/edit/:id"
           element={
             <ProtectedRoute roles={["super_admin"]}>
               <EditRombel />
@@ -363,7 +422,7 @@ export default function AppRoutes() {
         />
         // ── Wali Rombel (nested dalam DetailTahunAktifRombel) ───────────────────────
         <Route
-          path="/superadmin/informasi-sekolah/wali-rombel/create"
+          path="/superadmin/informasi-akademik/wali-rombel/create"
           element={
             <ProtectedRoute roles={["super_admin"]}>
               <CreateWaliRombel />
@@ -371,7 +430,7 @@ export default function AppRoutes() {
           }
         />
         <Route
-          path="/superadmin/informasi-sekolah/wali-rombel/edit/:id"
+          path="/superadmin/informasi-akademik/wali-rombel/edit/:id"
           element={
             <ProtectedRoute roles={["super_admin"]}>
               <EditWaliRombel />
@@ -380,7 +439,7 @@ export default function AppRoutes() {
         />
         // ── Siswa Rombel (nested dalam DetailTahunAktifRombel) ──────────────────────
         <Route
-          path="/superadmin/informasi-sekolah/siswa-rombel/create"
+          path="/superadmin/informasi-akademik/siswa-rombel/create"
           element={
             <ProtectedRoute roles={["super_admin"]}>
               <CreateSiswaRombel />
@@ -388,7 +447,7 @@ export default function AppRoutes() {
           }
         />
         <Route
-          path="/superadmin/informasi-sekolah/siswa-rombel/edit/:id"
+          path="/superadmin/informasi-akademik/siswa-rombel/edit/:id"
           element={
             <ProtectedRoute roles={["super_admin"]}>
               <EditSiswaRombel />
@@ -397,7 +456,7 @@ export default function AppRoutes() {
         />
         // jadwal pelajaran
         <Route
-          path="/superadmin/informasi-sekolah/jadwal-pelajaran-guru/create"
+          path="/superadmin/informasi-akademik/jadwal-pelajaran-guru/create"
           element={
             <ProtectedRoute roles={["super_admin"]}>
               <CreateJadwalPelajaranGuruSpa />
@@ -405,7 +464,7 @@ export default function AppRoutes() {
           }
         />
         <Route
-          path="/superadmin/informasi-sekolah/jadwal-pelajaran-guru/edit/:id"
+          path="/superadmin/informasi-akademik/jadwal-pelajaran-guru/edit/:id"
           element={
             <ProtectedRoute roles={["super_admin"]}>
               <EditJadwalPelajaranGuruSpa />
@@ -414,13 +473,14 @@ export default function AppRoutes() {
         />
         // ── Detail Tahun Aktif Rombel ─────────────────────────────────────────────── // GANTI path lama jika ada: /rombel/:id/tahun-aktif → pakai yang baru
         <Route
-          path="/superadmin/informasi-sekolah/rombel/aktif/:id"
+          path="/superadmin/informasi-akademik/rombel/aktif/:id"
           element={
             <ProtectedRoute roles={["super_admin"]}>
               <DetailTahunAktifRombelKelas />
             </ProtectedRoute>
           }
         />
+
         {/* Data Jurusan */}
         <Route
           path="/superadmin/informasi-sekolah/jurusan"
@@ -454,6 +514,31 @@ export default function AppRoutes() {
             </ProtectedRoute>
           }
         />
+        {/* Data Mata Pelajaran */}
+        <Route
+          path="/superadmin/informasi-sekolah/mata-pelajaran"
+          element={
+            <ProtectedRoute roles={["super_admin"]}>
+              <DataMataPelajaran />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/superadmin/informasi-sekolah/mata-pelajaran/create"
+          element={
+            <ProtectedRoute roles={["super_admin"]}>
+              <CreateMataPelajaran />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/superadmin/informasi-sekolah/mata-pelajaran/edit/:id"
+          element={
+            <ProtectedRoute roles={["super_admin"]}>
+              <EditMataPelajaran />
+            </ProtectedRoute>
+          }
+        />
         {/* Data Kurikulum */}
         <Route
           path="/superadmin/informasi-sekolah/kurikulum"
@@ -479,6 +564,81 @@ export default function AppRoutes() {
             </ProtectedRoute>
           }
         />
+        {/* Data Siswa */}
+        <Route
+          path="/superadmin/informasi-sekolah/siswa"
+          element={
+            <ProtectedRoute roles={["super_admin"]}>
+              <DataSiswa />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/superadmin/informasi-sekolah/siswa/create"
+          element={
+            <ProtectedRoute roles={["super_admin"]}>
+              <CreateSiswa />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/superadmin/informasi-sekolah/siswa/edit/:id"
+          element={
+            <ProtectedRoute roles={["super_admin"]}>
+              <EditSiswa />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/superadmin/informasi-sekolah/siswa/ubah-password/:id"
+          element={
+            <ProtectedRoute roles={["super_admin"]}>
+              <UbahPasswordSiswa />
+            </ProtectedRoute>
+          }
+        />
+        {/* HISTORI */}
+        <Route
+          path="/superadmin/informasi-sekolah/siswa/histori/rombel/:id"
+          element={
+            <ProtectedRoute roles={["super_admin"]}>
+              <HistoriRombelSiswa />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/superadmin/informasi-sekolah/siswa/histori/jadwal-pelajaran/:id"
+          element={
+            <ProtectedRoute roles={["super_admin"]}>
+              <HistoriJadwalSiswa />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/superadmin/informasi-sekolah/siswa/histori/absensi-pelajaran/:id"
+          element={
+            <ProtectedRoute roles={["super_admin"]}>
+              <HistoriAbsensiSiswa />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/superadmin/informasi-sekolah/siswa/histori/ekstrakurikuler/:id"
+          element={
+            <ProtectedRoute roles={["super_admin"]}>
+              <HistoriEkskulSiswa />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/superadmin/informasi-sekolah/siswa/histori/prestasi/:id"
+          element={
+            <ProtectedRoute roles={["super_admin"]}>
+              <HistoriPrestasiSiswaReadOnly />
+            </ProtectedRoute>
+          }
+        />
+
         {/* Data Gedung + Ruangan */}
         <Route
           path="/superadmin/informasi-sekolah/gedung"
@@ -537,9 +697,11 @@ export default function AppRoutes() {
             </ProtectedRoute>
           }
         />
+
+        {/* INFORMASI AKADEMIK */}
         {/* Data Tahun Akademik + Semester */}
         <Route
-          path="/superadmin/informasi-sekolah/tahun-akademik"
+          path="/superadmin/informasi-akademik/tahun-akademik"
           element={
             <ProtectedRoute roles={["super_admin"]}>
               <DataTahunAkademik />
@@ -547,7 +709,7 @@ export default function AppRoutes() {
           }
         />
         <Route
-          path="/superadmin/informasi-sekolah/tahun-akademik/create"
+          path="/superadmin/informasi-akademik/tahun-akademik/create"
           element={
             <ProtectedRoute roles={["super_admin"]}>
               <CreateTahunAkademik />
@@ -555,7 +717,7 @@ export default function AppRoutes() {
           }
         />
         <Route
-          path="/superadmin/informasi-sekolah/tahun-akademik/edit/:id"
+          path="/superadmin/informasi-akademik/tahun-akademik/edit/:id"
           element={
             <ProtectedRoute roles={["super_admin"]}>
               <EditTahunAkademik />
@@ -564,7 +726,7 @@ export default function AppRoutes() {
         />
         // Semester — route tetap ada, tapi tidak ada halaman DataSemester terpisah lagi
         <Route
-          path="/superadmin/informasi-sekolah/semester/create"
+          path="/superadmin/informasi-akademik/semester/create"
           element={
             <ProtectedRoute roles={["super_admin"]}>
               <CreateSemester />
@@ -572,47 +734,14 @@ export default function AppRoutes() {
           }
         />
         <Route
-          path="/superadmin/informasi-sekolah/semester/edit/:id"
+          path="/superadmin/informasi-akademik/semester/edit/:id"
           element={
             <ProtectedRoute roles={["super_admin"]}>
               <EditSemester />
             </ProtectedRoute>
           }
         />
-        {/* INFORMASI AKADEMIK */}
-        {/* Data Siswa */}
-        <Route
-          path="/superadmin/informasi-akademik/siswa"
-          element={
-            <ProtectedRoute roles={["super_admin"]}>
-              <DataSiswa />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/superadmin/informasi-akademik/siswa/create"
-          element={
-            <ProtectedRoute roles={["super_admin"]}>
-              <CreateSiswa />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/superadmin/informasi-akademik/siswa/edit/:id"
-          element={
-            <ProtectedRoute roles={["super_admin"]}>
-              <EditSiswa />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/superadmin/informasi-akademik/siswa/ubah-password/:id"
-          element={
-            <ProtectedRoute roles={["super_admin"]}>
-              <UbahPasswordSiswa />
-            </ProtectedRoute>
-          }
-        />
+
         {/* Data Ekstrakurikuler */}
         <Route
           path="/superadmin/informasi-akademik/ekstrakurikuler"
@@ -643,32 +772,6 @@ export default function AppRoutes() {
           element={
             <ProtectedRoute roles={["super_admin"]}>
               <DetailEkstrakurikuler />
-            </ProtectedRoute>
-          }
-        />
-
-        {/* Data Mata Pelajaran */}
-        <Route
-          path="/superadmin/informasi-akademik/mata-pelajaran"
-          element={
-            <ProtectedRoute roles={["super_admin"]}>
-              <DataMataPelajaran />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/superadmin/informasi-akademik/mata-pelajaran/create"
-          element={
-            <ProtectedRoute roles={["super_admin"]}>
-              <CreateMataPelajaran />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/superadmin/informasi-akademik/mata-pelajaran/edit/:id"
-          element={
-            <ProtectedRoute roles={["super_admin"]}>
-              <EditMataPelajaran />
             </ProtectedRoute>
           }
         />
@@ -767,7 +870,7 @@ export default function AppRoutes() {
         />
         {/* Data Prestasi Siswa */}
         <Route
-          path="/superadmin/informasi-akademik/prestasi-siswa"
+          path="/superadmin/informasi-laporan-umum/prestasi-siswa"
           element={
             <ProtectedRoute roles={["super_admin"]}>
               <DataPrestasiSiswa />
@@ -783,7 +886,7 @@ export default function AppRoutes() {
           }
         />
         <Route
-          path="/superadmin/informasi-akademik/prestasi-siswa/create"
+          path="/superadmin/informasi-laporan-umum/prestasi-siswa/create"
           element={
             <ProtectedRoute roles={["super_admin"]}>
               <CreatePrestasiSiswa />
@@ -791,7 +894,7 @@ export default function AppRoutes() {
           }
         />
         <Route
-          path="/superadmin/informasi-akademik/prestasi-siswa/edit/:id"
+          path="/superadmin/informasi-laporan-umum/prestasi-siswa/edit/:id"
           element={
             <ProtectedRoute roles={["super_admin"]}>
               <EditPrestasiSiswa />

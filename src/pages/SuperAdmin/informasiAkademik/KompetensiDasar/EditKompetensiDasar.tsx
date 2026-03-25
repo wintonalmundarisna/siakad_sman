@@ -1,10 +1,3 @@
-/**
- * EditKompetensi
- * Route: /superadmin/informasi-sekolah/kompetensi/edit/:id?kurikulum_mata_pelajaran_id=X
- *
- * Setelah berhasil/batal → redirect ke:
- *   /superadmin/informasi-sekolah/kompetensi?kurikulum_mata_pelajaran_id=X
- */
 import PageTitle from "@/components/PageTitle";
 import { SidebarSuperAdmin } from "@/components/SidebarSuperAdmin";
 import { Button } from "@/components/ui/button";
@@ -21,6 +14,7 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrig
 interface KurmapOption {
   kurikulum_mata_pelajaran_id: number;
   kurikulum: string;
+  tipe: string; // ← tambah
   mata_pelajaran: string;
   tingkat: number;
   status: string | null;
@@ -66,6 +60,8 @@ const EditKompetensi = () => {
   const [initialStatus, setInitialStatus] = useState<string>("");
   const [errors, setErrors] = useState<FormErrors>({});
   const [kurmapIdFromUrl, setKurmapIdFromUrl] = useState<string>("");
+  const kurikulumId = searchParams.get("kurikulum_id") || "";
+  const kurmapId = searchParams.get("kurikulum_mata_pelajaran_id") || "";
 
   const [formData, setFormData] = useState<FormData>({
     kurikulum_mata_pelajaran_id: "",
@@ -79,10 +75,15 @@ const EditKompetensi = () => {
     status: "",
   });
 
+  // ← tambah di sini, setelah formData
+  const selectedKurmap = kurmapList.find((k) => String(k.kurikulum_mata_pelajaran_id) === formData.kurikulum_mata_pelajaran_id);
+  const isMerdeka = selectedKurmap?.tipe === "MERDEKA";
+
   // URL untuk kembali — pakai query param jika ada
-  const buildBackUrl = (kurmapId?: string) => {
-    const kid = kurmapId || kurmapIdFromUrl || searchParams.get("kurikulum_mata_pelajaran_id") || "";
-    return kid ? `/superadmin/informasi-sekolah/kompetensi?kurikulum_mata_pelajaran_id=${kid}` : "/superadmin/informasi-sekolah/kompetensi";
+  const buildBackUrl = (kurmapIdParam?: string) => {
+    const kmId = kurmapIdParam || kurmapIdFromUrl || kurmapId;
+
+    return kmId ? `/superadmin/informasi-sekolah/kompetensi?kurikulum_mata_pelajaran_id=${kmId}&kurikulum_id=${kurikulumId}` : "/superadmin/informasi-sekolah/kompetensi";
   };
 
   // ── Fetch select + detail paralel ────────────────────────────────────────────
@@ -145,6 +146,15 @@ const EditKompetensi = () => {
 
     fetchAll();
   }, [id]);
+
+  // ← tambah di sini
+  useEffect(() => {
+    if (!selectedKurmap || !formData.jenis) return;
+    const valid = isMerdeka ? formData.jenis === "CP" : formData.jenis === "KD";
+    if (!valid) {
+      setFormData((prev) => ({ ...prev, jenis: "", tingkat: "", aspek: "", fase: "" }));
+    }
+  }, [selectedKurmap?.kurikulum_mata_pelajaran_id]);
 
   // Group kurmap by tingkat
   const kurmapGrouped = kurmapList.reduce<Record<number, KurmapOption[]>>((acc, k) => {
@@ -379,6 +389,13 @@ const EditKompetensi = () => {
                 <label className="block font-semibold mb-1">
                   Jenis <span className="text-red-500">*</span>
                 </label>
+
+                {selectedKurmap && (
+                  <p className={`text-xs mb-2 px-3 py-1.5 rounded border ${isMerdeka ? "bg-emerald-50 border-emerald-200 text-emerald-700" : "bg-blue-50 border-blue-200 text-blue-700"}`}>
+                    Kurikulum <strong>{selectedKurmap.kurikulum}</strong> hanya mendukung jenis <strong>{isMerdeka ? "CP (Capaian Pembelajaran)" : "KD (Kompetensi Dasar)"}</strong>
+                  </p>
+                )}
+
                 <Select value={formData.jenis} onValueChange={handleJenisChange}>
                   <SelectTrigger className={`w-full ${errors.jenis ? "border-red-500" : ""}`}>
                     <SelectValue placeholder="-- pilih jenis --" />
@@ -386,8 +403,16 @@ const EditKompetensi = () => {
                   <SelectContent>
                     <SelectGroup>
                       <SelectLabel>Pilih Jenis</SelectLabel>
-                      <SelectItem value="KD">KD — Kompetensi Dasar (Kurikulum 2013)</SelectItem>
-                      <SelectItem value="CP">CP — Capaian Pembelajaran (Kurikulum Merdeka)</SelectItem>
+                      {/* Belum ada kurmap → tampilkan semua */}
+                      {!selectedKurmap && (
+                        <>
+                          <SelectItem value="KD">KD — Kompetensi Dasar (Kurikulum 2013)</SelectItem>
+                          <SelectItem value="CP">CP — Capaian Pembelajaran (Kurikulum Merdeka)</SelectItem>
+                        </>
+                      )}
+                      {/* Ada kurmap → filter sesuai tipe */}
+                      {selectedKurmap && !isMerdeka && <SelectItem value="KD">KD — Kompetensi Dasar (Kurikulum 2013/KTSP)</SelectItem>}
+                      {selectedKurmap && isMerdeka && <SelectItem value="CP">CP — Capaian Pembelajaran (Kurikulum Merdeka)</SelectItem>}
                     </SelectGroup>
                   </SelectContent>
                 </Select>
