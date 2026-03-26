@@ -3,17 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Exports\LegerExport;
-use App\Exports\SatuSiswaSemuaNilaiExport;
+// use App\Exports\SatuSiswaSemuaNilaiExport; // ini rapor versi excel (yang dipake versi pdf)
+use Barryvdh\DomPDF\Facade\Pdf; // rapor versi pdf
 use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
-use App\Models\DataNilaiSiswa;
 use App\Models\Rapor;
-use App\Models\Semester;
 use App\Models\TahunAkademik;
+use App\Models\Semester;
 use App\Models\Rombel;
-use App\Models\Kelas;
+use App\Models\SiswaRombel;
+use App\Models\DataNilaiSiswa;
 use App\Models\AbsensiSiswa;
-// use App\Models\SiswaRombel;
+use App\Models\IdentitasSekolah;
+use App\Models\Kelas;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 // use Illuminate\Support\Facades\Validator;
@@ -23,6 +25,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Maatwebsite\Excel\Facades\Excel;
+// use Maatwebsite\Excel\Excel as ExcelWriter;
+use DateTime;
+use IntlDateFormatter;
 
 class DataNilaiSiswaController extends Controller
 {
@@ -591,31 +596,99 @@ class DataNilaiSiswaController extends Controller
     }
 
     
-    // Export excel satu siswa semua mapel (rapor)
-    // ! masuk sini, jangan pakai pdf, tapi pakai SatuSiswaSemuaNilaiExport
-    // ! user cukup tentukan tahun, semester dan jenis, nanti dicetak massal
-    // ! tiap sheet excel berisi satu siswa dan semua nilainya
+    // Export excel satu siswa semua mapel (rapor)   
+    // public function cetakRapor(Request $request)
+    // {
+    //     $tahunAkademik  = TahunAkademik::find($request->tahun_akademik_id);
+    //     $tahun          = str_replace(['/','\\',' '], '_', $tahunAkademik->tahun_akademik);
+    //     $semester       = Semester::find($request->semester_id);
+
+    //     $rombel         = Rombel::find($request->rombel_id);
+
+    //     if (!$rombel) {
+    //         return ApiResponse::error('Rombel tidak ditemukan');
+    //     }
+
+    //     return Excel::download(
+    //         new SatuSiswaSemuaNilaiExport(
+    //             $request->tahun_akademik_id,
+    //             $request->semester_id,
+    //             $request->rombel_id,
+    //             $request->jenis_penilaian
+    //         ),            
+    //         'Rapor_'.$rombel->nama_rombel.'_'.$semester->semester.'_'.$tahun.'.xlsx'            
+    //     );
+    // }
+
+    // Rapor versi pdf    
     public function cetakRapor(Request $request)
     {
         $tahunAkademik  = TahunAkademik::find($request->tahun_akademik_id);
-        $tahun          = str_replace(['/','\\',' '], '_', $tahunAkademik->tahun_akademik);
         $semester       = Semester::find($request->semester_id);
-
         $rombel         = Rombel::find($request->rombel_id);
 
         if (!$rombel) {
             return ApiResponse::error('Rombel tidak ditemukan');
         }
 
-        return Excel::download(
-            new SatuSiswaSemuaNilaiExport(
-                $request->tahun_akademik_id,
-                $request->semester_id,
-                $request->rombel_id,
-                $request->jenis_penilaian
-            ),            
-            'Rapor_'.$rombel->nama_rombel.'_'.$semester->semester.'_'.$tahun.'.xlsx'            
-        );
+        $siswaRombel = SiswaRombel::with('siswa')
+            ->where('rombel_id',$request->rombel_id)
+            ->where('tahun_akademik_id',$request->tahun_akademik_id)
+            ->get();
+
+        $data = [];
+
+        foreach($siswaRombel as $sr){
+
+            $nilai = DataNilaiSiswa::query()
+
+            ->join('kurikulum_mata_pelajaran','data_nilai_siswa.kurikulum_mata_pelajaran_id','=','kurikulum_mata_pelajaran.id')
+            ->join('mata_pelajarans','kurikulum_mata_pelajaran.mata_pelajaran_id','=','mata_pelajarans.id')
+
+            ->where('data_nilai_siswa.siswa_id',$sr->siswa_id)
+            ->where('data_nilai_siswa.semester_id',$request->semester_id)
+            ->where('data_nilai_siswa.tahun_akademik_id',$request->tahun_akademik_id)
+            ->where('data_nilai_siswa.jenis_penilaian',$request->jenis_penilaian)
+
+            ->select(
+                'mata_pelajarans.nama_pelajaran',
+                'data_nilai_siswa.nilai_akhir'
+            )
+            ->get();
+
+            $absensi = AbsensiSiswa::selectRaw("
+                SUM(CASE WHEN status = 'sakit' THEN 1 ELSE 0 END) as sakit,
+                SUM(CASE WHEN status = 'izin' THEN 1 ELSE 0 END) as izin,
+                SUM(CASE WHEN status = 'alpa' THEN 1 ELSE 0 END) as alpa
+            ")
+            ->where('siswa_id',$sr->siswa_id)
+            ->where('semester_id',$request->semester_id)
+            ->where('tahun_akademik_id',$request->tahun_akademik_id)
+            ->first();
+
+            $data[] = [
+                'siswa' => $sr->siswa,
+                'nilai' => $nilai,
+                'absensi' => $absensi
+            ];
+        }
+
+        $kepsek = IdentitasSekolah::first();
+
+        $formatter = new \IntlDateFormatter('id_ID', \IntlDateFormatter::LONG, \IntlDateFormatter::NONE);
+        $formatter->setPattern('d MMMM yyyy');
+        $tanggal = 'Jakarta, '.$formatter->format(new DateTime());
+
+        $pdf = Pdf::loadView('rapor.pdf',[
+            'data'=>$data,
+            'semester'=>$semester,
+            'tahun'=>$tahunAkademik,
+            'rombel'=>$rombel,
+            'kepsek'=>$kepsek,
+            'tanggal' => $tanggal
+        ])->setPaper('A4','portrait')->setOption('isRemoteEnabled', true);
+
+        return $pdf->download('rapor_'.$rombel->nama_rombel.'.pdf');
     }
 
 

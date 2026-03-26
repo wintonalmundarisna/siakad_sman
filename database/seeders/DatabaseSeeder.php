@@ -69,8 +69,8 @@ class DatabaseSeeder extends Seeder
             'kode_pos' => '16417',
             'email' => 'smanegeri@gmail.com',
             'no_telepon' => '021 112 5567 82',
-            'kepala_sekolah' => 'Winton Almundarinsa',
-            'nip_kepala_sekolah' => '202143500065',
+            'kepala_sekolah' => 'Deden Suhendi, M.Pd',
+            'nip_kepala_sekolah' => '196711111998031005',
             'visi' => 'Menciptakan generasi yang unggul dan sejahtera',
             'misi' => 'Mencerdaskan bangsa melalui pendidikan',
             'logo' => 'public/logo/sma.png'
@@ -4764,41 +4764,7 @@ class DatabaseSeeder extends Seeder
                 'predikat'  => null,
                 'deskripsi' => null,
                 'rapor_id'  => null
-            ],
-            // [
-            //     'siswa_id' => 3, // Sanita
-            //     'guru_id' => 5, // Guru PAI
-            //     'siswa_rombel_id'   => 7,
-            //     'kurikulum_mata_pelajaran_id' => 2, // PAI
-            //     'tahun_akademik_id' => 2,
-            //     'semester_id' => 4,
-            //     'jenis_penilaian'  => 'PAS',
-            //     'point_absensi' => 60,
-            //     'point_tugas' => 80,
-            //     'point_uts' => 0,
-            //     'point_uas' => 80,              
-            //     'nilai_akhir' => 0,
-            //     'predikat'  => null,
-            //     'deskripsi' => null,
-            //     'rapor_id'  => null
-            // ],
-            // [
-            //     'siswa_id' => 3, // Sanita
-            //     'guru_id' => 6, // Guru PPKn
-            //     'siswa_rombel_id'   => 7,
-            //     'kurikulum_mata_pelajaran_id' => 3, // PPKn
-            //     'tahun_akademik_id' => 2,
-            //     'semester_id' => 4,
-            //     'jenis_penilaian'  => 'PAS',
-            //     'point_absensi' =>6,
-            //     'point_tugas' => 80,
-            //     'point_uts' => 0,
-            //     'point_uas' => 80,              
-            //     'nilai_akhir' => 0,
-            //     'predikat'  => null,
-            //     'deskripsi' => null,
-            //     'rapor_id'  => null
-            // ],
+            ],            
 
             // Yuli
             [
@@ -4910,41 +4876,7 @@ class DatabaseSeeder extends Seeder
                 'predikat'  => null,
                 'deskripsi' => null,
                 'rapor_id'  => 12
-            ],
-            // [
-            //     'siswa_id' => 5, // Yuli
-            //     'guru_id' => 5, // Guru PAI
-            //     'siswa_rombel_id'   => 5,
-            //     'kurikulum_mata_pelajaran_id' => 2, // PAI
-            //     'tahun_akademik_id' => 2,
-            //     'semester_id' => 4,
-            //     'jenis_penilaian'  => 'PAS',
-            //     'point_absensi' => 90,
-            //     'point_tugas' => 80,
-            //     'point_uts' => 0,
-            //     'point_uas' => 80,              
-            //     'nilai_akhir' => 0,
-            //     'predikat'  => null,
-            //     'deskripsi' => null,
-            //     'rapor_id'  => null
-            // ],
-            // [
-            //     'siswa_id' => 5, // Yuli
-            //     'guru_id' => 6, // Guru PPKn
-            //     'siswa_rombel_id'   => 5,
-            //     'kurikulum_mata_pelajaran_id' => 3, // PPKn
-            //     'tahun_akademik_id' => 2,
-            //     'semester_id' => 4,
-            //     'jenis_penilaian'  => 'PAS',
-            //     'point_absensi' => 80,
-            //     'point_tugas' => 80,
-            //     'point_uts' => 0,
-            //     'point_uas' => 80,              
-            //     'nilai_akhir' => 0,
-            //     'predikat'  => null,
-            //     'deskripsi' => null,
-            //     'rapor_id'  => null
-            // ],
+            ],            
 
             // Bagas
             [
@@ -5056,41 +4988,7 @@ class DatabaseSeeder extends Seeder
                 'predikat'  => null,
                 'deskripsi' => null,
                 'rapor_id'  => 9
-            ],
-            // [
-            //     'siswa_id' => 1, // Bagas
-            //     'guru_id' => 5, // Guru PAI
-            //     'siswa_rombel_id'   => 2,
-            //     'kurikulum_mata_pelajaran_id' => 2, // PAI
-            //     'tahun_akademik_id' => 2,
-            //     'semester_id' => 4,
-            //     'jenis_penilaian'  => 'PAS',
-            //     'point_absensi' => 80,
-            //     'point_tugas' => 80,
-            //     'point_uts' => 0,
-            //     'point_uas' => 80,              
-            //     'nilai_akhir' => 0,
-            //     'predikat'  => null,
-            //     'deskripsi' => null,
-            //     'rapor_id'  => null
-            // ],
-            // [
-            //     'siswa_id' => 1, // Bagas
-            //     'guru_id' => 6, // Guru PPKn
-            //     'siswa_rombel_id'   => 2,
-            //     'kurikulum_mata_pelajaran_id' => 3, // PPKn
-            //     'tahun_akademik_id' => 2,
-            //     'semester_id' => 4,
-            //     'jenis_penilaian'  => 'PAS',
-            //     'point_absensi' => 80,
-            //     'point_tugas' => 80,
-            //     'point_uts' => 0,
-            //     'point_uas' => 80,              
-            //     'nilai_akhir' => 0,
-            //     'predikat'  => null,
-            //     'deskripsi' => null,
-            //     'rapor_id'  => null
-            // ],
+            ],            
 
             // Devi
             // Tingkat 12
@@ -5129,42 +5027,7 @@ class DatabaseSeeder extends Seeder
                 'predikat'  => null,
                 'deskripsi' => null,
                 'rapor_id'  => 13
-            ],
-            // [
-            //     'siswa_id' => 8, // Devi
-            //     'guru_id' => 5, // Guru PAI
-            //     'siswa_rombel_id'   => 1,
-            //     'kurikulum_mata_pelajaran_id' => 2, // PAI
-            //     'tahun_akademik_id' => 2,
-            //     'semester_id' => 4,
-            //     'jenis_penilaian'  => 'PAS',
-            //     'point_absensi' => 80,
-            //     'point_tugas' => 80,
-            //     'point_uts' => 0,
-            //     'point_uas' => 80,              
-            //     'nilai_akhir' => 0,
-            //     'predikat'  => null,
-            //     'deskripsi' => null,
-            //     'rapor_id'  => null
-            // ],
-            // [
-            //     'siswa_id' => 8, // Devi
-            //     'guru_id' => 6, // Guru PPKn
-            //     'siswa_rombel_id'   => 1,
-            //     'kurikulum_mata_pelajaran_id' => 3, // PPKn
-            //     'tahun_akademik_id' => 2,
-            //     'semester_id' => 4,
-            //     'jenis_penilaian'  => 'PAS',
-            //     'point_absensi' => 80,
-            //     'point_tugas' => 80,
-            //     'point_uts' => 0,
-            //     'point_uas' => 80,              
-            //     'nilai_akhir' => 0,
-            //     'predikat'  => null,
-            //     'deskripsi' => null,
-            //     'rapor_id'  => null
-            // ]
-
+            ],            
             [
                 // 1
                 'siswa_id' => 4, // Rehan
