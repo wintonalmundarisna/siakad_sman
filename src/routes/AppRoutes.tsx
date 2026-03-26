@@ -480,7 +480,6 @@ export default function AppRoutes() {
             </ProtectedRoute>
           }
         />
-
         {/* Data Jurusan */}
         <Route
           path="/superadmin/informasi-sekolah/jurusan"
@@ -638,7 +637,6 @@ export default function AppRoutes() {
             </ProtectedRoute>
           }
         />
-
         {/* Data Gedung + Ruangan */}
         <Route
           path="/superadmin/informasi-sekolah/gedung"
@@ -697,7 +695,6 @@ export default function AppRoutes() {
             </ProtectedRoute>
           }
         />
-
         {/* INFORMASI AKADEMIK */}
         {/* Data Tahun Akademik + Semester */}
         <Route
@@ -741,7 +738,6 @@ export default function AppRoutes() {
             </ProtectedRoute>
           }
         />
-
         {/* Data Ekstrakurikuler */}
         <Route
           path="/superadmin/informasi-akademik/ekstrakurikuler"
@@ -937,7 +933,7 @@ export default function AppRoutes() {
         {/* INFORMASI LAPORAN UMUM */}
         {/* Data Absensi Pegawai */}
         <Route
-          path="/superadmin/informasi-laporan-umum/absensi-pegawai"
+          path="/superadmin/informasi-laporan-umum/absensi/absensi-pegawai"
           element={
             <ProtectedRoute roles={["super_admin"]}>
               <DataAbsensiPegawai />
@@ -946,7 +942,7 @@ export default function AppRoutes() {
         />
         {/* Data Absensi Pelajaran */}
         <Route
-          path="/superadmin/informasi-laporan-umum/absensi-pelajaran"
+          path="/superadmin/informasi-laporan-umum/absensi/absensi-pelajaran"
           element={
             <ProtectedRoute roles={["super_admin"]}>
               <DataAbsensiPelajaran />
@@ -955,7 +951,7 @@ export default function AppRoutes() {
         />
         {/* Data Absensi Siswa */}
         <Route
-          path="/superadmin/informasi-laporan-umum/absensi-siswa"
+          path="/superadmin/informasi-laporan-umum/absensi/absensi-siswa"
           element={
             <ProtectedRoute roles={["super_admin"]}>
               <DataAbsensiSiswa />

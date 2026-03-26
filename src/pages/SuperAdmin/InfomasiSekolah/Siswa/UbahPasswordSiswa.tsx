@@ -63,7 +63,7 @@ const UbahPasswordSiswa = () => {
           title: "Gagal memuat data!",
           text: err.response?.data?.message || "Tidak dapat memuat data siswa.",
         });
-        navigate("/superadmin/informasi-akademik/siswa");
+        navigate("/superadmin/informasi-sekolah/siswa");
       } finally {
         setLoadingSiswa(false);
       }
@@ -94,7 +94,7 @@ const UbahPasswordSiswa = () => {
           showConfirmButton: false,
           timer: 1800,
         });
-        navigate("/superadmin/informasi-akademik/siswa");
+        navigate("/superadmin/informasi-sekolah/siswa");
       }
     } catch (err: any) {
       if (err.response?.status === 422) {
@@ -126,7 +126,7 @@ const UbahPasswordSiswa = () => {
         <div className="mx-auto p-4 sm:px-6 lg:px-8">
           {/* Header */}
           <div className="flex items-center gap-3 mb-6">
-            <Link to="/superadmin/informasi-akademik/siswa">
+            <Link to="/superadmin/informasi-sekolah/siswa">
               <Button variant="outline" size="sm" className="flex items-center gap-1">
                 <ArrowLeftIcon size={16} />
                 Kembali
@@ -246,7 +246,7 @@ const UbahPasswordSiswa = () => {
                           <><KeyRound size={16} className="mr-2" />Simpan Password</>
                         )}
                       </Button>
-                      <Link to="/superadmin/informasi-akademik/siswa">
+                      <Link to="/superadmin/informasi-sekolah/siswa">
                         <Button type="button" className="bg-muted-foreground hover:bg-muted-foreground/90">
                           Batal
                         </Button>
