@@ -139,7 +139,7 @@ export function DialogDetailSiswa({ siswaId }: DialogDetailSiswaProps) {
                 <CardTitle className="text-base">Keamanan Akun</CardTitle>
               </CardHeader>
               <CardContent>
-                <LinkButton to={`/superadmin/informasi-akademik/siswa/ubah-password/${siswaId}`} icon={<KeyRound size={15} />} label="Ubah Password" onClick={() => setOpen(false)} />
+                <LinkButton to={`/superadmin/informasi-sekolah/siswa/ubah-password/${siswaId}`} icon={<KeyRound size={15} />} label="Ubah Password" onClick={() => setOpen(false)} />
               </CardContent>
             </Card>
           </div>

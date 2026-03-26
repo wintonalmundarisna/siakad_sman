@@ -190,7 +190,7 @@ const DataSiswa = () => {
 
           {/* ── Toolbar ── */}
           <div className="mb-6 flex flex-col md:flex-row justify-between items-center gap-4 w-full">
-            <Link to="/superadmin/informasi-akademik/siswa/create" className="w-full md:w-auto">
+            <Link to="/superadmin/informasi-sekolah/siswa/create" className="w-full md:w-auto">
               <Button className="bg-primary w-full md:w-auto">
                 <Plus size={18} />
                 Tambah Siswa
@@ -273,7 +273,7 @@ const DataSiswa = () => {
                             <div className="flex gap-1 justify-center">
                               <DialogDetailSiswa siswaId={siswa.siswa_id} />
 
-                              <Link to={`/superadmin/informasi-akademik/siswa/edit/${siswa.siswa_id}`}>
+                              <Link to={`/superadmin/informasi-sekolah/siswa/edit/${siswa.siswa_id}`}>
                                 <Button className="bg-primary" size="sm">
                                   <PenBox size={16} />
                                 </Button>
