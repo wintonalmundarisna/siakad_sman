@@ -103,7 +103,7 @@ const EditSiswa = () => {
           icon: "success",
           confirmButtonColor: "#4F46E5",
         });
-        navigate("/superadmin/informasi-akademik/siswa");
+        navigate("/superadmin/informasi-sekolah/siswa");
       } else {
         Swal.fire({
           title: "Gagal",
@@ -284,7 +284,7 @@ const EditSiswa = () => {
                     <FilePlus size={18} />
                     {isLoading ? "Menyimpan..." : "Simpan Perubahan"}
                   </Button>
-                  <Link to="/superadmin/informasi-akademik/siswa">
+                  <Link to="/superadmin/informasi-sekolah/siswa">
                     <Button
                       type="button"
                       className="bg-muted-foreground flex items-center gap-2 hover:bg-muted-foreground/90"

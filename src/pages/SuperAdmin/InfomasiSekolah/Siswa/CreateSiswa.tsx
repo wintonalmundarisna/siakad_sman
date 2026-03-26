@@ -69,7 +69,7 @@ const CreateSiswa = () => {
         });
 
         reset();
-        navigate("/superadmin/informasi-akademik/siswa");
+        navigate("/superadmin/informasi-sekolah/siswa");
       } else {
         Swal.fire({
           title: "Gagal Registrasi",
@@ -311,7 +311,7 @@ const CreateSiswa = () => {
                   {loading ? "Menyimpan..." : "Simpan"}
                 </Button>
 
-                <Link to="/superadmin/informasi-akademik/siswa">
+                <Link to="/superadmin/informasi-sekolah/siswa">
                   <Button type="button" className="bg-muted-foreground flex items-center gap-2 hover:bg-muted-foreground/90">
                     <CircleXIcon size={18} /> Batal
                   </Button>
