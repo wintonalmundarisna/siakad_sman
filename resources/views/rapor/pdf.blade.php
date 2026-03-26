@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
 
-    <style>
+    {{-- <style>
         @page {
             margin: 40px;
         }
@@ -16,8 +16,8 @@
             background-image: url("{{ public_path('storage/logo/watermark_sma42.png') }}");
             background-repeat: no-repeat;
             background-position: center;
-            background-size: 450px;
-        }
+            background-size: 600px;
+        }        
 
         .header {
             text-align: center;
@@ -37,14 +37,56 @@
         .page-break {
             page-break-after: always;
         }
-    </style>
+    </style> --}}
+
+    <style>
+
+        @page {
+            margin: 40px;
+        }
+        
+        body{
+            font-family: "Times New Roman";
+            font-size: 12px;
+        }
+        
+        /* WATERMARK */        
+        .watermark{
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-57%, -60%);
+            opacity: 0.40;
+            z-index: -1;
+        }
+        
+        .header{
+            text-align:center;
+        }
+        
+        table{
+            width:100%;
+            border-collapse:collapse;
+        }
+        
+        table th, table td{
+            border:1px solid black;
+            padding:5px;
+        }
+        
+        .page-break{
+            page-break-after: always;
+        }
+        
+        </style>
 
 </head>
 
 <body>
+    <!-- Watermark muncul di semua halaman -->
+    <img src="{{ public_path('storage/logo/watermark_sma42.png') }}" class="watermark" width="660">
 
     @foreach ($data as $d)
-        {{-- <img class="watermark" src="{{ public_path('storage/logo/watermark.png') }}" width="500"> --}}
 
         <!-- HEADER -->
 
@@ -90,9 +132,7 @@
             ?>
             LAPORAN HASIL BELAJAR {{ $tulisanSemester }}<br>
             TAHUN AJARAN {{ $tahun->tahun_akademik }}
-        </h3>
-
-        <br>
+        </h3>        
 
         <?php
         if ($semester->semester == 'Ganjil') {
@@ -102,26 +142,53 @@
         }
         ?>
 
-        <table style="border:none;">
-            <tr style="border:none; background: blue;">
-                <td style="border:none; width:80px"><b>Nama</b></td>
-                <td style="border:none; width:10px">:</td>
-                <td style="border:none"><b>{{ $d['siswa']->nama }}</b></td>
+        <table style="width:100%; border:none;">
 
-                <td style="border:none; width:80px; align-self: flex-end"><b>Kelas</b></td>
-                <td style="border:none; width:10px">:</td>
-                <td style="border:none"><b>{{ $rombel->nama_rombel }}</b></td>
+            <tr>
+
+                <!-- KIRI -->
+                <td style="width:65%; border:none; vertical-align:top;">
+
+                    <table style="border:none;">
+                        <tr>
+                            <td style="border:none; width:90px;"><b>Nama</b></td>
+                            <td style="border:none; width:10px;">:</td>
+                            <td style="border:none;"><b>{{ $d['siswa']->nama }}</b></td>
+                        </tr>
+
+                        <tr>
+                            <td style="border:none;"><b>NIS</b></td>
+                            <td style="border:none;">:</td>
+                            <td style="border:none;"><b>{{ $d['siswa']->nis }}</b></td>
+                        </tr>
+                    </table>
+
+                </td>
+
+
+                <!-- KANAN -->
+                <td style="border:none; vertical-align:top;">
+
+                    <table style="width:100%; border:none;">
+
+                        <tr>
+                            <td style="border:none; width:120px;"><b>Kelas</b></td>
+                            <td style="border:none; width:10px;">:</td>
+                            <td style="border:none;"><b>{{ $rombel->nama_rombel }}</b></td>
+                        </tr>
+
+                        <tr>
+                            <td style="border:none;"><b>Semester</b></td>
+                            <td style="border:none;">:</td>
+                            <td style="border:none;"><b>{{ $tulisanSemesterDua }}</b></td>
+                        </tr>
+
+                    </table>
+
+                </td>
+
             </tr>
 
-            <tr style="border:none; background: red;">
-                <td style="border:none"><b>NIS</b></td>
-                <td style="border:none">:</td>
-                <td style="border:none"><b>{{ $d['siswa']->nis }}</b></td>
-
-                <td style="border:none"><b>Semester</b></td>
-                <td style="border:none">:</td>
-                <td style="border:none"><b>{{ $tulisanSemesterDua }}</b></td>
-            </tr>
         </table>
 
         <br>
@@ -197,7 +264,7 @@
                 <td style="border:none; vertical-align:middle;">
                     <div style="display:inline-block; text-align:left;">
                         Mengetahui,<br>
-                        Kepala Sekolah<br><br><br><br>
+                        Kepala {{ $kepsek->nama_sekolah }}<br><br><br><br><br><br>
 
                         {{ $kepsek->kepala_sekolah }}<br>
                         NIP {{ $kepsek->nip_kepala_sekolah }}
@@ -207,10 +274,14 @@
                 <td style="border:none; vertical-align:middle;">
                     <div style="display:inline-block; text-align:left;">
                         {{ $tanggal }}<br>
-                        Wali Kelas<br><br><br><br>
+                        Wali Kelas<br><br><br><br><br><br>
 
-                        {{ $rombel->waliRombelByTahun($tahun->id)->wali->nama ?? '-' }}<br>
-                        NIP {{ $rombel->waliRombelByTahun($tahun->id)->wali->nip ?? '-' }}
+                        {{-- {{ $rombel->waliRombelByTahun($tahun->id)->wali->nama ?? '-' }}<br>
+                        NIP {{ $rombel->waliRombelByTahun($tahun->id)->wali->nip ?? '-' }} --}}
+
+                        {{ optional(optional($rombel->waliRombelByTahun($tahun->id))->wali)->nama ?? '-' }}
+                        <br>
+                        {{ optional(optional($rombel->waliRombelByTahun($tahun->id))->wali)->nip ?? '-' }}
                     </div>
                 </td>
 

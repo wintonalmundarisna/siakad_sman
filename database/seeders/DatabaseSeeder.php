@@ -57,7 +57,7 @@ class DatabaseSeeder extends Seeder
         */
         IdentitasSekolah::insert([
             'npsn' => 'SMA/001/2020',
-            'nama_sekolah' => 'SMA Negeri',
+            'nama_sekolah' => 'SMA Negeri 42 Jakarta',
             'status_sekolah' => 'Negeri',
             'jenjang' => 'SMA',
             'akreditasi' => 'A',
@@ -537,7 +537,7 @@ class DatabaseSeeder extends Seeder
             [
                 // 1
                 'nisn' => '123451',
-                'nama' => 'Bagas',
+                'nama' => 'Bagas Pratama',
                 'nis' => '123451',                
                 'email' => 'bagas@gmail.com',
                 'password' => Hash::make('K3ps3k.'),
@@ -548,7 +548,7 @@ class DatabaseSeeder extends Seeder
             [
                 // 2
                 'nisn' => '123452',
-                'nama' => 'Winton',
+                'nama' => 'Winton Almundarisna',
                 'nis' => '123452',                
                 'email' => 'winton@gmail.com',
                 'password' => Hash::make('K3ps3k.'),
@@ -559,7 +559,7 @@ class DatabaseSeeder extends Seeder
             [
                 // 3
                 'nisn' => '123453',
-                'nama' => 'Sanita',
+                'nama' => 'Sanita Permata Sari',
                 'nis' => '123453',                
                 'email' => 'sanita@gmail.com',
                 'password' => Hash::make('K3ps3k.'),
@@ -570,7 +570,7 @@ class DatabaseSeeder extends Seeder
             [
                 // 4
                 'nisn' => '123454',
-                'nama' => 'Rehan',
+                'nama' => 'Rehan Anggra Wirya',
                 'nis' => '123454',                
                 'email' => 'rehan@gmail.com',
                 'password' => Hash::make('K3ps3k.'),
@@ -581,7 +581,7 @@ class DatabaseSeeder extends Seeder
             [
                 // 5
                 'nisn' => '123455',
-                'nama' => 'Yuli',
+                'nama' => 'Yulianthy Noor Annisa',
                 'nis' => '123455',                
                 'email' => 'yuli@gmail.com',
                 'password' => Hash::make('K3ps3k.'),
@@ -592,7 +592,7 @@ class DatabaseSeeder extends Seeder
             [
                 // 6
                 'nisn' => '123456',
-                'nama' => 'Danang',
+                'nama' => 'Danang Supratman',
                 'nis' => '123456',                
                 'email' => 'danang@gmail.com',
                 'password' => Hash::make('K3ps3k.'),
@@ -603,7 +603,7 @@ class DatabaseSeeder extends Seeder
             [
                 // 7
                 'nisn' => '123457',
-                'nama' => 'Selma',
+                'nama' => 'Selma Dwi Anggara',
                 'nis' => '123457',                
                 'email' => 'selma@gmail.com',
                 'password' => Hash::make('K3ps3k.'),
@@ -614,7 +614,7 @@ class DatabaseSeeder extends Seeder
             [
                 // 8
                 'nisn' => '123458',
-                'nama' => 'Devi',
+                'nama' => 'Devi Yani Putri',
                 'nis' => '123458',                
                 'email' => 'devi@gmail.com',
                 'password' => Hash::make('K3ps3k.'),
@@ -5138,6 +5138,260 @@ class DatabaseSeeder extends Seeder
                 'deskripsi' => null,
                 'rapor_id'  => 16
             ],                 
+
+            // Winton
+            [
+                // 1
+                'siswa_id' => 2, // Winton
+                'guru_id' => 5, // Guru Agama
+                'siswa_rombel_id'   => 10, // X-B-1
+                'kurikulum_mata_pelajaran_id' => 2, // Agama
+                'tahun_akademik_id' => 1,
+                'semester_id' => 1,
+                'jenis_penilaian'  => 'PTS',
+                'point_absensi' => 80.50,
+                'point_tugas' => 83.20,
+                'point_uts' => 95.50,
+                'point_uas' => 0,          
+                'nilai_akhir' => 98.80,
+                'predikat'  => 'A',
+                'deskripsi' => 'Siswa memhamai Asmaul Husna dengan baik',
+                'rapor_id'  => 1
+            ],
+            [
+                // 1
+                'siswa_id' => 2, // Winton
+                'guru_id' => 6, // Guru PKN
+                'siswa_rombel_id'   => 10, // X-B-1
+                'kurikulum_mata_pelajaran_id' => 3, // PKN
+                'tahun_akademik_id' => 1,
+                'semester_id' => 1,
+                'jenis_penilaian'  => 'PTS',
+                'point_absensi' => 99.90,
+                'point_tugas' => 88.72,
+                'point_uts' => 90.51,
+                'point_uas' => 0,          
+                'nilai_akhir' => 98.81,
+                'predikat'  => 'A',
+                'deskripsi' => 'Siswa memhamai Pancasila dengan baik',
+                'rapor_id'  => 1
+            ],
+            [
+                // 1
+                'siswa_id' => 2, // Winton
+                'guru_id' => 8, // Guru Inggris
+                'siswa_rombel_id'   => 10, // X-B-1
+                'kurikulum_mata_pelajaran_id' => 5, // Inggris
+                'tahun_akademik_id' => 1,
+                'semester_id' => 1,
+                'jenis_penilaian'  => 'PTS',
+                'point_absensi' => 80.50,
+                'point_tugas' => 80.00,
+                'point_uts' => 90.50,
+                'point_uas' => 0,          
+                'nilai_akhir' => 78.52,
+                'predikat'  => 'B',
+                'deskripsi' => 'Siswa memhamai Bahasa Inggris dengan baik',
+                'rapor_id'  => 1
+            ],
+            [
+                // 1
+                'siswa_id' => 2, // Winton
+                'guru_id' => 10, // Guru Sejarah
+                'siswa_rombel_id'   => 10, // X-B-1
+                'kurikulum_mata_pelajaran_id' => 7, // Sejarah
+                'tahun_akademik_id' => 1,
+                'semester_id' => 1,
+                'jenis_penilaian'  => 'PTS',
+                'point_absensi' => 80.50,
+                'point_tugas' => 80.00,
+                'point_uts' => 90.50,
+                'point_uas' => 0,          
+                'nilai_akhir' => 88.87,
+                'predikat'  => 'A',
+                'deskripsi' => 'Siswa memhamai Sejarah dengan baik',
+                'rapor_id'  => 1
+            ],
+            [
+                // 1
+                'siswa_id' => 2, // Winton
+                'guru_id' => 11, // Guru PJOK
+                'siswa_rombel_id'   => 10, // X-B-1
+                'kurikulum_mata_pelajaran_id' => 8, // PJOK
+                'tahun_akademik_id' => 1,
+                'semester_id' => 1,
+                'jenis_penilaian'  => 'PTS',
+                'point_absensi' => 80.50,
+                'point_tugas' => 80.00,
+                'point_uts' => 90.50,
+                'point_uas' => 0,          
+                'nilai_akhir' => 99.66,
+                'predikat'  => 'A',
+                'deskripsi' => 'Siswa berbakat berenang',
+                'rapor_id'  => 1
+            ],
+            [
+                // 1
+                'siswa_id' => 2, // Winton
+                'guru_id' => 12, // Guru Seni Budaya
+                'siswa_rombel_id'   => 10, // X-B-1
+                'kurikulum_mata_pelajaran_id' => 9, // Seni Budaya
+                'tahun_akademik_id' => 1,
+                'semester_id' => 1,
+                'jenis_penilaian'  => 'PTS',
+                'point_absensi' => 80.50,
+                'point_tugas' => 80.00,
+                'point_uts' => 90.50,
+                'point_uas' => 0,          
+                'nilai_akhir' => 77.72,
+                'predikat'  => 'B',
+                'deskripsi' => 'Siswa memhamai seni',
+                'rapor_id'  => 1
+            ],
+            [
+                // 1
+                'siswa_id' => 2, // Winton
+                'guru_id' => 13, // Guru Informatika
+                'siswa_rombel_id'   => 10, // X-B-1
+                'kurikulum_mata_pelajaran_id' => 10, // Informatika
+                'tahun_akademik_id' => 1,
+                'semester_id' => 1,
+                'jenis_penilaian'  => 'PTS',
+                'point_absensi' => 80.50,
+                'point_tugas' => 80.00,
+                'point_uts' => 90.50,
+                'point_uas' => 0,          
+                'nilai_akhir' => 99.99,
+                'predikat'  => 'A',
+                'deskripsi' => 'Siswa mahir membuat program',
+                'rapor_id'  => 1
+            ],
+            [
+                // 1
+                'siswa_id' => 2, // Winton
+                'guru_id' => 15, // Guru P5
+                'siswa_rombel_id'   => 10, // X-B-1
+                'kurikulum_mata_pelajaran_id' => 11, // Projek P5
+                'tahun_akademik_id' => 1,
+                'semester_id' => 1,
+                'jenis_penilaian'  => 'PTS',
+                'point_absensi' => 80.50,
+                'point_tugas' => 80.00,
+                'point_uts' => 90.50,
+                'point_uas' => 0,          
+                'nilai_akhir' => 80,
+                'predikat'  => 'A',
+                'deskripsi' => 'Siswa disiplin dan santun',
+                'rapor_id'  => 1
+            ],
+            [
+                // 1
+                'siswa_id' => 2, // Winton
+                'guru_id' => 16, // Guru Fisika
+                'siswa_rombel_id'   => 10, // X-B-1
+                'kurikulum_mata_pelajaran_id' => 32, // Fisika
+                'tahun_akademik_id' => 1,
+                'semester_id' => 1,
+                'jenis_penilaian'  => 'PTS',
+                'point_absensi' => 80.50,
+                'point_tugas' => 80.00,
+                'point_uts' => 90.50,
+                'point_uas' => 0,          
+                'nilai_akhir' => 88.88,
+                'predikat'  => 'B',
+                'deskripsi' => 'Siswa memhamai fisika dengan baik',
+                'rapor_id'  => 1
+            ],
+            [
+                // 1
+                'siswa_id' => 2, // Winton
+                'guru_id' => 17, // Guru Kimia
+                'siswa_rombel_id'   => 10, // X-B-1
+                'kurikulum_mata_pelajaran_id' => 33, // Kimia
+                'tahun_akademik_id' => 1,
+                'semester_id' => 1,
+                'jenis_penilaian'  => 'PTS',
+                'point_absensi' => 80.50,
+                'point_tugas' => 80.00,
+                'point_uts' => 90.50,
+                'point_uas' => 0,          
+                'nilai_akhir' => 88.88,
+                'predikat'  => 'B',
+                'deskripsi' => 'Siswa memhamai fisika dengan baik',
+                'rapor_id'  => 1
+            ],
+            [
+                // 1
+                'siswa_id' => 2, // Winton
+                'guru_id' => 19, // Guru Sosiologi
+                'siswa_rombel_id'   => 10, // X-B-1
+                'kurikulum_mata_pelajaran_id' => 42, // Sosiologi
+                'tahun_akademik_id' => 1,
+                'semester_id' => 1,
+                'jenis_penilaian'  => 'PTS',
+                'point_absensi' => 80.50,
+                'point_tugas' => 80.00,
+                'point_uts' => 90.50,
+                'point_uas' => 0,          
+                'nilai_akhir' => 87.87,
+                'predikat'  => 'B',
+                'deskripsi' => 'Siswa memhamai sosiologi dengan baik',
+                'rapor_id'  => 1
+            ],
+            [
+                // 1
+                'siswa_id' => 2, // Winton
+                'guru_id' => 21, // Guru Jerman
+                'siswa_rombel_id'   => 10, // X-B-1
+                'kurikulum_mata_pelajaran_id' => 54, // Jerman
+                'tahun_akademik_id' => 1,
+                'semester_id' => 1,
+                'jenis_penilaian'  => 'PTS',
+                'point_absensi' => 80.50,
+                'point_tugas' => 80.00,
+                'point_uts' => 90.50,
+                'point_uas' => 0,          
+                'nilai_akhir' => 97.80,
+                'predikat'  => 'B',
+                'deskripsi' => 'Siswa memhamai bahasa Jerman dengan baik',
+                'rapor_id'  => 1
+            ],            
+            [
+                // 1
+                'siswa_id' => 2, // Winton
+                'guru_id' => 18, // Guru Eknomi
+                'siswa_rombel_id'   => 10, // X-B-1
+                'kurikulum_mata_pelajaran_id' => 40, // Eknomi
+                'tahun_akademik_id' => 1,
+                'semester_id' => 1,
+                'jenis_penilaian'  => 'PTS',
+                'point_absensi' => 80.50,
+                'point_tugas' => 80.00,
+                'point_uts' => 90.50,
+                'point_uas' => 0,          
+                'nilai_akhir' => 98.90,
+                'predikat'  => 'A',
+                'deskripsi' => 'Siswa memhamai eknomi makro dengan baik',
+                'rapor_id'  => 1
+            ],
+            [
+                // 1
+                'siswa_id' => 2, // Winton
+                'guru_id' => 20, // Guru Jepang
+                'siswa_rombel_id'   => 10, // X-B-1
+                'kurikulum_mata_pelajaran_id' => 50, // Bahaasa Jepang
+                'tahun_akademik_id' => 1,
+                'semester_id' => 1,
+                'jenis_penilaian'  => 'PTS',
+                'point_absensi' => 80.50,
+                'point_tugas' => 80.00,
+                'point_uts' => 90.50,
+                'point_uas' => 0,          
+                'nilai_akhir' => 87.60,
+                'predikat'  => 'A',
+                'deskripsi' => 'Siswa memhamai kanji dengan baik',
+                'rapor_id'  => 1
+            ],
         ]);        
 
         /**
