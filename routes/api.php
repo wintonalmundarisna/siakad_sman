@@ -90,6 +90,10 @@ Route::post('/siswa/lupa-password', [SiswaController::class, 'sendResetLink'])->
 Route::get('/siswa/reset-password/{token}', [SiswaController::class, 'redirectToFrontendForm'])->name('siswa.password.reset');
 // 3. Proses reset password
 Route::post('/siswa/reset-password', [SiswaController::class, 'resetPassword'])->name('siswa.password.update');
+
+// Data berkas administrasi
+Route::get('/berkas-administrasi/{filename}', [DataBerkasController::class, 'tampilkanBerkas'])->name('berkas.administrasi.view');
+
 // ? =========================================================================================================================== ?
 
 
@@ -257,7 +261,9 @@ Route::middleware('auth:kepegawaian')->group(function () {
     Route::get('/export-berkas-zip', [PsbController::class, 'exportBerkasZip']);
     
     
-    Route::apiResource('/spa/data-berkas', DataBerkasController::class);      
+    Route::apiResource('/spa/berkas-administrasi', DataBerkasController::class)->except('show');      
+    Route::get('/berkas-administrasi-excel', [DataBerkasController::class, 'exportExcel']);
+    Route::get('/berkas-administrasi-zip', [DataBerkasController::class, 'exportBerkasZip']);
 // ? =========================================================================================================================== ?
 
 
