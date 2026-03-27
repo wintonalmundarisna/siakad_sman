@@ -5422,8 +5422,30 @@ class DatabaseSeeder extends Seeder
             [
                 'nama_berkas' => 'Bayaran SPP Budi',
                 'berkas' => 'berkas-budi.jpg',
-                'tahun_akademik_id' => 2, // 2024/2025
+                'hari' => '2023-08-24', // 2023
+                'tahun_akademik_id' => 1, // 2023
+                'semester_id' => 1 // Ganjil
+            ],
+            [
+                'nama_berkas' => 'Bayaran SPP Winton Almundarisna',
+                'berkas' => 'berkas-winton.jpg',
+                'hari' => '2023-05-15', // 2023
+                'tahun_akademik_id' => 1, // 2023
+                'semester_id' => 1 // Ganjil
+            ],
+            [
+                'nama_berkas' => 'Bayaran SPP Bagas',
+                'berkas' => 'berkas-bagas.jpg',
+                'hari' => '2024-02-25', // 2023
+                'tahun_akademik_id' => 1, // 2023
                 'semester_id' => 2 // Genap
+            ],
+            [
+                'nama_berkas' => 'Bayaran SPP Sanita',
+                'berkas' => 'berkas-sanita.jpg',
+                'hari' => '2024-07-13', // 2024
+                'tahun_akademik_id' => 2, // 2024
+                'semester_id' => 3 // Ganjil
             ],
         ]);
 
@@ -5437,13 +5459,22 @@ class DatabaseSeeder extends Seeder
                 'nama_akun' => 'TU',
                 'debit' => 0, // nambah
                 'kredit' => 20000, // ngurang
-                'keterangan' => 'Beli ATK'
+                'keterangan' => 'Beli ATK',
+                'tahun_akademik_id' => 1
+            ],
+            [
+                'nama_akun' => 'TU',
+                'debit' => 50000, // nambah
+                'kredit' => 20000, // ngurang
+                'keterangan' => 'Beli Galon Minum',
+                'tahun_akademik_id' => 1
             ],
             [
                 'nama_akun' => 'Rina',
                 'debit' => 50000,
                 'kredit' => 0,
-                'keterangan' => 'Bayaran SPP'
+                'keterangan' => 'Bayaran SPP',
+                'tahun_akademik_id' => 2
             ],
         ]);
 

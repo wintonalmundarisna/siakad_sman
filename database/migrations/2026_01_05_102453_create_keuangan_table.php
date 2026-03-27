@@ -17,6 +17,10 @@ return new class extends Migration
             $table->decimal('debit', 20, 2)->default(0);
             $table->decimal('kredit', 20, 2)->default(0);
             $table->text('keterangan')->nullable();
+            $table->foreignId('tahun_akademik_id')
+                ->nullable()
+                ->constrained('tahun_akademik')
+                ->onDelete('restrict');
             $table->timestamps();
         });
     }

@@ -34,6 +34,7 @@ use App\Http\Controllers\AbsensiPelajaranController;
 use App\Http\Controllers\KeuanganController;
 use App\Http\Controllers\AbsensiSiswaController;
 use App\Http\Controllers\PsbController;
+use App\Http\Controllers\DataBerkasController;
 use App\Http\Controllers\CacheCleanerController;
 
 /*
@@ -49,6 +50,48 @@ use App\Http\Controllers\CacheCleanerController;
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
+
+
+
+// ? ====================================================== GLOBAL ============================================================== ?
+// ✅☑️ membersihkan cache oleh super admin
+Route::get('/cache-cleaner', [CacheCleanerController::class, 'triggerCacheCleanup']);
+
+// ✅☑️ Guru, Kepsek, Staff, dan Siswa
+Route::apiResource('/all/identitas-sekolah', IdentitasSekolahController::class)->only('index');
+
+// ✅☑️ PSB Public
+Route::apiResource('psb', PsbController::class)->only('store');
+
+// ! absensi pelajaran
+// Route::get('/spa/guru/absensi/pelajaran', [AbsensiPelajaranController::class, 'show']);
+
+// ✅ untuk menampilkan berkas / foto yang private
+Route::get('/tampil-berkas/{jenis}/{filename}', [PsbController::class, 'tampilkanBerkas'])->name('berkas.view');
+
+// ✅ akses jurusan di register
+Route::get('/jurusan-register', [JurusanController::class, 'index']);
+
+// ✅ akses kelas di register
+Route::get('/kelas-register', [KelasController::class, 'index']);
+
+// ✅ lupa password pegawai + super admin untuk dirinya sendiri
+// 1. Button lupa password + send link via email
+Route::post('/kepegawaian/lupa-password', [KepegawaianController::class, 'sendResetLink'])->name('password.email');
+// 2. Tampilkan form reset password
+Route::get('/kepegawaian/reset-password/{token}', [KepegawaianController::class, 'redirectToFrontendForm'])->name('password.reset');
+// 3. Proses reset password
+Route::post('kepegawaian/reset-password', [KepegawaianController::class, 'resetPassword'])->name('password.update');
+
+// ✅ lupa password siswa (done)
+// 1. Button lupa password + send link via email
+Route::post('/siswa/lupa-password', [SiswaController::class, 'sendResetLink'])->name('siswa.password.email');
+// 2. Tampilkan form reset password
+Route::get('/siswa/reset-password/{token}', [SiswaController::class, 'redirectToFrontendForm'])->name('siswa.password.reset');
+// 3. Proses reset password
+Route::post('/siswa/reset-password', [SiswaController::class, 'resetPassword'])->name('siswa.password.update');
+// ? =========================================================================================================================== ?
+
 
 
 // ? ================================================= SUPER ADMIN ============================================================= ?
@@ -209,11 +252,12 @@ Route::middleware('auth:kepegawaian')->group(function () {
     Route::delete('/spa/keuangan/destroy/{id?}', [KeuanganController::class, 'destroyData']);
     Route::get('/spa/keuangan/export', [KeuanganController::class, 'exportExcel']);
     Route::apiResource('/spa/keuangan', KeuanganController::class)->except('destroy');      
-
+    
     Route::get('/export-data-psb', [PsbController::class, 'exportExcel']);
     Route::get('/export-berkas-zip', [PsbController::class, 'exportBerkasZip']);
-    // Route::post('/import-data-psb', [PsbController::class, 'importExcel']);
-    // Route::post('/import-berkas-zip', [PsbController::class, 'importBerkasZip']);    
+    
+    
+    Route::apiResource('/spa/data-berkas', DataBerkasController::class);      
 // ? =========================================================================================================================== ?
 
 
@@ -324,50 +368,6 @@ Route::put('/tu/update/diri', [KepegawaianController::class, 'updateDirinyaSendi
     // show diri
     // identitas sekolah
 // ? ============================================================================================================================ ?
-
-
-
-
-// ? ====================================================== GLOBAL ============================================================== ?
-// ✅☑️ membersihkan cache oleh super admin
-Route::get('/cache-cleaner', [CacheCleanerController::class, 'triggerCacheCleanup']);
-
-// ✅☑️ Guru, Kepsek, Staff, dan Siswa
-Route::apiResource('/all/identitas-sekolah', IdentitasSekolahController::class)->only('index');
-
-// ✅☑️ PSB Public
-Route::apiResource('psb', PsbController::class)->only('store');
-
-// ! absensi pelajaran
-// Route::get('/spa/guru/absensi/pelajaran', [AbsensiPelajaranController::class, 'show']);
-
-// ✅ untuk menampilkan berkas / foto yang private
-Route::get('/tampil-berkas/{jenis}/{filename}', [PsbController::class, 'tampilkanBerkas'])->name('berkas.view');
-
-// ✅ akses jurusan di register
-Route::get('/jurusan-register', [JurusanController::class, 'index']);
-
-// ✅ akses kelas di register
-Route::get('/kelas-register', [KelasController::class, 'index']);
-
-// ✅ lupa password pegawai + super admin untuk dirinya sendiri
-// 1. Button lupa password + send link via email
-Route::post('/kepegawaian/lupa-password', [KepegawaianController::class, 'sendResetLink'])->name('password.email');
-// 2. Tampilkan form reset password
-Route::get('/kepegawaian/reset-password/{token}', [KepegawaianController::class, 'redirectToFrontendForm'])->name('password.reset');
-// 3. Proses reset password
-Route::post('kepegawaian/reset-password', [KepegawaianController::class, 'resetPassword'])->name('password.update');
-
-// ✅ lupa password siswa (done)
-// 1. Button lupa password + send link via email
-Route::post('/siswa/lupa-password', [SiswaController::class, 'sendResetLink'])->name('siswa.password.email');
-// 2. Tampilkan form reset password
-Route::get('/siswa/reset-password/{token}', [SiswaController::class, 'redirectToFrontendForm'])->name('siswa.password.reset');
-// 3. Proses reset password
-Route::post('/siswa/reset-password', [SiswaController::class, 'resetPassword'])->name('siswa.password.update');
-// ? =========================================================================================================================== ?
-
-
 
 
 

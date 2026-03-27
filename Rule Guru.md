@@ -1,0 +1,10 @@
+- Register
+- Login
+- Logout
+- Ubah Password
+- Get Detail Diri
+- Update Diri
+- Lupa Password
+- Identitas Sekolah : GET
+- Gedung            : GET
+- 

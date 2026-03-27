@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nama_berkas');
             $table->string('berkas');
+            $table->date('hari');
             $table->foreignId('tahun_akademik_id')
             ->constrained('tahun_akademik')
             ->restrictOnDelete();
@@ -27,12 +28,7 @@ return new class extends Migration
                 'nama_berkas',
                 'tahun_akademik_id',
                 'semester_id'
-            ], 'unik');
-
-            // ! Pastikan semester milik tahun akademik yang sama
-            // $table->foreign(['semester_id', 'tahun_akademik_id'])
-            // ->references(['id', 'tahun_akademik_id'])
-            // ->on('semester');
+            ], 'unik');            
         });
     }
 

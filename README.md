@@ -18,7 +18,7 @@ Pengelolaan data Sekolah Menengah Atas Negeri (SMAN) menggunakan LARAVEL 10 (Res
 ========================================================================================================================================
 Perbaikan
 
-1. ♻️X identitas_sekolah: (independen)
+1. ♻️ identitas_sekolah: (independen)
    - ☑️ Backend:
          - 
    - Frontend:

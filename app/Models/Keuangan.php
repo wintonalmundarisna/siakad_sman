@@ -10,4 +10,9 @@ class Keuangan extends Model
     use HasFactory;
     protected $table = 'keuangan';
     protected $guarded = ['id'];
+
+    public function tahunAkademik()
+    {
+        return $this->belongsTo(TahunAkademik::class, 'tahun_akademik_id');
+    }
 }

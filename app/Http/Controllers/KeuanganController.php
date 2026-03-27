@@ -4,35 +4,47 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Keuangan;
+use App\Models\TahunAkademik;
 use App\Exports\KeuanganExport;
 use App\Helpers\ApiResponse;
 use Maatwebsite\Excel\Facades\Excel;
-use Illuminate\Support\Facades\Validator;
+// use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 class KeuanganController extends Controller
 {
     /**
      * ✅ Untuk super admin
      */
-    public function index()
+    public function index(Request $request)
     {
-        $keuangan = Keuangan::get();
+        $keuangan = Keuangan::with('tahunAkademik')
+        ->where('tahun_akademik_id', $request->tahun_akademik_id)
+        ->get();
 
         if (!$keuangan) {
             return ApiResponse::error('Not found', ['data' => 'Daftar data keuangan tidak ditemukan']);
         }
 
-        $formatted = $keuangan->map(function ($item) {
+        $formatted = $keuangan->groupBy('tahun_akademik_id')
+        ->map(function ($item) {
             return [
-                'id' => $item->id ?? null,
-                'nama_akun' => $item->nama_akun ?? null,
-                'debit' => $item->debit ?? null,
-                'kredit' => $item->kredit ?? null,
-                'keterangan' => $item->keterangan ?? null,
+                'tahun_akademik_id'        => $item->first()->tahunAkademik->id,
+                'tahun_akademik'           => $item->first()->tahunAkademik->tahun_akademik,
+                'status_tahun_akademik'    => $item->first()->tahunAkademik->status,
+                'data'  => $item->map(function ($i) {
+                    return [
+                        'id' => $i->id ?? null,
+                        'nama_akun' => $i->nama_akun ?? null,
+                        'debit' => $i->debit ?? null,
+                        'kredit' => $i->kredit ?? null,
+                        'keterangan' => $i->keterangan ?? null,
+                    ];
+                })->values(),
             ];
-        });
+        })->values();
 
-        return ApiResponse::success($formatted, 'Daftar data keuangan berhasil diambil');
+        return ApiResponse::success($formatted, 'Data keuangan berhasil diambil');
     }
 
     /**
@@ -54,7 +66,17 @@ class KeuanganController extends Controller
                 'kredit.numeric'  => 'Kredit harus berupa angka',
             ]);            
 
-            $keuangan = Keuangan::create($validated);
+            $tahun = TahunAkademik::where('status', 'aktif')->first();
+
+            $keuangan = Keuangan::create([
+                'nama_akun' => $validated['nama_akun'],
+                'debit' => $validated['debit'],
+                'kredit' => $validated['kredit'],
+                'keterangan' => $validated['keterangan'],
+                'tahun_akademik_id' => $tahun->id,
+            ]);
+
+            $keuangan->load('tahunAkademik');
 
             return ApiResponse::success([
                 'id' => $keuangan->id ?? null,
@@ -62,6 +84,7 @@ class KeuanganController extends Controller
                 'debit' => $keuangan->debit ?? null,
                 'kredit' => $keuangan->kredit ?? null,
                 'keterangan' => $keuangan->keterangan ?? null,
+                'tahun_akademik' => $keuangan->tahunAkademik->tahun_akademik ?? null,
             ], 'Data keuangan berhasil dibuat');
 
         } catch (ValidationException $e) {
@@ -74,7 +97,7 @@ class KeuanganController extends Controller
      */
     public function show(string $id)
     {
-        $keuangan = Keuangan::find($id);
+        $keuangan = Keuangan::with('tahunAkademik')->find($id);
 
         if (!$keuangan) {
             return ApiResponse::error('Not found', ['id' => 'Detail data keuangan tidak ditemukan']);
@@ -86,6 +109,7 @@ class KeuanganController extends Controller
             'debit' => $keuangan->debit ?? null,
             'kredit' => $keuangan->kredit ?? null,
             'keterangan' => $keuangan->keterangan ?? null,
+            'tahun_akademik' => $keuangan->tahunAkademik->tahun_akademik ?? null,
         ];
 
         return ApiResponse::success($formatted, 'Detail data keuangan berhasil diambil');
@@ -96,7 +120,7 @@ class KeuanganController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $keuangan = Keuangan::find($id);
+        $keuangan = Keuangan::with('tahunAkademik')->find($id);
 
         if (!$keuangan) {
             return ApiResponse::error('Not found', ['id', 'Data keuangan tidak ditemukan']);
@@ -123,6 +147,7 @@ class KeuanganController extends Controller
             'debit' => $keuangan->debit ?? null,
             'kredit' => $keuangan->kredit ?? null,
             'keterangan' => $keuangan->keterangan ?? null,
+            'tahun_akademik' => $keuangan->tahunAkademik->tahun_akademik ?? null,
         ], 'Data keuangan berhasil diperbarui');
     }
 

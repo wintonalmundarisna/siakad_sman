@@ -42,8 +42,8 @@ class KeuanganExport implements
     public function collection()
     {
         $query = $this->ids
-            ? Keuangan::whereIn('id', $this->ids)->get()
-            : Keuangan::get();
+            ? Keuangan::with('tahunAkademik')->whereIn('id', $this->ids)->get()
+            : Keuangan::with('tahunAkademik')->get();
 
         return $query->values()->map(function ($item, $index) {
             return [
@@ -52,13 +52,14 @@ class KeuanganExport implements
                 (float) $item->debit,
                 (float) $item->kredit,
                 $item->keterangan,
+                $item->tahunAkademik->tahun_akademik
             ];
         });
     }
 
     public function headings(): array
     {
-        return ['No', 'Nama Akun', 'Debit', 'Kredit', 'Keterangan'];
+        return ['No', 'Nama Akun', 'Debit', 'Kredit', 'Keterangan', 'Tahun Akademik'];
     }
 
     public function registerEvents(): array
@@ -96,7 +97,7 @@ class KeuanganExport implements
                 */
 
                 $sheet->setCellValue('A1', 'Rekap Data Keuangan');
-                $sheet->mergeCells('A1:E1');
+                $sheet->mergeCells('A1:F1');
 
                 $sheet->getStyle('A1')->getFont()->setBold(true)->setSize(16);
                 $sheet->getStyle('A1')->getAlignment()
@@ -107,7 +108,7 @@ class KeuanganExport implements
                 */
 
                 $sheet->setCellValue('A2', 'SMA Negeri 42 Jakarta');
-                $sheet->mergeCells('A2:E2');
+                $sheet->mergeCells('A2:F2');
 
                 $sheet->getStyle('A2')->getFont()->setSize(12);
                 $sheet->getStyle('A2')->getAlignment()
@@ -117,7 +118,7 @@ class KeuanganExport implements
                 HEADER TABLE (sekarang di row 4)
                 */
 
-                $sheet->getStyle('A4:E4')->applyFromArray([
+                $sheet->getStyle('A4:F4')->applyFromArray([
                     'font' => [
                         'bold' => true,
                         'color' => ['rgb' => 'FFFFFF']
@@ -163,11 +164,15 @@ class KeuanganExport implements
                 $sheet->getStyle('C5:D' . $highestRow)
                     ->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
 
+                // Tahun akademik
+                $sheet->getStyle('F5:F' . $highestRow)
+                    ->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+
                 /*
                 BORDER
                 */
 
-                $sheet->getStyle('A4:E' . $highestRow)
+                $sheet->getStyle('A4:F' . $highestRow)
                     ->applyFromArray([
                         'borders' => [
                             'allBorders' => [
@@ -186,7 +191,7 @@ class KeuanganExport implements
                 PRINT AREA
                 */
 
-                $sheet->getPageSetup()->setPrintArea("A1:E$highestRow");
+                $sheet->getPageSetup()->setPrintArea("A1:F$highestRow");
             }
         ];
     }
