@@ -1,25 +1,3 @@
-/**
- * AlurTujuanPembelajaran
- * Route: /superadmin/informasi-akademik/alur-tujuan-pembelajaran
- *
- * SPA memantau dan menyetujui/menolak ATP yang diajukan guru.
- *
- * Backend endpoints:
- *  GET  /spa/atp               → list ATP status = diajukan
- *  GET  /spa/atp-disetujui     → list ATP status = disetujui
- *  PUT  /spa/atp-disetujui/:id → setujui ATP   (status: diajukan → disetujui + is_locked)
- *  PUT  /spa/atp-ditolak/:id   → tolak ATP     (status: diajukan → ditolak, body: catatan_penolakan?)
- *  PUT  /spa/atp-batal-disetujui/:id → batal disetujui (status: disetujui → diajukan, is_locked: false)
- *
- * Struktur response (sama untuk diajukan & disetujui):
- *  [{ kompetensi_id, mata_pelajaran, judul_kompetensi, jenis_kompetensi, fase, status_kompetensi,
- *     periode: [{ tahun_akademik_id, tahun_akademik, status_tahun_akademik,
- *       semesters: [{ semester_id, semester, status_semester,
- *         guru: [{ guru_id, nama_guru,
- *           histori_atp: [{ atp_id, atp_master_id, tujuan_pembelajaran, urutan,
- *                           approval_status, approved_by, approved_at,
- *                           catatan_penolakan, is_locked }] }] }] }] }]
- */
 import { useState, useEffect, useMemo } from "react";
 import PageTitle from "@/components/PageTitle";
 import { SidebarSuperAdmin } from "@/components/SidebarSuperAdmin";
@@ -305,7 +283,8 @@ const AlurTujuanPembelajaran = () => {
               </td>
               <td className="text-center py-3 px-3">
                 <Badge className={`${STATUS_BADGE[atp.approval_status] ?? "bg-gray-100 text-gray-600"} text-xs`}>{atp.approval_status}</Badge>
-                {atp.is_locked && <span className="block text-xs text-gray-400 mt-0.5">🔒 dikunci</span>}
+                {/* Hanya tampilkan dikunci jika tab disetujui dan is_locked true */}
+                {tab === "disetujui" && !!atp.is_locked && <span className="block text-xs text-gray-400 mt-0.5">🔒 dikunci</span>}
               </td>
 
               {/* Kolom waktu disetujui — hanya di tab disetujui */}

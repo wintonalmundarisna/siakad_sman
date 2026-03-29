@@ -5,8 +5,9 @@ import { SidebarSuperAdmin } from "@/components/SidebarSuperAdmin";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import Footer from "@/pages/Footer";
-import { ArrowLeft, Loader2Icon, ChevronDownIcon, ChevronRightIcon, Users } from "lucide-react";
+import { ArrowLeft, Loader2Icon, Users, CalendarIcon } from "lucide-react";
 import api from "@/api/axios";
 import Swal from "sweetalert2";
 
@@ -81,7 +82,9 @@ const HistoriRombelSiswa = () => {
 
   const [siswa, setSiswa] = useState<SiswaDetail | null>(null);
   const [loading, setLoading] = useState(true);
-  const [expandedTahun, setExpandedTahun] = useState<number[]>([]);
+
+  // User harus memilih tahun secara eksplisit — tidak ada auto-select
+  const [selectedTahun, setSelectedTahun] = useState<string>("");
 
   // ── Fetch histori rombel siswa ────────────────────────────────────────────
   useEffect(() => {
@@ -94,9 +97,7 @@ const HistoriRombelSiswa = () => {
         if (res.data.status === "success" && res.data.data.length > 0) {
           const data: SiswaDetail = res.data.data[0];
           setSiswa(data);
-          // Auto-expand tahun akademik aktif
-          const aktifIds = data.periode.filter((p) => p.status_tahun_akademik === "aktif").map((p) => p.tahun_akademik_id);
-          setExpandedTahun(aktifIds.length ? aktifIds : [data.periode[0]?.tahun_akademik_id]);
+          setSelectedTahun(""); // User harus pilih sendiri
         }
       })
       .catch((err) => {
@@ -105,7 +106,7 @@ const HistoriRombelSiswa = () => {
       .finally(() => setLoading(false));
   }, [id]);
 
-  const toggleTahun = (tahunId: number) => setExpandedTahun((prev) => (prev.includes(tahunId) ? prev.filter((k) => k !== tahunId) : [...prev, tahunId]));
+  const selectedPeriode = siswa?.periode.find((p) => p.tahun_akademik_id === Number(selectedTahun)) ?? null;
 
   return (
     <SidebarProvider>
@@ -132,7 +133,7 @@ const HistoriRombelSiswa = () => {
             </div>
           </div>
 
-          {/* Content */}
+          {/* Loading */}
           {loading ? (
             <div className="flex flex-col items-center justify-center h-64 text-gray-500">
               <Loader2Icon className="animate-spin mb-3" size={32} />
@@ -145,81 +146,90 @@ const HistoriRombelSiswa = () => {
               <p className="text-sm mt-1">Siswa ini belum memiliki histori rombel.</p>
             </div>
           ) : (
-            <div className="space-y-4">
-              {siswa.periode.map((periode) => {
-                const isOpen = expandedTahun.includes(periode.tahun_akademik_id);
-                return (
-                  <div key={periode.tahun_akademik_id} className="border border-gray-200 rounded-xl shadow-sm bg-white overflow-hidden">
-                    {/* Accordion Header */}
-                    <button type="button" className="w-full bg-primary px-5 py-4 flex items-center justify-between hover:bg-primary/90 transition-colors" onClick={() => toggleTahun(periode.tahun_akademik_id)}>
-                      <div className="flex items-center gap-3">
-                        {isOpen ? <ChevronDownIcon className="text-white" size={20} /> : <ChevronRightIcon className="text-white" size={20} />}
-                        <div className="text-left">
-                          <span className="text-white font-bold text-lg">Tahun Akademik {periode.tahun_akademik}</span>
-                          <div className="mt-0.5">
-                            <Badge className={periode.status_tahun_akademik === "aktif" ? "bg-green-200 text-green-800 text-xs" : "bg-white/20 text-white/80 text-xs"}>{periode.status_tahun_akademik}</Badge>
-                          </div>
+            <div className="space-y-6">
+              {/* ── Pilih Tahun Akademik (Select) ── */}
+              <div className="flex items-center gap-3">
+                <CalendarIcon size={16} className="text-primary shrink-0" />
+                <Select value={selectedTahun} onValueChange={setSelectedTahun}>
+                  <SelectTrigger className="w-64">
+                    <SelectValue placeholder="Pilih tahun akademik..." />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {siswa.periode.map((periode) => (
+                      <SelectItem key={periode.tahun_akademik_id} value={String(periode.tahun_akademik_id)}>
+                        <div className="flex items-center gap-2">
+                          {periode.tahun_akademik}
+                          <Badge className={`text-xs ${periode.status_tahun_akademik === "aktif" ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-500"}`}>{periode.status_tahun_akademik}</Badge>
                         </div>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* ── Konten setelah tahun dipilih ── */}
+              {!selectedTahun ? (
+                <div className="bg-white border border-dashed border-gray-300 rounded-xl p-12 text-center text-gray-400">
+                  <CalendarIcon size={36} className="mx-auto mb-3 text-gray-300" />
+                  <p className="font-medium text-base">Pilih tahun akademik terlebih dahulu</p>
+                  <p className="text-sm mt-1">untuk melihat histori rombel siswa pada periode tersebut.</p>
+                </div>
+              ) : selectedPeriode && selectedPeriode.histori_rombel.length === 0 ? (
+                <div className="bg-white border border-gray-200 rounded-xl p-10 text-center text-gray-400">
+                  <Users size={36} className="mx-auto mb-3 text-gray-300" />
+                  <p className="font-medium">Tidak ada data rombel pada periode ini.</p>
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  <p className="text-sm text-gray-500">
+                    Menampilkan <strong>{selectedPeriode?.histori_rombel.length}</strong> rombel pada tahun akademik <strong>{selectedPeriode?.tahun_akademik}</strong>
+                  </p>
+
+                  {selectedPeriode?.histori_rombel.map((histori, idx) => (
+                    <div key={histori.siswa_rombel_id} className="bg-white border border-gray-200 rounded-xl p-4 space-y-2 text-sm shadow-sm">
+                      {(selectedPeriode?.histori_rombel.length ?? 0) > 1 && <p className="text-xs font-semibold text-primary mb-2">Rombel #{idx + 1}</p>}
+
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-500 font-medium">Rombel</span>
+                        <span className="font-semibold text-gray-800">{histori.rombel.nama_rombel}</span>
                       </div>
-                      <span className="text-white/70 text-sm">{periode.histori_rombel.length} rombel</span>
-                    </button>
 
-                    {/* Accordion Body */}
-                    {isOpen && (
-                      <div className="p-4 space-y-3">
-                        {periode.histori_rombel.length === 0 ? (
-                          <p className="text-sm text-gray-400 text-center py-4">Tidak ada data rombel pada periode ini.</p>
-                        ) : (
-                          periode.histori_rombel.map((histori, idx) => (
-                            <div key={histori.siswa_rombel_id} className="bg-gray-50 border border-gray-200 rounded-lg p-4 space-y-2 text-sm">
-                              {/* Rombel ke-N jika lebih dari 1 */}
-                              {periode.histori_rombel.length > 1 && <p className="text-xs font-semibold text-primary mb-2">Rombel #{idx + 1}</p>}
+                      {histori.rombel.kelas && (
+                        <div className="flex justify-between items-center">
+                          <span className="text-gray-500 font-medium">Kelas</span>
+                          <span className="text-gray-700">{histori.rombel.kelas.nama_kelas}</span>
+                        </div>
+                      )}
 
-                              <div className="flex justify-between items-center">
-                                <span className="text-gray-500 font-medium">Rombel</span>
-                                <span className="font-semibold text-gray-800">{histori.rombel.nama_rombel}</span>
-                              </div>
+                      {histori.rombel.jurusan && (
+                        <div className="flex justify-between items-center">
+                          <span className="text-gray-500 font-medium">Jurusan</span>
+                          <span className="text-gray-700">{histori.rombel.jurusan}</span>
+                        </div>
+                      )}
 
-                              {histori.rombel.kelas && (
-                                <div className="flex justify-between items-center">
-                                  <span className="text-gray-500 font-medium">Kelas</span>
-                                  <span className="text-gray-700">{histori.rombel.kelas.nama_kelas}</span>
-                                </div>
-                              )}
+                      {histori.rombel.wali_rombel && (
+                        <div className="flex justify-between items-center">
+                          <span className="text-gray-500 font-medium">Wali Rombel</span>
+                          <span className="text-gray-700">{histori.rombel.wali_rombel.nama}</span>
+                        </div>
+                      )}
 
-                              {histori.rombel.jurusan && (
-                                <div className="flex justify-between items-center">
-                                  <span className="text-gray-500 font-medium">Jurusan</span>
-                                  <span className="text-gray-700">{histori.rombel.jurusan}</span>
-                                </div>
-                              )}
-
-                              {histori.rombel.wali_rombel && (
-                                <div className="flex justify-between items-center">
-                                  <span className="text-gray-500 font-medium">Wali Rombel</span>
-                                  <span className="text-gray-700">{histori.rombel.wali_rombel.nama}</span>
-                                </div>
-                              )}
-
-                              <div className="flex justify-between items-center">
-                                <span className="text-gray-500 font-medium">Status Akhir</span>
-                                <StatusAkhirBadge status={histori.status_akhir} />
-                              </div>
-
-                              {histori.catatan && (
-                                <div className="flex justify-between items-start pt-1 border-t border-gray-200 mt-1">
-                                  <span className="text-gray-500 font-medium">Catatan</span>
-                                  <span className="text-gray-600 text-right max-w-[60%]">{histori.catatan}</span>
-                                </div>
-                              )}
-                            </div>
-                          ))
-                        )}
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-500 font-medium">Status Akhir</span>
+                        <StatusAkhirBadge status={histori.status_akhir} />
                       </div>
-                    )}
-                  </div>
-                );
-              })}
+
+                      {histori.catatan && (
+                        <div className="flex justify-between items-start pt-1 border-t border-gray-200 mt-1">
+                          <span className="text-gray-500 font-medium">Catatan</span>
+                          <span className="text-gray-600 text-right max-w-[60%]">{histori.catatan}</span>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           )}
         </div>

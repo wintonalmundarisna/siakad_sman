@@ -210,12 +210,6 @@ export function SidebarSuperAdmin({ isCollapsed, setIsCollapsed }: { isCollapsed
                           </SidebarMenuSubButton>
                         </SidebarMenuSubItem>
 
-                        {/* <SidebarMenuSubItem>
-                          <SidebarMenuSubButton asChild className={cn("hover:bg-primary rounded-md px-3 py-1.5 text-sm", location.pathname.includes("/superadmin/informasi-akademik/penilaian") && "bg-primary text-white font-medium")}>
-                            <Link to="/superadmin/informasi-akademik/penilaian">Data Penilaian</Link>
-                          </SidebarMenuSubButton>
-                        </SidebarMenuSubItem> */}
-
                         <SidebarMenuSubItem>
                           <SidebarMenuSubButton
                             asChild
@@ -270,12 +264,36 @@ export function SidebarSuperAdmin({ isCollapsed, setIsCollapsed }: { isCollapsed
                             <Link to="/superadmin/informasi-akademik/ekstrakurikuler">Ekstrakurikuler</Link>
                           </SidebarMenuSubButton>
                         </SidebarMenuSubItem>
+                      </SidebarMenuSub>
+                    )}
+                  </SidebarMenuItem>
 
-                        {/* <SidebarMenuSubItem>
-                          <SidebarMenuSubButton asChild className={cn("hover:bg-primary rounded-md px-3 py-1.5 text-sm", location.pathname.includes("/superadmin/informasi-akademik/ekstrakurikuler") && "bg-primary text-white font-medium")}>
-                            <Link to="/superadmin/informasi-akademik/ekstrakurikuler">Data Ekstrakurikuler</Link>
-                          </SidebarMenuSubButton>
-                        </SidebarMenuSubItem> */}
+                  {/* Data Nilai Siswa */}
+                  {!isCollapsed && <SidebarGroupLabel className="text-xs uppercase text-muted-foreground mt-1">Data Nilai Siswa</SidebarGroupLabel>}
+                  {/* Data Nilai Siswa */}
+                  <SidebarMenuItem>
+                    <SidebarMenuButton
+                      onClick={() => toggleDropdown("nilai-siswa")}
+                      className={cn("hover:bg-primary/10 hover:text-primary rounded-md justify-between py-2 px-3 transition-colors", location.pathname.includes("/superadmin/nilai-siswa") && "bg-primary/10 text-primary")}
+                    >
+                      <span className="flex items-center gap-2">
+                        <ClipboardList className="h-4 w-4" />
+                        {!isCollapsed && "Informasi Nilai Siswa"}
+                      </span>
+                      {!isCollapsed && <ChevronDown className={cn("h-4 w-4 transition-transform", openDropdown === "nilai-siswa" && "rotate-180")} />}
+                    </SidebarMenuButton>
+
+                    {!isCollapsed && openDropdown === "nilai-siswa" && (
+                      <SidebarMenuSub className="ml-4 mt-1 space-y-1">
+                        {[
+                          { to: "/superadmin/informasi-nilai-siswa/nilai-siswa", label: "Nilai Siswa" },
+                        ].map((item) => (
+                          <SidebarMenuSubItem key={item.to}>
+                            <SidebarMenuSubButton asChild className={cn("hover:bg-primary rounded-md px-3 py-1.5 text-sm", location.pathname.includes(item.to) && "bg-primary text-white font-medium")}>
+                              <Link to={item.to}>{item.label}</Link>
+                            </SidebarMenuSubButton>
+                          </SidebarMenuSubItem>
+                        ))}
                       </SidebarMenuSub>
                     )}
                   </SidebarMenuItem>
@@ -300,7 +318,7 @@ export function SidebarSuperAdmin({ isCollapsed, setIsCollapsed }: { isCollapsed
                         {[
                           // { to: "/superadmin/siswa", label: "Data Halaman" },
                           // { to: "/superadmin/guru", label: "Kode Aktivasi" },
-                          { to: "/superadmin/psb", label: "Pendaftaran Siswa" },
+                          { to: "/superadmin/psb", label: "Penerimaan Siswa Baru" },
                         ].map((item) => (
                           <SidebarMenuSubItem key={item.to}>
                             <SidebarMenuSubButton asChild className={cn("hover:bg-primary rounded-md px-3 py-1.5 text-sm", location.pathname.includes(item.to) && "bg-primary text-white font-medium")}>
@@ -378,40 +396,6 @@ export function SidebarSuperAdmin({ isCollapsed, setIsCollapsed }: { isCollapsed
                           )}
                         </SidebarMenuSubItem>
 
-                        {/* SUBMENU BIASA */}
-                        {/* <SidebarMenuSubItem>
-                          <SidebarMenuSubButton
-                            asChild
-                            className={cn("hover:bg-primary rounded-md px-3 py-1.5 text-sm", location.pathname.includes("/superadmin/informasi-laporan-umum/berkas-administrasi") && "bg-primary text-white font-medium")}
-                          >
-                            <Link to="/superadmin/informasi-laporan-umum/berkas-administrasi">Data Berkas Administrasi</Link>
-                          </SidebarMenuSubButton>
-                        </SidebarMenuSubItem> */}
-
-                        {/* <SidebarMenuSubItem>
-                          <SidebarMenuSubButton asChild className={cn("hover:bg-primary rounded-md px-3 py-1.5 text-sm", location.pathname.includes("/superadmin/informasi-laporan-umum/nilai-raport") && "bg-primary text-white font-medium")}>
-                            <Link to="/superadmin/informasi-laporan-umum/nilai-raport">Data Nilai Raport</Link>
-                          </SidebarMenuSubButton>
-                        </SidebarMenuSubItem> */}
-
-                        {/* <SidebarMenuSubItem>
-                          <SidebarMenuSubButton
-                            asChild
-                            className={cn("hover:bg-primary rounded-md px-3 py-1.5 text-sm", location.pathname.includes("/superadmin/informasi-laporan-umum/laporan-nilai-siswa") && "bg-primary text-white font-medium")}
-                          >
-                            <Link to="/superadmin/informasi-laporan-umum/laporan-nilai-siswa">Laporan Nilai Siswa</Link>
-                          </SidebarMenuSubButton>
-                        </SidebarMenuSubItem> */}
-
-                        {/* <SidebarMenuSubItem>
-                          <SidebarMenuSubButton
-                            asChild
-                            className={cn("hover:bg-primary rounded-md px-3 py-1.5 text-sm", location.pathname.includes("/superadmin/informasi-laporan-umum/status-kepegawaian") && "bg-primary text-white font-medium")}
-                          >
-                            <Link to="/superadmin/informasi-laporan-umum/status-kepegawaian">Data Status Kepegawaian</Link>
-                          </SidebarMenuSubButton>
-                        </SidebarMenuSubItem> */}
-
                         <SidebarMenuSubItem>
                           <SidebarMenuSubButton
                             asChild
@@ -427,6 +411,15 @@ export function SidebarSuperAdmin({ isCollapsed, setIsCollapsed }: { isCollapsed
                             className={cn("hover:bg-primary rounded-md px-3 py-1.5 text-sm", location.pathname.includes("/superadmin/informasi-laporan-umum/data-keuangan") && "bg-primary text-white font-medium")}
                           >
                             <Link to="/superadmin/informasi-laporan-umum/data-keuangan">Keuangan</Link>
+                          </SidebarMenuSubButton>
+                        </SidebarMenuSubItem>
+
+                        <SidebarMenuSubItem>
+                          <SidebarMenuSubButton
+                            asChild
+                            className={cn("hover:bg-primary rounded-md px-3 py-1.5 text-sm", location.pathname.includes("/superadmin/informasi-laporan-umum/berkas-administrasi") && "bg-primary text-white font-medium")}
+                          >
+                            <Link to="/superadmin/informasi-laporan-umum/berkas-administrasi">Berkas Administrasi</Link>
                           </SidebarMenuSubButton>
                         </SidebarMenuSubItem>
                       </SidebarMenuSub>

@@ -7,10 +7,24 @@ interface ApiResponse<T> {
   data: T;
 }
 
+interface TahunOption {
+  tahun_akademik_id: number;
+  tahun_akademik: string;
+  status: string;
+}
+
 export const keuanganService = {
-  // GET all: /spa/keuangan
-  getAll: async (): Promise<ApiResponse<Keuangan[]>> => {
-    const response = await api.get("/spa/keuangan");
+  // GET daftar tahun akademik: /spa/data-select/tahun-akademik
+  getTahunAkademik: async (): Promise<ApiResponse<TahunOption[]>> => {
+    const response = await api.get("/spa/data-select/tahun-akademik");
+    return response.data;
+  },
+
+  // GET all: /spa/keuangan?tahun_akademik_id=2
+  getAll: async (tahunAkademikId: number): Promise<ApiResponse<any[]>> => {
+    const response = await api.get("/spa/keuangan", {
+      params: { tahun_akademik_id: tahunAkademikId },
+    });
     return response.data;
   },
 
@@ -34,7 +48,6 @@ export const keuanganService = {
 
   // DELETE: /spa/keuangan/destroy?ids[]=7          (satu)
   //         /spa/keuangan/destroy?ids[]=7&ids[]=9  (beberapa)
-  // Catatan: selalu pakai ids[] (array), tidak ada ids=7
   deleteMultiple: async (ids: number[]): Promise<any> => {
     const params = ids.map((id) => `ids[]=${id}`).join("&");
     const response = await api.delete(`/spa/keuangan/destroy?${params}`);

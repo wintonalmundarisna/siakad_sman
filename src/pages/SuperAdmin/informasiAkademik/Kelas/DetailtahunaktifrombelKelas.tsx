@@ -1,8 +1,8 @@
 /**
  * DetailTahunAktifRombelKelas
- * GET /spa/rombel/aktif/:id
- * - Refetch otomatis setiap navigate back via location.key
- * - Tombol Histori → Dialog inline (data dari state, tidak fetch ulang)
+ * - Tombol "Tambah Jadwal" dipindah ke samping judul "Informasi Rombel"
+ * - Tombol "Histori Jadwal" juga di sana, navigasi ke halaman baru
+ * - Dialog histori dihapus
  */
 import { useEffect, useState, useCallback } from "react";
 import { useParams, useNavigate, useLocation, Link } from "react-router-dom";
@@ -13,7 +13,6 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { ArrowLeft, BookOpen, ClockIcon, Loader2, PenBoxIcon, PlusIcon, Trash2Icon, UserCheck, Users } from "lucide-react";
 import Footer from "@/pages/Footer";
 import api from "@/api/axios";
@@ -83,7 +82,6 @@ const DetailTahunAktifRombelKelas = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [data, setData] = useState<RombelDetail | null>(null);
   const [loading, setLoading] = useState(true);
-  const [dialogHistori, setDialogHistori] = useState(false);
 
   const fetchData = useCallback(async () => {
     if (!id) return;
@@ -202,7 +200,16 @@ const DetailTahunAktifRombelKelas = () => {
             <div className="space-y-6">
               {/* ── Info Rombel ── */}
               <div className="bg-white rounded shadow p-5">
-                <h2 className="text-lg font-semibold mb-4 text-primary">Informasi Rombel</h2>
+                {/* Judul + tombol Tambah Jadwal & Histori Jadwal */}
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 mb-4">
+                  <h2 className="text-lg font-semibold text-primary">Informasi Rombel</h2>
+                  <div className="flex gap-2 flex-wrap">
+                    <Button variant="outline" size="sm" onClick={() => navigate(`/superadmin/informasi-akademik/rombel/${data.rombel_id}/histori-jadwal`)}>
+                      <ClockIcon size={16} className="mr-1" /> Histori Jadwal
+                    </Button>
+                  </div>
+                </div>
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3 text-sm">
                   {(
                     [
@@ -363,17 +370,11 @@ const DetailTahunAktifRombelKelas = () => {
                       Jadwal Pelajaran <span className="text-sm font-normal text-gray-500">({allJadwal.length})</span>
                     </h2>
                   </div>
-                  <div className="flex gap-2 flex-wrap">
-                    <Link to={`/superadmin/informasi-akademik/jadwal-pelajaran-guru/create?rombel_id=${data.rombel_id}&nama_rombel=${encodeURIComponent(data.nama_rombel)}`}>
-                      <Button className="bg-primary" size="sm">
-                        <PlusIcon size={16} className="mr-1" /> Tambah Jadwal
-                      </Button>
-                    </Link>
-                    {/* ✅ Tombol Histori → buka Dialog inline */}
-                    <Button variant="outline" size="sm" onClick={() => setDialogHistori(true)}>
-                      <ClockIcon size={16} className="mr-1" /> Histori
+                  <Link to={`/superadmin/informasi-akademik/jadwal-pelajaran-guru/create?rombel_id=${data.rombel_id}&nama_rombel=${encodeURIComponent(data.nama_rombel)}`}>
+                    <Button className="bg-primary" size="sm">
+                      <PlusIcon size={16} className="mr-1" /> Tambah Jadwal
                     </Button>
-                  </div>
+                  </Link>
                 </div>
                 <Separator className="mb-4" />
 
@@ -448,93 +449,6 @@ const DetailTahunAktifRombelKelas = () => {
         </div>
         <Footer />
       </main>
-
-      {/* ── Dialog Histori Jadwal ── */}
-      <Dialog open={dialogHistori} onOpenChange={setDialogHistori}>
-        <DialogContent className="sm:max-w-[900px] max-w-[96vw] max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle className="text-xl font-bold text-primary">Histori Jadwal Pelajaran</DialogTitle>
-            <DialogDescription>
-              Jadwal pelajaran tahun aktif — <span className="font-medium">{data?.nama_rombel}</span>
-              {periode && (
-                <span className="ml-2 text-xs">
-                  ({periode.tahun_akademik} • {allJadwal.length} jadwal)
-                </span>
-              )}
-            </DialogDescription>
-          </DialogHeader>
-
-          {!periode || periode.semester.length === 0 ? (
-            <p className="text-center text-gray-500 py-8">Belum ada jadwal pelajaran pada tahun ini.</p>
-          ) : (
-            <div className="space-y-4 mt-2">
-              {/* Info rombel */}
-              <div className="bg-gradient-to-r from-indigo-50 to-blue-50 border border-indigo-200 rounded-lg p-4">
-                <p className="text-xs font-semibold text-indigo-500 mb-1 uppercase tracking-wide">Rombel</p>
-                <p className="text-lg font-bold text-indigo-900">{data?.nama_rombel}</p>
-                <p className="text-sm text-indigo-700 mt-0.5">
-                  {data?.kelas?.kelas} • Tingkat {data?.kelas?.tingkat} • {data?.jurusan?.nama_jurusan ?? "Tanpa Jurusan"}
-                </p>
-                <p className="text-xs text-indigo-500 mt-1">
-                  Tahun Aktif: {periode.tahun_akademik} • <Badge className="bg-green-100 text-green-700 text-xs">{periode.status_tahun_akademik}</Badge>
-                </p>
-              </div>
-
-              {/* Per semester */}
-              {periode.semester.map((sem) => (
-                <div key={sem.semester_id} className="border border-gray-200 rounded-lg overflow-hidden">
-                  {/* Header semester */}
-                  <div className="bg-primary px-4 py-2 flex items-center justify-between">
-                    <span className="text-white font-semibold text-sm">Semester {sem.semester}</span>
-                    <span className="text-white text-xs">{sem.jadwal_pelajaran.length} jadwal</span>
-                  </div>
-
-                  {sem.jadwal_pelajaran.length === 0 ? (
-                    <p className="text-center text-gray-400 text-sm py-4">Tidak ada jadwal di semester ini.</p>
-                  ) : (
-                    <div className="overflow-x-auto">
-                      <table className="w-full text-sm">
-                        <thead>
-                          <tr className="border-b bg-gray-50 text-xs text-gray-600">
-                            <th className="text-left p-2 font-semibold">No</th>
-                            <th className="text-left p-2 font-semibold">Mata Pelajaran</th>
-                            <th className="text-left p-2 font-semibold">Hari</th>
-                            <th className="text-left p-2 font-semibold">Jam</th>
-                            <th className="text-left p-2 font-semibold">Guru</th>
-                            <th className="text-left p-2 font-semibold">Ruangan</th>
-                            <th className="text-left p-2 font-semibold">Link</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {sem.jadwal_pelajaran.map((j, idx) => (
-                            <tr key={j.jadwal_pelajaran_id} className="border-b hover:bg-gray-50">
-                              <td className="p-2 text-gray-400">{idx + 1}</td>
-                              <td className="p-2 font-medium">{j.mata_pelajaran || "-"}</td>
-                              <td className="p-2">{j.hari || "-"}</td>
-                              <td className="p-2 text-xs whitespace-nowrap">{j.jam_mulai && j.jam_selesai ? `${j.jam_mulai.slice(0, 5)} – ${j.jam_selesai.slice(0, 5)}` : "-"}</td>
-                              <td className="p-2">{j.guru_pengajar || "-"}</td>
-                              <td className="p-2 text-xs">{j.ruangan || "-"}</td>
-                              <td className="p-2 text-xs">
-                                {j.link_opsional ? (
-                                  <a href={j.link_opsional} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
-                                    Link
-                                  </a>
-                                ) : (
-                                  "-"
-                                )}
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          )}
-        </DialogContent>
-      </Dialog>
     </SidebarProvider>
   );
 };

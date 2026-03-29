@@ -116,6 +116,12 @@ import HistoriJadwalSiswa from "@/pages/SuperAdmin/InfomasiSekolah/Siswa/Histori
 import HistoriAbsensiSiswa from "@/pages/SuperAdmin/InfomasiSekolah/Siswa/Historiabsensisiswa";
 import HistoriEkskulSiswa from "@/pages/SuperAdmin/InfomasiSekolah/Siswa/Historiekskulsiswa";
 import HistoriPrestasiSiswaReadOnly from "@/pages/SuperAdmin/InfomasiSekolah/Siswa/Historiprestasisiswa";
+import HistoriJadwalRombelGuru from "@/pages/SuperAdmin/informasiAkademik/Kelas/HistoriJadwalRombelGuru";
+import DataBerkasAdministrasi from "@/pages/SuperAdmin/InformasiLaporanUmum/DataBerkas";
+import CreateBerkasAdministrasi from "@/pages/SuperAdmin/InformasiLaporanUmum/DataBerkas/CreateBerkasAdministrasi";
+import EditBerkasAdministrasi from "@/pages/SuperAdmin/InformasiLaporanUmum/DataBerkas/EditBerkasAdministrasi";
+import DataNilaiSiswa from "@/pages/SuperAdmin/InformasiNilaiSiswa/NilaiSiswa";
+import HistoriRaporSiswa from "@/pages/SuperAdmin/InformasiNilaiSiswa/RaporSiswa";
 
 export default function AppRoutes() {
   return (
@@ -477,6 +483,15 @@ export default function AppRoutes() {
           element={
             <ProtectedRoute roles={["super_admin"]}>
               <DetailTahunAktifRombelKelas />
+            </ProtectedRoute>
+          }
+        />
+        {/* Histori jadwal pelajaran guru */}
+        <Route
+          path="/superadmin/informasi-akademik/rombel/:id/histori-jadwal"
+          element={
+            <ProtectedRoute roles={["super_admin"]}>
+              <HistoriJadwalRombelGuru />
             </ProtectedRoute>
           }
         />
@@ -897,6 +912,25 @@ export default function AppRoutes() {
             </ProtectedRoute>
           }
         />
+        {/* INFORMASI NILAI SISWA */}
+        {/* DATA NILAI SISWA */}
+        <Route
+          path="/superadmin/informasi-nilai-siswa/nilai-siswa"
+          element={
+            <ProtectedRoute roles={["super_admin"]}>
+              <DataNilaiSiswa />
+            </ProtectedRoute>
+          }
+        />
+        {/* RAPOR SISWA */}
+        <Route
+          path="/superadmin/informasi-nilai-siswa/rapor-siswa/:id"
+          element={
+            <ProtectedRoute roles={["super_admin"]}>
+              <HistoriRaporSiswa />
+            </ProtectedRoute>
+          }
+        />
         {/* Data PSB */}
         <Route
           path="/superadmin/psb"
@@ -988,6 +1022,31 @@ export default function AppRoutes() {
           element={
             <ProtectedRoute roles={["super_admin"]}>
               <DetailKeuangan />
+            </ProtectedRoute>
+          }
+        />
+        {/* Data berkas */}
+        <Route
+          path="/superadmin/informasi-laporan-umum/berkas-administrasi"
+          element={
+            <ProtectedRoute roles={["super_admin"]}>
+              <DataBerkasAdministrasi />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/superadmin/informasi-laporan-umum/berkas-administrasi/create"
+          element={
+            <ProtectedRoute roles={["super_admin"]}>
+              <CreateBerkasAdministrasi />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/superadmin/informasi-laporan-umum/berkas-administrasi/edit/:id"
+          element={
+            <ProtectedRoute roles={["super_admin"]}>
+              <EditBerkasAdministrasi />
             </ProtectedRoute>
           }
         />
