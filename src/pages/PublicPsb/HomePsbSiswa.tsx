@@ -6,13 +6,19 @@ import { Button } from "@/components/ui/button";
 import BannerSekolah from "@/assets/Banner-image-psb.png";
 import { Link } from "react-router-dom";
 import Footer from "../Footer";
-import type { TahunAkademik } from "@/types/tahunAkademik";
 import { useEffect, useState } from "react";
 import api from "@/api/axios";
 import Swal from "sweetalert2";
 
+interface TahunAkademikPublic {
+  id: number;
+  tahun_akademik: string;
+  keterangan: string;
+  status_tahun_akademik: "aktif" | "arsip";
+}
+
 const HomePage = () => {
-  const [dataTahunAkademik, setDataTahunAkademik] = useState<TahunAkademik[]>([]);
+  const [dataTahunAkademik, setDataTahunAkademik] = useState<TahunAkademikPublic[]>([]);
   const [loading, setLoading] = useState(true);
 
   // Ambil data dari backend
@@ -25,11 +31,17 @@ const HomePage = () => {
           setDataTahunAkademik(res.data.data);
         }
       } catch (error: any) {
-        Swal.fire({
-          icon: "error",
-          title: "Gagal memuat data!",
-          text: error.response?.data?.message || "Tidak dapat memuat data tahun akademik",
-        });
+        const isNoData = error.response?.data?.message === "No data";
+
+        // Jika hanya belum ada data, tidak perlu alert — biarkan "Tahun Ajaran -"
+        if (!isNoData) {
+          Swal.fire({
+            icon: "error",
+            title: "Gagal memuat data!",
+            text: error.response?.data?.message || "Tidak dapat memuat data tahun akademik",
+          });
+        }
+        // Jika isNoData, biarkan state tetap [] dan tampil "Tahun Ajaran -"
       } finally {
         setLoading(false);
       }
@@ -39,7 +51,7 @@ const HomePage = () => {
   }, []);
 
   // Ambil tahun akademik aktif (bisa berdasarkan status atau yang pertama)
-  const tahunAkademikAktif = dataTahunAkademik.find((ta) => ta.status === "aktif") || dataTahunAkademik[0];
+  const tahunAkademikAktif = dataTahunAkademik.find((ta) => ta.status_tahun_akademik === "aktif") || dataTahunAkademik[0];
 
   return (
     <div className="mx-auto max-w-7xl w-full px-4 md:px-0">

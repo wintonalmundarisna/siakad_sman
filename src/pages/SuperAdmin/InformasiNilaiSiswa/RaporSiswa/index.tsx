@@ -1,11 +1,3 @@
-/**
- * HistoriRaporSiswa
- * Route: /superadmin/informasi-akademik/data-nilai-siswa/rapor/:id
- * Endpoint: GET /spa/data-nilai-siswa/rapor/:id
- *
- * Menampilkan semua nilai, absensi, rapor milik satu siswa
- * dikelompokkan per tahun akademik → semester → jenis penilaian
- */
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import PageTitle from "@/components/PageTitle";

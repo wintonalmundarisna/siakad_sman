@@ -11,31 +11,16 @@
  */
 import { useEffect, useMemo, useRef, useState } from "react";
 import PageTitle from "@/components/PageTitle";
-import {
-  Table, TableBody, TableCell, TableHead,
-  TableHeader, TableRow,
-} from "@/components/ui/table";
 import { SidebarSuperAdmin } from "@/components/SidebarSuperAdmin";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-  Dialog, DialogContent, DialogDescription,
-  DialogFooter, DialogHeader, DialogTitle,
-} from "@/components/ui/dialog";
-import {
-  Select, SelectContent, SelectGroup, SelectItem,
-  SelectLabel, SelectTrigger, SelectValue,
-} from "@/components/ui/select";
-import { Card, CardContent } from "@/components/ui/card";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import Footer from "@/pages/Footer";
-import {
-  Loader2Icon, SearchIcon, Trash2Icon, FileSpreadsheet,
-  PenBoxIcon, CircleXIcon, FilePlus, CalendarCheck,
-  XCircle, UserCheck, CalendarIcon,
-} from "lucide-react";
+import { Loader2Icon, SearchIcon, Trash2Icon, FileSpreadsheet, PenBoxIcon, CircleXIcon, FilePlus, CalendarCheck, XCircle, UserCheck, CalendarIcon, ChevronDownIcon, ChevronRightIcon } from "lucide-react";
 import api from "@/api/axios";
 import Swal from "sweetalert2";
 
@@ -77,28 +62,26 @@ const flattenData = (rawData: any[]): AbsensiItem[] => {
 
   rawData.forEach((taGroup) => {
     taGroup.semesters?.forEach((semGroup: any) => {
-      const isEditable =
-        taGroup.status_tahun_akademik === "aktif" &&
-        semGroup.status_semester === "aktif";
+      const isEditable = taGroup.status_tahun_akademik === "aktif" && semGroup.status_semester === "aktif";
 
       semGroup.guru?.forEach((guruItem: any) => {
         guruItem.absensi?.forEach((abs: any) => {
           result.push({
-            absensi_id:               abs.absensi_id,
-            guru_id:                  guruItem.guru_id,
-            nama_guru:                guruItem.nama_guru,
-            nip:                      guruItem.nip ?? null,
-            role:                     guruItem.role ?? null,
-            mengajar:                 abs.mengajar ?? null,
-            hari:                     abs.hari,
-            status:                   abs.status,
-            tahun_akademik:           taGroup.tahun_akademik,
-            status_tahun_akademik:    taGroup.status_tahun_akademik,
-            semester:                 semGroup.semester,
-            status_semester:          semGroup.status_semester,
-            hadir_per_semester:       guruItem.hadir_per_semester ?? 0,
+            absensi_id: abs.absensi_id,
+            guru_id: guruItem.guru_id,
+            nama_guru: guruItem.nama_guru,
+            nip: guruItem.nip ?? null,
+            role: guruItem.role ?? null,
+            mengajar: abs.mengajar ?? null,
+            hari: abs.hari,
+            status: abs.status,
+            tahun_akademik: taGroup.tahun_akademik,
+            status_tahun_akademik: taGroup.status_tahun_akademik,
+            semester: semGroup.semester,
+            status_semester: semGroup.status_semester,
+            hadir_per_semester: guruItem.hadir_per_semester ?? 0,
             tidak_hadir_per_semester: guruItem.tidak_hadir_per_semester ?? 0,
-            is_editable:              isEditable,
+            is_editable: isEditable,
           });
         });
       });
@@ -108,30 +91,88 @@ const flattenData = (rawData: any[]): AbsensiItem[] => {
   return result;
 };
 
+// ── Group helper: group flat data per semester → per guru ────────────────────
+interface GuruGroup {
+  guru_id: number;
+  nama_guru: string;
+  nip: string | null;
+  role: string | null;
+  hadir_per_semester: number;
+  tidak_hadir_per_semester: number;
+  absensi: AbsensiItem[];
+}
+
+interface SemesterGroup {
+  semester_id_key: string;
+  semester: string;
+  tahun_akademik: string;
+  status_semester: string;
+  is_editable: boolean;
+  gurus: GuruGroup[];
+}
+
+const groupData = (flatData: AbsensiItem[]): SemesterGroup[] => {
+  const semMap = new Map<string, SemesterGroup>();
+
+  flatData.forEach((item) => {
+    const key = `${item.semester}|${item.tahun_akademik}`;
+    if (!semMap.has(key)) {
+      semMap.set(key, {
+        semester_id_key: key,
+        semester: item.semester,
+        tahun_akademik: item.tahun_akademik,
+        status_semester: item.status_semester,
+        is_editable: item.is_editable,
+        gurus: [],
+      });
+    }
+    const semGroup = semMap.get(key)!;
+    let guruGroup = semGroup.gurus.find((g) => g.guru_id === item.guru_id);
+    if (!guruGroup) {
+      guruGroup = {
+        guru_id: item.guru_id,
+        nama_guru: item.nama_guru,
+        nip: item.nip,
+        role: item.role,
+        hadir_per_semester: item.hadir_per_semester,
+        tidak_hadir_per_semester: item.tidak_hadir_per_semester,
+        absensi: [],
+      };
+      semGroup.gurus.push(guruGroup);
+    }
+    guruGroup.absensi.push(item);
+  });
+
+  return Array.from(semMap.values());
+};
+
 // ── Component ─────────────────────────────────────────────────────────────────
 const DataAbsensiPegawai = () => {
-  const [isCollapsed, setIsCollapsed]           = useState(false);
-  const [tahunOptions, setTahunOptions]         = useState<TahunOption[]>([]);
-  const [selectedTahun, setSelectedTahun]       = useState<string>("");
-  const [semesterOptions, setSemesterOptions]   = useState<SemesterOption[]>([]);
+  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [tahunOptions, setTahunOptions] = useState<TahunOption[]>([]);
+  const [selectedTahun, setSelectedTahun] = useState<string>("");
+  const [semesterOptions, setSemesterOptions] = useState<SemesterOption[]>([]);
   const [selectedSemester, setSelectedSemester] = useState<string>("");
-  const [loadingSelect, setLoadingSelect]       = useState(true);
-  const [dataFlat, setDataFlat]                 = useState<AbsensiItem[]>([]);
-  const [loadingData, setLoadingData]           = useState(false);
-  const [searchTerm, setSearchTerm]             = useState("");
-  const [rowsPerPage, setRowsPerPage]           = useState(10);
-  const [currentPage, setCurrentPage]           = useState(1);
-  const [selectedIds, setSelectedIds]           = useState<number[]>([]);
-  const selectAllRef                            = useRef<HTMLInputElement>(null);
-  const [editDialog, setEditDialog]             = useState(false);
-  const [editingId, setEditingId]               = useState<number | null>(null);
-  const [editStatus, setEditStatus]             = useState<"hadir" | "tidak hadir">("hadir");
-  const [editingRow, setEditingRow]             = useState<AbsensiItem | null>(null);
-  const [isLoadingAksi, setIsLoadingAksi]       = useState(false);
+  const [loadingSelect, setLoadingSelect] = useState(true);
+  const [dataFlat, setDataFlat] = useState<AbsensiItem[]>([]);
+  const [loadingData, setLoadingData] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedIds, setSelectedIds] = useState<number[]>([]);
+  const selectAllRef = useRef<HTMLInputElement>(null);
+  const [editDialog, setEditDialog] = useState(false);
+  const [editingId, setEditingId] = useState<number | null>(null);
+  const [editStatus, setEditStatus] = useState<"hadir" | "tidak hadir">("hadir");
+  const [editingRow, setEditingRow] = useState<AbsensiItem | null>(null);
+  const [isLoadingAksi, setIsLoadingAksi] = useState(false);
+
+  // Accordion state
+  const [expandedSemester, setExpandedSemester] = useState<string[]>([]);
+  const [expandedGuru, setExpandedGuru] = useState<number[]>([]);
 
   // ── Fetch dropdown ────────────────────────────────────────────────────────
   useEffect(() => {
-    api.get("/spa/absensi/pegawai/data-select")   // ✅ sesuai api.php
+    api
+      .get("/spa/absensi/pegawai/data-select")
       .then((res) => {
         if (res.data.status === "success") {
           const list: TahunOption[] = res.data.data.tahun_semester ?? [];
@@ -163,21 +204,32 @@ const DataAbsensiPegawai = () => {
     setLoadingData(true);
     setDataFlat([]);
     setSelectedIds([]);
-    setCurrentPage(1);
+    setExpandedSemester([]);
+    setExpandedGuru([]);
 
-    api.get("/spa/absensi/pegawai/sekolah", {   // ✅ sesuai api.php
-      params: {
-        tahun_akademik_id: Number(selectedTahun),
-        semester_id:       Number(selectedSemester),
-      },
-    })
+    api
+      .get("/spa/absensi/pegawai/sekolah", {
+        params: {
+          tahun_akademik_id: Number(selectedTahun),
+          semester_id: Number(selectedSemester),
+        },
+      })
       .then((res) => {
-        if (res.data.status === "success") setDataFlat(flattenData(res.data.data));
+        if (res.data.status === "success") {
+          const flat = flattenData(res.data.data);
+          setDataFlat(flat);
+          // Auto-expand semester pertama
+          const grouped = groupData(flat);
+          if (grouped.length > 0) {
+            setExpandedSemester([grouped[0].semester_id_key]);
+          }
+        }
       })
       .catch((err) => {
         if (err.response?.status !== 404) {
           Swal.fire({
-            icon: "error", title: "Gagal memuat data!",
+            icon: "error",
+            title: "Gagal memuat data!",
             text: err.response?.data?.message || "Tidak dapat memuat absensi.",
           });
         }
@@ -188,44 +240,36 @@ const DataAbsensiPegawai = () => {
 
   // ── Statistik ─────────────────────────────────────────────────────────────
   const stats = useMemo(() => {
-    const hadir      = dataFlat.filter((x) => x.status === "hadir").length;
+    const hadir = dataFlat.filter((x) => x.status === "hadir").length;
     const tidakHadir = dataFlat.filter((x) => x.status === "tidak hadir").length;
-    const persen     = hadir + tidakHadir > 0
-      ? ((hadir / (hadir + tidakHadir)) * 100).toFixed(1) : "0";
-    return { hadir, tidakHadir, persen };
+    const persen = hadir + tidakHadir > 0 ? ((hadir / (hadir + tidakHadir)) * 100).toFixed(1) : "0";
+    const totalPegawai = new Set(dataFlat.map((x) => x.guru_id)).size;
+    return { hadir, tidakHadir, persen, totalPegawai };
   }, [dataFlat]);
 
-  // ── Filter & Pagination ───────────────────────────────────────────────────
-  const filteredData = useMemo(() => {
+  // ── Group & Filter ─────────────────────────────────────────────────────────
+  const filteredFlat = useMemo(() => {
     if (!searchTerm.trim()) return dataFlat;
     const lower = searchTerm.toLowerCase();
-    return dataFlat.filter(
-      (item) =>
-        item.nama_guru.toLowerCase().includes(lower) ||
-        (item.mengajar ?? "").toLowerCase().includes(lower) ||
-        item.hari.toLowerCase().includes(lower) ||
-        (item.nip ?? "").toLowerCase().includes(lower)
-    );
+    return dataFlat.filter((item) => item.nama_guru.toLowerCase().includes(lower) || (item.mengajar ?? "").toLowerCase().includes(lower) || item.hari.toLowerCase().includes(lower) || (item.nip ?? "").toLowerCase().includes(lower));
   }, [searchTerm, dataFlat]);
 
-  const totalPages = Math.ceil(filteredData.length / rowsPerPage);
-  const paginated  = useMemo(() => {
-    const start = (currentPage - 1) * rowsPerPage;
-    return filteredData.slice(start, start + rowsPerPage);
-  }, [filteredData, currentPage, rowsPerPage]);
+  const groupedData = useMemo(() => groupData(filteredFlat), [filteredFlat]);
 
-  // ── Checkbox ──────────────────────────────────────────────────────────────
-  const isAllSelected  = paginated.length > 0 && paginated.every((i) => selectedIds.includes(i.absensi_id));
-  const isSomeSelected = paginated.some((i) => selectedIds.includes(i.absensi_id)) && !isAllSelected;
+  // ── Checkbox — menggunakan filteredFlat (tanpa pagination) ────────────────
+  const isAllSelected = filteredFlat.length > 0 && filteredFlat.every((i) => selectedIds.includes(i.absensi_id));
+  const isSomeSelected = filteredFlat.some((i) => selectedIds.includes(i.absensi_id)) && !isAllSelected;
 
   useEffect(() => {
     if (selectAllRef.current) selectAllRef.current.indeterminate = isSomeSelected;
   }, [isSomeSelected]);
 
-  const handleSelectAll = (checked: boolean) =>
-    setSelectedIds(checked ? paginated.map((i) => i.absensi_id) : []);
-  const handleSelectOne = (id: number, checked: boolean) =>
-    setSelectedIds((prev) => checked ? [...prev, id] : prev.filter((x) => x !== id));
+  const handleSelectAll = (checked: boolean) => setSelectedIds(checked ? filteredFlat.map((i) => i.absensi_id) : []);
+  const handleSelectOne = (id: number, checked: boolean) => setSelectedIds((prev) => (checked ? [...prev, id] : prev.filter((x) => x !== id)));
+
+  // ── Accordion helpers ─────────────────────────────────────────────────────
+  const toggleSemester = (key: string) => setExpandedSemester((prev) => (prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]));
+  const toggleGuru = (id: number) => setExpandedGuru((prev) => (prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]));
 
   // ── Edit ──────────────────────────────────────────────────────────────────
   const handleEdit = (item: AbsensiItem) => {
@@ -239,13 +283,9 @@ const DataAbsensiPegawai = () => {
     if (!editingId) return;
     try {
       setIsLoadingAksi(true);
-      await api.put(`/spa/absensi/pegawai/sekolah/${editingId}`, { status: editStatus }); // ✅
+      await api.put(`/spa/absensi/pegawai/sekolah/${editingId}`, { status: editStatus });
       setEditDialog(false);
-      setDataFlat((prev) =>
-        prev.map((item) =>
-          item.absensi_id === editingId ? { ...item, status: editStatus } : item
-        )
-      );
+      setDataFlat((prev) => prev.map((item) => (item.absensi_id === editingId ? { ...item, status: editStatus } : item)));
       Swal.fire({ icon: "success", title: "Berhasil!", text: "Status absensi berhasil diperbarui.", showConfirmButton: false, timer: 1800 });
     } catch (err: any) {
       Swal.fire({ icon: "error", title: "Gagal memperbarui!", text: err.response?.data?.message || "Terjadi kesalahan." });
@@ -262,7 +302,7 @@ const DataAbsensiPegawai = () => {
     }
     const selectedRows = dataFlat.filter((i) => selectedIds.includes(i.absensi_id));
     const deletableIds = selectedRows.filter((i) => i.is_editable).map((i) => i.absensi_id);
-    const arsipCount   = selectedRows.length - deletableIds.length;
+    const arsipCount = selectedRows.length - deletableIds.length;
 
     if (deletableIds.length === 0) {
       Swal.fire({ icon: "warning", title: "Tidak ada data yang bisa dihapus", text: "Semua data yang dipilih berasal dari semester/TA yang sudah arsip.", confirmButtonColor: "#4F46E5" });
@@ -272,14 +312,17 @@ const DataAbsensiPegawai = () => {
     const result = await Swal.fire({
       title: "Yakin ingin menghapus?",
       html: `<b>${deletableIds.length} data aktif</b> akan dihapus permanen.${arsipCount > 0 ? `<br/><br/><span style="color:#f59e0b">⚠️ ${arsipCount} data arsip dilewati.</span>` : ""}`,
-      icon: "warning", showCancelButton: true,
-      confirmButtonColor: "#4F46E5", confirmButtonText: "Ya, hapus!", cancelButtonText: "Batal",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#4F46E5",
+      confirmButtonText: "Ya, hapus!",
+      cancelButtonText: "Batal",
     });
     if (!result.isConfirmed) return;
 
     try {
       setLoadingData(true);
-      await api.delete("/spa/absensi/pegawai/sekolah/destroy", { params: { ids: deletableIds } }); // ✅
+      await api.delete("/spa/absensi/pegawai/sekolah/destroy", { params: { ids: deletableIds } });
       setSelectedIds([]);
       setDataFlat((prev) => prev.filter((i) => !deletableIds.includes(i.absensi_id)));
       Swal.fire({ icon: "success", title: "Berhasil!", text: "Data berhasil dihapus.", showConfirmButton: false, timer: 1800 });
@@ -341,11 +384,11 @@ const DataAbsensiPegawai = () => {
             <>
               {/* ── Filter ── */}
               <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 mb-5">
-                <div className="flex flex-col md:flex-row gap-3">
+                <div className="flex flex-col md:flex-row gap-3 items-end">
                   <div className="flex-1">
                     <label className="block text-sm font-semibold text-gray-700 mb-1">Tahun Akademik</label>
                     <Select value={selectedTahun} onValueChange={handleTahunChange}>
-                      <SelectTrigger>
+                      <SelectTrigger className="w-full">
                         <SelectValue placeholder="-- pilih tahun akademik --" />
                       </SelectTrigger>
                       <SelectContent>
@@ -370,11 +413,10 @@ const DataAbsensiPegawai = () => {
                       value={selectedSemester}
                       onValueChange={(val) => {
                         setSelectedSemester(val);
-                        setCurrentPage(1);
                       }}
                       disabled={!selectedTahun || semesterOptions.length === 0}
                     >
-                      <SelectTrigger>
+                      <SelectTrigger className="w-full">
                         <SelectValue placeholder="-- pilih semester --" />
                       </SelectTrigger>
                       <SelectContent>
@@ -397,16 +439,7 @@ const DataAbsensiPegawai = () => {
                     <label className="block text-sm font-semibold text-gray-700 mb-1">Cari</label>
                     <div className="relative">
                       <SearchIcon className="absolute left-3 top-2.5 text-gray-400" size={16} />
-                      <Input
-                        placeholder="Cari nama, mata pelajaran, tanggal..."
-                        value={searchTerm}
-                        onChange={(e) => {
-                          setSearchTerm(e.target.value);
-                          setCurrentPage(1);
-                        }}
-                        className="pl-9"
-                        disabled={dataFlat.length === 0}
-                      />
+                      <Input placeholder="Cari nama, mata pelajaran, tanggal..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="pl-9" disabled={dataFlat.length === 0} />
                     </div>
                   </div>
                 </div>
@@ -414,49 +447,25 @@ const DataAbsensiPegawai = () => {
 
               {/* ── Statistik ── */}
               {!loadingData && dataFlat.length > 0 && (
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-5">
-                  <Card className="border-blue-200">
-                    <CardContent className="pt-5">
-                      <div className="flex items-center gap-3">
-                        <div className="p-3 bg-blue-100 rounded-full">
-                          <UserCheck className="text-blue-600" size={22} />
-                        </div>
-                        <div>
-                          <p className="text-sm text-gray-500">Total Hadir</p>
-                          <p className="text-2xl font-bold text-blue-600">{stats.hadir}</p>
-                        </div>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-5">
+                  {[
+                    { label: "Total Pegawai", value: stats.totalPegawai, icon: UserCheck, color: "bg-blue-50 text-blue-700 border-blue-200" },
+                    { label: "Total Hadir", value: stats.hadir, icon: CalendarCheck, color: "bg-emerald-50 text-emerald-700 border-emerald-200" },
+                    { label: "Total Tidak Hadir", value: stats.tidakHadir, icon: XCircle, color: "bg-red-50 text-red-700 border-red-200" },
+                    { label: "Persentase Kehadiran", value: `${stats.persen}%`, icon: CalendarIcon, color: "bg-amber-50 text-amber-700 border-amber-200" },
+                  ].map(({ label, value, icon: Icon, color }) => (
+                    <div key={label} className={`rounded-xl border p-4 ${color}`}>
+                      <div className="flex items-center gap-2 mb-1">
+                        <Icon size={16} />
+                        <span className="text-xs font-medium">{label}</span>
                       </div>
-                    </CardContent>
-                  </Card>
-                  <Card className="border-red-200">
-                    <CardContent className="pt-5">
-                      <div className="flex items-center gap-3">
-                        <div className="p-3 bg-red-100 rounded-full">
-                          <XCircle className="text-red-600" size={22} />
-                        </div>
-                        <div>
-                          <p className="text-sm text-gray-500">Total Tidak Hadir</p>
-                          <p className="text-2xl font-bold text-red-600">{stats.tidakHadir}</p>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                  <Card className="border-green-200">
-                    <CardContent className="pt-5">
-                      <div className="flex items-center gap-3">
-                        <div className="p-3 bg-green-100 rounded-full">
-                          <CalendarCheck className="text-green-600" size={22} />
-                        </div>
-                        <div>
-                          <p className="text-sm text-gray-500">Persentase Kehadiran</p>
-                          <p className="text-2xl font-bold text-green-600">{stats.persen}%</p>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
+                      <p className="text-2xl font-bold">{value}</p>
+                    </div>
+                  ))}
                 </div>
               )}
 
+              {/* ── Loading ── */}
               {loadingData ? (
                 <div className="flex flex-col items-center justify-center h-64 text-gray-500">
                   <Loader2Icon className="animate-spin mb-3" size={32} />
@@ -477,104 +486,135 @@ const DataAbsensiPegawai = () => {
                     <Button variant="outline" size="sm" onClick={() => handleExport(false)}>
                       <FileSpreadsheet size={16} className="mr-1" /> Export Absensi
                     </Button>
-                    {/* <Button variant="outline" size="sm" onClick={() => handleExport(true)} disabled={selectedIds.length === 0}>
-                      <FileSpreadsheet size={16} className="mr-1" /> Export Terpilih
-                    </Button> */}
                   </div>
 
-                  {/* ── Tabel ── */}
-                  <div className="w-full overflow-x-auto rounded-xl border border-gray-200 shadow-sm bg-white">
-                    <Table className="min-w-full">
-                      <TableHeader className="bg-primary">
-                        <TableRow>
-                          <TableHead className="w-12 text-center">
-                            <input type="checkbox" ref={selectAllRef} checked={isAllSelected} onChange={(e) => handleSelectAll(e.target.checked)} className="w-4 h-4 cursor-pointer" />
-                          </TableHead>
-                          <TableHead className="text-center text-white font-semibold w-12">No</TableHead>
-                          <TableHead className="text-white font-semibold">Nama Pegawai</TableHead>
-                          <TableHead className="text-white font-semibold">NIP</TableHead>
-                          <TableHead className="text-white font-semibold">Mengajar</TableHead>
-                          <TableHead className="text-white font-semibold">Tanggal</TableHead>
-                          <TableHead className="text-white font-semibold">Status</TableHead>
-                          <TableHead className="text-center text-white font-semibold">Hadir/Tdk</TableHead>
-                          <TableHead className="text-center text-white font-semibold w-24">Aksi</TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {filteredData.length === 0 ? (
-                          <TableRow>
-                            <TableCell colSpan={9} className="text-center text-gray-400 py-10">
-                              {searchTerm ? "Tidak ada data yang sesuai pencarian" : "Tidak ada data absensi pada periode ini"}
-                            </TableCell>
-                          </TableRow>
-                        ) : (
-                          paginated.map((item, idx) => (
-                            <TableRow key={item.absensi_id} className="hover:bg-indigo-50 even:bg-gray-50 border-b border-gray-100">
-                              <TableCell className="text-center">
-                                <Checkbox checked={selectedIds.includes(item.absensi_id)} onCheckedChange={(checked) => handleSelectOne(item.absensi_id, !!checked)} />
-                              </TableCell>
-                              <TableCell className="text-center text-gray-400 text-sm">{(currentPage - 1) * rowsPerPage + idx + 1}</TableCell>
-                              <TableCell>
-                                <p className="font-semibold text-gray-900">{item.nama_guru}</p>
-                                {item.role && <p className="text-xs text-gray-400 capitalize">{item.role}</p>}
-                              </TableCell>
-                              <TableCell className="text-sm text-gray-500">{item.nip ?? "—"}</TableCell>
-                              <TableCell className="text-sm">{item.mengajar ? <span>{item.mengajar}</span> : <span className="text-xs text-gray-300 italic">Tidak tercatat</span>}</TableCell>
-                              <TableCell className="text-sm">{item.hari}</TableCell>
-                              <TableCell>
-                                <Badge className={item.status === "hadir" ? "bg-green-100 text-green-700 hover:bg-green-100" : "bg-red-100 text-red-700 hover:bg-red-100"}>{item.status}</Badge>
-                              </TableCell>
-                              <TableCell className="text-center text-sm">
-                                <span className="text-green-600 font-medium">{item.hadir_per_semester}</span>
-                                <span className="text-gray-400 mx-1">/</span>
-                                <span className="text-red-500 font-medium">{item.tidak_hadir_per_semester}</span>
-                              </TableCell>
-                              <TableCell className="text-center">
-                                {item.is_editable ? (
-                                  <Button size="sm" className="bg-primary" onClick={() => handleEdit(item)}>
-                                    <PenBoxIcon size={14} />
-                                  </Button>
-                                ) : (
-                                  <span className="text-xs text-gray-300">arsip</span>
-                                )}
-                              </TableCell>
-                            </TableRow>
-                          ))
-                        )}
-                      </TableBody>
-                    </Table>
-                  </div>
+                  {/* ── Accordion per Semester → per Guru ── */}
+                  {groupedData.length === 0 ? (
+                    <div className="bg-white border border-gray-200 rounded-xl p-12 text-center text-gray-400">
+                      <CalendarIcon size={40} className="mx-auto mb-3 text-gray-300" />
+                      <p className="font-medium text-lg">{searchTerm ? "Tidak ada data yang sesuai pencarian" : "Tidak ada data absensi pada periode ini"}</p>
+                      {searchTerm && (
+                        <Button variant="outline" size="sm" className="mt-3" onClick={() => setSearchTerm("")}>
+                          Reset pencarian
+                        </Button>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="space-y-4">
+                      {groupedData.map((semGroup) => {
+                        const isExpanded = expandedSemester.includes(semGroup.semester_id_key);
+                        const totalAbsensi = semGroup.gurus.reduce((a, g) => a + g.absensi.length, 0);
 
-                  {/* ── Pagination ── */}
-                  {filteredData.length > 0 && (
-                    <div className="flex flex-col md:flex-row justify-between items-center mt-5 gap-4">
-                      <div className="flex items-center gap-2 text-sm text-gray-600">
-                        <span>Tampilkan:</span>
-                        <select
-                          value={rowsPerPage}
-                          onChange={(e) => {
-                            setRowsPerPage(Number(e.target.value));
-                            setCurrentPage(1);
-                          }}
-                          className="border border-gray-300 rounded px-2 py-1 text-sm"
-                        >
-                          <option value={10}>10</option>
-                          <option value={50}>50</option>
-                          <option value={100}>100</option>
-                        </select>
-                        <span>per halaman · total {filteredData.length} data</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Button size="sm" disabled={currentPage === 1} onClick={() => setCurrentPage((p) => p - 1)}>
-                          Prev
-                        </Button>
-                        <span className="text-sm">
-                          Halaman <strong>{currentPage}</strong> dari <strong>{totalPages || 1}</strong>
-                        </span>
-                        <Button size="sm" disabled={currentPage >= totalPages} onClick={() => setCurrentPage((p) => p + 1)}>
-                          Next
-                        </Button>
-                      </div>
+                        return (
+                          <div key={semGroup.semester_id_key} className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+                            {/* ── Header Semester ── */}
+                            <button type="button" className="w-full bg-primary px-5 py-4 flex items-center justify-between hover:bg-primary/90 transition-colors" onClick={() => toggleSemester(semGroup.semester_id_key)}>
+                              <div className="flex items-center gap-3">
+                                {isExpanded ? <ChevronDownIcon className="text-white" size={20} /> : <ChevronRightIcon className="text-white" size={20} />}
+                                <div className="text-left">
+                                  <p className="text-white font-bold text-base">Semester {semGroup.semester}</p>
+                                  <p className="text-white/70 text-xs mt-0.5">{semGroup.tahun_akademik}</p>
+                                </div>
+                              </div>
+                              <div className="flex items-center gap-3">
+                                <Badge className={semGroup.status_semester === "aktif" ? "bg-white/20 text-white border-white/30 text-xs" : "bg-white/10 text-white/60 border-white/20 text-xs"}>{semGroup.status_semester}</Badge>
+                                <div className="text-right">
+                                  <p className="text-white font-semibold">{semGroup.gurus.length} pegawai</p>
+                                  <p className="text-white/70 text-xs">{totalAbsensi} catatan</p>
+                                </div>
+                              </div>
+                            </button>
+
+                            {/* ── List Guru ── */}
+                            {isExpanded && (
+                              <div className="p-4 space-y-3">
+                                {semGroup.gurus.map((guru) => {
+                                  const isGuruExpanded = expandedGuru.includes(guru.guru_id);
+                                  const hadirCount = guru.absensi.filter((a) => a.status === "hadir").length;
+                                  const tidakHadirCount = guru.absensi.filter((a) => a.status === "tidak hadir").length;
+
+                                  return (
+                                    <div key={guru.guru_id} className="border border-gray-200 rounded-lg overflow-hidden">
+                                      {/* ── Header Guru ── */}
+                                      <button type="button" className="w-full bg-indigo-50 px-4 py-3 flex items-center justify-between hover:bg-indigo-100 transition-colors" onClick={() => toggleGuru(guru.guru_id)}>
+                                        <div className="flex items-center gap-3">
+                                          {isGuruExpanded ? <ChevronDownIcon className="text-indigo-600" size={16} /> : <ChevronRightIcon className="text-indigo-600" size={16} />}
+                                          <div className="flex items-center gap-2">
+                                            <div className="w-7 h-7 rounded-full bg-indigo-200 flex items-center justify-center">
+                                              <UserCheck size={14} className="text-indigo-700" />
+                                            </div>
+                                            <div className="text-left">
+                                              <span className="font-semibold text-indigo-900 text-sm">{guru.nama_guru}</span>
+                                              {guru.role && <p className="text-xs text-indigo-400 capitalize">{guru.role}</p>}
+                                            </div>
+                                          </div>
+                                          {guru.nip && <span className="text-xs text-gray-400 hidden md:inline">NIP: {guru.nip}</span>}
+                                        </div>
+                                        <div className="flex items-center gap-2">
+                                          <span className="text-xs text-emerald-600 font-semibold bg-emerald-50 px-2 py-0.5 rounded-full">{hadirCount} hadir</span>
+                                          <span className="text-xs text-red-500 font-semibold bg-red-50 px-2 py-0.5 rounded-full">{tidakHadirCount} tdk hadir</span>
+                                          <Badge className="bg-indigo-100 text-indigo-700 hover:bg-indigo-100 text-xs">{guru.absensi.length} catatan</Badge>
+                                        </div>
+                                      </button>
+
+                                      {/* ── Tabel Absensi ── */}
+                                      {isGuruExpanded && (
+                                        <div className="overflow-x-auto">
+                                          <table className="w-full text-sm">
+                                            <thead>
+                                              <tr className="bg-gray-50 border-b border-gray-200">
+                                                <th className="text-center px-4 py-2.5 font-semibold text-gray-600 w-10">
+                                                  <input type="checkbox" ref={selectAllRef} checked={isAllSelected} onChange={(e) => handleSelectAll(e.target.checked)} className="w-4 h-4 cursor-pointer" />
+                                                </th>
+                                                <th className="text-left px-4 py-2.5 font-semibold text-gray-600 w-10">No</th>
+                                                <th className="text-left px-4 py-2.5 font-semibold text-gray-600">Mengajar</th>
+                                                <th className="text-left px-4 py-2.5 font-semibold text-gray-600 w-36">Tanggal</th>
+                                                <th className="text-left px-4 py-2.5 font-semibold text-gray-600 w-28">Status</th>
+                                                <th className="text-center px-4 py-2.5 font-semibold text-gray-600 w-24">Aksi</th>
+                                              </tr>
+                                            </thead>
+                                            <tbody>
+                                              {guru.absensi.map((item, idx) => (
+                                                <tr key={item.absensi_id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                                  <td className="text-center px-4 py-3">
+                                                    <Checkbox checked={selectedIds.includes(item.absensi_id)} onCheckedChange={(checked) => handleSelectOne(item.absensi_id, !!checked)} />
+                                                  </td>
+                                                  <td className="px-4 py-3 text-center text-gray-400 text-xs font-medium">{idx + 1}</td>
+                                                  {/* FIX: tampilkan mengajar, fallback ke role jika null */}
+                                                  <td className="px-4 py-3">
+                                                    {item.mengajar ? (
+                                                      <span className="font-medium text-gray-900">{item.mengajar}</span>
+                                                    ) : (
+                                                      <span className="text-xs text-gray-300 italic">Tidak Tercatat</span>
+                                                    )}
+                                                  </td>
+                                                  <td className="px-4 py-3 text-sm text-gray-700">{item.hari}</td>
+                                                  <td className="px-4 py-3">
+                                                    <Badge className={item.status === "hadir" ? "bg-green-100 text-green-700 hover:bg-green-100" : "bg-red-100 text-red-700 hover:bg-red-100"}>{item.status}</Badge>
+                                                  </td>
+                                                  <td className="px-4 py-3 text-center">
+                                                    {item.is_editable ? (
+                                                      <Button size="sm" className="bg-primary" onClick={() => handleEdit(item)}>
+                                                        <PenBoxIcon size={14} />
+                                                      </Button>
+                                                    ) : (
+                                                      <span className="text-xs text-gray-300">arsip</span>
+                                                    )}
+                                                  </td>
+                                                </tr>
+                                              ))}
+                                            </tbody>
+                                          </table>
+                                        </div>
+                                      )}
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
                     </div>
                   )}
                 </>
@@ -601,7 +641,7 @@ const DataAbsensiPegawai = () => {
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-500">Mengajar</span>
-                    <span className="font-semibold">{editingRow.mengajar ?? "—"}</span>
+                    <span className="font-semibold">{editingRow.mengajar ?? editingRow.role ?? "—"}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-500">Tanggal</span>
