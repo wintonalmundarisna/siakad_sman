@@ -38,6 +38,7 @@ use App\Models\Rapor;
 use App\Models\EkskulSiswaPivot;
 use App\Models\DataNilaiSiswa;
 use App\Models\DataBerkas;
+use App\Models\Pertemuan;
 
 class DatabaseSeeder extends Seeder
 {
@@ -5477,6 +5478,13 @@ class DatabaseSeeder extends Seeder
                 'tahun_akademik_id' => 2
             ],
         ]);
+
+
+        // Pertemuan
+        Pertemuan::insert([
+            // ! [] masuk sini
+        ]);
+
 
         /**
          * 🎯 SPA: C.R.U.D

@@ -60,6 +60,9 @@ Route::get('/cache-cleaner', [CacheCleanerController::class, 'triggerCacheCleanu
 // ✅☑️ Guru, Kepsek, Staff, dan Siswa
 Route::apiResource('/all/identitas-sekolah', IdentitasSekolahController::class)->only('index');
 
+// ✅☑️ Tahun Akademik
+Route::apiResource('/spa/tahun-akademik', TahunAkademikController::class)->except('show');
+
 // ✅☑️ PSB Public
 Route::apiResource('psb', PsbController::class)->only('store');
 
@@ -155,9 +158,6 @@ Route::middleware('auth:kepegawaian')->group(function () {
 
     // ✅☑️ CRUD mata pelajaran
     Route::apiResource('/spa/mata-pelajaran', MataPelajaranController::class);
-
-    // ✅☑️ Tahun Akademik
-    Route::apiResource('/spa/tahun-akademik', TahunAkademikController::class)->except('show');
     
     // ✅☑️ Semester
     Route::apiResource('/spa/semester', SemesterController::class)->except(['index', 'show']);
@@ -281,17 +281,11 @@ Route::get('/tu/show/diri', [KepegawaianController::class, 'showDiriSendiri']);
 
 // ! ✅ Update diri sendiri (insomnia)
 Route::put('/tu/update/diri', [KepegawaianController::class, 'updateDirinyaSendiri']);
+
+// ubah pass diri
+// show diri
+// identitas sekolah
 // ? =========================================================================================================================== ?
-
-
-
-
-// ? ======================================================= TU ================================================================= ?
-    // ubah pass diri
-    // show diri
-    // identitas sekolah
-// ? =========================================================================================================================== ?
-
 
 
 
