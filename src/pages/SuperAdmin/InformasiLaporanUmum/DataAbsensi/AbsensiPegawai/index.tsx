@@ -581,13 +581,7 @@ const DataAbsensiPegawai = () => {
                                                   </td>
                                                   <td className="px-4 py-3 text-center text-gray-400 text-xs font-medium">{idx + 1}</td>
                                                   {/* FIX: tampilkan mengajar, fallback ke role jika null */}
-                                                  <td className="px-4 py-3">
-                                                    {item.mengajar ? (
-                                                      <span className="font-medium text-gray-900">{item.mengajar}</span>
-                                                    ) : (
-                                                      <span className="text-xs text-gray-300 italic">Tidak Tercatat</span>
-                                                    )}
-                                                  </td>
+                                                  <td className="px-4 py-3">{item.mengajar ? <span className="font-medium text-gray-900">{item.mengajar}</span> : <span className="text-xs text-gray-300 italic">Tidak Tercatat</span>}</td>
                                                   <td className="px-4 py-3 text-sm text-gray-700">{item.hari}</td>
                                                   <td className="px-4 py-3">
                                                     <Badge className={item.status === "hadir" ? "bg-green-100 text-green-700 hover:bg-green-100" : "bg-red-100 text-red-700 hover:bg-red-100"}>{item.status}</Badge>

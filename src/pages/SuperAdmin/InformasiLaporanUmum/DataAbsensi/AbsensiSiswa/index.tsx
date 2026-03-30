@@ -12,7 +12,6 @@
  */
 import { useEffect, useMemo, useRef, useState } from "react";
 import PageTitle from "@/components/PageTitle";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { SidebarSuperAdmin } from "@/components/SidebarSuperAdmin";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
@@ -20,11 +19,29 @@ import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Footer from "@/pages/Footer";
-import { Loader2Icon, SearchIcon, Trash2Icon, FileSpreadsheet, FileArchive, PenBoxIcon, CircleXIcon, FilePlus, UserCheck, FileCheck, FileX, XCircle, CalendarIcon, EyeIcon, ImageIcon } from "lucide-react";
+import {
+  Loader2Icon,
+  SearchIcon,
+  Trash2Icon,
+  FileSpreadsheet,
+  FileArchive,
+  PenBoxIcon,
+  CircleXIcon,
+  FilePlus,
+  UserCheck,
+  FileCheck,
+  FileX,
+  XCircle,
+  CalendarIcon,
+  EyeIcon,
+  ImageIcon,
+  ChevronDownIcon,
+  ChevronRightIcon,
+  BookOpenIcon,
+} from "lucide-react";
 import api from "@/api/axios";
 import Swal from "sweetalert2";
 
@@ -70,7 +87,6 @@ const resolveBuktiUrl = (bukti: string | null): string | null => {
   if (bukti.startsWith("Bukti dihapus")) return null;
   if (bukti.startsWith("http://") || bukti.startsWith("https://")) return bukti;
   const relativePath = bukti.replace(/^public\//, "storage/");
-  // Pakai VITE_API_BASE_URL, fallback ke 127.0.0.1:8000
   const base = import.meta.env.VITE_API_BASE_URL ?? "http://127.0.0.1:8000";
   return `${base}/${relativePath}`;
 };
@@ -99,8 +115,6 @@ const flattenData = (rawData: any[], editableOverride?: boolean): AbsensiItem[] 
 
     taGroup.semesters?.forEach((semGroup: any) => {
       const statusSemester = semGroup.status_semester ?? semGroup.status ?? "";
-
-      // editableOverride dipakai saat backend belum return status (cek dari filter yang dipilih)
       const isEditable = editableOverride !== undefined ? editableOverride : statusTahun === "aktif" && statusSemester === "aktif";
 
       semGroup.rombels?.forEach((rombelGroup: any) => {
@@ -136,6 +150,78 @@ const flattenData = (rawData: any[], editableOverride?: boolean): AbsensiItem[] 
   return result;
 };
 
+// ── Group helpers: Semester → Rombel → Siswa ──────────────────────────────────
+interface SiswaGroup {
+  siswa_id: number;
+  nama_siswa: string;
+  nisn: string | null;
+  nis: string | null;
+  hadir_per_semester: number;
+  sakit_per_semester: number;
+  izin_per_semester: number;
+  alpa_per_semester: number;
+  absensi: AbsensiItem[];
+}
+
+interface RombelGroup {
+  rombel: string;
+  siswas: SiswaGroup[];
+}
+
+interface SemesterGroup {
+  semester_id_key: string;
+  semester: string;
+  tahun_akademik: string;
+  status_semester: string;
+  is_editable: boolean;
+  rombels: RombelGroup[];
+}
+
+const groupData = (flatData: AbsensiItem[]): SemesterGroup[] => {
+  const semMap = new Map<string, SemesterGroup>();
+
+  flatData.forEach((item) => {
+    const semKey = `${item.semester}|${item.tahun_akademik}`;
+    if (!semMap.has(semKey)) {
+      semMap.set(semKey, {
+        semester_id_key: semKey,
+        semester: item.semester,
+        tahun_akademik: item.tahun_akademik,
+        status_semester: item.status_semester,
+        is_editable: item.is_editable,
+        rombels: [],
+      });
+    }
+    const semGroup = semMap.get(semKey)!;
+
+    const rombelKey = item.rombel ?? "—";
+    let rombelGroup = semGroup.rombels.find((r) => r.rombel === rombelKey);
+    if (!rombelGroup) {
+      rombelGroup = { rombel: rombelKey, siswas: [] };
+      semGroup.rombels.push(rombelGroup);
+    }
+
+    let siswaGroup = rombelGroup.siswas.find((s) => s.siswa_id === item.siswa_id);
+    if (!siswaGroup) {
+      siswaGroup = {
+        siswa_id: item.siswa_id,
+        nama_siswa: item.nama_siswa,
+        nisn: item.nisn,
+        nis: item.nis,
+        hadir_per_semester: item.hadir_per_semester,
+        sakit_per_semester: item.sakit_per_semester,
+        izin_per_semester: item.izin_per_semester,
+        alpa_per_semester: item.alpa_per_semester,
+        absensi: [],
+      };
+      rombelGroup.siswas.push(siswaGroup);
+    }
+    siswaGroup.absensi.push(item);
+  });
+
+  return Array.from(semMap.values());
+};
+
 // ── Component ──────────────────────────────────────────────────────────────────
 const DataAbsensiSiswa = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -147,8 +233,6 @@ const DataAbsensiSiswa = () => {
   const [dataFlat, setDataFlat] = useState<AbsensiItem[]>([]);
   const [loadingData, setLoadingData] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [currentPage, setCurrentPage] = useState(1);
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const selectAllRef = useRef<HTMLInputElement>(null);
 
@@ -164,6 +248,11 @@ const DataAbsensiSiswa = () => {
   // Preview bukti
   const [previewDialog, setPreviewDialog] = useState(false);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
+
+  // Accordion state — Semester & Rombel expand per string key, Siswa per number id
+  const [expandedSemester, setExpandedSemester] = useState<string[]>([]);
+  const [expandedRombel, setExpandedRombel] = useState<string[]>([]); // key = `${semKey}|${rombel}`
+  const [expandedSiswa, setExpandedSiswa] = useState<number[]>([]);
 
   // ── Fetch dropdown ──────────────────────────────────────────────────────────
   useEffect(() => {
@@ -200,7 +289,9 @@ const DataAbsensiSiswa = () => {
     setLoadingData(true);
     setDataFlat([]);
     setSelectedIds([]);
-    setCurrentPage(1);
+    setExpandedSemester([]);
+    setExpandedRombel([]);
+    setExpandedSiswa([]);
 
     api
       .get("/spa/absensi/siswa/pelajaran", {
@@ -211,11 +302,16 @@ const DataAbsensiSiswa = () => {
       })
       .then((res) => {
         if (res.data.status === "success") {
-          // Cek apakah semester yang dipilih aktif dari dropdown options
           const semTerpilih = semesterOptions.find((s) => String(s.semester_id) === selectedSemester);
           const tahunTerpilih = tahunOptions.find((t) => String(t.tahun_akademik_id) === selectedTahun);
           const isAktif = semTerpilih?.status === "aktif" && tahunTerpilih?.status === "aktif";
-          setDataFlat(flattenData(res.data.data, isAktif));
+          const flat = flattenData(res.data.data, isAktif);
+          setDataFlat(flat);
+          // Auto-expand semester pertama
+          const grouped = groupData(flat);
+          if (grouped.length > 0) {
+            setExpandedSemester([grouped[0].semester_id_key]);
+          }
         }
       })
       .catch((err) => {
@@ -234,6 +330,7 @@ const DataAbsensiSiswa = () => {
   // ── Statistik ───────────────────────────────────────────────────────────────
   const stats = useMemo(
     () => ({
+      totalSiswa: new Set(dataFlat.map((x) => x.siswa_id)).size,
       hadir: dataFlat.filter((x) => x.status === "hadir").length,
       izin: dataFlat.filter((x) => x.status === "izin").length,
       sakit: dataFlat.filter((x) => x.status === "sakit").length,
@@ -242,8 +339,8 @@ const DataAbsensiSiswa = () => {
     [dataFlat],
   );
 
-  // ── Filter & Pagination ─────────────────────────────────────────────────────
-  const filteredData = useMemo(() => {
+  // ── Filter & Group ──────────────────────────────────────────────────────────
+  const filteredFlat = useMemo(() => {
     if (!searchTerm.trim()) return dataFlat;
     const lower = searchTerm.toLowerCase();
     return dataFlat.filter(
@@ -256,22 +353,23 @@ const DataAbsensiSiswa = () => {
     );
   }, [searchTerm, dataFlat]);
 
-  const totalPages = Math.ceil(filteredData.length / rowsPerPage);
-  const paginated = useMemo(() => {
-    const start = (currentPage - 1) * rowsPerPage;
-    return filteredData.slice(start, start + rowsPerPage);
-  }, [filteredData, currentPage, rowsPerPage]);
+  const groupedData = useMemo(() => groupData(filteredFlat), [filteredFlat]);
 
-  // ── Checkbox ────────────────────────────────────────────────────────────────
-  const isAllSelected = paginated.length > 0 && paginated.every((i) => selectedIds.includes(i.absensi_id));
-  const isSomeSelected = paginated.some((i) => selectedIds.includes(i.absensi_id)) && !isAllSelected;
+  // ── Checkbox (tanpa pagination, berdasarkan filteredFlat) ───────────────────
+  const isAllSelected = filteredFlat.length > 0 && filteredFlat.every((i) => selectedIds.includes(i.absensi_id));
+  const isSomeSelected = filteredFlat.some((i) => selectedIds.includes(i.absensi_id)) && !isAllSelected;
 
   useEffect(() => {
     if (selectAllRef.current) selectAllRef.current.indeterminate = isSomeSelected;
   }, [isSomeSelected]);
 
-  const handleSelectAll = (checked: boolean) => setSelectedIds(checked ? paginated.map((i) => i.absensi_id) : []);
+  const handleSelectAll = (checked: boolean) => setSelectedIds(checked ? filteredFlat.map((i) => i.absensi_id) : []);
   const handleSelectOne = (id: number, checked: boolean) => setSelectedIds((prev) => (checked ? [...prev, id] : prev.filter((x) => x !== id)));
+
+  // ── Accordion helpers ───────────────────────────────────────────────────────
+  const toggleSemester = (key: string) => setExpandedSemester((prev) => (prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]));
+  const toggleRombel = (key: string) => setExpandedRombel((prev) => (prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]));
+  const toggleSiswa = (id: number) => setExpandedSiswa((prev) => (prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]));
 
   // ── Edit ────────────────────────────────────────────────────────────────────
   const handleEdit = (item: AbsensiItem) => {
@@ -323,7 +421,6 @@ const DataAbsensiSiswa = () => {
       setEditDialog(false);
       setBuktiFoto(null);
       setPreviewUrl(null);
-      // Update local state
       setDataFlat((prev) => prev.map((item) => (item.absensi_id === editingId ? { ...item, status: editStatus } : item)));
       Swal.fire({ icon: "success", title: "Berhasil!", text: "Status absensi berhasil diperbarui.", showConfirmButton: false, timer: 1800 });
     } catch (err: any) {
@@ -409,8 +506,6 @@ const DataAbsensiSiswa = () => {
         params: { tahun_akademik_id: Number(selectedTahun), semester_id: Number(selectedSemester) },
         responseType: "blob",
       });
-
-      // Cek apakah response adalah error JSON (bukan file ZIP)
       const contentType = res.headers["content-type"] ?? "";
       if (contentType.includes("application/json")) {
         const text = await res.data.text();
@@ -418,11 +513,9 @@ const DataAbsensiSiswa = () => {
         Swal.fire({ icon: "error", title: "Export ZIP gagal!", text: json.message || "Terjadi kesalahan." });
         return;
       }
-
       downloadBlob(res.data, "bukti-absensi-siswa.zip");
       Swal.fire({ icon: "success", title: "Export ZIP berhasil!", showConfirmButton: false, timer: 1500 });
     } catch (err: any) {
-      // Jika error, coba baca pesan dari blob
       if (err.response?.data instanceof Blob) {
         const text = await err.response.data.text();
         try {
@@ -460,11 +553,11 @@ const DataAbsensiSiswa = () => {
             <>
               {/* ── Filter ── */}
               <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 mb-5">
-                <div className="flex flex-col md:flex-row gap-3">
+                <div className="flex flex-col md:flex-row gap-3 items-end">
                   <div className="flex-1">
                     <label className="block text-sm font-semibold text-gray-700 mb-1">Tahun Akademik</label>
                     <Select value={selectedTahun} onValueChange={handleTahunChange}>
-                      <SelectTrigger>
+                      <SelectTrigger className="w-full">
                         <SelectValue placeholder="-- pilih tahun akademik --" />
                       </SelectTrigger>
                       <SelectContent>
@@ -485,15 +578,8 @@ const DataAbsensiSiswa = () => {
 
                   <div className="flex-1">
                     <label className="block text-sm font-semibold text-gray-700 mb-1">Semester</label>
-                    <Select
-                      value={selectedSemester}
-                      onValueChange={(val) => {
-                        setSelectedSemester(val);
-                        setCurrentPage(1);
-                      }}
-                      disabled={!selectedTahun || semesterOptions.length === 0}
-                    >
-                      <SelectTrigger>
+                    <Select value={selectedSemester} onValueChange={(val) => setSelectedSemester(val)} disabled={!selectedTahun || semesterOptions.length === 0}>
+                      <SelectTrigger className="w-full">
                         <SelectValue placeholder="-- pilih semester --" />
                       </SelectTrigger>
                       <SelectContent>
@@ -516,16 +602,7 @@ const DataAbsensiSiswa = () => {
                     <label className="block text-sm font-semibold text-gray-700 mb-1">Cari</label>
                     <div className="relative">
                       <SearchIcon className="absolute left-3 top-2.5 text-gray-400" size={16} />
-                      <Input
-                        placeholder="Cari nama, rombel, mata pelajaran..."
-                        value={searchTerm}
-                        onChange={(e) => {
-                          setSearchTerm(e.target.value);
-                          setCurrentPage(1);
-                        }}
-                        className="pl-9"
-                        disabled={dataFlat.length === 0}
-                      />
+                      <Input placeholder="Cari nama, rombel, mata pelajaran..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="pl-9" disabled={dataFlat.length === 0} />
                     </div>
                   </div>
                 </div>
@@ -533,62 +610,26 @@ const DataAbsensiSiswa = () => {
 
               {/* ── Statistik ── */}
               {!loadingData && dataFlat.length > 0 && (
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-5">
-                  <Card className="border-green-200">
-                    <CardContent className="pt-5">
-                      <div className="flex items-center gap-3">
-                        <div className="p-3 bg-green-100 rounded-full">
-                          <UserCheck className="text-green-600" size={22} />
-                        </div>
-                        <div>
-                          <p className="text-sm text-gray-500">Total Hadir</p>
-                          <p className="text-2xl font-bold text-green-600">{stats.hadir}</p>
-                        </div>
+                <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-5">
+                  {[
+                    { label: "Total Siswa", value: stats.totalSiswa, icon: UserCheck, color: "bg-blue-50 text-blue-700 border-blue-200" },
+                    { label: "Total Hadir", value: stats.hadir, icon: UserCheck, color: "bg-emerald-50 text-emerald-700 border-emerald-200" },
+                    { label: "Total Izin", value: stats.izin, icon: FileCheck, color: "bg-sky-50 text-sky-700 border-sky-200" },
+                    { label: "Total Sakit", value: stats.sakit, icon: FileX, color: "bg-amber-50 text-amber-700 border-amber-200" },
+                    { label: "Total Alpa", value: stats.alpa, icon: XCircle, color: "bg-red-50 text-red-700 border-red-200" },
+                  ].map(({ label, value, icon: Icon, color }) => (
+                    <div key={label} className={`rounded-xl border p-4 ${color}`}>
+                      <div className="flex items-center gap-2 mb-1">
+                        <Icon size={16} />
+                        <span className="text-xs font-medium">{label}</span>
                       </div>
-                    </CardContent>
-                  </Card>
-                  <Card className="border-blue-200">
-                    <CardContent className="pt-5">
-                      <div className="flex items-center gap-3">
-                        <div className="p-3 bg-blue-100 rounded-full">
-                          <FileCheck className="text-blue-600" size={22} />
-                        </div>
-                        <div>
-                          <p className="text-sm text-gray-500">Total Izin</p>
-                          <p className="text-2xl font-bold text-blue-600">{stats.izin}</p>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                  <Card className="border-yellow-200">
-                    <CardContent className="pt-5">
-                      <div className="flex items-center gap-3">
-                        <div className="p-3 bg-yellow-100 rounded-full">
-                          <FileX className="text-yellow-600" size={22} />
-                        </div>
-                        <div>
-                          <p className="text-sm text-gray-500">Total Sakit</p>
-                          <p className="text-2xl font-bold text-yellow-600">{stats.sakit}</p>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                  <Card className="border-red-200">
-                    <CardContent className="pt-5">
-                      <div className="flex items-center gap-3">
-                        <div className="p-3 bg-red-100 rounded-full">
-                          <XCircle className="text-red-600" size={22} />
-                        </div>
-                        <div>
-                          <p className="text-sm text-gray-500">Total Alpa</p>
-                          <p className="text-2xl font-bold text-red-600">{stats.alpa}</p>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
+                      <p className="text-2xl font-bold">{value}</p>
+                    </div>
+                  ))}
                 </div>
               )}
 
+              {/* ── Loading / Empty state ── */}
               {loadingData ? (
                 <div className="flex flex-col items-center justify-center h-64 text-gray-500">
                   <Loader2Icon className="animate-spin mb-3" size={32} />
@@ -614,120 +655,177 @@ const DataAbsensiSiswa = () => {
                     </Button>
                   </div>
 
-                  {/* ── Tabel ── */}
-                  <div className="w-full overflow-x-auto rounded-xl border border-gray-200 shadow-sm bg-white">
-                    <Table className="min-w-full">
-                      <TableHeader className="bg-primary">
-                        <TableRow>
-                          <TableHead className="w-12 text-center">
-                            <input type="checkbox" ref={selectAllRef} checked={isAllSelected} onChange={(e) => handleSelectAll(e.target.checked)} className="w-4 h-4 cursor-pointer" />
-                          </TableHead>
-                          <TableHead className="text-center text-white font-semibold w-12">No</TableHead>
-                          <TableHead className="text-white font-semibold">Nama Siswa</TableHead>
-                          <TableHead className="text-white font-semibold">Rombel</TableHead>
-                          <TableHead className="text-white font-semibold">Mata Pelajaran</TableHead>
-                          <TableHead className="text-white font-semibold">Tanggal</TableHead>
-                          <TableHead className="text-white font-semibold">Status</TableHead>
-                          <TableHead className="text-center text-white font-semibold">H/I/S/A</TableHead>
-                          <TableHead className="text-center text-white font-semibold">Bukti</TableHead>
-                          <TableHead className="text-center text-white font-semibold w-24">Aksi</TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {filteredData.length === 0 ? (
-                          <TableRow>
-                            <TableCell colSpan={10} className="text-center text-gray-400 py-10">
-                              {searchTerm ? "Tidak ada data yang sesuai pencarian" : "Tidak ada data absensi pada periode ini"}
-                            </TableCell>
-                          </TableRow>
-                        ) : (
-                          paginated.map((item, idx) => (
-                            <TableRow key={item.absensi_id} className="hover:bg-indigo-50 even:bg-gray-50 border-b border-gray-100">
-                              <TableCell className="text-center">
-                                <Checkbox checked={selectedIds.includes(item.absensi_id)} onCheckedChange={(checked) => handleSelectOne(item.absensi_id, !!checked)} />
-                              </TableCell>
-                              <TableCell className="text-center text-gray-400 text-sm">{(currentPage - 1) * rowsPerPage + idx + 1}</TableCell>
-                              <TableCell>
-                                <p className="font-semibold text-gray-900">{item.nama_siswa}</p>
-                                {item.nisn && <p className="text-xs text-gray-400">NISN: {item.nisn}</p>}
-                              </TableCell>
-                              <TableCell className="text-sm">{item.rombel ?? "—"}</TableCell>
-                              <TableCell className="text-sm">{item.mata_pelajaran ?? "—"}</TableCell>
-                              <TableCell className="text-sm">{item.hari}</TableCell>
-                              <TableCell>
-                                <Badge className={statusBadgeClass(item.status)}>{item.status}</Badge>
-                              </TableCell>
-                              <TableCell className="text-center text-xs">
-                                <span className="text-green-600 font-medium">{item.hadir_per_semester}</span>
-                                <span className="text-gray-400">/</span>
-                                <span className="text-blue-500 font-medium">{item.izin_per_semester}</span>
-                                <span className="text-gray-400">/</span>
-                                <span className="text-yellow-500 font-medium">{item.sakit_per_semester}</span>
-                                <span className="text-gray-400">/</span>
-                                <span className="text-red-500 font-medium">{item.alpa_per_semester}</span>
-                              </TableCell>
-                              <TableCell className="text-center">
-                                {resolveBuktiUrl(item.bukti) ? (
-                                  <Button
-                                    size="sm"
-                                    variant="outline"
-                                    onClick={() => {
-                                      setPreviewImage(resolveBuktiUrl(item.bukti));
-                                      setPreviewDialog(true);
-                                    }}
-                                  >
-                                    <EyeIcon size={13} />
-                                  </Button>
-                                ) : (
-                                  <span className="text-xs text-gray-300">—</span>
-                                )}
-                              </TableCell>
-                              <TableCell className="text-center">
-                                {item.is_editable ? (
-                                  <Button size="sm" className="bg-primary" onClick={() => handleEdit(item)}>
-                                    <PenBoxIcon size={14} />
-                                  </Button>
-                                ) : (
-                                  <span className="text-xs text-gray-300">arsip</span>
-                                )}
-                              </TableCell>
-                            </TableRow>
-                          ))
-                        )}
-                      </TableBody>
-                    </Table>
-                  </div>
+                  {/* ── Accordion: Semester → Rombel → Siswa ── */}
+                  {groupedData.length === 0 ? (
+                    <div className="bg-white border border-gray-200 rounded-xl p-12 text-center text-gray-400">
+                      <CalendarIcon size={40} className="mx-auto mb-3 text-gray-300" />
+                      <p className="font-medium text-lg">{searchTerm ? "Tidak ada data yang sesuai pencarian" : "Tidak ada data absensi pada periode ini"}</p>
+                      {searchTerm && (
+                        <Button variant="outline" size="sm" className="mt-3" onClick={() => setSearchTerm("")}>
+                          Reset pencarian
+                        </Button>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="space-y-4">
+                      {groupedData.map((semGroup) => {
+                        const isSemExpanded = expandedSemester.includes(semGroup.semester_id_key);
+                        const totalAbsensi = semGroup.rombels.reduce((a, r) => a + r.siswas.reduce((b, s) => b + s.absensi.length, 0), 0);
+                        const totalSiswa = semGroup.rombels.reduce((a, r) => a + r.siswas.length, 0);
 
-                  {/* ── Pagination ── */}
-                  {filteredData.length > 0 && (
-                    <div className="flex flex-col md:flex-row justify-between items-center mt-5 gap-4">
-                      <div className="flex items-center gap-2 text-sm text-gray-600">
-                        <span>Tampilkan:</span>
-                        <select
-                          value={rowsPerPage}
-                          onChange={(e) => {
-                            setRowsPerPage(Number(e.target.value));
-                            setCurrentPage(1);
-                          }}
-                          className="border border-gray-300 rounded px-2 py-1 text-sm"
-                        >
-                          <option value={10}>10</option>
-                          <option value={50}>50</option>
-                          <option value={100}>100</option>
-                        </select>
-                        <span>per halaman · total {filteredData.length} data</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Button size="sm" disabled={currentPage === 1} onClick={() => setCurrentPage((p) => p - 1)}>
-                          Prev
-                        </Button>
-                        <span className="text-sm">
-                          Halaman <strong>{currentPage}</strong> dari <strong>{totalPages || 1}</strong>
-                        </span>
-                        <Button size="sm" disabled={currentPage >= totalPages} onClick={() => setCurrentPage((p) => p + 1)}>
-                          Next
-                        </Button>
-                      </div>
+                        return (
+                          <div key={semGroup.semester_id_key} className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+                            {/* ── Header Semester ── */}
+                            <button type="button" className="w-full bg-primary px-5 py-4 flex items-center justify-between hover:bg-primary/90 transition-colors" onClick={() => toggleSemester(semGroup.semester_id_key)}>
+                              <div className="flex items-center gap-3">
+                                {isSemExpanded ? <ChevronDownIcon className="text-white" size={20} /> : <ChevronRightIcon className="text-white" size={20} />}
+                                <div className="text-left">
+                                  <p className="text-white font-bold text-base">Semester {semGroup.semester}</p>
+                                  <p className="text-white/70 text-xs mt-0.5">{semGroup.tahun_akademik}</p>
+                                </div>
+                              </div>
+                              <div className="flex items-center gap-3">
+                                <Badge className={semGroup.status_semester === "aktif" ? "bg-white/20 text-white border-white/30 text-xs" : "bg-white/10 text-white/60 border-white/20 text-xs"}>{semGroup.status_semester}</Badge>
+                                <div className="text-right">
+                                  <p className="text-white font-semibold">{totalSiswa} siswa</p>
+                                  <p className="text-white/70 text-xs">{totalAbsensi} catatan</p>
+                                </div>
+                              </div>
+                            </button>
+
+                            {/* ── List Rombel ── */}
+                            {isSemExpanded && (
+                              <div className="p-4 space-y-3">
+                                {semGroup.rombels.map((rombelGroup) => {
+                                  const rombelKey = `${semGroup.semester_id_key}|${rombelGroup.rombel}`;
+                                  const isRombelExpanded = expandedRombel.includes(rombelKey);
+                                  const totalRombelAbs = rombelGroup.siswas.reduce((a, s) => a + s.absensi.length, 0);
+
+                                  return (
+                                    <div key={rombelKey} className="border border-gray-200 rounded-lg overflow-hidden">
+                                      {/* ── Header Rombel ── */}
+                                      <button type="button" className="w-full bg-indigo-50 px-4 py-3 flex items-center justify-between hover:bg-indigo-100 transition-colors" onClick={() => toggleRombel(rombelKey)}>
+                                        <div className="flex items-center gap-3">
+                                          {isRombelExpanded ? <ChevronDownIcon className="text-indigo-600" size={16} /> : <ChevronRightIcon className="text-indigo-600" size={16} />}
+                                          <div className="flex items-center gap-2">
+                                            <div className="w-7 h-7 rounded-full bg-indigo-200 flex items-center justify-center">
+                                              <BookOpenIcon size={14} className="text-indigo-700" />
+                                            </div>
+                                            <span className="font-semibold text-indigo-900 text-sm">{rombelGroup.rombel}</span>
+                                          </div>
+                                        </div>
+                                        <div className="flex items-center gap-2">
+                                          <span className="text-xs text-indigo-600 font-semibold bg-indigo-50 border border-indigo-200 px-2 py-0.5 rounded-full">{rombelGroup.siswas.length} siswa</span>
+                                          <Badge className="bg-indigo-100 text-indigo-700 hover:bg-indigo-100 text-xs">{totalRombelAbs} catatan</Badge>
+                                        </div>
+                                      </button>
+
+                                      {/* ── List Siswa ── */}
+                                      {isRombelExpanded && (
+                                        <div className="p-3 space-y-2 bg-white">
+                                          {rombelGroup.siswas.map((siswa) => {
+                                            const isSiswaExpanded = expandedSiswa.includes(siswa.siswa_id);
+
+                                            return (
+                                              <div key={siswa.siswa_id} className="border border-gray-100 rounded-lg overflow-hidden">
+                                                {/* ── Header Siswa ── */}
+                                                <button type="button" className="w-full bg-gray-50 px-4 py-2.5 flex items-center justify-between hover:bg-gray-100 transition-colors" onClick={() => toggleSiswa(siswa.siswa_id)}>
+                                                  <div className="flex items-center gap-3">
+                                                    {isSiswaExpanded ? <ChevronDownIcon className="text-gray-500" size={14} /> : <ChevronRightIcon className="text-gray-500" size={14} />}
+                                                    <div className="flex items-center gap-2">
+                                                      <div className="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center">
+                                                        <UserCheck size={12} className="text-gray-600" />
+                                                      </div>
+                                                      <div className="text-left">
+                                                        <span className="font-semibold text-gray-800 text-sm">{siswa.nama_siswa}</span>
+                                                        {siswa.nisn && <p className="text-xs text-gray-400">NISN: {siswa.nisn}</p>}
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                  <div className="flex items-center gap-1.5">
+                                                    <span className="text-xs text-emerald-600 font-semibold bg-emerald-50 px-2 py-0.5 rounded-full">{siswa.hadir_per_semester}H</span>
+                                                    <span className="text-xs text-sky-600 font-semibold bg-sky-50 px-2 py-0.5 rounded-full">{siswa.izin_per_semester}I</span>
+                                                    <span className="text-xs text-amber-600 font-semibold bg-amber-50 px-2 py-0.5 rounded-full">{siswa.sakit_per_semester}S</span>
+                                                    <span className="text-xs text-red-500 font-semibold bg-red-50 px-2 py-0.5 rounded-full">{siswa.alpa_per_semester}A</span>
+                                                    <Badge className="bg-gray-100 text-gray-600 hover:bg-gray-100 text-xs ml-1">{siswa.absensi.length} catatan</Badge>
+                                                  </div>
+                                                </button>
+
+                                                {/* ── Tabel Absensi Siswa ── */}
+                                                {isSiswaExpanded && (
+                                                  <div className="overflow-x-auto">
+                                                    <table className="w-full text-sm">
+                                                      <thead>
+                                                        <tr className="bg-gray-50 border-b border-gray-200">
+                                                          <th className="text-center px-4 py-2.5 font-semibold text-gray-600 w-10">
+                                                            <input type="checkbox" ref={selectAllRef} checked={isAllSelected} onChange={(e) => handleSelectAll(e.target.checked)} className="w-4 h-4 cursor-pointer" />
+                                                          </th>
+                                                          <th className="text-left px-4 py-2.5 font-semibold text-gray-600 w-10">No</th>
+                                                          <th className="text-left px-4 py-2.5 font-semibold text-gray-600">Mata Pelajaran</th>
+                                                          <th className="text-left px-4 py-2.5 font-semibold text-gray-600 w-36">Tanggal</th>
+                                                          <th className="text-left px-4 py-2.5 font-semibold text-gray-600 w-28">Status</th>
+                                                          <th className="text-center px-4 py-2.5 font-semibold text-gray-600 w-20">Bukti</th>
+                                                          <th className="text-center px-4 py-2.5 font-semibold text-gray-600 w-24">Aksi</th>
+                                                        </tr>
+                                                      </thead>
+                                                      <tbody>
+                                                        {siswa.absensi.map((item, idx) => (
+                                                          <tr key={item.absensi_id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                                            <td className="text-center px-4 py-3">
+                                                              <Checkbox checked={selectedIds.includes(item.absensi_id)} onCheckedChange={(checked) => handleSelectOne(item.absensi_id, !!checked)} />
+                                                            </td>
+                                                            <td className="px-4 py-3 text-center text-gray-400 text-xs font-medium">{idx + 1}</td>
+                                                            <td className="px-4 py-3">
+                                                              {item.mata_pelajaran ? <span className="font-medium text-gray-900">{item.mata_pelajaran}</span> : <span className="text-xs text-gray-300 italic">Tidak Tercatat</span>}
+                                                            </td>
+                                                            <td className="px-4 py-3 text-sm text-gray-700">{item.hari}</td>
+                                                            <td className="px-4 py-3">
+                                                              <Badge className={statusBadgeClass(item.status)}>{item.status}</Badge>
+                                                            </td>
+                                                            <td className="px-4 py-3 text-center">
+                                                              {resolveBuktiUrl(item.bukti) ? (
+                                                                <Button
+                                                                  size="sm"
+                                                                  variant="outline"
+                                                                  onClick={() => {
+                                                                    setPreviewImage(resolveBuktiUrl(item.bukti));
+                                                                    setPreviewDialog(true);
+                                                                  }}
+                                                                >
+                                                                  <EyeIcon size={13} />
+                                                                </Button>
+                                                              ) : (
+                                                                <span className="text-xs text-gray-300">—</span>
+                                                              )}
+                                                            </td>
+                                                            <td className="px-4 py-3 text-center">
+                                                              {item.is_editable ? (
+                                                                <Button size="sm" className="bg-primary" onClick={() => handleEdit(item)}>
+                                                                  <PenBoxIcon size={14} />
+                                                                </Button>
+                                                              ) : (
+                                                                <span className="text-xs text-gray-300">arsip</span>
+                                                              )}
+                                                            </td>
+                                                          </tr>
+                                                        ))}
+                                                      </tbody>
+                                                    </table>
+                                                  </div>
+                                                )}
+                                              </div>
+                                            );
+                                          })}
+                                        </div>
+                                      )}
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
                     </div>
                   )}
                 </>
@@ -796,7 +894,6 @@ const DataAbsensiSiswa = () => {
                   </Select>
                 </div>
 
-                {/* Upload bukti — hanya tampil jika izin/sakit */}
                 {(editStatus === "izin" || editStatus === "sakit") && (
                   <div>
                     <Label className="text-sm font-semibold">
@@ -807,7 +904,6 @@ const DataAbsensiSiswa = () => {
                   </div>
                 )}
 
-                {/* Preview bukti */}
                 {previewUrl && (editStatus === "izin" || editStatus === "sakit") && (
                   <div className="border rounded-lg p-3 bg-gray-50 flex justify-center">
                     <div className="text-center">
