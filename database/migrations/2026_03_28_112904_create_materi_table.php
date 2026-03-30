@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('materi', function (Blueprint $table) {
             $table->id();
         
-            $table->foreignId('pertemuan_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('pertemuan_id')->constrained('pertemuan')->cascadeOnDelete();
         
             $table->string('judul');
         

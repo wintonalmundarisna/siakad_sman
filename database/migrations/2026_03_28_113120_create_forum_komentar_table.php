@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('forum_komentar', function (Blueprint $table) {
             $table->id();
         
-            $table->foreignId('forum_diskusi_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('forum_diskusi_id')->constrained('forum_diskusi')->cascadeOnDelete();
         
             $table->foreignId('user_id')->constrained();
         

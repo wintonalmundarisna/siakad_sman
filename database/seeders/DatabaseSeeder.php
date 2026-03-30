@@ -5482,7 +5482,524 @@ class DatabaseSeeder extends Seeder
 
         // Pertemuan
         Pertemuan::insert([
-            // ! [] masuk sini
+            // 1
+            [
+                'jadwal_pelajaran_id' => 2, // Indo | 2023 (Ganjil) | X-B-1
+                'pertemuan_ke'  => 1,
+                'judul' => 'Memahami Penulisan KBBI',
+                'tanggal'   => '2023-05-01',
+                'jenis' => 'normal'
+            ],
+            // 2
+            [
+                'jadwal_pelajaran_id' => 2, // Indo | 2023 (Ganjil) | X-B-1
+                'pertemuan_ke'  => 2,
+                'judul' => 'Menulis sesuai KBBI',
+                'tanggal'   => '2023-05-08',
+                'jenis' => 'normal'
+            ],
+            // 3
+            [
+                'jadwal_pelajaran_id' => 2, // Indo | 2023 (Ganjil) | X-B-1
+                'pertemuan_ke'  => 3,
+                'judul' => 'Membuat berita acara sesuai KBBI',
+                'tanggal'   => '2023-05-15',
+                'jenis' => 'normal'
+            ],
+            // 4
+            [
+                'jadwal_pelajaran_id' => 2, // Indo | 2023 (Ganjil) | X-B-1
+                'pertemuan_ke'  => 4,
+                'judul' => 'Menulis Teks Wawancara',
+                'tanggal'   => '2023-05-22',
+                'jenis' => 'normal'
+            ],
+            // 5
+            [
+                'jadwal_pelajaran_id' => 2, // Indo | 2023 (Ganjil) | X-B-1
+                'pertemuan_ke'  => 5,
+                'judul' => 'Praktik Wawancara',
+                'tanggal'   => '2023-05-29',
+                'jenis' => 'normal'
+            ],
+            // 6
+            [
+                'jadwal_pelajaran_id' => 2, // Indo | 2023 (Ganjil) | X-B-1
+                'pertemuan_ke'  => 6,
+                'judul' => 'Menganalisis Kalimat Efektif',
+                'tanggal'   => '2023-06-05',
+                'jenis' => 'normal'
+            ],
+            // 7
+            [
+                'jadwal_pelajaran_id' => 2, // Indo | 2023 (Ganjil) | X-B-1
+                'pertemuan_ke'  => 7,
+                'judul' => 'Menulis Kalimat Efektif',
+                'tanggal'   => '2023-06-12',
+                'jenis' => 'normal'
+            ],
+            // 8 (UTS)
+            [
+                'jadwal_pelajaran_id' => 2, // Indo | 2023 (Ganjil) | X-B-1
+                'pertemuan_ke'  => 8,
+                'judul' => 'UTS',
+                'tanggal'   => '2023-06-19',
+                'jenis' => 'uts'
+            ],
+            // 9
+            [
+                'jadwal_pelajaran_id' => 2, // Indo | 2023 (Ganjil) | X-B-1
+                'pertemuan_ke'  => 9,
+                'judul' => 'Kalimat Tersirat',
+                'tanggal'   => '2023-06-26',
+                'jenis' => 'normal'
+            ],
+            // 10
+            [
+                'jadwal_pelajaran_id' => 2, // Indo | 2023 (Ganjil) | X-B-1
+                'pertemuan_ke'  => 10,
+                'judul' => 'Kalimat Tersurat',
+                'tanggal'   => '2023-07-03',
+                'jenis' => 'normal'
+            ],
+            // 11
+            [
+                'jadwal_pelajaran_id' => 2, // Indo | 2023 (Ganjil) | X-B-1
+                'pertemuan_ke'  => 11,
+                'judul' => 'Majas Hiperbola',
+                'tanggal'   => '2023-07-10',
+                'jenis' => 'normal'
+            ],
+            // 12
+            [
+                'jadwal_pelajaran_id' => 2, // Indo | 2023 (Ganjil) | X-B-1
+                'pertemuan_ke'  => 12,
+                'judul' => 'Majas Metafora',
+                'tanggal'   => '2023-07-17',
+                'jenis' => 'normal'
+            ],
+            // 13
+            [
+                'jadwal_pelajaran_id' => 2, // Indo | 2023 (Ganjil) | X-B-1
+                'pertemuan_ke'  => 13,
+                'judul' => 'Majas Sarkasme',
+                'tanggal'   => '2023-07-24',
+                'jenis' => 'normal'
+            ],
+            // 14
+            [
+                'jadwal_pelajaran_id' => 2, // Indo | 2023 (Ganjil) | X-B-1
+                'pertemuan_ke'  => 14,
+                'judul' => 'Majas Ironi',
+                'tanggal'   => '2023-07-31',
+                'jenis' => 'normal'
+            ],
+            // 15
+            [
+                'jadwal_pelajaran_id' => 2, // Indo | 2023 (Ganjil) | X-B-1
+                'pertemuan_ke'  => 15,
+                'judul' => 'Majas Retorika',
+                'tanggal'   => '2023-08-07',
+                'jenis' => 'normal'
+            ],
+            // 16 (UAS)
+            [
+                'jadwal_pelajaran_id' => 2, // Indo | 2023 (Ganjil) | X-B-1
+                'pertemuan_ke'  => 16,
+                'judul' => 'UAS',
+                'tanggal'   => '2023-08-14',
+                'jenis' => 'uas'
+            ],
+
+            // Genap
+            // 17
+            [
+                'jadwal_pelajaran_id' => 12, // Indo | 2024 (Genap) | X-B-1
+                'pertemuan_ke'  => 1,
+                'judul' => 'Memahami Penulisan KBBI',
+                'tanggal'   => '2024-01-01',
+                'jenis' => 'normal'
+            ],
+            // 18
+            [
+                'jadwal_pelajaran_id' => 12, // Indo | 2024 (Genap) | X-B-1
+                'pertemuan_ke'  => 2,
+                'judul' => 'Menulis sesuai KBBI',
+                'tanggal'   => '2024-01-08',
+                'jenis' => 'normal'
+            ],
+            // 19
+            [
+                'jadwal_pelajaran_id' => 12, // Indo | 2024 (Genap) | X-B-1
+                'pertemuan_ke'  => 3,
+                'judul' => 'Membuat berita acara sesuai KBBI',
+                'tanggal'   => '2024-01-15',
+                'jenis' => 'normal'
+            ],
+            // 20
+            [
+                'jadwal_pelajaran_id' => 12, // Indo | 2024 (Genap) | X-B-1
+                'pertemuan_ke'  => 4,
+                'judul' => 'Menulis Teks Wawancara',
+                'tanggal'   => '2024-01-22',
+                'jenis' => 'normal'
+            ],
+            // 21
+            [
+                'jadwal_pelajaran_id' => 12, // Indo | 2024 (Genap) | X-B-1
+                'pertemuan_ke'  => 5,
+                'judul' => 'Praktik Wawancara',
+                'tanggal'   => '2024-02-05',
+                'jenis' => 'normal'
+            ],
+            // 22
+            [
+                'jadwal_pelajaran_id' => 12, // Indo | 2024 (Genap) | X-B-1
+                'pertemuan_ke'  => 6,
+                'judul' => 'Menganalisis Kalimat Efektif',
+                'tanggal'   => '2024-02-12',
+                'jenis' => 'normal'
+            ],
+            // 23
+            [
+                'jadwal_pelajaran_id' => 12, // Indo | 2024 (Genap) | X-B-1
+                'pertemuan_ke'  => 7,
+                'judul' => 'Menulis Kalimat Efektif',
+                'tanggal'   => '2024-02-19',
+                'jenis' => 'normal'
+            ],
+            // 24 (UTS)
+            [
+                'jadwal_pelajaran_id' => 12, // Indo | 2024 (Genap) | X-B-1
+                'pertemuan_ke'  => 8,
+                'judul' => 'UTS',
+                'tanggal'   => '2024-02-26',
+                'jenis' => 'uts'
+            ],
+            //25
+            [
+                'jadwal_pelajaran_id' => 12, // Indo | 2024 (Genap) | X-B-1
+                'pertemuan_ke'  => 9,
+                'judul' => 'Kalimat Tersirat',
+                'tanggal'   => '2024-03-04',
+                'jenis' => 'normal'
+            ],
+            // 26
+            [
+                'jadwal_pelajaran_id' => 12, // Indo | 2024 (Genap) | X-B-1
+                'pertemuan_ke'  => 10,
+                'judul' => 'Kalimat Tersurat',
+                'tanggal'   => '2024-03-11',
+                'jenis' => 'normal'
+            ],
+            // 27
+            [
+                'jadwal_pelajaran_id' => 12, // Indo | 2024 (Genap) | X-B-1
+                'pertemuan_ke'  => 11,
+                'judul' => 'Majas Hiperbola',
+                'tanggal'   => '2024-03-18',
+                'jenis' => 'normal'
+            ],
+            // 28
+            [
+                'jadwal_pelajaran_id' => 12, // Indo | 2024 (Genap) | X-B-1
+                'pertemuan_ke'  => 12,
+                'judul' => 'Majas Metafora',
+                'tanggal'   => '2024-03-25',
+                'jenis' => 'normal'
+            ],
+            // 29
+            [
+                'jadwal_pelajaran_id' => 12, // Indo | 2024 (Genap) | X-B-1
+                'pertemuan_ke'  => 13,
+                'judul' => 'Majas Sarkasme',
+                'tanggal'   => '2024-04-01',
+                'jenis' => 'normal'
+            ],
+            // 30
+            [
+                'jadwal_pelajaran_id' => 12, // Indo | 2024 (Genap) | X-B-1
+                'pertemuan_ke'  => 14,
+                'judul' => 'Majas Ironi',
+                'tanggal'   => '2024-04-08',
+                'jenis' => 'normal'
+            ],
+            // 31
+            [
+                'jadwal_pelajaran_id' => 12, // Indo | 2024 (Genap) | X-B-1
+                'pertemuan_ke'  => 15,
+                'judul' => 'Majas Retorika',
+                'tanggal'   => '2024-04-15',
+                'jenis' => 'normal'
+            ],
+            // 32 (UAS)
+            [
+                'jadwal_pelajaran_id' => 12, // Indo | 2024 (Genap) | X-B-1
+                'pertemuan_ke'  => 16,
+                'judul' => 'UAS',
+                'tanggal'   => '2024-04-22',
+                'jenis' => 'uas'
+            ],
+
+            // MTK
+            // 33 (1)
+            [
+                'jadwal_pelajaran_id' => 1, // MTK | 2023 (Ganjil) | X-B-1
+                'pertemuan_ke'  => 1,
+                'judul' => 'Bilangan Bulat dan Operasinya',
+                'tanggal'   => '2023-05-01',
+                'jenis' => 'normal'
+            ],
+            // 34 (2)
+            [
+                'jadwal_pelajaran_id' => 1, // MTK | 2023 (Ganjil) | X-B-1
+                'pertemuan_ke'  => 2,
+                'judul' => 'Bilangan Pecahan dan Desimal',
+                'tanggal'   => '2023-05-08',
+                'jenis' => 'normal'
+            ],
+            // 35 (3)
+            [
+                'jadwal_pelajaran_id' => 1, // MTK | 2023 (Ganjil) | X-B-1
+                'pertemuan_ke'  => 3,
+                'judul' => 'Faktor, Kelipatan, dan Bilangan Prima',
+                'tanggal'   => '2023-05-15',
+                'jenis' => 'normal'
+            ],
+            // 36 (4)
+            [
+                'jadwal_pelajaran_id' => 1, // MTK | 2023 (Ganjil) | X-B-1
+                'pertemuan_ke'  => 4,
+                'judul' => 'Perbandingan dan Skala',
+                'tanggal'   => '2023-05-22',
+                'jenis' => 'normal'
+            ],
+            // 37 (5)
+            [
+                'jadwal_pelajaran_id' => 1, // MTK | 2023 (Ganjil) | X-B-1
+                'pertemuan_ke'  => 5,
+                'judul' => 'Persamaan Linear Satu Variabel',
+                'tanggal'   => '2023-05-29',
+                'jenis' => 'normal'
+            ],
+            // 38 (6)
+            [
+                'jadwal_pelajaran_id' => 1, // MTK | 2023 (Ganjil) | X-B-1
+                'pertemuan_ke'  => 6,
+                'judul' => 'Pertidaksamaan Linear Satu Variabel',
+                'tanggal'   => '2023-06-05',
+                'jenis' => 'normal'
+            ],
+            // 39 (7)
+            [
+                'jadwal_pelajaran_id' => 1, // MTK | 2023 (Ganjil) | X-B-1
+                'pertemuan_ke'  => 7,
+                'judul' => 'Sistem Persamaan Linear Dua Variabel',
+                'tanggal'   => '2023-06-12',
+                'jenis' => 'normal'
+            ],
+            // 40 (8) (UTS)
+            [
+                'jadwal_pelajaran_id' => 1, // MTK | 2023 (Ganjil) | X-B-1
+                'pertemuan_ke'  => 8,
+                'judul' => 'UTS',
+                'tanggal'   => '2023-06-19',
+                'jenis' => 'uts'
+            ],
+            // 41 (9)
+            [
+                'jadwal_pelajaran_id' => 1, // MTK | 2023 (Ganjil) | X-B-1
+                'pertemuan_ke'  => 9,
+                'judul' => 'Fungsi dan Grafik Linear',
+                'tanggal'   => '2023-06-26',
+                'jenis' => 'normal'
+            ],
+            // 42 (10)
+            [
+                'jadwal_pelajaran_id' => 1, // MTK | 2023 (Ganjil) | X-B-1
+                'pertemuan_ke'  => 10,
+                'judul' => 'Bangun Datar: Segitiga dan Segiempat',
+                'tanggal'   => '2023-07-03',
+                'jenis' => 'normal'
+            ],
+            // 43 (11)
+            [
+                'jadwal_pelajaran_id' => 1, // MTK | 2023 (Ganjil) | X-B-1
+                'pertemuan_ke'  => 11,
+                'judul' => 'Lingkaran: Unsur dan Keliling',
+                'tanggal'   => '2023-07-10',
+                'jenis' => 'normal'
+            ],
+            // 44 (12)
+            [
+                'jadwal_pelajaran_id' => 1, // MTK | 2023 (Ganjil) | X-B-1
+                'pertemuan_ke'  => 12,
+                'judul' => 'Luas Bangun Datar',
+                'tanggal'   => '2023-07-17',
+                'jenis' => 'normal'
+            ],
+            // 45 (13)
+            [
+                'jadwal_pelajaran_id' => 1, // MTK | 2023 (Ganjil) | X-B-1
+                'pertemuan_ke'  => 13,
+                'judul' => 'Bangun Ruang: Kubus dan Balok',
+                'tanggal'   => '2023-07-24',
+                'jenis' => 'normal'
+            ],
+            // 46 (14)
+            [
+                'jadwal_pelajaran_id' => 1, // MTK | 2023 (Ganjil) | X-B-1
+                'pertemuan_ke'  => 14,
+                'judul' => 'Bangun Ruang: Prisma dan Limas',
+                'tanggal'   => '2023-07-31',
+                'jenis' => 'normal'
+            ],
+            // 47 (15)
+            [
+                'jadwal_pelajaran_id' => 1, // MTK | 2023 (Ganjil) | X-B-1
+                'pertemuan_ke'  => 15,
+                'judul' => 'Bangun Ruang: Tabung, Kerucut, dan Bola',
+                'tanggal'   => '2023-08-07',
+                'jenis' => 'normal'
+            ],
+            // 48 (16) (UAS)
+            [
+                'jadwal_pelajaran_id' => 1, // MTK | 2023 (Ganjil) | X-B-1
+                'pertemuan_ke'  => 16,
+                'judul' => 'UAS',
+                'tanggal'   => '2023-08-14',
+                'jenis' => 'uas'
+            ],
+
+            // Genap
+            // 49 (1)
+            [
+                'jadwal_pelajaran_id' => 11, // MTK | 2024 (Genap) | X-B-1
+                'pertemuan_ke'  => 1,
+                'judul' => 'Statistika: Data, Tabel, dan Diagram',
+                'tanggal'   => '2024-01-01',
+                'jenis' => 'normal'
+            ],
+            // 50 (2)
+            [
+                'jadwal_pelajaran_id' => 11, // MTK | 2024 (Genap) | X-B-1
+                'pertemuan_ke'  => 2,
+                'judul' => 'Ukuran Pemusatan Data (Mean, Median, Modus)',
+                'tanggal'   => '2024-01-08',
+                'jenis' => 'normal'
+            ],
+            // 51 (3)
+            [
+                'jadwal_pelajaran_id' => 11, // MTK | 2024 (Genap) | X-B-1
+                'pertemuan_ke'  => 3,
+                'judul' => 'Peluang dan Percobaan Sederhana',
+                'tanggal'   => '2024-01-15',
+                'jenis' => 'normal'
+            ],
+            // 52 (4)
+            [
+                'jadwal_pelajaran_id' => 11, // MTK | 2024 (Genap) | X-B-1
+                'pertemuan_ke'  => 4,
+                'judul' => 'Barisan Aritmetika',
+                'tanggal'   => '2024-01-22',
+                'jenis' => 'normal'
+            ],
+            // 53 (5)
+            [
+                'jadwal_pelajaran_id' => 11, // MTK | 2024 (Genap) | X-B-1
+                'pertemuan_ke'  => 5,
+                'judul' => 'Deret Aritmetika',
+                'tanggal'   => '2024-02-05',
+                'jenis' => 'normal'
+            ],
+            // 54 (6)
+            [
+                'jadwal_pelajaran_id' => 11, // MTK | 2024 (Genap) | X-B-1
+                'pertemuan_ke'  => 6,
+                'judul' => 'Barisan Geometri',
+                'tanggal'   => '2024-02-12',
+                'jenis' => 'normal'
+            ],
+            // 55 (7)
+            [
+                'jadwal_pelajaran_id' => 11, // MTK | 2024 (Genap) | X-B-1
+                'pertemuan_ke'  => 7,
+                'judul' => 'Deret Geometri',
+                'tanggal'   => '2024-02-19',
+                'jenis' => 'normal'
+            ],
+            // 56 (8) (UTS)
+            [
+                'jadwal_pelajaran_id' => 11, // MTK | 2024 (Genap) | X-B-1
+                'pertemuan_ke'  => 8,
+                'judul' => 'UTS',
+                'tanggal'   => '2024-02-26',
+                'jenis' => 'uts'
+            ],
+            // 57 (9)
+            [
+                'jadwal_pelajaran_id' => 11, // MTK | 2024 (Genap) | X-B-1
+                'pertemuan_ke'  => 9,
+                'judul' => 'Persamaan Kuadrat',
+                'tanggal'   => '2024-03-04',
+                'jenis' => 'normal'
+            ],
+            // 58 (10)
+            [
+                'jadwal_pelajaran_id' => 11, // MTK | 2024 (Genap) | X-B-1
+                'pertemuan_ke'  => 10,
+                'judul' => 'Fungsi Kuadrat dan Grafiknya',
+                'tanggal'   => '2024-03-11',
+                'jenis' => 'normal'
+            ],
+            // 59 (11)
+            [
+                'jadwal_pelajaran_id' => 11, // MTK | 2024 (Genap) | X-B-1
+                'pertemuan_ke'  => 11,
+                'judul' => 'Trigonometri Dasar: Perbandingan Sudut pada Segitiga',
+                'tanggal'   => '2024-03-18',
+                'jenis' => 'normal'
+            ],
+            // 60 (12)
+            [
+                'jadwal_pelajaran_id' => 11, // MTK | 2024 (Genap) | X-B-1
+                'pertemuan_ke'  => 12,
+                'judul' => 'Identitas Trigonometri Sederhana',
+                'tanggal'   => '2024-03-25',
+                'jenis' => 'normal'
+            ],
+            // 61 (13)
+            [
+                'jadwal_pelajaran_id' => 11, // MTK | 2024 (Genap) | X-B-1
+                'pertemuan_ke'  => 13,
+                'judul' => 'Logaritma dan Eksponen',
+                'tanggal'   => '2024-04-01',
+                'jenis' => 'normal'
+            ],
+            // 62 (14)
+            [
+                'jadwal_pelajaran_id' => 11, // MTK | 2024 (Genap) | X-B-1
+                'pertemuan_ke'  => 14,
+                'judul' => 'Limit Fungsi Aljabar',
+                'tanggal'   => '2024-04-08',
+                'jenis' => 'normal'
+            ],
+            // 63 (15)
+            [
+                'jadwal_pelajaran_id' => 11, // MTK | 2024 (Genap) | X-B-1
+                'pertemuan_ke'  => 15,
+                'judul' => 'Turunan Fungsi Aljabar',
+                'tanggal'   => '2024-04-15',
+                'jenis' => 'normal'
+            ],
+            // 64 (16) (UAS)
+            [
+                'jadwal_pelajaran_id' => 11, // MTK | 2024 (Genap) | X-B-1
+                'pertemuan_ke'  => 16,
+                'judul' => 'UAS',
+                'tanggal'   => '2024-04-22',
+                'jenis' => 'uas'
+            ],
         ]);
 
 

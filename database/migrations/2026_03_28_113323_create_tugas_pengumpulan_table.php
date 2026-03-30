@@ -15,9 +15,9 @@ return new class extends Migration
 
             $table->id();
         
-            $table->foreignId('tugas_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('tugas_id')->constrained('tugas')->cascadeOnDelete();
         
-            $table->foreignId('siswa_id')->constrained();
+            $table->foreignId('siswa_id')->constrained('siswas');
         
             // untuk tugas manual
             $table->string('file_jawaban')->nullable();

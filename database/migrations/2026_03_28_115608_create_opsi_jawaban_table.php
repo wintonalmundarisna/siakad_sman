@@ -15,7 +15,7 @@ return new class extends Migration
 
             $table->id();
         
-            $table->foreignId('soal_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('soal_cbt_id')->constrained('soal_cbt')->cascadeOnDelete();
         
             $table->string('opsi');
         

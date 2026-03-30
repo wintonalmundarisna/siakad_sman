@@ -613,4 +613,32 @@ Alur Rapor
 5. jika rapor masih draft, maka nilai_akhir pada rapor bisa digenerate ulang
 6. jika rapor sudah final, maka rapor tidak bisa generate ulang
 
-BACA GPT KEMARIN
+
+SPA:
+- pertemuan (kasih button "lihat pertemuan" di jadwal) (hanya bisa view)
+   │
+   ├── jurnal_kbm 
+   ├── materi 
+   ├── forum_diskusi
+   └── tugas 
+        └── Manual 
+        └── CBT
+
+Guru:
+- pertemuan
+   │
+   ├── jurnal_kbm (laporan guru per pertemuan)
+   ├── materi (berisi pdf materi, bisa diunduh, bisa kasih link video)
+   ├── forum_diskusi
+   └── tugas (kasih deadline)
+        └── Manual (Guru ngasih pdf, kerjakan di kertas selembar, scan, kumpulkan)
+        └── CBT (Guru bikin soal, kerjakan di komputer, nilai otomatis)
+
+Siswa:
+- pertemuan
+   │
+   ├── materi (berisi pdf materi, bisa diunduh)
+   ├── forum_diskusi
+   └── tugas
+        └── Manual (Guru ngasih pdf, kerjakan di kertas selembar, scan, kumpulkan)
+        └── CBT (Guru bikin soal, kerjakan di komputer, nilai otomatis)

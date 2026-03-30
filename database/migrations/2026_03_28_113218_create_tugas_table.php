@@ -15,7 +15,7 @@ return new class extends Migration
 
             $table->id();
         
-            $table->foreignId('pertemuan_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('pertemuan_id')->constrained('pertemuan')->cascadeOnDelete();
         
             $table->string('judul');
         

@@ -8,6 +8,7 @@ use App\Models\JurnalKbm;
 use App\Models\Materi;
 use App\Models\ForumDiskusi;
 use App\Models\Tugas;
+use App\Models\JadwalPelajaran;
 
 class Pertemuan extends Model
 {
@@ -29,6 +30,11 @@ class Pertemuan extends Model
     public function forum()
     {
         return $this->hasMany(ForumDiskusi::class);
+    }
+
+    public function jadwalPelajaran()
+    {
+        return $this->belongsTo(JadwalPelajaran::class, 'jadwal_pelajaran_id');
     }
 
     public function tugas()

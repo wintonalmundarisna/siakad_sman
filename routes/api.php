@@ -7,6 +7,7 @@ use App\Http\Controllers\KepegawaianController;
 use App\Http\Controllers\JurusanController;
 use App\Http\Controllers\MataPelajaranController;
 use App\Http\Controllers\JadwalPelajaranController;
+use App\Http\Controllers\PertemuanController;
 use App\Http\Controllers\SiswaJadwalPelajaranController;
 use App\Http\Controllers\KurikulumController;
 use App\Http\Controllers\KompetensiController;
@@ -191,6 +192,9 @@ Route::middleware('auth:kepegawaian')->group(function () {
     // ✅☑️ CRUD jadwal pelajaran
     Route::apiResource('/spa/jadwal-pelajaran', JadwalPelajaranController::class);
     Route::get('/spa/data-select/jadwal-pelajaran', [JadwalPelajaranController::class, 'dataUntukSelect']);       
+
+    // ! Pertemuan (hanya ada get dan update)
+    Route::get('/spa/jadwal-pelajaran/{id}/pertemuan', [PertemuanController::class, 'show']);
     
     // ✅☑️ get jadwal pelajaran siswa
     Route::get('/spa/siswa/jadwal-pelajaran/all', [SiswaJadwalPelajaranController::class, 'getAllSiswaAktif']);       

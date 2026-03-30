@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('soal', function (Blueprint $table) {
+        Schema::create('soal_cbt', function (Blueprint $table) {
 
             $table->id();
-            $table->foreignId('tugas_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('tugas_id')->constrained('tugas')->cascadeOnDelete();
         
             $table->text('pertanyaan');
         

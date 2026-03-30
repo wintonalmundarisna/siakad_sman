@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('pertemuan', function (Blueprint $table) {
             $table->id();
         
-            $table->foreignId('jadwal_pelajaran_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('jadwal_pelajaran_id')->constrained('jadwal_pelajarans')->cascadeOnDelete();
         
             $table->integer('pertemuan_ke');
         
