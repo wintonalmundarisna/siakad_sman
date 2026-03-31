@@ -919,8 +919,7 @@ const DataAbsensiSiswa = () => {
             )}
             <DialogFooter className="gap-2">
               <Button
-                variant="secondary"
-                className="gap-2"
+                className="gap-2 bg-muted-foreground hover:bg-muted-foreground/90"
                 onClick={() => {
                   setEditDialog(false);
                   setBuktiFoto(null);

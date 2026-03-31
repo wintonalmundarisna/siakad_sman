@@ -18,5 +18,5 @@ export interface KeuanganFormData {
   debit: number;
   kredit: number;
   keterangan: string;
-  tahun_akademik_id: number;
+  tahun_akademik_id?: number;
 }
