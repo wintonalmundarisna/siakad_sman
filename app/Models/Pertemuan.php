@@ -32,7 +32,7 @@ class Pertemuan extends Model
         return $this->hasOne(Materi::class);
     }
 
-    public function forum()
+    public function forumDiskusi()
     {
         return $this->hasOne(ForumDiskusi::class);
     }

@@ -16,4 +16,14 @@ class ForumDiskusi extends Model
     {
         return $this->belongsTo(Pertemuan::class, 'pertemuan_id');
     }
+
+    public function komentar()
+    {
+        return $this->hasMany(ForumKomentar::class, 'forum_diskusi_id');
+    }    
+
+    public function guru()
+    {
+        return $this->belongsTo(Kepegawaian::class, 'guru_id');
+    }
 }

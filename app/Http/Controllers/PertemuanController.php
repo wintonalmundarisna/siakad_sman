@@ -82,8 +82,8 @@ class PertemuanController extends Controller
             'jadwalPelajaran.ruangan',
             'jurnal',
             'materi',
-            'forum',
-            'tugas'
+            'forumDiskusi.guru',
+            'tugas',
         ])->find($id);
 
         if (!$pertemuan) {
@@ -143,10 +143,10 @@ class PertemuanController extends Controller
             ],
 
             'forum_diskusi' => [
-                'forum_diskusi_id' => $pertemuan->forum?->id,
-                'judul' => $pertemuan->forum?->judul,
-                'deskripsi' => $pertemuan->forum?->deskripsi,
-                'created_by' => $pertemuan->forum?->created_by,
+                'forum_diskusi_id' => $pertemuan->forumDiskusi?->id,
+                'judul' => $pertemuan->forumDiskusi?->judul,
+                'deskripsi' => $pertemuan->forumDiskusi?->deskripsi,
+                'dibuat_oleh' => $pertemuan->forumDiskusi?->guru?->nama,
             ],
         ];
 

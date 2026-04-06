@@ -120,4 +120,9 @@ class Siswa extends Authenticatable
     {
         return $this->hasMany(Rapor::class);
     }
+
+    public function komentarForum()
+    {
+        return $this->morphMany(ForumKomentar::class, 'commentable');
+    }
 }

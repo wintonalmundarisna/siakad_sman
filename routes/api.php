@@ -10,7 +10,8 @@ use App\Http\Controllers\JadwalPelajaranController;
 use App\Http\Controllers\PertemuanController;
 // use App\Http\Controllers\JurnalKbmController;
 // use App\Http\Controllers\MateriPertemuanController;
-use App\Http\Controllers\ForumDiskusiController;
+// use App\Http\Controllers\ForumDiskusiController;
+use App\Http\Controllers\ForumKomentarController;
 use App\Http\Controllers\SiswaJadwalPelajaranController;
 use App\Http\Controllers\KurikulumController;
 use App\Http\Controllers\KompetensiController;
@@ -207,7 +208,10 @@ Route::middleware('auth:kepegawaian')->group(function () {
     // Route::get('/spa/jadwal-pelajaran/pertemuan/{id}/materi', [MateriPertemuanController::class, 'show']);
 
     // ✅☑️ Forum Diskusi
-    Route::get('/spa/jadwal-pelajaran/pertemuan/forum-diskusi/{id}/forum-komentar', [ForumDiskusiController::class, 'show']);
+    // Route::get('/spa/jadwal-pelajaran/pertemuan/{id}/forum-diskusi', [ForumDiskusiController::class, 'show']);
+
+    // ✅☑️ Forum Komentar
+    Route::get('/spa/jadwal-pelajaran/pertemuan/forum-diskusi/{id}/forum-komentar', [ForumKomentarController::class, 'show']);
     
     // ✅☑️ get jadwal pelajaran siswa
     Route::get('/spa/siswa/jadwal-pelajaran/all', [SiswaJadwalPelajaranController::class, 'getAllSiswaAktif']);       

@@ -11,6 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // ! MASUK SINI, dalam satu pertemuan ada satu tugas, tidak terbuat otomatis saat jadwal pelajaran dibuat karna tugas belum tentu terjadi setiap pertemuan
         Schema::create('tugas', function (Blueprint $table) {
 
             $table->id();

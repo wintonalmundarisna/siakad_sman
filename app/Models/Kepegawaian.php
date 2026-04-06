@@ -12,7 +12,8 @@ use App\Models\Rapor;
 use App\Models\Rombel;
 use App\Models\WaliRombel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+// use Illuminate\Database\Eloquent\Model;
+use App\Models\ForumKomentar;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -86,6 +87,7 @@ class Kepegawaian extends Authenticatable
         return $this->hasMany(JadwalPelajaran::class, 'guru_id'); 
     }
 
+
     public function absensiKepegawaians()
     {
         return $this->hasMany(AbsensiPegawai::class, 'guru_id'); 
@@ -99,5 +101,10 @@ class Kepegawaian extends Authenticatable
     public function dataNilaiSiswas()
     {
         return $this->hasMany(DataNilaiSiswa::class, 'guru_id'); 
+    }
+
+    public function komentarForum()
+    {
+        return $this->morphMany(ForumKomentar::class, 'commentable');
     }
 }

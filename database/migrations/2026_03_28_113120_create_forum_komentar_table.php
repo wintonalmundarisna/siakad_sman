@@ -14,9 +14,14 @@ return new class extends Migration
         Schema::create('forum_komentar', function (Blueprint $table) {
             $table->id();
         
-            $table->foreignId('forum_diskusi_id')->constrained('forum_diskusi')->cascadeOnDelete();
+            $table->foreignId('forum_diskusi_id')
+                ->constrained('forum_diskusi')
+                ->cascadeOnDelete();
         
-            $table->foreignId('user_id')->constrained();
+            $table->morphs('commentable'); 
+            // menghasilkan:
+            // commentable_id
+            // commentable_type
         
             $table->text('komentar');
         

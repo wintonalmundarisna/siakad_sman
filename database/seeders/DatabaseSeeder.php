@@ -42,6 +42,7 @@ use App\Models\Pertemuan;
 use App\Models\JurnalKbm;
 use App\Models\Materi;
 use App\Models\ForumDiskusi;
+use App\Models\ForumKomentar;
 
 class DatabaseSeeder extends Seeder
 {
@@ -6347,7 +6348,47 @@ class DatabaseSeeder extends Seeder
                 'deskripsi'     => 'Diskusi matematika terakhir sebelum uas',
                 'guru_id'       => 9
             ],
-        ]);        
+        ]);      
+        
+        ForumKomentar::insert([
+            [
+                'forum_diskusi_id'  => 4,
+                'commentable_id'   => 7, // id yang komen
+                'commentable_type' => Kepegawaian::class,
+                'komentar'  => 'Murid murid, apakah ada pertanyaan ?',
+                // 'created_at' => now()->subDays(rand(1,30)),
+                // 'updated_at' => now()->subDays(rand(1,30)),
+                'created_at' => '2026-04-08 09:16:09'
+            ],
+            [
+                'forum_diskusi_id'  => 4,
+                'commentable_id'   => 2,
+                'commentable_type' => Siswa::class,
+                'komentar'  => 'Saya tidak mengerti halaman 17, bisa jelaskan ?',
+                'created_at' => '2026-04-08 09:17:05'
+            ],
+            [
+                'forum_diskusi_id'  => 4,
+                'commentable_id'   => 1,
+                'commentable_type' => Siswa::class,
+                'komentar'  => 'Sama Bu, saya juga ga ngerti halaman 17',
+                'created_at' => '2026-04-08 09:17:05'
+            ],
+            [
+                'forum_diskusi_id'  => 4,
+                'commentable_id'   => 7,
+                'commentable_type' => Kepegawaian::class,
+                'komentar'  => 'Jadi itu nanti kamu cari di kamus KBBI, apakah setiap kata ,dalam surat resmi itu sudah baku atau belum, kalau belum maka tandai dan perbaiki',
+                'created_at' => '2026-04-08 09:17:20'
+            ],
+            [
+                'forum_diskusi_id'  => 4,
+                'commentable_id'   => 2,
+                'commentable_type' => Siswa::class,
+                'komentar'  => 'Owalah, baik Bu, terimakasih atas jawabannya',
+                'created_at' => '2026-04-08 09:17:30'
+            ]            
+        ]);
     }
 }
 
