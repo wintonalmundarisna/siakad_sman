@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('jurnal_kbm', function (Blueprint $table) {
             $table->id();
         
-            $table->foreignId('pertemuan_id')->constrained('pertemuan')->cascadeOnDelete();
+            $table->foreignId('pertemuan_id')->unique()->constrained('pertemuan')->cascadeOnDelete();
         
             $table->text('uraian_kegiatan');
         

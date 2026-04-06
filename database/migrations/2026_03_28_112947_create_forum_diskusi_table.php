@@ -14,13 +14,13 @@ return new class extends Migration
         Schema::create('forum_diskusi', function (Blueprint $table) {
             $table->id();
         
-            $table->foreignId('pertemuan_id')->constrained('pertemuan')->cascadeOnDelete();
+            $table->foreignId('pertemuan_id')->unique()->constrained('pertemuan')->cascadeOnDelete();
         
             $table->string('judul');
         
             $table->text('deskripsi')->nullable();
         
-            $table->foreignId('created_by')->constrained('kepegawaians');
+            $table->foreignId('guru_id')->constrained('kepegawaians');
         
             $table->timestamps();
         });
@@ -34,3 +34,5 @@ return new class extends Migration
         Schema::dropIfExists('forum_diskusi');
     }
 };
+
+// udah terbaru

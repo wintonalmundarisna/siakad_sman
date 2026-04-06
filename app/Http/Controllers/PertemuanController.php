@@ -12,24 +12,7 @@ class PertemuanController extends Controller
     /**
      * show sudah menukupi
      */
-    public function index()
-    {
-        
-    }
-
-
-    /**
-     * Sudah otomatis terbuat 16 per semester saat jadwal perlajaran dibuat
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * SPA/GURU
-     */
-    public function show(string $id)
+    public function index(string $id)
     {
         $pertemuan = Pertemuan::with([
             'jadwalPelajaran.kurikulumMataPelajaran.mataPelajaran',
@@ -65,8 +48,8 @@ class PertemuanController extends Controller
             'pertemuan' => $pertemuan->map(function ($p) {
                 return [
                     'pertemuan_id'  => $p->id,
-                    'pertemuan_ke'  => $p->pertemuan_ke,
                     'judul'         => $p->judul,
+                    'pertemuan_ke'  => $p->pertemuan_ke,
                     'tanggal'       => Carbon::parse($p->tanggal)->translatedFormat('l, d F Y') ?? null,
                     'jenis'         => $p->jenis,
                 ];
@@ -76,8 +59,102 @@ class PertemuanController extends Controller
         return ApiResponse::success($formatted, 'Pertemuan berhasil ditampilkan');
     }
 
+
     /**
-     * ! SPA/GURU (MASUK SINI)
+     * Sudah otomatis terbuat 16 per semester saat jadwal perlajaran dibuat
+     */
+    public function store(Request $request)
+    {
+        //
+    }
+
+    /**
+     * SPA/GURU
+     */
+    public function show(string $id)
+    {
+        $pertemuan = Pertemuan::with([
+            'jadwalPelajaran.kurikulumMataPelajaran.mataPelajaran',
+            'jadwalPelajaran.tahunAkademik',
+            'jadwalPelajaran.semester',
+            'jadwalPelajaran.rombel',
+            'jadwalPelajaran.guru',
+            'jadwalPelajaran.ruangan',
+            'jurnal',
+            'materi',
+            'forum',
+            'tugas'
+        ])->find($id);
+
+        if (!$pertemuan) {
+            return ApiResponse::error('Pertemuan tidak ditemukan');
+        }
+
+        $jadwal = $pertemuan->jadwalPelajaran;
+
+        $formatted = [
+            'jadwal_pelajaran_id' => $jadwal?->id,
+
+            'mata_pelajaran' => $jadwal?->kurikulumMataPelajaran?->mataPelajaran?->nama_pelajaran,
+
+            'tahun_akademik' => $jadwal?->tahunAkademik?->tahun_akademik,
+
+            'semester' => $jadwal?->semester?->semester,
+
+            'rombel' => $jadwal?->rombel?->nama_rombel,
+
+            'guru' => $jadwal?->guru?->nama,
+
+            'hari' => $jadwal?->hari,
+
+            'jam_mulai' => $jadwal?->jam_mulai,
+
+            'jam_selesai' => $jadwal?->jam_selesai,
+
+            'ruangan' => $jadwal?->ruangan?->nama_ruangan,
+
+            'link_opsional' => $jadwal?->link_opsional,
+
+            'pertemuan' => [
+                'pertemuan_id' => $pertemuan->id,
+                'judul' => $pertemuan->judul,
+                'pertemuan_ke' => $pertemuan->pertemuan_ke,
+                'tanggal' => $pertemuan->tanggal
+                    ? Carbon::parse($pertemuan->tanggal)->translatedFormat('l, d F Y')
+                    : null,
+                'jenis' => $pertemuan->jenis,
+            ],
+
+            'jurnal_kbm' => [
+                'jurnal_kbm_id' => $pertemuan->jurnal?->id,
+                'uraian_kegiatan' => $pertemuan->jurnal?->uraian_kegiatan,
+                'metode' => $pertemuan->jurnal?->metode,
+                'catatan' => $pertemuan->jurnal?->catatan,
+            ],
+
+            'materi' => [
+                'materi_id' => $pertemuan->materi?->id,
+                'judul' => $pertemuan->materi?->judul,
+                'deskripsi' => $pertemuan->materi?->deskripsi,
+                'file' => $pertemuan->materi?->file
+                    ? asset(str_replace('public/', 'storage/', $pertemuan->materi->file))
+                    : null,
+                'link_video' => $pertemuan->materi?->link_video,
+            ],
+
+            'forum_diskusi' => [
+                'forum_diskusi_id' => $pertemuan->forum?->id,
+                'judul' => $pertemuan->forum?->judul,
+                'deskripsi' => $pertemuan->forum?->deskripsi,
+                'created_by' => $pertemuan->forum?->created_by,
+            ],
+        ];
+
+        return ApiResponse::success($formatted, 'Detail pertemuan berhasil ditampilkan');
+    }
+
+    /**
+     * SPA/GURU
      */
     public function update(Request $request, string $id)
     {

@@ -7,6 +7,7 @@ use App\Models\JadwalPelajaran;
 use App\Models\Kepegawaian;
 use App\Models\KurikulumMataPelajaran;
 use App\Models\Pertemuan;
+use App\Models\JurnalKbm;
 use App\Models\Ruangan;
 use App\Models\Semester;
 use App\Models\TahunAkademik;
@@ -120,169 +121,180 @@ class JadwalPelajaranController extends Controller
      * ✅ Untuk SPA
      */   
     public function store(Request $request)
-    {
-        try {
+{
+    try {
 
-            // ======================================
-            // VALIDASI REQUEST
-            // ======================================
-            $validated = $request->validate([
-                'kurikulum_mata_pelajaran_id' => 'required|exists:kurikulum_mata_pelajaran,id',
-                'hari' => 'required|in:Senin,Selasa,Rabu,Kamis,Jumat,Sabtu,Minggu',
-                'guru_id' => 'required|exists:kepegawaians,id',
-                'rombel_id' => 'required|exists:rombels,id',
-                'jam_mulai' => 'required|date_format:H:i',
-                'jam_selesai' => 'required|date_format:H:i|after:jam_mulai',
-                'ruangan_id' => 'nullable|exists:ruangan,id',
-                'link_opsional' => 'nullable|string|max:255'
+        // ======================================
+        // VALIDASI REQUEST
+        // ======================================
+        $validated = $request->validate([
+            'kurikulum_mata_pelajaran_id' => 'required|exists:kurikulum_mata_pelajaran,id',
+            'hari' => 'required|in:Senin,Selasa,Rabu,Kamis,Jumat,Sabtu,Minggu',
+            'guru_id' => 'required|exists:kepegawaians,id',
+            'rombel_id' => 'required|exists:rombels,id',
+            'jam_mulai' => 'required|date_format:H:i',
+            'jam_selesai' => 'required|date_format:H:i|after:jam_mulai',
+            'ruangan_id' => 'nullable|exists:ruangan,id',
+            'link_opsional' => 'nullable|string|max:255'
+        ]);
+
+        // ======================================
+        // AMBIL TAHUN AKADEMIK AKTIF
+        // ======================================
+        $tahunAktif = TahunAkademik::where('status', 'aktif')->first();
+
+        if (!$tahunAktif) {
+            return ApiResponse::error('Not found', [
+                'data' => 'Belum ada tahun akademik aktif'
             ]);
-
-            // ======================================
-            // TAHUN AKADEMIK AKTIF
-            // ======================================
-            $tahunAktif = TahunAkademik::where('status', 'aktif')->first();
-
-            if (!$tahunAktif) {
-                return ApiResponse::error('Not found', [
-                    'data' => 'Belum ada tahun akademik aktif'
-                ]);
-            }
-
-            // ======================================
-            // SEMESTER AKTIF
-            // ======================================
-            $semesterAktif = Semester::where('status', 'aktif')
-                ->where('tahun_akademik_id', $tahunAktif->id)
-                ->first();
-
-            if (!$semesterAktif) {
-                return ApiResponse::error('Not found', [
-                    'data' => 'Belum ada semester aktif'
-                ]);
-            }
-
-            // ======================================
-            // CEK BENTROK GURU
-            // ======================================
-            $bentrokGuru = JadwalPelajaran::where('guru_id', $validated['guru_id'])
-                ->where('tahun_akademik_id', $tahunAktif->id)
-                ->where('semester_id', $semesterAktif->id)
-                ->where('hari', $validated['hari'])
-                ->where(function ($q) use ($validated) {
-                    $q->where('jam_mulai', '<', $validated['jam_selesai'])
-                    ->where('jam_selesai', '>', $validated['jam_mulai']);
-                })
-                ->exists();
-
-            if ($bentrokGuru) {
-                return ApiResponse::error('Bentrok', [
-                    'guru' => ['Guru sudah memiliki jadwal di jam tersebut']
-                ], 422);
-            }
-
-            // ======================================
-            // CEK BENTROK ROMBEL
-            // ======================================
-            $bentrokRombel = JadwalPelajaran::where('rombel_id', $validated['rombel_id'])
-                ->where('tahun_akademik_id', $tahunAktif->id)
-                ->where('semester_id', $semesterAktif->id)
-                ->where('hari', $validated['hari'])
-                ->where(function ($q) use ($validated) {
-                    $q->where('jam_mulai', '<', $validated['jam_selesai'])
-                    ->where('jam_selesai', '>', $validated['jam_mulai']);
-                })
-                ->exists();
-
-            if ($bentrokRombel) {
-                return ApiResponse::error('Bentrok', [
-                    'rombel' => ['Rombel sudah memiliki jadwal di jam tersebut']
-                ], 422);
-            }
-
-            $jadwal = null;
-
-            // ======================================
-            // SIMPAN DATA (TRANSACTION)
-            // ======================================
-            DB::transaction(function () use ($validated, $tahunAktif, $semesterAktif, &$jadwal) {
-
-                // =============================
-                // SIMPAN JADWAL
-                // =============================
-                $jadwal = JadwalPelajaran::create([
-                    'kurikulum_mata_pelajaran_id' => $validated['kurikulum_mata_pelajaran_id'],
-                    'tahun_akademik_id' => $tahunAktif->id,
-                    'semester_id' => $semesterAktif->id,
-                    'hari' => $validated['hari'],
-                    'guru_id' => $validated['guru_id'],
-                    'rombel_id' => $validated['rombel_id'],
-                    'jam_mulai' => $validated['jam_mulai'],
-                    'jam_selesai' => $validated['jam_selesai'],
-                    'ruangan_id' => $validated['ruangan_id'] ?? null,
-                    'link_opsional' => $validated['link_opsional'] ?? null,
-                ]);
-
-                // =============================
-                // GENERATE 16 PERTEMUAN
-                // =============================
-                $dataPertemuan = [];
-
-                for ($i = 1; $i <= 16; $i++) {
-
-                    $jenis = $i == 8 ? 'uts' : ($i == 16 ? 'uas' : 'normal');
-
-                    $dataPertemuan[] = [
-                        'jadwal_pelajaran_id' => $jadwal->id,
-                        'pertemuan_ke' => $i,
-                        'jenis' => $jenis,
-                        'created_at' => now(),
-                        'updated_at' => now(),
-                    ];
-                }
-
-                Pertemuan::insert($dataPertemuan);
-            });
-
-            // ======================================
-            // LOAD RELASI
-            // ======================================
-            $jadwal->load([
-                'kurikulumMataPelajaran.mataPelajaran',
-                'tahunAkademik',
-                'semester',
-                'rombel',
-                'guru',
-                'ruangan'
-            ]);
-
-            // ======================================
-            // RESPONSE
-            // ======================================
-            return ApiResponse::success([
-                'id' => $jadwal->id,
-                'mata_pelajaran' => $jadwal->kurikulumMataPelajaran->mataPelajaran->nama_pelajaran,
-                'tahun_akademik' => $jadwal->tahunAkademik->tahun_akademik,
-                'semester' => $jadwal->semester->semester,
-                'hari' => $jadwal->hari,
-                'guru' => $jadwal->guru->nama,
-                'rombel' => $jadwal->rombel->nama_rombel,
-                'jam_mulai' => $jadwal->jam_mulai,
-                'jam_selesai' => $jadwal->jam_selesai,
-                'ruangan' => optional($jadwal->ruangan)->nama_ruangan,
-                'link_opsional' => $jadwal->link_opsional,
-            ], 'Jadwal pelajaran berhasil dibuat');
-
-        } catch (ValidationException $e) {
-
-            return ApiResponse::error('Validasi gagal', $e->errors(), 422);
-
-        } catch (QueryException $e) {
-
-            return ApiResponse::error('Bentrok data', [
-                'database' => 'Jadwal sudah ada (duplikat)'
-            ], 409);
         }
+
+        // ======================================
+        // AMBIL SEMESTER AKTIF
+        // ======================================
+        $semesterAktif = Semester::where('status', 'aktif')
+            ->where('tahun_akademik_id', $tahunAktif->id)
+            ->first();
+
+        if (!$semesterAktif) {
+            return ApiResponse::error('Not found', [
+                'data' => 'Belum ada semester aktif'
+            ]);
+        }
+
+        // ======================================
+        // CEK BENTROK JADWAL GURU
+        // ======================================
+        $bentrokGuru = JadwalPelajaran::where('guru_id', $validated['guru_id'])
+            ->where('tahun_akademik_id', $tahunAktif->id)
+            ->where('semester_id', $semesterAktif->id)
+            ->where('hari', $validated['hari'])
+            ->where(function ($q) use ($validated) {
+                $q->where('jam_mulai', '<', $validated['jam_selesai'])
+                  ->where('jam_selesai', '>', $validated['jam_mulai']);
+            })
+            ->exists();
+
+        if ($bentrokGuru) {
+            return ApiResponse::error('Bentrok', [
+                'guru' => ['Guru sudah memiliki jadwal di jam tersebut']
+            ], 422);
+        }
+
+        // ======================================
+        // CEK BENTROK ROMBEL
+        // ======================================
+        $bentrokRombel = JadwalPelajaran::where('rombel_id', $validated['rombel_id'])
+            ->where('tahun_akademik_id', $tahunAktif->id)
+            ->where('semester_id', $semesterAktif->id)
+            ->where('hari', $validated['hari'])
+            ->where(function ($q) use ($validated) {
+                $q->where('jam_mulai', '<', $validated['jam_selesai'])
+                  ->where('jam_selesai', '>', $validated['jam_mulai']);
+            })
+            ->exists();
+
+        if ($bentrokRombel) {
+            return ApiResponse::error('Bentrok', [
+                'rombel' => ['Rombel sudah memiliki jadwal di jam tersebut']
+            ], 422);
+        }
+
+        $jadwal = null;
+
+        // ======================================
+        // SIMPAN DATA DALAM TRANSACTION
+        // jika gagal semua akan rollback
+        // ======================================
+        DB::transaction(function () use ($validated, $tahunAktif, $semesterAktif, &$jadwal) {
+
+            // ==================================
+            // SIMPAN JADWAL PELAJARAN
+            // ==================================
+            $jadwal = JadwalPelajaran::create([
+                'kurikulum_mata_pelajaran_id' => $validated['kurikulum_mata_pelajaran_id'],
+                'tahun_akademik_id' => $tahunAktif->id,
+                'semester_id' => $semesterAktif->id,
+                'hari' => $validated['hari'],
+                'guru_id' => $validated['guru_id'],
+                'rombel_id' => $validated['rombel_id'],
+                'jam_mulai' => $validated['jam_mulai'],
+                'jam_selesai' => $validated['jam_selesai'],
+                'ruangan_id' => $validated['ruangan_id'] ?? null,
+                'link_opsional' => $validated['link_opsional'] ?? null,
+            ]);
+
+            // ==================================
+            // GENERATE 16 PERTEMUAN
+            // ==================================
+            for ($i = 1; $i <= 16; $i++) {
+
+                // menentukan jenis pertemuan
+                $jenis = $i == 8 ? 'uts' : ($i == 16 ? 'uas' : 'normal');
+
+                // ==============================
+                // SIMPAN PERTEMUAN
+                // ==============================
+                $pertemuan = Pertemuan::create([
+                    'jadwal_pelajaran_id' => $jadwal->id,
+                    'pertemuan_ke' => $i,
+                    'jenis' => $jenis
+                ]);
+
+                // ==============================
+                // BUAT JURNAL KBM OTOMATIS
+                // satu pertemuan satu jurnal
+                // ==============================
+                JurnalKbm::create([
+                    'pertemuan_id' => $pertemuan->id,
+                    'uraian_kegiatan' => '',
+                    'metode' => null,
+                    'catatan' => null
+                ]);
+            }
+
+        });
+
+        // ======================================
+        // LOAD RELASI UNTUK RESPONSE
+        // ======================================
+        $jadwal->load([
+            'kurikulumMataPelajaran.mataPelajaran',
+            'tahunAkademik',
+            'semester',
+            'rombel',
+            'guru',
+            'ruangan'
+        ]);
+
+        // ======================================
+        // RESPONSE
+        // ======================================
+        return ApiResponse::success([
+            'id' => $jadwal->id,
+            'mata_pelajaran' => $jadwal->kurikulumMataPelajaran->mataPelajaran->nama_pelajaran,
+            'tahun_akademik' => $jadwal->tahunAkademik->tahun_akademik,
+            'semester' => $jadwal->semester->semester,
+            'hari' => $jadwal->hari,
+            'guru' => $jadwal->guru->nama,
+            'rombel' => $jadwal->rombel->nama_rombel,
+            'jam_mulai' => $jadwal->jam_mulai,
+            'jam_selesai' => $jadwal->jam_selesai,
+            'ruangan' => optional($jadwal->ruangan)->nama_ruangan,
+            'link_opsional' => $jadwal->link_opsional,
+        ], 'Jadwal pelajaran berhasil dibuat');
+
+    } catch (ValidationException $e) {
+
+        return ApiResponse::error('Validasi gagal', $e->errors(), 422);
+
+    } catch (QueryException $e) {
+
+        return ApiResponse::error('Bentrok data', [
+            'database' => 'Jadwal sudah ada (duplikat)'
+        ], 409);
     }
+}
 
 
 

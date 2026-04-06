@@ -39,6 +39,9 @@ use App\Models\EkskulSiswaPivot;
 use App\Models\DataNilaiSiswa;
 use App\Models\DataBerkas;
 use App\Models\Pertemuan;
+use App\Models\JurnalKbm;
+use App\Models\Materi;
+use App\Models\ForumDiskusi;
 
 class DatabaseSeeder extends Seeder
 {
@@ -5616,7 +5619,7 @@ class DatabaseSeeder extends Seeder
             [
                 'jadwal_pelajaran_id' => 12, // Indo | 2024 (Genap) | X-B-1
                 'pertemuan_ke'  => 1,
-                'judul' => 'Memahami Penulisan KBBI',
+                'judul' => 'Membuat Cerita Fiksi',
                 'tanggal'   => '2024-01-01',
                 'jenis' => 'normal'
             ],
@@ -5624,7 +5627,7 @@ class DatabaseSeeder extends Seeder
             [
                 'jadwal_pelajaran_id' => 12, // Indo | 2024 (Genap) | X-B-1
                 'pertemuan_ke'  => 2,
-                'judul' => 'Menulis sesuai KBBI',
+                'judul' => 'Presentasi Cerita Fiksi',
                 'tanggal'   => '2024-01-08',
                 'jenis' => 'normal'
             ],
@@ -6000,29 +6003,351 @@ class DatabaseSeeder extends Seeder
                 'tanggal'   => '2024-04-22',
                 'jenis' => 'uas'
             ],
+        ]);            
+
+        // Jurnal KBM
+        JurnalKbm::insert([
+            // 1
+            [
+                'pertemuan_id' => 1, // Indon || 2023 (Ganjil) || X-B-1
+                'uraian_kegiatan' => 'Penjelasan konsep dan latihan soal',
+                'metode' => 'Diskusi Kelompok',
+                'catatan' => 'Sebagian siswa belum paham materi Bahasa Indonesia'
+            ],
+            // 2
+            [
+                'pertemuan_id' => 2, // Indon || 2023 (Ganjil) || X-B-1
+                'uraian_kegiatan' => 'Quis Harian',
+                'metode' => 'Online Aplikasi',
+                'catatan' => 'Semua siswa mengikuti kuis Bahasa Indonesia dengan tertib'
+            ],
+            // 3
+            [
+                'pertemuan_id' => 8, // Indon || 2023 (Ganjil) || X-B-1
+                'uraian_kegiatan' => 'UTS',
+                'metode' => 'Soal CBT',
+                'catatan' => 'UTS Bahasa Indonesia dilakukan secara online dengan soal CBT',
+            ],
+            // 4
+            [
+                'pertemuan_id' => 16, // Indon || 2023 (Ganjil) || X-B-1
+                'uraian_kegiatan' => 'UAS',
+                'metode' => 'Tatap Muka',
+                'catatan' => 'UAS Bahasa Indonesia dilakukan secara offline dengan kertas selembar',
+            ],
+            // 5
+            // Genap
+            [
+                'pertemuan_id' => 17, // Indon || 2024 (Genap) || X-B-1
+                'uraian_kegiatan' => 'Menulis Materi dan Mengerjakan Soal',
+                'metode' => 'Tatap Muka',
+                'catatan' => 'Kelas mapel Bahasa Indonesia dalam kondisi tertib'
+            ],
+            // 6
+            [
+                'pertemuan_id' => 18, // Indon || 2024 (Genap) || X-B-1
+                'uraian_kegiatan' => 'Quis Harian',
+                'metode' => 'Manual',
+                'catatan' => 'Siswa belum sepenuhnya memahami materi Bahasa Indonesia'
+            ],
+            // 7
+            [
+                'pertemuan_id' => 24, // Indon || 2024 (Genap) || X-B-1
+                'uraian_kegiatan' => 'UTS',
+                'metode' => 'Online',
+                'catatan' => 'Materi PDF Bahasa Indonesia tidak bisa dibuka',
+            ],
+            // 8
+            [
+                'pertemuan_id' => 32, // Indon || 2024 (Genap) || X-B-1
+                'uraian_kegiatan' => 'UAS',
+                'metode' => 'Online',
+                'catatan' => 'UAS Bahasa Indonesia dilakukan melalui SIAKAD',
+            ],
+
+            // MTK Ganjil
+            // 9
+            [
+                'pertemuan_id' => 33, // MTK || 2023 (Ganjil) || X-B-1
+                'uraian_kegiatan' => 'Penjelasan konsep dan latihan soal',
+                'metode' => 'Belajar Mandiri',
+                'catatan' => 'Seluruh siswa memahami materi matematika dengan baik'
+            ],
+            // 10
+            [
+                'pertemuan_id' => 34, // MTK || 2023 (Ganjil) || X-B-1
+                'uraian_kegiatan' => 'Quis Harian',
+                'metode' => 'Online Aplikasi',
+                'catatan' => 'Semua siswa mengikuti kuis matematika dengan tertib'
+            ],
+            // 11
+            [
+                'pertemuan_id' => 40, // MTK || 2023 (Ganjil) || X-B-1
+                'uraian_kegiatan' => 'UTS',
+                'metode' => 'Soal CBT',
+                'catatan' => 'UTS matematika dilakukan secara online dengan soal CBT',
+            ],
+            // 12
+            [
+                'pertemuan_id' => 48, // MTK || 2023 (Ganjil) || X-B-1
+                'uraian_kegiatan' => 'UAS',
+                'metode' => 'Tatap Muka',
+                'catatan' => 'UAS matematika dilakukan secara offline dengan kertas selembar',
+            ],
+            // Genap
+            // 13
+            [
+                'pertemuan_id' => 49, // MTK || 2024 (Genap) || X-B-1
+                'uraian_kegiatan' => 'Menulis Materi dan Mengerjakan Soal',
+                'metode' => 'Tatap Muka',
+                'catatan' => 'Kelas mapel matematika dalam kondisi tertib'
+            ],
+            // 14
+            [
+                'pertemuan_id' => 50, // MTK || 2024 (Genap) || X-B-1
+                'uraian_kegiatan' => 'Quis Harian',
+                'metode' => 'Manual',
+                'catatan' => 'Siswa belum sepenuhnya memahami materi matematika'
+            ],
+            // 15
+            [
+                'pertemuan_id' => 56, // MTK || 2024 (Genap) || X-B-1
+                'uraian_kegiatan' => 'UTS',
+                'metode' => 'Online',
+                'catatan' => 'Materi PDF matematika tidak bisa dibuka',
+            ],
+            // 16
+            [
+                'pertemuan_id' => 64, // MTK || 2024 (Genap) || X-B-1
+                'uraian_kegiatan' => 'UAS',
+                'metode' => 'Online',
+                'catatan' => 'UAS matematika dilakukan melalui SIAKAD',
+            ],
         ]);
 
+        Materi::insert([
+            // 1
+            [
+                'pertemuan_id' => 1,
+                'judul' => 'Memahami Penulisan KBBI',
+                'deskripsi' => 'Memahami cara penulisan yang benar sesuai KBBI',
+                'file' => 'materi_satu.pdf',
+                'link_video' => 'www.youtube.com'
+            ],
+            // 2
+            [
+                'pertemuan_id' => 2,
+                'judul' => 'Menulis Sesuai KBBI',
+                'deskripsi' => 'Membuat tulisan sesuai KBBI',
+                'file' => 'materi_dua.pdf',
+                'link_video' => 'www.youtube.com'
+            ],
+            // 3
+            [
+                'pertemuan_id' => 8,
+                'judul' => 'UTS',
+                'deskripsi' => 'UTS',
+                'file' => 'materi_uts.pdf',
+                'link_video' => ''
+            ],
+            // 4
+            [
+                'pertemuan_id' => 16,
+                'judul' => 'UAS',
+                'deskripsi' => 'UAS',
+                'file' => 'materi_uas.pdf',
+                'link_video' => ''
+            ],
+            // 5
+            [
+                'pertemuan_id' => 17,
+                'judul' => 'Cerita Fiksi',
+                'deskripsi' => 'Belajar Cerita Fiksi',
+                'file' => 'materi_satu_genap.pdf',
+                'link_video' => ''
+            ],
+            // 6
+            [
+                'pertemuan_id' => 18,
+                'judul' => 'Presentasi Cerita Fiksi',
+                'deskripsi' => 'Presentasi Cerita Fiksi',
+                'file' => 'materi_dua_genap.pdf',
+                'link_video' => ''
+            ],
+            // 7
+            [
+                'pertemuan_id' => 24,
+                'judul' => 'UTS',
+                'deskripsi' => 'UTS',
+                'file' => 'uts_genap.pdf',
+                'link_video' => ''
+            ],
+            // 8
+            [
+                'pertemuan_id' => 32,
+                'judul' => 'UAS',
+                'deskripsi' => 'UAS',
+                'file' => 'uas_genap.pdf',
+                'link_video' => ''
+            ],
 
-        /**
-         * 🎯 SPA: C.R.U.D
-         */
-        // jurnal_kbm
+            // MTK
+            // 9
+            [
+                'pertemuan_id' => 33,
+                'judul' => 'Materi Bilangan Bulat dan Operasinya',
+                'deskripsi' => 'Memahami bilangan bulat dan operasinya',
+                'file' => 'materi_satu.pdf',
+                'link_video' => 'www.youtube.com'
+            ],
+            // 10
+            [
+                'pertemuan_id' => 34,
+                'judul' => 'Materi Bilangan Pecahan dan Desimal',
+                'deskripsi' => 'Memahami bilangan pecahan dan desimal',
+                'file' => 'materi_dua.pdf',
+                'link_video' => 'www.youtube.com'
+            ],
+            // 11
+            [
+                'pertemuan_id' => 40,
+                'judul' => 'UTS',
+                'deskripsi' => 'UTS',
+                'file' => 'materi_uts.pdf',
+                'link_video' => ''
+            ],
+            // 12
+            [
+                'pertemuan_id' => 48,
+                'judul' => 'UAS',
+                'deskripsi' => 'UAS',
+                'file' => 'materi_uas.pdf',
+                'link_video' => ''
+            ],
+            // 13
+            [
+                'pertemuan_id' => 49,
+                'judul' => 'Materi Statitiska',
+                'deskripsi' => 'Belajar Statistika',
+                'file' => 'materi_statistika.pdf',
+                'link_video' => ''
+            ],
+            // 14
+            [
+                'pertemuan_id' => 50,
+                'judul' => 'Materi Mean, Median, Modus',
+                'deskripsi' => 'Belajar Mean, Median dan Modus',
+                'file' => 'materi_dua_genap.pdf',
+                'link_video' => ''
+            ],
+            // 15
+            [
+                'pertemuan_id' => 56,
+                'judul' => 'UTS',
+                'deskripsi' => 'UTS',
+                'file' => 'uts_genap.pdf',
+                'link_video' => ''
+            ],
+            // 16
+            [
+                'pertemuan_id' => 64,
+                'judul' => 'UAS',
+                'deskripsi' => 'UAS',
+                'file' => 'uas_genap.pdf',
+                'link_video' => ''
+            ],
+        ]);
 
-        /**
-         * 🎯 SPA: C.R.U.D
-         */
-        // forum_diskusi
+        ForumDiskusi::insert([
+            // 1
+            [
+                'pertemuan_id'  => 1,
+                'judul'         => 'Diskusi KBBI Pertemuan Satu',
+                'deskripsi'     => 'Tanyakan apa yang kalian tidak mengerti disini',
+                'guru_id'       => 7
+            ],
+            // 2
+            [
+                'pertemuan_id'  => 2,
+                'judul'         => 'Diskusi Pertemuan Dua',
+                'deskripsi'     => '',
+                'guru_id'       => 7
+            ],
+            // 3
+            [
+                'pertemuan_id'  => 9,
+                'judul'         => 'Diskusi Pertemuan Sembilan',
+                'deskripsi'     => '',
+                'guru_id'       => 7
+            ],
+            // Genap
+            // 4
+            [
+                'pertemuan_id'  => 17,
+                'judul'         => 'Diskusi Pertemuan Satu Genap',
+                'deskripsi'     => 'Diskusikan pembahasan soal minggu lalu disini',
+                'guru_id'       => 7
+            ],
+            // 5
+            [
+                'pertemuan_id'  => 25,
+                'judul'         => 'Diskusi Pertemuan Sembilan',
+                'deskripsi'     => '',
+                'guru_id'       => 7
+            ],
+            // 6
+            [
+                'pertemuan_id'  => 31,
+                'judul'         => 'Diskusi Pertemuan Lima Belas',
+                'deskripsi'     => 'Diskusi terakhir sebelum uas',
+                'guru_id'       => 7
+            ],
 
-        /**
-         * 🎯 SPA: C.R.U.D
-         */
-        // lms
-
-        /** 
-         * 🎯 SPA: CURD
-         */
-        // Kompetensi Inti
-
+            // Matematika
+            // 7
+            [
+                'pertemuan_id'  => 33,
+                'judul'         => 'Diskusi Matematika Pertemuan Satu',
+                'deskripsi'     => 'Tanyakan apa yang kalian tidak mengerti disini',
+                'guru_id'       => 9
+            ],
+            // 8
+            [
+                'pertemuan_id'  => 34,
+                'judul'         => 'Diskusi Pertemuan Dua',
+                'deskripsi'     => '',
+                'guru_id'       => 9
+            ],
+            // 9
+            [
+                'pertemuan_id'  => 41,
+                'judul'         => 'Diskusi Pertemuan Sembilan',
+                'deskripsi'     => '',
+                'guru_id'       => 9
+            ],
+            // Genap
+            // 10
+            [
+                'pertemuan_id'  => 49,
+                'judul'         => 'Diskusi Pertemuan Satu Genap',
+                'deskripsi'     => 'Diskusikan pembahasan soal minggu lalu disini',
+                'guru_id'       => 9
+            ],
+            // 11
+            [
+                'pertemuan_id'  => 57,
+                'judul'         => 'Diskusi Pertemuan Sembilan Genap',
+                'deskripsi'     => '',
+                'guru_id'       => 9
+            ],
+            // 12
+            [
+                'pertemuan_id'  => 63,
+                'judul'         => 'Diskusi Pertemuan Lima Belas',
+                'deskripsi'     => 'Diskusi matematika terakhir sebelum uas',
+                'guru_id'       => 9
+            ],
+        ]);        
     }
 }
 

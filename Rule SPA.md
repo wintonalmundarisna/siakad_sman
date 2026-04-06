@@ -281,7 +281,10 @@ SPA:
 
 - ✅ Guru jadwal pelajaran
   - Get all: Ini buat memudahkan admin ngecek kebenaran semua jadwal tanpa harus liat rombel satu persatu
-
+  - Pertemuan
+    - Letakkan button "lihat pertemuan" di masing masing jadwal guru dan siswa
+      - Letakkan button "lihat jurnal kbm", "Lihat Materi", "Lihat Forum Diskusi", dan "lihat tugas" secara sejajar pada masing masing pertemuan
+  
 --------------------------------------------------------------------------------
 
 - ✅ Alur Tujuan Pembelajaran (Penerapan ATP Master) => Jadi guru consume atp_master per semester, nanti spa yang pantau apakah cocok diterapkan pada semester ini atau tidak
@@ -333,10 +336,7 @@ SPA:
 
 - ✅ Data Berkas
 
---------------------------------------------------------------------------------
 
-- Pertemuan
-  - Letakkan button "lihat pertemuan" di masing masing jadwal guru dan siswa
 
       ___  
       | |

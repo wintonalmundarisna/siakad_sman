@@ -8,6 +8,9 @@ use App\Http\Controllers\JurusanController;
 use App\Http\Controllers\MataPelajaranController;
 use App\Http\Controllers\JadwalPelajaranController;
 use App\Http\Controllers\PertemuanController;
+// use App\Http\Controllers\JurnalKbmController;
+// use App\Http\Controllers\MateriPertemuanController;
+use App\Http\Controllers\ForumDiskusiController;
 use App\Http\Controllers\SiswaJadwalPelajaranController;
 use App\Http\Controllers\KurikulumController;
 use App\Http\Controllers\KompetensiController;
@@ -192,9 +195,19 @@ Route::middleware('auth:kepegawaian')->group(function () {
     // ✅☑️ CRUD jadwal pelajaran
     Route::apiResource('/spa/jadwal-pelajaran', JadwalPelajaranController::class);
     Route::get('/spa/data-select/jadwal-pelajaran', [JadwalPelajaranController::class, 'dataUntukSelect']);       
+    
+    // ✅☑️ Pertemuan (hanya ada get dan update)
+    Route::get('/spa/jadwal-pelajaran/{id}/pertemuan', [PertemuanController::class, 'index']);
+    Route::get('/spa/jadwal-pelajaran/pertemuan/{id}', [PertemuanController::class, 'show']);
 
-    // ! Pertemuan (hanya ada get dan update)
-    Route::get('/spa/jadwal-pelajaran/{id}/pertemuan', [PertemuanController::class, 'show']);
+    // ✅☑️ Jurnal KBM
+    // Route::get('/spa/jadwal-pelajaran/pertemuan/{id}/jurnal-kbm', [JurnalKbmController::class, 'show']);
+
+    // ✅☑️ Materi
+    // Route::get('/spa/jadwal-pelajaran/pertemuan/{id}/materi', [MateriPertemuanController::class, 'show']);
+
+    // ✅☑️ Forum Diskusi
+    Route::get('/spa/jadwal-pelajaran/pertemuan/forum-diskusi/{id}/forum-komentar', [ForumDiskusiController::class, 'show']);
     
     // ✅☑️ get jadwal pelajaran siswa
     Route::get('/spa/siswa/jadwal-pelajaran/all', [SiswaJadwalPelajaranController::class, 'getAllSiswaAktif']);       

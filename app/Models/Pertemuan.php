@@ -17,6 +17,11 @@ class Pertemuan extends Model
     protected $table = 'pertemuan';
     protected $guarded = ['id'];
 
+    public function jadwalPelajaran()
+    {
+        return $this->belongsTo(JadwalPelajaran::class, 'jadwal_pelajaran_id');
+    }
+
     public function jurnal()
     {
         return $this->hasOne(JurnalKbm::class);
@@ -24,21 +29,16 @@ class Pertemuan extends Model
 
     public function materi()
     {
-        return $this->hasMany(Materi::class);
+        return $this->hasOne(Materi::class);
     }
 
     public function forum()
     {
-        return $this->hasMany(ForumDiskusi::class);
-    }
-
-    public function jadwalPelajaran()
-    {
-        return $this->belongsTo(JadwalPelajaran::class, 'jadwal_pelajaran_id');
+        return $this->hasOne(ForumDiskusi::class);
     }
 
     public function tugas()
     {
-        return $this->hasMany(Tugas::class);
+        return $this->hasOne(Tugas::class);
     }
 }
