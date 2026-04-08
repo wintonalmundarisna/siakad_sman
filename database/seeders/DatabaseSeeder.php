@@ -43,6 +43,7 @@ use App\Models\JurnalKbm;
 use App\Models\Materi;
 use App\Models\ForumDiskusi;
 use App\Models\ForumKomentar;
+use App\Models\Tugas;
 
 class DatabaseSeeder extends Seeder
 {
@@ -6388,6 +6389,161 @@ class DatabaseSeeder extends Seeder
                 'komentar'  => 'Owalah, baik Bu, terimakasih atas jawabannya',
                 'created_at' => '2026-04-08 09:17:30'
             ]            
+        ]);
+
+        Tugas::insert([
+            // Indo Ganjil
+            // 1
+            [
+                'pertemuan_id' => 1,
+                'judul' => 'Tugas Harian Indo Pertemuan Satu Ganjil',
+                'tipe_tugas'  => 'manual',
+                'deskripsi' => 'Menguji kemampuan penulisan bahasa Indonesia sesuai KBBI',
+                'file_soal' => 'tugas_indo_satu.pdf',
+                'deadline'  => '2023-05-23'
+            ],
+            // 2
+            [
+                'pertemuan_id' => 2,
+                'judul' => 'Tugas Harian Indo Pertemuan Dua Ganjil',
+                'tipe_tugas'  => 'manual',
+                'deskripsi' => 'Membuat surat resmi sesuai dengan kaidah KBBI',
+                'file_soal' => 'tugas_indo_dua.pdf',
+                'deadline'  => '2023-06-01'
+            ],
+            // 3
+            [
+                'pertemuan_id' => 8,
+                'judul' => 'UTS',
+                'tipe_tugas'  => 'manual',
+                'deskripsi' => 'Kerjakan UTS berikut lalu kumpulkan dengan di scan format nama_kelas.pdf',
+                'file_soal' => 'tugas_indo_uts.pdf',
+                'deadline'  => '2023-07-01 00:00'
+            ],
+            // 4
+            [
+                'pertemuan_id' => 16,
+                'judul' => 'UAS',
+                'tipe_tugas'  => 'cbt',
+                'deskripsi' => 'Kerjakan UAS pada link berikut',
+                'file_soal' => 'www.youtube.com',
+                'deadline'  => '2023-12-01 00:00'
+            ],
+
+            // Indo Genap
+            // 5
+            [
+                'pertemuan_id' => 17,
+                'judul' => 'Tugas Harian Indo Pertemuan Satu Genap',
+                'tipe_tugas'  => 'manual',
+                'deskripsi' => 'Buatlah satu cerita fiksi original milikmu, lalu scan dan kumpulkan',
+                'file_soal' => null,
+                'deadline'  => '2024-01-05'
+            ],
+            // 6
+            [
+                'pertemuan_id' => 18,
+                'judul' => 'Tugas Harian Indo Pertemuan Dua Genap',
+                'tipe_tugas'  => 'manual',
+                'deskripsi' => 'Buatlah file presentasi dan kumpulkan disini',
+                'file_soal' => 'tugas_indo_dua_genap.pdf',
+                'deadline'  => '2024-01-11'
+            ],
+            // 7
+            [
+                'pertemuan_id' => 24,
+                'judul' => 'UTS',
+                'tipe_tugas'  => 'manual',
+                'deskripsi' => 'Kerjakan UTS berikut lalu kumpulkan dengan di scan format nama_kelas.pdf',
+                'file_soal' => 'tugas_indo_uts_genap.pdf',
+                'deadline'  => '2024-03-20 00:00'
+            ],
+            // 8
+            [
+                'pertemuan_id' => 32,
+                'judul' => 'UAS',
+                'tipe_tugas'  => 'cbt',
+                'deskripsi' => 'Kerjakan UAS pada link berikut',
+                'file_soal' => 'www.youtube.com',
+                'deadline'  => '2024-05-01 00:00'
+            ],
+
+
+            // MTK Ganjil
+            // 9
+            [
+                'pertemuan_id' => 33,
+                'judul' => 'Tugas Harian MTK Pertemuan Satu Ganjil',
+                'tipe_tugas'  => 'manual',
+                'deskripsi' => 'Kerjakan soal halaman 12 pada file pdf berikut',
+                'file_soal' => 'tugas_mtk_satu.pdf',
+                'deadline'  => '2023-05-23'
+            ],
+            // 10
+            [
+                'pertemuan_id' => 34,
+                'judul' => 'Tugas Harian MTK Pertemuan Dua Ganjil',
+                'tipe_tugas'  => 'manual',
+                'deskripsi' => 'Kerjakan soal halaman 20 dan 31 pada file ini',
+                'file_soal' => 'tugas_mtk_dua.pdf',
+                'deadline'  => '2023-06-01'
+            ],
+            // 11
+            [
+                'pertemuan_id' => 40,
+                'judul' => 'UTS',
+                'tipe_tugas'  => 'manual',
+                'deskripsi' => 'Kerjakan UTS berikut lalu kumpulkan dengan di scan format nama_kelas.pdf',
+                'file_soal' => 'tugas_mtk_uts.pdf',
+                'deadline'  => '2023-07-01 23:00:00'
+            ],
+            // 12
+            [
+                'pertemuan_id' => 48,
+                'judul' => 'UAS',
+                'tipe_tugas'  => 'cbt',
+                'deskripsi' => 'Kerjakan UAS pada link berikut',
+                'file_soal' => 'www.youtube.com',
+                'deadline'  => '2023-12-01 09:00:00'
+            ],
+
+            // MTK Genap
+            // 13
+            [
+                'pertemuan_id' => 49,
+                'judul' => 'Tugas Harian MTK Pertemuan Satu Genap',
+                'tipe_tugas'  => 'manual',
+                'deskripsi' => 'Buatlah ppt presentasi pertemuan minggu lalu',
+                'file_soal' => null,
+                'deadline'  => '2024-01-05'
+            ],
+            // 14
+            [
+                'pertemuan_id' => 50,
+                'judul' => 'Tugas Harian MTK Pertemuan Dua Genap',
+                'tipe_tugas'  => 'manual',
+                'deskripsi' => 'Kerjakan halaman 20',
+                'file_soal' => 'tugas_indo_dua_genap.pdf',
+                'deadline'  => '2024-01-11'
+            ],
+            // 15
+            [
+                'pertemuan_id' => 56,
+                'judul' => 'UTS',
+                'tipe_tugas'  => 'manual',
+                'deskripsi' => 'Kerjakan UTS berikut lalu kumpulkan dengan di scan format nama_kelas.pdf',
+                'file_soal' => 'tugas_mtk_uts_genap.pdf',
+                'deadline'  => '2024-03-20 00:00:00'
+            ],
+            // 16
+            [
+                'pertemuan_id' => 64,
+                'judul' => 'UAS',
+                'tipe_tugas'  => 'cbt',
+                'deskripsi' => 'Kerjakan UAS pada link berikut',
+                'file_soal' => 'www.youtube.com',
+                'deadline'  => '2024-05-01 21:30:00'
+            ],
         ]);
     }
 }

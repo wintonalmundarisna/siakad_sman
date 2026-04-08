@@ -36,3 +36,6 @@ return new class extends Migration
         Schema::dropIfExists('materi');
     }
 };
+
+
+// dalam satu pertemuan ada jurnal_kbm, materi, forum_diskusi, tugas

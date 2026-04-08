@@ -73,6 +73,8 @@ class PertemuanController extends Controller
      */
     public function show(string $id)
     {
+        Carbon::setLocale('id');
+
         $pertemuan = Pertemuan::with([
             'jadwalPelajaran.kurikulumMataPelajaran.mataPelajaran',
             'jadwalPelajaran.tahunAkademik',
@@ -115,6 +117,7 @@ class PertemuanController extends Controller
 
             'link_opsional' => $jadwal?->link_opsional,
 
+            // Terbuat otomatis
             'pertemuan' => [
                 'pertemuan_id' => $pertemuan->id,
                 'judul' => $pertemuan->judul,
@@ -123,31 +126,46 @@ class PertemuanController extends Controller
                     ? Carbon::parse($pertemuan->tanggal)->translatedFormat('l, d F Y')
                     : null,
                 'jenis' => $pertemuan->jenis,
-            ],
 
-            'jurnal_kbm' => [
-                'jurnal_kbm_id' => $pertemuan->jurnal?->id,
-                'uraian_kegiatan' => $pertemuan->jurnal?->uraian_kegiatan,
-                'metode' => $pertemuan->jurnal?->metode,
-                'catatan' => $pertemuan->jurnal?->catatan,
-            ],
-
-            'materi' => [
-                'materi_id' => $pertemuan->materi?->id,
-                'judul' => $pertemuan->materi?->judul,
-                'deskripsi' => $pertemuan->materi?->deskripsi,
-                'file' => $pertemuan->materi?->file
-                    ? asset(str_replace('public/', 'storage/', $pertemuan->materi->file))
+                // Terbuat otomatis
+                'jurnal_kbm' => [
+                    'jurnal_kbm_id' => $pertemuan->jurnal?->id,
+                    'uraian_kegiatan' => $pertemuan->jurnal?->uraian_kegiatan,
+                    'metode' => $pertemuan->jurnal?->metode,
+                    'catatan' => $pertemuan->jurnal?->catatan,
+                ],
+    
+                // Manual
+                'materi' => $pertemuan->materi ? [
+                    'materi_id' => $pertemuan->materi?->id,
+                    'judul' => $pertemuan->materi?->judul,
+                    'deskripsi' => $pertemuan->materi?->deskripsi,
+                    'file' => $pertemuan->materi?->file
+                        ? asset(str_replace('public/', 'storage/', $pertemuan->materi->file))
+                        : null,
+                    'link_video' => $pertemuan->materi?->link_video,
+                ] : null,
+    
+                // Manual
+                'forum_diskusi' => $pertemuan->forumDiskusi ? [
+                    'forum_diskusi_id' => $pertemuan->forumDiskusi?->id,
+                    'judul' => $pertemuan->forumDiskusi?->judul,
+                    'deskripsi' => $pertemuan->forumDiskusi?->deskripsi,
+                    'dibuat_oleh' => $pertemuan->forumDiskusi?->guru?->nama,
+                ] : null,
+                
+                // Manual
+                'tugas' => $pertemuan->tugas ? [
+                    'tugas_id'       => $pertemuan->tugas?->id,
+                    'judul'          => $pertemuan->tugas?->judul,
+                    'tipe_tugas'     => $pertemuan->tugas?->tipe_tugas,
+                    'deskripsi'      => $pertemuan->tugas?->deskripsi,                    
+                    'file_soal'      => $pertemuan->tugas?->file_soal
+                    ? asset(str_replace('public/', 'storage/', $pertemuan->tugas?->file_soal))
                     : null,
-                'link_video' => $pertemuan->materi?->link_video,
-            ],
-
-            'forum_diskusi' => [
-                'forum_diskusi_id' => $pertemuan->forumDiskusi?->id,
-                'judul' => $pertemuan->forumDiskusi?->judul,
-                'deskripsi' => $pertemuan->forumDiskusi?->deskripsi,
-                'dibuat_oleh' => $pertemuan->forumDiskusi?->guru?->nama,
-            ],
+                    'deadline' => $pertemuan->tugas?->deadline ? Carbon::parse($pertemuan->tugas->deadline)->translatedFormat('l, d F Y - H.i') : null,
+                ] : null,
+            ],            
         ];
 
         return ApiResponse::success($formatted, 'Detail pertemuan berhasil ditampilkan');

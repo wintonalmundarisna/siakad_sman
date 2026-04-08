@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // ! MASUK SINI, dalam satu pertemuan ada satu tugas, tidak terbuat otomatis saat jadwal pelajaran dibuat karna tugas belum tentu terjadi setiap pertemuan
+        
         Schema::create('tugas', function (Blueprint $table) {
 
             $table->id();
@@ -31,7 +31,7 @@ return new class extends Migration
         
             $table->dateTime('deadline')->nullable();
         
-            $table->integer('nilai_maksimal')->default(100);
+            // $table->integer('nilai_maksimal')->default(100);
         
             $table->timestamps();
         });
