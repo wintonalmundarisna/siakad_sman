@@ -17,6 +17,7 @@ use App\Models\KurikulumMataPelajaran;
 use App\Models\DataNilaiSiswa;
 use App\Models\Prestasi;
 use App\Models\Rapor;
+use App\Models\TugasPengumpulan;
 
 class Siswa extends Authenticatable
 {
@@ -124,5 +125,10 @@ class Siswa extends Authenticatable
     public function komentarForum()
     {
         return $this->morphMany(ForumKomentar::class, 'commentable');
+    }
+
+    public function tugasPengumpulan()
+    {
+        return $this->hasMany(TugasPengumpulan::class);
     }
 }

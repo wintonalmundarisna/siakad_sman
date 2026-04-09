@@ -12,6 +12,7 @@ use App\Http\Controllers\PertemuanController;
 // use App\Http\Controllers\MateriPertemuanController;
 // use App\Http\Controllers\ForumDiskusiController;
 use App\Http\Controllers\ForumKomentarController;
+use App\Http\Controllers\TugasPengumpulanController;
 use App\Http\Controllers\SiswaJadwalPelajaranController;
 use App\Http\Controllers\KurikulumController;
 use App\Http\Controllers\KompetensiController;
@@ -212,6 +213,7 @@ Route::middleware('auth:kepegawaian')->group(function () {
 
     // ✅☑️ Forum Komentar
     Route::get('/spa/jadwal-pelajaran/pertemuan/forum-diskusi/{id}/forum-komentar', [ForumKomentarController::class, 'show']);
+    Route::get('/spa/jadwal-pelajaran/pertemuan/tugas/{id}/pengumpulan', [TugasPengumpulanController::class, 'show']);
     
     // ✅☑️ get jadwal pelajaran siswa
     Route::get('/spa/siswa/jadwal-pelajaran/all', [SiswaJadwalPelajaranController::class, 'getAllSiswaAktif']);       

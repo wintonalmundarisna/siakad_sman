@@ -6,9 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * ! Masuk sini
-     */
+    // ! Tinggal di tes di insomnia aja, baru selesai seeder
     public function up(): void
     {
         Schema::create('tugas_pengumpulan', function (Blueprint $table) {
@@ -26,12 +24,12 @@ return new class extends Migration
             // untuk CBT
             $table->json('jawaban_cbt')->nullable();
         
-            $table->integer('nilai')->nullable();
+            $table->decimal('nilai')->nullable();
         
             $table->timestamp('waktu_mulai')->nullable();
             $table->timestamp('waktu_kumpul')->nullable();
         
-            $table->text('feedback')->nullable();
+            // $table->text('feedback')->nullable();
         
             $table->timestamps();
         });

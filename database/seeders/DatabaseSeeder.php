@@ -44,6 +44,7 @@ use App\Models\Materi;
 use App\Models\ForumDiskusi;
 use App\Models\ForumKomentar;
 use App\Models\Tugas;
+use App\Models\TugasPengumpulan;
 
 class DatabaseSeeder extends Seeder
 {
@@ -6543,6 +6544,155 @@ class DatabaseSeeder extends Seeder
                 'deskripsi' => 'Kerjakan UAS pada link berikut',
                 'file_soal' => 'www.youtube.com',
                 'deadline'  => '2024-05-01 21:30:00'
+            ],
+        ]);
+
+        TugasPengumpulan::insert([
+            // 1
+            [
+                'tugas_id' => 1, // P1 | Indo | Manual
+                'siswa_id' => 1,
+                'file_jawaban' => 'bagas_indo_p1.pdf',
+                'jawaban_cbt' => null,
+                'nilai' => 87.30,
+                'waktu_mulai' => null,
+                'waktu_kumpul' => '2023-05-22'
+            ],
+            // 2
+            [
+                'tugas_id' => 1, // P1 | Indo | Manual
+                'siswa_id' => 2,
+                'file_jawaban' => 'winton_indonesia_p1.pdf',
+                'jawaban_cbt' => null,
+                'nilai' => 88,
+                'waktu_mulai' => null,
+                'waktu_kumpul' => '2023-05-21'
+            ],
+            // 3
+            [
+                'tugas_id' => 3, // UTS | Indo | Manual
+                'siswa_id' => 1,
+                'file_jawaban' => 'bagas_uts_ganjil.pdf',
+                'jawaban_cbt' => null,
+                'nilai' => null,
+                'waktu_mulai' => null,
+                'waktu_kumpul' => '2023-07-01 09:30:00'
+            ],
+            // 4
+            [
+                'tugas_id' => 1, // UTS | Indo | Manual
+                'siswa_id' => 2,
+                'file_jawaban' => 'winton_uts_ganjil.pdf',
+                'jawaban_cbt' => null,
+                'nilai' => null,
+                'waktu_mulai' => null,
+                'waktu_kumpul' => '2023-07-01 09:25:00'
+            ],    
+            // 5
+            [
+                'tugas_id' => 8, // UAS | Indo | CBT
+                'siswa_id' => 1,
+                'file_jawaban' => null,
+                'jawaban_cbt' =>  json_encode ([
+                    1 => 'A',
+                    2 => 'C',
+                    3 => 'B',
+                    4 => 'Menurut saya itu benar karna buah jatuh ke arah bawah',
+                    5 => 'Karena Belanda menaikkan pajak'
+                ]),
+                'nilai' => null,
+                'waktu_mulai' => '2023-07-01 09:00:00',
+                'waktu_kumpul' => '2023-07-01 09:30:00',            
+            ],
+            // 6
+            [
+                'tugas_id' => 8, // UAS | Indo | CBT
+                'siswa_id' => 2,
+                'file_jawaban' => null,
+                'jawaban_cbt' =>  json_encode ([
+                    1 => 'A',
+                    2 => 'A',
+                    3 => 'B',
+                    4 => 'Menurut saya itu salah karna benda jatuh dalam posisi berputar',
+                    5 => 'Karena Belanda menaikkan pajak yang tinggi sehingga masyarakat tidak mampu membayarnya'
+                ]),
+                'nilai' => 98,
+                'waktu_mulai' => '2023-07-01 09:00:00',
+                'waktu_kumpul' => '2023-07-01 09:25:00',               
+            ],
+
+            // MTK
+            // 7
+            [
+                'tugas_id' => 9, // P1 | MTK | Manual
+                'siswa_id' => 1,
+                'file_jawaban' => 'bagas_mtk_p1.pdf',
+                'jawaban_cbt' => null,
+                'nilai' => 85,
+                'waktu_mulai' => null,
+                'waktu_kumpul' => '2023-05-22'
+            ],
+            // 8
+            [
+                'tugas_id' => 9, // P1 | MTK | Manual
+                'siswa_id' => 2,
+                'file_jawaban' => 'winton_mtk_p1.pdf',
+                'jawaban_cbt' => null,
+                'nilai' => 97.50,
+                'waktu_mulai' => null,
+                'waktu_kumpul' => '2023-05-21'
+            ],
+            // 9
+            [
+                'tugas_id' => 11, // UTS | MTK | Manual
+                'siswa_id' => 1,
+                'file_jawaban' => 'bagas_uts_ganjil.pdf',
+                'jawaban_cbt' => null,
+                'nilai' => null,
+                'waktu_mulai' => null,
+                'waktu_kumpul' => '2023-07-01 09:30:00'
+            ],
+            // 10
+            [
+                'tugas_id' => 11, // UTS | MTK | Manual
+                'siswa_id' => 2,
+                'file_jawaban' => 'winton_uts_ganjil.pdf',
+                'jawaban_cbt' => null,
+                'nilai' => null,
+                'waktu_mulai' => null,
+                'waktu_kumpul' => '2023-07-01 09:25:00'
+            ],    
+            // 11
+            [
+                'tugas_id' => 12, // UAS | MTK | CBT
+                'siswa_id' => 1,
+                'file_jawaban' => null,
+                'jawaban_cbt' =>  json_encode ([
+                    1 => 'D',
+                    2 => 'A',
+                    3 => 'C',
+                    4 => 'Benda bergerak berlawanan dengan jarum jam',
+                    5 => 'Benda tembus pandang karna memantulkan cahaya'
+                ]),
+                'nilai' => 78,
+                'waktu_mulai' => '2023-07-01 09:00:00',
+                'waktu_kumpul' => '2023-07-01 09:30:00',                
+            ],
+            // 12
+            [
+                'tugas_id' => 8, // UAS | MTK | CBT
+                'siswa_id' => 2,
+                'file_jawaban' => null,
+                'jawaban_cbt' =>  json_encode ([
+                    1 => 'C',
+                    2 => 'D',
+                    3 => 'C',
+                    4 => 'Benda akan bergerak lurus searah jarum jam',
+                    5 => 'Tidak bisa, karena benda tidak tembus pandang'
+                ]),
+                'nilai' => 80,
+                'waktu_mulai' => '2023-07-01 09:00:00',
+                'waktu_kumpul' => '2023-07-01 09:25:00',                
             ],
         ]);
     }
