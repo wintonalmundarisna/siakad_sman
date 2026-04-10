@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    // ! Tinggal di tes di insomnia aja, baru selesai seeder
     public function up(): void
     {
         Schema::create('tugas_pengumpulan', function (Blueprint $table) {

@@ -6580,7 +6580,7 @@ class DatabaseSeeder extends Seeder
             ],
             // 4
             [
-                'tugas_id' => 1, // UTS | Indo | Manual
+                'tugas_id' => 3, // UTS | Indo | Manual
                 'siswa_id' => 2,
                 'file_jawaban' => 'winton_uts_ganjil.pdf',
                 'jawaban_cbt' => null,

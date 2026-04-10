@@ -47,18 +47,19 @@ class TugasPengumpulanController extends Controller
                     'tugas_id',
                     'siswa_id',
                     'file_jawaban',
+                    'nilai',
                     'waktu_kumpul'
                 ]);
 
             $data = $pengumpulan->map(function ($item) {
                 return [
-                    'pengumpulan_id' => $item->id,
-                    'siswa' => [
-                        'id' => $item->siswa->id,
-                        'nama' => $item->siswa->nama
-                    ],
-                    'file_jawaban' => $item?->file_jawaban,
-                    'waktu_kumpul' => $item?->waktu_kumpul
+                    'pengumpulan_id'    => $item->id,
+                    'nama_siswa'        => $item?->siswa?->nama,
+                    'waktu_kumpul'      => $item?->waktu_kumpul,
+                    'file_jawaban'      => $item?->file_jawaban
+                        ? asset(str_replace('public/', 'storage/', $item?->file_jawaban))
+                        : null,
+                    'nilai'             => $item?->nilai,
                 ];
             });
         }
@@ -82,15 +83,12 @@ class TugasPengumpulanController extends Controller
 
             $data = $pengumpulan->map(function ($item) {
                 return [
-                    'pengumpulan_id' => $item->id,
-                    'siswa' => [
-                        'id' => $item->siswa->id,
-                        'nama' => $item->siswa->nama
-                    ],
-                    'jawaban_cbt' => $item?->jawaban_cbt,
-                    'nilai' => $item?->nilai,
-                    'waktu_mulai' => $item?->waktu_mulai,
-                    'waktu_kumpul' => $item?->waktu_kumpul
+                    'pengumpulan_id'    => $item->id,
+                    'nama_siswa'        => $item?->siswa?->nama,
+                    'waktu_mulai'       => $item?->waktu_mulai,
+                    'waktu_kumpul'      => $item?->waktu_kumpul,
+                    'jawaban_cbt'       => $item?->jawaban_cbt,
+                    'nilai'             => $item?->nilai,
                 ];
             });
         }
