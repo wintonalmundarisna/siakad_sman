@@ -210,7 +210,7 @@ SPA:
     - ❌ Absensi Siswa - Pelajaran       : Histori absensi
     - ❌ Siswa - Ekstrakurikuler         : Histori ikut ekskul
     - ❌ Prestasi                        : Histori prestasi
-    - ❌ Data Nilai Siswa                : Histori Rapor
+    - ☑️❌ Data Nilai Siswa              : Histori Rapor
 
 --------------------------------------------------------------------------------
 
@@ -281,9 +281,10 @@ SPA:
 
 - ✅ Guru jadwal pelajaran
   - Get all: Ini buat memudahkan admin ngecek kebenaran semua jadwal tanpa harus liat rombel satu persatu
-  - Pertemuan
+  - ☑️ Pertemuan
     - Letakkan button "lihat pertemuan" di masing masing jadwal guru dan siswa
       - Letakkan button "lihat jurnal kbm", "Lihat Materi", "Lihat Forum Diskusi", dan "lihat tugas" secara sejajar pada masing masing pertemuan
+        - Letakkan button "lihat hasil pengumpulan tugas" pada di dalam button "lihat tugas"
   
 --------------------------------------------------------------------------------
 
@@ -322,11 +323,11 @@ SPA:
 --------------------------------------------------------------------------------
 
 - ✅ Prestasi
-  - ☑️ CRUD (yang histori jangan karna di siswa atas sudah ada)
+  - CRUD (yang histori jangan karna di siswa atas sudah ada)
 
 --------------------------------------------------------------------------------
 
-- ✅ Data Nilai Siswa:
+- ☑️ Data Nilai Siswa:
 
 --------------------------------------------------------------------------------
 
@@ -390,6 +391,7 @@ SPA:
     Rombel
 
 - Guru - Jadwal Pelajaran
+  - ☑️ Pertemuan
 
 - Alur Tujuan Pembelajaran (Consume ATP Master)
 
@@ -407,5 +409,7 @@ SPA:
 - Absensi 
 
 - Prestasi
+
+- ☑️ Data Nilai Siswa
 
 - Keuangan

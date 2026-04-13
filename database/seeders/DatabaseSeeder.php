@@ -3514,6 +3514,7 @@ class DatabaseSeeder extends Seeder
                 // 1
                 'guru_pengajar_id' => 5, /// Guru MTK
                 'jadwal_pelajaran_id' => 1, // MTK | 13/24 | Ganjil | X-A      
+                'pertemuan_id' => 1,
                 'hari' => '2023-05-25',
                 'status' => 'hadir',                
                 'tahun_akademik_id' => 1, // 13/24
@@ -3525,6 +3526,7 @@ class DatabaseSeeder extends Seeder
                 // 2
                 'guru_pengajar_id' => 9, /// Guru MTK
                 'jadwal_pelajaran_id' => 1, // MTK | 13/24 | Ganjil | X-A-1
+                'pertemuan_id' => 1,
                 'hari' => '2024-05-05', // Senin
                 'status' => 'hadir',                
                 'tahun_akademik_id' => 1, // 13/24
@@ -3534,6 +3536,7 @@ class DatabaseSeeder extends Seeder
                 // 3
                 'guru_pengajar_id' => 9, /// Guru MTK
                 'jadwal_pelajaran_id' => 1,
+                'pertemuan_id' => 1,
                 'hari' => '2024-05-12',
                 'status' => 'tidak hadir',                
                 'tahun_akademik_id' => 1,
@@ -3543,6 +3546,7 @@ class DatabaseSeeder extends Seeder
                 // 4
                 'guru_pengajar_id' => 9, /// Guru MTK
                 'jadwal_pelajaran_id' => 1,
+                'pertemuan_id' => 1,
                 'hari' => '2024-05-19',
                 'status' => 'tidak hadir',                
                 'tahun_akademik_id' => 1,
@@ -3552,6 +3556,7 @@ class DatabaseSeeder extends Seeder
                 // 5
                 'guru_pengajar_id' => 9, /// Guru MTK
                 'jadwal_pelajaran_id' => 11,
+                'pertemuan_id' => 1,
                 'hari' => '2025-05-05',
                 'status' => 'hadir',                
                 'tahun_akademik_id' => 1, // 23/24
@@ -3561,6 +3566,7 @@ class DatabaseSeeder extends Seeder
                 // 6
                 'guru_pengajar_id' => 9, /// Guru MTK
                 'jadwal_pelajaran_id' => 11,
+                'pertemuan_id' => 1,
                 'hari' => '2025-01-02',
                 'status' => 'tidak hadir',                
                 'tahun_akademik_id' => 1, // 23/24
@@ -3570,6 +3576,7 @@ class DatabaseSeeder extends Seeder
                 // 7
                 'guru_pengajar_id' => 9, /// Guru MTK
                 'jadwal_pelajaran_id' => 8,
+                'pertemuan_id' => 1,
                 'hari' => '2024-01-09',
                 'status' => 'hadir',                
                 'tahun_akademik_id' => 1, // 23/24
@@ -3580,6 +3587,7 @@ class DatabaseSeeder extends Seeder
                 // 8
                 'guru_pengajar_id' => 9, /// Guru MTK
                 'jadwal_pelajaran_id' => 1, // MTK | 13/24 | Ganjil | X-A-1
+                'pertemuan_id' => 1,
                 'hari' => '2024-05-05', // Senin
                 'status' => 'hadir',                
                 'tahun_akademik_id' => 2, // 24/25
@@ -3589,6 +3597,7 @@ class DatabaseSeeder extends Seeder
                 // 9
                 'guru_pengajar_id' => 9, /// Guru MTK
                 'jadwal_pelajaran_id' => 1,
+                'pertemuan_id' => 1,
                 'hari' => '2024-05-12',
                 'status' => 'hadir',                
                 'tahun_akademik_id' => 2, // 24/25
@@ -3598,6 +3607,7 @@ class DatabaseSeeder extends Seeder
                 // 10
                 'guru_pengajar_id' => 9, /// Guru MTK
                 'jadwal_pelajaran_id' => 1,
+                'pertemuan_id' => 1,
                 'hari' => '2024-05-19',
                 'status' => 'tidak hadir',                
                 'tahun_akademik_id' => 2, // 24/25
@@ -3607,6 +3617,7 @@ class DatabaseSeeder extends Seeder
                 // 11
                 'guru_pengajar_id' => 9, /// Guru MTK
                 'jadwal_pelajaran_id' => 11,
+                'pertemuan_id' => 1,
                 'hari' => '2025-05-05',
                 'status' => 'hadir',                
                 'tahun_akademik_id' => 2, // 24/25
@@ -3616,6 +3627,7 @@ class DatabaseSeeder extends Seeder
                 // 12
                 'guru_pengajar_id' => 9, /// Guru MTK
                 'jadwal_pelajaran_id' => 11,
+                'pertemuan_id' => 1,
                 'hari' => '2025-01-02',
                 'status' => 'tidak hadir',                
                 'tahun_akademik_id' => 2, // 24/25
@@ -3625,6 +3637,7 @@ class DatabaseSeeder extends Seeder
                 // 13
                 'guru_pengajar_id' => 9, /// Guru MTK
                 'jadwal_pelajaran_id' => 8,
+                'pertemuan_id' => 1,
                 'hari' => '2024-01-09',
                 'status' => 'hadir',                
                 'tahun_akademik_id' => 2, // 24/25
@@ -3636,6 +3649,7 @@ class DatabaseSeeder extends Seeder
                 // 2
                 'guru_pengajar_id' => 7, /// Guru Indon
                 'jadwal_pelajaran_id' => 23, // Indon
+                'pertemuan_id' => 1,
                 'hari' => '2024-05-05', // Senin
                 'status' => 'tidak hadir',                
                 'tahun_akademik_id' => 2, // 24/25
@@ -3645,6 +3659,7 @@ class DatabaseSeeder extends Seeder
                 // 3
                 'guru_pengajar_id' => 7, /// Guru Indon
                 'jadwal_pelajaran_id' => 23,
+                'pertemuan_id' => 1,
                 'hari' => '2024-05-12',
                 'status' => 'hadir',                
                 'tahun_akademik_id' => 2, // 24/25
@@ -3654,6 +3669,7 @@ class DatabaseSeeder extends Seeder
                 // 4
                 'guru_pengajar_id' => 7, /// Guru Indon
                 'jadwal_pelajaran_id' => 23,
+                'pertemuan_id' => 1,
                 'hari' => '2024-05-19',
                 'status' => 'tidak hadir',                
                 'tahun_akademik_id' => 2, // 24/25
@@ -3672,6 +3688,7 @@ class DatabaseSeeder extends Seeder
                 'siswa_id' => 2, // Winton
                 'siswa_rombel_id' => 10,  // X-B-1
                 'jadwal_pelajaran_id' => 1, // MTK
+                'pertemuan_id' => 1,
                 'hari' => '2023-12-02',
                 'status' => 'hadir',
                 'bukti' => null, // hadir, izin, sakit, alpa                            
@@ -3683,6 +3700,7 @@ class DatabaseSeeder extends Seeder
                 'siswa_id' => 2, // Winton
                 'siswa_rombel_id' => 10,  // X-B-1
                 'jadwal_pelajaran_id' => 1, // MTK
+                'pertemuan_id' => 1,
                 'hari' => '2023-12-09',
                 'status' => 'alpa',
                 'bukti' => null, // hadir, izin, sakit, alpa                            
@@ -3694,6 +3712,7 @@ class DatabaseSeeder extends Seeder
                 'siswa_id' => 2, // Winton
                 'siswa_rombel_id' => 10,  // X-B-1
                 'jadwal_pelajaran_id' => 2, // Indonesia
+                'pertemuan_id' => 1,
                 'hari' => '2023-12-02',
                 'status' => 'izin',
                 'bukti' => 'izin.jpg', // hadir, izin, sakit, alpa                            
@@ -3705,6 +3724,7 @@ class DatabaseSeeder extends Seeder
                 'siswa_id' => 2, // Winton
                 'siswa_rombel_id' => 10,  // X-B-1
                 'jadwal_pelajaran_id' => 3, // PAI
+                'pertemuan_id' => 1,
                 'hari' => '2023-12-03',
                 'status' => 'hadir',
                 'bukti' => null, // hadir, izin, sakit, alpa                            
@@ -3716,6 +3736,7 @@ class DatabaseSeeder extends Seeder
                 'siswa_id' => 2, // Winton
                 'siswa_rombel_id' => 10,  // X-B-1
                 'jadwal_pelajaran_id' => 1, // MTK
+                'pertemuan_id' => 1,
                 'hari' => '2024-01-09',
                 'status' => 'hadir',
                 'bukti' => null, // hadir, izin, sakit, alpa                            
@@ -3727,6 +3748,7 @@ class DatabaseSeeder extends Seeder
                 'siswa_id' => 2, // Winton
                 'siswa_rombel_id' => 10,  // XI-B-1
                 'jadwal_pelajaran_id' => 2, // Indonesia
+                'pertemuan_id' => 1,
                 'hari' => '2024-01-02',
                 'status' => 'izin',
                 'bukti' => 'izin.jpg', // hadir, izin, sakit, alpa                            
@@ -3738,6 +3760,7 @@ class DatabaseSeeder extends Seeder
                 'siswa_id' => 2, // Winton
                 'siswa_rombel_id' => 10,  // X-B-1
                 'jadwal_pelajaran_id' => 3, // PAI
+                'pertemuan_id' => 1,
                 'hari' => '2024-01-03',
                 'status' => 'hadir',
                 'bukti' => null, // hadir, izin, sakit, alpa                            
@@ -3749,6 +3772,7 @@ class DatabaseSeeder extends Seeder
                 'siswa_id' => 2, // Winton
                 'siswa_rombel_id' => 3, // XI-B-I
                 'jadwal_pelajaran_id' => 1, // MTK
+                'pertemuan_id' => 1,
                 'hari' => '2024-12-02',
                 'status' => 'hadir',
                 'bukti' => null, // hadir, izin, sakit, alpa                            
@@ -3760,6 +3784,7 @@ class DatabaseSeeder extends Seeder
                 'siswa_id' => 2, // Winton
                 'siswa_rombel_id' => 3, // XI-B-I
                 'jadwal_pelajaran_id' => 2, // Indonesia
+                'pertemuan_id' => 2,
                 'hari' => '2023-12-02',
                 'status' => 'izin',
                 'bukti' => 'izin.jpg', // hadir, izin, sakit, alpa                            
@@ -3771,6 +3796,7 @@ class DatabaseSeeder extends Seeder
                 'siswa_id' => 2, // Winton
                 'siswa_rombel_id' => 3, // XI-B-I
                 'jadwal_pelajaran_id' => 3, // PAI
+                'pertemuan_id' => 1,
                 'hari' => '2023-12-03',
                 'status' => 'hadir',
                 'bukti' => null, // hadir, izin, sakit, alpa                            
@@ -3782,6 +3808,7 @@ class DatabaseSeeder extends Seeder
                 'siswa_id' => 2, // Winton
                 'siswa_rombel_id' => 3, // XI-B-I
                 'jadwal_pelajaran_id' => 1, // MTK
+                'pertemuan_id' => 1,
                 'hari' => '2024-01-02',
                 'status' => 'hadir',
                 'bukti' => null, // hadir, izin, sakit, alpa                            
@@ -3793,6 +3820,7 @@ class DatabaseSeeder extends Seeder
                 'siswa_id' => 2, // Winton
                 'siswa_rombel_id' => 3, // XI-B-I
                 'jadwal_pelajaran_id' => 2, // Indonesia
+                'pertemuan_id' => 1,
                 'hari' => '2024-01-02',
                 'status' => 'izin',
                 'bukti' => 'izin.jpg', // hadir, izin, sakit, alpa                            
@@ -3804,6 +3832,7 @@ class DatabaseSeeder extends Seeder
                 'siswa_id' => 2, // Winton
                 'siswa_rombel_id' => 3, // XI-B-I
                 'jadwal_pelajaran_id' => 3, // PAI
+                'pertemuan_id' => 1,
                 'hari' => '2024-01-03',
                 'status' => 'hadir',
                 'bukti' => null, // hadir, izin, sakit, alpa                            
@@ -3817,6 +3846,7 @@ class DatabaseSeeder extends Seeder
                 'siswa_id' => 1, // Bagas
                 'siswa_rombel_id' => 9,  // X-B-1
                 'jadwal_pelajaran_id' => 1, // MTK
+                'pertemuan_id' => 1,
                 'hari' => '2023-12-02',
                 'status' => 'alpa',
                 'bukti' => null, // hadir, izin, sakit, alpa                            
@@ -3828,6 +3858,7 @@ class DatabaseSeeder extends Seeder
                 'siswa_id' => 1, // Bagas
                 'siswa_rombel_id' => 9,  // XI-B-1
                 'jadwal_pelajaran_id' => 2, // Indonesia
+                'pertemuan_id' => 1,
                 'hari' => '2023-12-02',
                 'status' => 'hadir',
                 'bukti' => null, // hadir, izin, sakit, alpa                            
@@ -3839,6 +3870,7 @@ class DatabaseSeeder extends Seeder
                 'siswa_id' => 1, // Bagas
                 'siswa_rombel_id' => 9,  // X-B-1
                 'jadwal_pelajaran_id' => 3, // PAI
+                'pertemuan_id' => 1,
                 'hari' => '2023-12-03',
                 'status' => 'hadir',
                 'bukti' => null, // hadir, izin, sakit, alpa                            
@@ -3850,6 +3882,7 @@ class DatabaseSeeder extends Seeder
                 'siswa_id' => 1, // Bagas
                 'siswa_rombel_id' => 9,  // X-B-1
                 'jadwal_pelajaran_id' => 1, // MTK
+                'pertemuan_id' => 1,
                 'hari' => '2024-01-02',
                 'status' => 'hadir',
                 'bukti' => null, // hadir, izin, sakit, alpa                            
@@ -3861,6 +3894,7 @@ class DatabaseSeeder extends Seeder
                 'siswa_id' => 1, // Bagas
                 'siswa_rombel_id' => 9,  // XI-B-1
                 'jadwal_pelajaran_id' => 2, // Indonesia
+                'pertemuan_id' => 1,
                 'hari' => '2024-01-02',
                 'status' => 'izin',
                 'bukti' => 'izin.jpg', // hadir, izin, sakit, alpa                            
@@ -3872,6 +3906,7 @@ class DatabaseSeeder extends Seeder
                 'siswa_id' => 1, // Bagas
                 'siswa_rombel_id' => 9,  // X-B-1
                 'jadwal_pelajaran_id' => 3, // PAI
+                'pertemuan_id' => 1,
                 'hari' => '2024-01-03',
                 'status' => 'hadir',
                 'bukti' => null, // hadir, izin, sakit, alpa                            
@@ -3883,6 +3918,7 @@ class DatabaseSeeder extends Seeder
                 'siswa_id' => 1, // Bagas
                 'siswa_rombel_id' => 2, // XI-B-I
                 'jadwal_pelajaran_id' => 1, // MTK
+                'pertemuan_id' => 1,
                 'hari' => '2023-12-02',
                 'status' => 'hadir',
                 'bukti' => null, // hadir, izin, sakit, alpa                            
@@ -3894,6 +3930,7 @@ class DatabaseSeeder extends Seeder
                 'siswa_id' => 1, // Bagas
                 'siswa_rombel_id' => 2, // XI-B-I
                 'jadwal_pelajaran_id' => 2, // Indonesia
+                'pertemuan_id' => 1,
                 'hari' => '2023-12-02',
                 'status' => 'izin',
                 'bukti' => 'izin.jpg', // hadir, izin, sakit, alpa                            
@@ -3905,6 +3942,7 @@ class DatabaseSeeder extends Seeder
                 'siswa_id' => 1, // Bagas
                 'siswa_rombel_id' => 2, // XI-B-I
                 'jadwal_pelajaran_id' => 3, // PAI
+                'pertemuan_id' => 1,
                 'hari' => '2023-12-03',
                 'status' => 'sakit',
                 'bukti' => 'sakit.jpg', // hadir, izin, sakit, alpa                            
@@ -3916,6 +3954,7 @@ class DatabaseSeeder extends Seeder
                 'siswa_id' => 1, // Bagas
                 'siswa_rombel_id' => 2, // XI-B-I
                 'jadwal_pelajaran_id' => 1, // MTK
+                'pertemuan_id' => 1,
                 'hari' => '2024-01-02',
                 'status' => 'alpa',
                 'bukti' => null, // hadir, izin, sakit, alpa                            
@@ -3927,6 +3966,7 @@ class DatabaseSeeder extends Seeder
                 'siswa_id' => 1, // Bagas
                 'siswa_rombel_id' => 2, // XI-B-I
                 'jadwal_pelajaran_id' => 2, // Indonesia
+                'pertemuan_id' => 1,
                 'hari' => '2024-01-02',
                 'status' => 'izin',
                 'bukti' => 'izin.jpg', // hadir, izin, sakit, alpa                            
@@ -3938,6 +3978,7 @@ class DatabaseSeeder extends Seeder
                 'siswa_id' => 1, // Bagas
                 'siswa_rombel_id' => 2, // XI-B-I
                 'jadwal_pelajaran_id' => 3, // PAI
+                'pertemuan_id' => 1,
                 'hari' => '2024-01-03',
                 'status' => 'hadir',
                 'bukti' => null, // hadir, izin, sakit, alpa                            
@@ -3951,6 +3992,7 @@ class DatabaseSeeder extends Seeder
                 'siswa_id' => 3, // Sanita
                 'siswa_rombel_id' => 11, // X-B-I
                 'jadwal_pelajaran_id' => 1, // MTK
+                'pertemuan_id' => 1,
                 'hari' => '2023-12-02',
                 'status' => 'alpa',
                 'bukti' => null, // hadir, izin, sakit, alpa                            
@@ -3962,6 +4004,7 @@ class DatabaseSeeder extends Seeder
                 'siswa_id' => 3, // Sanita
                 'siswa_rombel_id' => 11, // X-B-I
                 'jadwal_pelajaran_id' => 2, // Indonesia
+                'pertemuan_id' => 1,
                 'hari' => '2023-12-02',
                 'status' => 'hadir',
                 'bukti' => null, // hadir, izin, sakit, alpa                            
@@ -3973,6 +4016,7 @@ class DatabaseSeeder extends Seeder
                 'siswa_id' => 3, // Sanita
                 'siswa_rombel_id' => 11, // X-B-I
                 'jadwal_pelajaran_id' => 3, // PAI
+                'pertemuan_id' => 1,
                 'hari' => '2023-12-03',
                 'status' => 'hadir',
                 'bukti' => null, // hadir, izin, sakit, alpa                            
@@ -3984,6 +4028,7 @@ class DatabaseSeeder extends Seeder
                 'siswa_id' => 3, // Sanita
                 'siswa_rombel_id' => 11, // X-B-I
                 'jadwal_pelajaran_id' => 1, // MTK
+                'pertemuan_id' => 1,
                 'hari' => '2024-01-02',
                 'status' => 'hadir',
                 'bukti' => null, // hadir, izin, sakit, alpa                            
@@ -3995,6 +4040,7 @@ class DatabaseSeeder extends Seeder
                 'siswa_id' => 3, // Sanita
                 'siswa_rombel_id' => 11, // X-B-I
                 'jadwal_pelajaran_id' => 2, // Indonesia
+                'pertemuan_id' => 1,
                 'hari' => '2024-01-02',
                 'status' => 'izin',
                 'bukti' => 'izin.jpg', // hadir, izin, sakit, alpa                            
@@ -4006,6 +4052,7 @@ class DatabaseSeeder extends Seeder
                 'siswa_id' => 3, // Sanita
                 'siswa_rombel_id' => 11, // X-B-I
                 'jadwal_pelajaran_id' => 3, // PAI
+                'pertemuan_id' => 1,
                 'hari' => '2024-01-03',
                 'status' => 'hadir',
                 'bukti' => null, // hadir, izin, sakit, alpa                            
@@ -4017,6 +4064,7 @@ class DatabaseSeeder extends Seeder
                 'siswa_id' => 3, // Sanita
                 'siswa_rombel_id' => 7, // X-B-I
                 'jadwal_pelajaran_id' => 1, // MTK
+                'pertemuan_id' => 1,
                 'hari' => '2023-12-02',
                 'status' => 'hadir',
                 'bukti' => null, // hadir, izin, sakit, alpa                            
@@ -4028,6 +4076,7 @@ class DatabaseSeeder extends Seeder
                 'siswa_id' => 3, // Sanita
                 'siswa_rombel_id' => 7, // X-B-I
                 'jadwal_pelajaran_id' => 2, // Indonesia
+                'pertemuan_id' => 1,
                 'hari' => '2023-12-02',
                 'status' => 'izin',
                 'bukti' => 'izin.jpg', // hadir, izin, sakit, alpa                            
@@ -4039,6 +4088,7 @@ class DatabaseSeeder extends Seeder
                 'siswa_id' => 3, // Sanita
                 'siswa_rombel_id' => 7, // X-B-I
                 'jadwal_pelajaran_id' => 3, // PAI
+                'pertemuan_id' => 1,
                 'hari' => '2023-12-03',
                 'status' => 'alpa',
                 'bukti' => null, // hadir, izin, sakit, alpa                            
@@ -4050,6 +4100,7 @@ class DatabaseSeeder extends Seeder
                 'siswa_id' => 3, // Sanita
                 'siswa_rombel_id' => 7, // X-B-I
                 'jadwal_pelajaran_id' => 1, // MTK
+                'pertemuan_id' => 1,
                 'hari' => '2024-01-02',
                 'status' => 'alpa',
                 'bukti' => null, // hadir, izin, sakit, alpa                            
@@ -4061,6 +4112,7 @@ class DatabaseSeeder extends Seeder
                 'siswa_id' => 3, // Sanita
                 'siswa_rombel_id' => 7, // X-B-I
                 'jadwal_pelajaran_id' => 2, // Indonesia
+                'pertemuan_id' => 1,
                 'hari' => '2024-01-02',
                 'status' => 'izin',
                 'bukti' => 'izin.jpg', // hadir, izin, sakit, alpa                            
@@ -4072,6 +4124,7 @@ class DatabaseSeeder extends Seeder
                 'siswa_id' => 3, // Sanita
                 'siswa_rombel_id' => 7, // X-B-I
                 'jadwal_pelajaran_id' => 3, // PAI
+                'pertemuan_id' => 1,
                 'hari' => '2024-01-03',
                 'status' => 'hadir',
                 'bukti' => null, // hadir, izin, sakit, alpa                            

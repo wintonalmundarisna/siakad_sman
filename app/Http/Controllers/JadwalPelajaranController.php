@@ -7,7 +7,7 @@ use App\Models\JadwalPelajaran;
 use App\Models\Kepegawaian;
 use App\Models\KurikulumMataPelajaran;
 use App\Models\Pertemuan;
-use App\Models\JurnalKbm;
+// use App\Models\JurnalKbm;
 use App\Models\Ruangan;
 use App\Models\Semester;
 use App\Models\TahunAkademik;
@@ -241,16 +241,22 @@ class JadwalPelajaranController extends Controller
                     'jenis' => $jenis
                 ]);
 
+
+                // Masuk sini dan pertemuanController, jurnal ga jadi otomatis
+                // ! Absensi Guru Pelajaran otomatis terbuat tapi status = tidak hadir
+
+                // ! Absensi Siswa Pelajaran otomatis terbuat tapi status = tidak hadir
+
                 // ==============================
                 // BUAT JURNAL KBM OTOMATIS
                 // satu pertemuan satu jurnal
                 // ==============================
-                JurnalKbm::create([
-                    'pertemuan_id' => $pertemuan->id,
-                    'uraian_kegiatan' => '',
-                    'metode' => null,
-                    'catatan' => null
-                ]);
+                // JurnalKbm::create([
+                //     'pertemuan_id' => $pertemuan->id,
+                //     'uraian_kegiatan' => '',
+                //     'metode' => null,
+                //     'catatan' => null
+                // ]);
             }
 
         });

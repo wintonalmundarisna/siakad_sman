@@ -82,6 +82,8 @@ class PertemuanController extends Controller
             'jadwalPelajaran.rombel',
             'jadwalPelajaran.guru',
             'jadwalPelajaran.ruangan',
+            'absensiPelajaran',
+            'absensiSiswa',
             'jurnal',
             'materi',
             'forumDiskusi.guru',
@@ -90,10 +92,10 @@ class PertemuanController extends Controller
 
         if (!$pertemuan) {
             return ApiResponse::error('Pertemuan tidak ditemukan');
-        }
+        }        
 
         $jadwal = $pertemuan->jadwalPelajaran;
-
+        
         $formatted = [
             'jadwal_pelajaran_id' => $jadwal?->id,
 
@@ -128,12 +130,12 @@ class PertemuanController extends Controller
                 'jenis' => $pertemuan->jenis,
 
                 // Terbuat otomatis
-                'jurnal_kbm' => [
+                'jurnal_kbm' => $pertemuan->jurnal ? [
                     'jurnal_kbm_id' => $pertemuan->jurnal?->id,
                     'uraian_kegiatan' => $pertemuan->jurnal?->uraian_kegiatan,
                     'metode' => $pertemuan->jurnal?->metode,
                     'catatan' => $pertemuan->jurnal?->catatan,
-                ],
+                ] : null,
     
                 // Manual
                 'materi' => $pertemuan->materi ? [
@@ -164,6 +166,14 @@ class PertemuanController extends Controller
                     ? asset(str_replace('public/', 'storage/', $pertemuan->tugas?->file_soal))
                     : null,
                     'deadline' => $pertemuan->tugas?->deadline ? Carbon::parse($pertemuan->tugas->deadline)->translatedFormat('l, d F Y - H.i') : null,
+                ] : null,
+
+                // Manual
+                'absensi_guru'   => $pertemuan->absensiPelajaran ? [
+                    'absensi_guru_id'   => $pertemuan->absensiPelajaran->id,
+                    'nama_guru'         => $pertemuan->absensiPelajaran->guru->nama,
+                    'hari'              => $pertemuan->absensiPelajaran->hari?->translatedFormat('l, d F Y - H.i'),
+                    'status'            => $pertemuan->absensiPelajaran->status,
                 ] : null,
             ],            
         ];

@@ -19,6 +19,8 @@ return new class extends Migration
             
             $table->foreignId('jadwal_pelajaran_id')->constrained('jadwal_pelajarans')->cascadeOnDelete();
             
+            $table->foreignId('pertemuan_id')->constrained('pertemuan')->cascadeOnDelete();
+            
             $table->date('hari');             
             
             $table->enum('status', ['hadir', 'izin', 'sakit', 'alpa']);
@@ -34,6 +36,7 @@ return new class extends Migration
             $table->unique([
                 'siswa_id',
                 'jadwal_pelajaran_id',
+                'pertemuan_id',
                 'hari',
                 'tahun_akademik_id',
                 'semester_id',

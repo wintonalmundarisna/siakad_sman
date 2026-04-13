@@ -41,4 +41,14 @@ class Pertemuan extends Model
     {
         return $this->hasOne(Tugas::class);
     }
+
+    public function absensiPelajaran()
+    {
+        return $this->hasOne(AbsensiPelajaran::class, 'pertemuan_id');
+    }
+
+    public function absensiSiswa()
+    {
+        return $this->hasMany(AbsensiSiswa::class, 'pertemuan_id');
+    }
 }

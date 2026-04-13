@@ -19,6 +19,8 @@ return new class extends Migration
 
             $table->foreignId('jadwal_pelajaran_id')->constrained('jadwal_pelajarans')->onDelete('cascade');;
 
+            $table->foreignId('pertemuan_id')->constrained('pertemuan')->onDelete('cascade');;
+
             // Kolom lainnya
             $table->date('hari');
 
@@ -33,6 +35,7 @@ return new class extends Migration
             $table->unique([
                 'guru_pengajar_id',
                 'jadwal_pelajaran_id',
+                'pertemuan_id',
                 'hari',
                 'tahun_akademik_id',
                 'semester_id'
