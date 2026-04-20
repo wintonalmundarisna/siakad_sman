@@ -6,9 +6,10 @@ use Illuminate\Http\Request;
 use App\Models\Kepegawaian;
 use App\Models\WaliRombel;
 use App\Models\TahunAkademik;
+use App\Models\JadwalPelajaran;
 use App\Helpers\ApiResponse;
 // use App\Models\Rombel;
-// use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Auth;
 // use Illuminate\Support\Facades\Validator;
 
 class WaliRombelController extends Controller
@@ -176,9 +177,94 @@ class WaliRombelController extends Controller
    
 
     // guru
-    public function getAllRombelSendiri(string $id)
-    {
-        //
+    // ! baru sampe sini, besok coba 1 hal berikut:
+    // 1. benerin absensi siswa dan guru, karna udah gapake jadwal_id, pakenya pertemuan_id
+    public function getRombelSendiri()
+    {        
+        $guru = Auth::guard('kepegawaian')->user();
+
+        $tahunAktif = TahunAkademik::where('status', 'aktif')->first();
+
+        if (!$tahunAktif) {
+            return ApiResponse::error('Tahun akademik aktif tidak ditemukan');
+        }
+
+        $waliRombel = WaliRombel::with([
+            'wali',
+            'rombel.kelas',
+            'rombel.jurusan',
+            'rombel.siswaRombels.siswa',
+            'rombel.jadwalPelajarans.guru',
+            'rombel.jadwalPelajarans.ruangan',
+            'rombel.jadwalPelajarans.kurikulumMataPelajaran.mataPelajaran',
+            'tahunAkademik'
+        ])
+        ->where('wali_rombel_id', $guru?->id)
+        ->where('tahun_akademik_id', $tahunAktif->id)
+        ->first();
+
+        if (!$waliRombel) {
+            return ApiResponse::error('Data wali rombel tidak ditemukan');
+        }
+
+        // Ambil jadwal pelajaran rombel tertentu pada tahun aktif
+        $jadwalPelajaran = JadwalPelajaran::with([
+            'guru',
+            'ruangan',
+            'kurikulumMataPelajaran.mataPelajaran',
+            'kurikulumMataPelajaran.kurikulum',
+        ])
+        ->where('guru_id', $guru?->id)
+        ->where('tahun_akademik_id', $tahunAktif->id)
+        ->where('rombel_id', $waliRombel?->rombel?->id)
+        ->get();
+
+        $formatted = [
+            'wali_rombel_id' => $waliRombel?->id,
+
+            'nama_wali' => $waliRombel?->wali?->nama,
+            'nip'       => $waliRombel?->wali?->nip,
+            'nuptk'     => $waliRombel?->wali?->nuptk,
+
+            'tahun_akademik' => [
+                'tahun_akademik' => $waliRombel?->tahunAkademik?->tahun_akademik,
+                'status_tahun'   => $waliRombel?->tahunAkademik?->status,
+            ],
+
+            'rombel' => [
+                'rombel_id'   => $waliRombel?->rombel?->id,
+                'nama_rombel' => $waliRombel?->rombel?->nama_rombel,
+                'tingkat'     => $waliRombel?->rombel?->kelas?->tingkat,
+                'jurusan'     => $waliRombel?->rombel?->jurusan?->nama_jurusan,
+            ],
+
+            'siswa' => $waliRombel?->rombel?->siswaRombels?->map(function ($item) {
+                return [
+                    'siswa_id'   => $item?->siswa?->id,
+                    'nama_siswa' => $item?->siswa?->nama,
+                    'nisn'       => $item?->siswa?->nisn,
+                    'nis'        => $item?->siswa?->nis,
+                ];
+            })->values(),
+
+            'jadwal_pelajaran' => $waliRombel?->rombel?->jadwalPelajarans?->map(function ($jadwal) {
+                return [
+                    'jadwal_pelajaran_id' => $jadwal?->id,
+                    'mata_pelajaran' => $jadwal?->kurikulumMataPelajaran?->mataPelajaran?->nama_pelajaran,
+                    'guru' => $jadwal?->guru?->nama,
+                    'hari' => $jadwal?->hari,
+                    'jam_mulai' => $jadwal?->jam_mulai,
+                    'jam_selesai' => $jadwal?->jam_selesai,
+                    'ruangan' => $jadwal?->ruangan?->nama_ruangan,
+                    'link_opsional' => $jadwal?->link_opsional,
+                    // 'rombel_id' => $jadwal?->rombel_id,
+                    // 'rombel' => $jadwal?->rombel->nama_rombel,
+                ];
+            })->values(),
+        ];
+
+        return ApiResponse::success($formatted, 'Data berhasil ditampilkan');
+        
     }
 
     /**

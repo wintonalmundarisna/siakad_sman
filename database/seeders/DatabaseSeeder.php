@@ -3190,102 +3190,7 @@ class DatabaseSeeder extends Seeder
                 'jam_selesai' => '10:30',
                 'ruangan_id' => 2,
                 'link_opsional' => 'www.youtube.com',                
-            ],            
-
-
-            // XI-B-1
-            // Ganjil
-            // [
-            //     // 21
-            //     'kurikulum_mata_pelajaran_id' => 16, // K13 - MTK
-            //     'tahun_akademik_id' => 2, // 2024/2025
-            //     'semester_id' => 3, // Ganjil
-            //     'hari' => 'Senin',
-            //     'guru_id' => 9, // Guru MTK
-            //     'rombel_id' => 5, // XI-B-1
-            //     'jam_mulai' => '07:30',
-            //     'jam_selesai' => '08:30',
-            //     'ruangan_id' => 2,
-            //     'link_opsional' => '',              
-            // ],        
-            // [
-            //     // 22
-            //     'kurikulum_mata_pelajaran_id' => 14, // K13 - Indo
-            //     'tahun_akademik_id' => 2,
-            //     'semester_id' => 3,
-            //     'hari' => 'Senin',
-            //     'guru_id' => 7, // Guru Indo
-            //     'rombel_id' => 5, // XI-B-1
-            //     'jam_mulai' => '08:30',
-            //     'jam_selesai' => '10:00',
-            //     'ruangan_id' => 2,
-            //     'link_opsional' => '',              
-            // ],        
-            // [
-            //     // 23
-            //     'kurikulum_mata_pelajaran_id' => 12, // K13 - PAI
-            //     'tahun_akademik_id' => 2,
-            //     'semester_id' => 3,
-            //     'hari' => 'Selasa',
-            //     'guru_id' => 5, // Guru PAI
-            //     'rombel_id' => 5, // XI-B-1
-            //     'jam_mulai' => '07:00',
-            //     'jam_selesai' => '08:30',
-            //     'ruangan_id' => 2,
-            //     'link_opsional' => '',              
-            // ],        
-            // [
-            //     // 24
-            //     'kurikulum_mata_pelajaran_id' => 13, // K13 - PPKn
-            //     'tahun_akademik_id' => 2,
-            //     'semester_id' => 3,
-            //     'hari' => 'Selasa',
-            //     'guru_id' => 6, // Guru PPKn
-            //     'rombel_id' => 5, // XI-B-1
-            //     'jam_mulai' => '08:30',
-            //     'jam_selesai' => '10:00',
-            //     'ruangan_id' => 2,
-            //     'link_opsional' => '',              
-            // ],                    
-            // [
-            //     // 25
-            //     'kurikulum_mata_pelajaran_id' => 15, // merdeka - Inggris
-            //     'tahun_akademik_id' => 2,
-            //     'semester_id' => 3,
-            //     'hari' => 'Rabu',
-            //     'guru_id' => 8, // Guru Inggris
-            //     'rombel_id' => 5, // XI-B-1
-            //     'jam_mulai' => '07:30',
-            //     'jam_selesai' => '08:30',
-            //     'ruangan_id' => 1,                
-            //     'link_opsional' => 'www.youtube.com',                
-            // ],
-            // [
-            //     // 26
-            //     'kurikulum_mata_pelajaran_id' => 20, // merdeka - Informatika
-            //     'tahun_akademik_id' => 2,
-            //     'semester_id' => 3,
-            //     'hari' => 'Rabu',
-            //     'guru_id' => 13, // Guru Informatika
-            //     'rombel_id' => 5, // XI-B-1
-            //     'jam_mulai' => '08:30',
-            //     'jam_selesai' => '10:00',
-            //     'ruangan_id' => 2,
-            //     'link_opsional' => 'www.youtube.com',                
-            // ],
-            // [
-            //     // 27
-            //     'kurikulum_mata_pelajaran_id' => 17, // merdeka - Sejarah
-            //     'tahun_akademik_id' => 2,
-            //     'semester_id' => 3,
-            //     'hari' => 'Kamis',
-            //     'guru_id' => 10, // Guru Sejarah
-            //     'rombel_id' => 5, // XI-B-1
-            //     'jam_mulai' => '07:30',
-            //     'jam_selesai' => '08:30',
-            //     'ruangan_id' => 2,
-            //     'link_opsional' => 'www.youtube.com', 
-            // ],    
+            ],                        
             [
                 // 26
                 'kurikulum_mata_pelajaran_id' => 9, // merdeka - Seni Budaya
@@ -3350,9 +3255,143 @@ class DatabaseSeeder extends Seeder
                 'jam_selesai' => '12:30',
                 'ruangan_id' => 1,
                 'link_opsional' => '',              
-            ],              
+            ],     
+            // XI-B-2 (2024/2025)
+            // Ganjil
             [
-                // 1
+                // 31
+                'kurikulum_mata_pelajaran_id' => 6, // K13 - MTK
+                'tahun_akademik_id' => 2, // 2024/2025
+                'semester_id' => 3, // Ganjil
+                'hari' => 'Senin',
+                'guru_id' => 9, // Guru MTK
+                'rombel_id' => 14, // X-B-1
+                'jam_mulai' => '17:30',
+                'jam_selesai' => '20:30',
+                'ruangan_id' => 2,
+                'link_opsional' => '',              
+            ],        
+            [
+                // 32
+                'kurikulum_mata_pelajaran_id' => 6, // K13 - MTK
+                'tahun_akademik_id' => 2, // 2024/2025
+                'semester_id' => 3, // Ganjil
+                'hari' => 'Rabu',
+                'guru_id' => 9, // Guru MTK
+                'rombel_id' => 14, // X-C-1
+                'jam_mulai' => '16:30',
+                'jam_selesai' => '19:30',
+                'ruangan_id' => 2,
+                'link_opsional' => '',              
+            ],        
+            [
+                // 33
+                'kurikulum_mata_pelajaran_id' => 4, // K13 - Indo
+                'tahun_akademik_id' => 2,
+                'semester_id' => 3,
+                'hari' => 'Sabtu',
+                'guru_id' => 7, // Guru Indo
+                'rombel_id' => 14, // X-B-1
+                'jam_mulai' => '18:30',
+                'jam_selesai' => '19:00',
+                'ruangan_id' => 2,
+                'link_opsional' => '',              
+            ],                    
+
+            // Genap
+            [
+                // 24
+                'kurikulum_mata_pelajaran_id' => 7, // merdeka - Sejarah
+                'tahun_akademik_id' => 2,
+                'semester_id' => 4,
+                'hari' => 'Minggu',
+                'guru_id' => 10, // Guru Sejarah
+                'rombel_id' => 14, // X-B-1
+                'jam_mulai' => '17:30',
+                'jam_selesai' => '19:30',
+                'ruangan_id' => 2,
+                'link_opsional' => 'www.youtube.com', 
+            ],                
+            [
+                // 25
+                'kurikulum_mata_pelajaran_id' => 8, // merdeka - PJOK
+                'tahun_akademik_id' => 2,
+                'semester_id' => 4,
+                'hari' => 'Minggu',
+                'guru_id' => 11, // Guru PJOK
+                'rombel_id' => 14, // X-B-1
+                'jam_mulai' => '19:00',
+                'jam_selesai' => '21:30',
+                'ruangan_id' => 2,
+                'link_opsional' => 'www.youtube.com',                
+            ],                        
+            [
+                // 26
+                'kurikulum_mata_pelajaran_id' => 9, // merdeka - Seni Budaya
+                'tahun_akademik_id' => 2,
+                'semester_id' => 4,
+                'hari' => 'Minggu',
+                'guru_id' => 12, // Guru Senbud
+                'rombel_id' => 14, // XI-B-1
+                'jam_mulai' => '01:00',
+                'jam_selesai' => '15:00',
+                'ruangan_id' => 1,                
+                'link_opsional' => 'www.youtube.com',                
+            ],
+            [
+                // 27
+                'kurikulum_mata_pelajaran_id' => 32, // Fisika
+                'tahun_akademik_id' => 2,
+                'semester_id' => 4,
+                'hari' => 'Kamis',
+                'guru_id' => 16, // Guru Fisika
+                'rombel_id' => 14, // XI-B-1
+                'jam_mulai' => '20:30',
+                'jam_selesai' => '22:00',
+                'ruangan_id' => 1,                
+                'link_opsional' => 'www.youtube.com',                
+            ],
+            [
+                // 28
+                'kurikulum_mata_pelajaran_id' => 50, // Bahasa Jepang
+                'tahun_akademik_id' => 2,
+                'semester_id' => 3,
+                'hari' => 'Jumat',
+                'guru_id' => 20, // Guru Jepang
+                'rombel_id' => 14, // XI-B-1
+                'jam_mulai' => '17:30',
+                'jam_selesai' => '19:30',
+                'ruangan_id' => 2,
+                'link_opsional' => 'www.youtube.com',                
+            ],
+            [
+                // 29
+                'kurikulum_mata_pelajaran_id' => 54, // Bahasa Jerman
+                'tahun_akademik_id' => 2,
+                'semester_id' => 3,
+                'hari' => 'Jumat',
+                'guru_id' => 21, // Guru Jerman
+                'rombel_id' => 14, // XI-B-1
+                'jam_mulai' => '18:30',
+                'jam_selesai' => '20:00',
+                'ruangan_id' => 2,
+                'link_opsional' => 'www.youtube.com', 
+            ],             
+            [
+                // 30
+                'kurikulum_mata_pelajaran_id' => 6, // K13 - MTK
+                'tahun_akademik_id' => 2, // 2023/2024
+                'semester_id' => 4, // Ganjil
+                'hari' => 'Selasa',
+                'guru_id' => 9, // Guru MTK
+                'rombel_id' => 14, // XI-B-1
+                'jam_mulai' => '19:30',
+                'jam_selesai' => '21:30',
+                'ruangan_id' => 1,
+                'link_opsional' => '',              
+            ],            
+            [
+                // 
                 'kurikulum_mata_pelajaran_id' => 6, // K13 - MTK
                 'tahun_akademik_id' => 1, // 2023/2024
                 'semester_id' => 1, // Ganjil
@@ -3363,9 +3402,531 @@ class DatabaseSeeder extends Seeder
                 'jam_selesai' => '08:30',
                 'ruangan_id' => 1,
                 'link_opsional' => '',              
-                ]          
+            ]          
             
         ]);              
+
+         // Pertemuan
+         Pertemuan::insert([
+            // 1
+            [
+                'jadwal_pelajaran_id' => 2, // Indo | 2023 (Ganjil) | X-B-1
+                'pertemuan_ke'  => 1,
+                'judul' => 'Memahami Penulisan KBBI',
+                'tanggal'   => '2023-05-01',
+                'jenis' => 'normal'
+            ],
+            // 2
+            [
+                'jadwal_pelajaran_id' => 2, // Indo | 2023 (Ganjil) | X-B-1
+                'pertemuan_ke'  => 2,
+                'judul' => 'Menulis sesuai KBBI',
+                'tanggal'   => '2023-05-08',
+                'jenis' => 'normal'
+            ],
+            // 3
+            [
+                'jadwal_pelajaran_id' => 2, // Indo | 2023 (Ganjil) | X-B-1
+                'pertemuan_ke'  => 3,
+                'judul' => 'Membuat berita acara sesuai KBBI',
+                'tanggal'   => '2023-05-15',
+                'jenis' => 'normal'
+            ],
+            // 4
+            [
+                'jadwal_pelajaran_id' => 2, // Indo | 2023 (Ganjil) | X-B-1
+                'pertemuan_ke'  => 4,
+                'judul' => 'Menulis Teks Wawancara',
+                'tanggal'   => '2023-05-22',
+                'jenis' => 'normal'
+            ],
+            // 5
+            [
+                'jadwal_pelajaran_id' => 2, // Indo | 2023 (Ganjil) | X-B-1
+                'pertemuan_ke'  => 5,
+                'judul' => 'Praktik Wawancara',
+                'tanggal'   => '2023-05-29',
+                'jenis' => 'normal'
+            ],
+            // 6
+            [
+                'jadwal_pelajaran_id' => 2, // Indo | 2023 (Ganjil) | X-B-1
+                'pertemuan_ke'  => 6,
+                'judul' => 'Menganalisis Kalimat Efektif',
+                'tanggal'   => '2023-06-05',
+                'jenis' => 'normal'
+            ],
+            // 7
+            [
+                'jadwal_pelajaran_id' => 2, // Indo | 2023 (Ganjil) | X-B-1
+                'pertemuan_ke'  => 7,
+                'judul' => 'Menulis Kalimat Efektif',
+                'tanggal'   => '2023-06-12',
+                'jenis' => 'normal'
+            ],
+            // 8 (UTS)
+            [
+                'jadwal_pelajaran_id' => 2, // Indo | 2023 (Ganjil) | X-B-1
+                'pertemuan_ke'  => 8,
+                'judul' => 'UTS',
+                'tanggal'   => '2023-06-19',
+                'jenis' => 'uts'
+            ],
+            // 9
+            [
+                'jadwal_pelajaran_id' => 2, // Indo | 2023 (Ganjil) | X-B-1
+                'pertemuan_ke'  => 9,
+                'judul' => 'Kalimat Tersirat',
+                'tanggal'   => '2023-06-26',
+                'jenis' => 'normal'
+            ],
+            // 10
+            [
+                'jadwal_pelajaran_id' => 2, // Indo | 2023 (Ganjil) | X-B-1
+                'pertemuan_ke'  => 10,
+                'judul' => 'Kalimat Tersurat',
+                'tanggal'   => '2023-07-03',
+                'jenis' => 'normal'
+            ],
+            // 11
+            [
+                'jadwal_pelajaran_id' => 2, // Indo | 2023 (Ganjil) | X-B-1
+                'pertemuan_ke'  => 11,
+                'judul' => 'Majas Hiperbola',
+                'tanggal'   => '2023-07-10',
+                'jenis' => 'normal'
+            ],
+            // 12
+            [
+                'jadwal_pelajaran_id' => 2, // Indo | 2023 (Ganjil) | X-B-1
+                'pertemuan_ke'  => 12,
+                'judul' => 'Majas Metafora',
+                'tanggal'   => '2023-07-17',
+                'jenis' => 'normal'
+            ],
+            // 13
+            [
+                'jadwal_pelajaran_id' => 2, // Indo | 2023 (Ganjil) | X-B-1
+                'pertemuan_ke'  => 13,
+                'judul' => 'Majas Sarkasme',
+                'tanggal'   => '2023-07-24',
+                'jenis' => 'normal'
+            ],
+            // 14
+            [
+                'jadwal_pelajaran_id' => 2, // Indo | 2023 (Ganjil) | X-B-1
+                'pertemuan_ke'  => 14,
+                'judul' => 'Majas Ironi',
+                'tanggal'   => '2023-07-31',
+                'jenis' => 'normal'
+            ],
+            // 15
+            [
+                'jadwal_pelajaran_id' => 2, // Indo | 2023 (Ganjil) | X-B-1
+                'pertemuan_ke'  => 15,
+                'judul' => 'Majas Retorika',
+                'tanggal'   => '2023-08-07',
+                'jenis' => 'normal'
+            ],
+            // 16 (UAS)
+            [
+                'jadwal_pelajaran_id' => 2, // Indo | 2023 (Ganjil) | X-B-1
+                'pertemuan_ke'  => 16,
+                'judul' => 'UAS',
+                'tanggal'   => '2023-08-14',
+                'jenis' => 'uas'
+            ],
+
+            // Genap
+            // 17
+            [
+                'jadwal_pelajaran_id' => 12, // Indo | 2024 (Genap) | X-B-1
+                'pertemuan_ke'  => 1,
+                'judul' => 'Membuat Cerita Fiksi',
+                'tanggal'   => '2024-01-01',
+                'jenis' => 'normal'
+            ],
+            // 18
+            [
+                'jadwal_pelajaran_id' => 12, // Indo | 2024 (Genap) | X-B-1
+                'pertemuan_ke'  => 2,
+                'judul' => 'Presentasi Cerita Fiksi',
+                'tanggal'   => '2024-01-08',
+                'jenis' => 'normal'
+            ],
+            // 19
+            [
+                'jadwal_pelajaran_id' => 12, // Indo | 2024 (Genap) | X-B-1
+                'pertemuan_ke'  => 3,
+                'judul' => 'Membuat berita acara sesuai KBBI',
+                'tanggal'   => '2024-01-15',
+                'jenis' => 'normal'
+            ],
+            // 20
+            [
+                'jadwal_pelajaran_id' => 12, // Indo | 2024 (Genap) | X-B-1
+                'pertemuan_ke'  => 4,
+                'judul' => 'Menulis Teks Wawancara',
+                'tanggal'   => '2024-01-22',
+                'jenis' => 'normal'
+            ],
+            // 21
+            [
+                'jadwal_pelajaran_id' => 12, // Indo | 2024 (Genap) | X-B-1
+                'pertemuan_ke'  => 5,
+                'judul' => 'Praktik Wawancara',
+                'tanggal'   => '2024-02-05',
+                'jenis' => 'normal'
+            ],
+            // 22
+            [
+                'jadwal_pelajaran_id' => 12, // Indo | 2024 (Genap) | X-B-1
+                'pertemuan_ke'  => 6,
+                'judul' => 'Menganalisis Kalimat Efektif',
+                'tanggal'   => '2024-02-12',
+                'jenis' => 'normal'
+            ],
+            // 23
+            [
+                'jadwal_pelajaran_id' => 12, // Indo | 2024 (Genap) | X-B-1
+                'pertemuan_ke'  => 7,
+                'judul' => 'Menulis Kalimat Efektif',
+                'tanggal'   => '2024-02-19',
+                'jenis' => 'normal'
+            ],
+            // 24 (UTS)
+            [
+                'jadwal_pelajaran_id' => 12, // Indo | 2024 (Genap) | X-B-1
+                'pertemuan_ke'  => 8,
+                'judul' => 'UTS',
+                'tanggal'   => '2024-02-26',
+                'jenis' => 'uts'
+            ],
+            //25
+            [
+                'jadwal_pelajaran_id' => 12, // Indo | 2024 (Genap) | X-B-1
+                'pertemuan_ke'  => 9,
+                'judul' => 'Kalimat Tersirat',
+                'tanggal'   => '2024-03-04',
+                'jenis' => 'normal'
+            ],
+            // 26
+            [
+                'jadwal_pelajaran_id' => 12, // Indo | 2024 (Genap) | X-B-1
+                'pertemuan_ke'  => 10,
+                'judul' => 'Kalimat Tersurat',
+                'tanggal'   => '2024-03-11',
+                'jenis' => 'normal'
+            ],
+            // 27
+            [
+                'jadwal_pelajaran_id' => 12, // Indo | 2024 (Genap) | X-B-1
+                'pertemuan_ke'  => 11,
+                'judul' => 'Majas Hiperbola',
+                'tanggal'   => '2024-03-18',
+                'jenis' => 'normal'
+            ],
+            // 28
+            [
+                'jadwal_pelajaran_id' => 12, // Indo | 2024 (Genap) | X-B-1
+                'pertemuan_ke'  => 12,
+                'judul' => 'Majas Metafora',
+                'tanggal'   => '2024-03-25',
+                'jenis' => 'normal'
+            ],
+            // 29
+            [
+                'jadwal_pelajaran_id' => 12, // Indo | 2024 (Genap) | X-B-1
+                'pertemuan_ke'  => 13,
+                'judul' => 'Majas Sarkasme',
+                'tanggal'   => '2024-04-01',
+                'jenis' => 'normal'
+            ],
+            // 30
+            [
+                'jadwal_pelajaran_id' => 12, // Indo | 2024 (Genap) | X-B-1
+                'pertemuan_ke'  => 14,
+                'judul' => 'Majas Ironi',
+                'tanggal'   => '2024-04-08',
+                'jenis' => 'normal'
+            ],
+            // 31
+            [
+                'jadwal_pelajaran_id' => 12, // Indo | 2024 (Genap) | X-B-1
+                'pertemuan_ke'  => 15,
+                'judul' => 'Majas Retorika',
+                'tanggal'   => '2024-04-15',
+                'jenis' => 'normal'
+            ],
+            // 32 (UAS)
+            [
+                'jadwal_pelajaran_id' => 12, // Indo | 2024 (Genap) | X-B-1
+                'pertemuan_ke'  => 16,
+                'judul' => 'UAS',
+                'tanggal'   => '2024-04-22',
+                'jenis' => 'uas'
+            ],
+
+            // MTK
+            // 33 (1)
+            [
+                'jadwal_pelajaran_id' => 1, // MTK | 2023 (Ganjil) | X-B-1
+                'pertemuan_ke'  => 1,
+                'judul' => 'Bilangan Bulat dan Operasinya',
+                'tanggal'   => '2023-05-01',
+                'jenis' => 'normal'
+            ],
+            // 34 (2)
+            [
+                'jadwal_pelajaran_id' => 1, // MTK | 2023 (Ganjil) | X-B-1
+                'pertemuan_ke'  => 2,
+                'judul' => 'Bilangan Pecahan dan Desimal',
+                'tanggal'   => '2023-05-08',
+                'jenis' => 'normal'
+            ],
+            // 35 (3)
+            [
+                'jadwal_pelajaran_id' => 1, // MTK | 2023 (Ganjil) | X-B-1
+                'pertemuan_ke'  => 3,
+                'judul' => 'Faktor, Kelipatan, dan Bilangan Prima',
+                'tanggal'   => '2023-05-15',
+                'jenis' => 'normal'
+            ],
+            // 36 (4)
+            [
+                'jadwal_pelajaran_id' => 1, // MTK | 2023 (Ganjil) | X-B-1
+                'pertemuan_ke'  => 4,
+                'judul' => 'Perbandingan dan Skala',
+                'tanggal'   => '2023-05-22',
+                'jenis' => 'normal'
+            ],
+            // 37 (5)
+            [
+                'jadwal_pelajaran_id' => 1, // MTK | 2023 (Ganjil) | X-B-1
+                'pertemuan_ke'  => 5,
+                'judul' => 'Persamaan Linear Satu Variabel',
+                'tanggal'   => '2023-05-29',
+                'jenis' => 'normal'
+            ],
+            // 38 (6)
+            [
+                'jadwal_pelajaran_id' => 1, // MTK | 2023 (Ganjil) | X-B-1
+                'pertemuan_ke'  => 6,
+                'judul' => 'Pertidaksamaan Linear Satu Variabel',
+                'tanggal'   => '2023-06-05',
+                'jenis' => 'normal'
+            ],
+            // 39 (7)
+            [
+                'jadwal_pelajaran_id' => 1, // MTK | 2023 (Ganjil) | X-B-1
+                'pertemuan_ke'  => 7,
+                'judul' => 'Sistem Persamaan Linear Dua Variabel',
+                'tanggal'   => '2023-06-12',
+                'jenis' => 'normal'
+            ],
+            // 40 (8) (UTS)
+            [
+                'jadwal_pelajaran_id' => 1, // MTK | 2023 (Ganjil) | X-B-1
+                'pertemuan_ke'  => 8,
+                'judul' => 'UTS',
+                'tanggal'   => '2023-06-19',
+                'jenis' => 'uts'
+            ],
+            // 41 (9)
+            [
+                'jadwal_pelajaran_id' => 1, // MTK | 2023 (Ganjil) | X-B-1
+                'pertemuan_ke'  => 9,
+                'judul' => 'Fungsi dan Grafik Linear',
+                'tanggal'   => '2023-06-26',
+                'jenis' => 'normal'
+            ],
+            // 42 (10)
+            [
+                'jadwal_pelajaran_id' => 1, // MTK | 2023 (Ganjil) | X-B-1
+                'pertemuan_ke'  => 10,
+                'judul' => 'Bangun Datar: Segitiga dan Segiempat',
+                'tanggal'   => '2023-07-03',
+                'jenis' => 'normal'
+            ],
+            // 43 (11)
+            [
+                'jadwal_pelajaran_id' => 1, // MTK | 2023 (Ganjil) | X-B-1
+                'pertemuan_ke'  => 11,
+                'judul' => 'Lingkaran: Unsur dan Keliling',
+                'tanggal'   => '2023-07-10',
+                'jenis' => 'normal'
+            ],
+            // 44 (12)
+            [
+                'jadwal_pelajaran_id' => 1, // MTK | 2023 (Ganjil) | X-B-1
+                'pertemuan_ke'  => 12,
+                'judul' => 'Luas Bangun Datar',
+                'tanggal'   => '2023-07-17',
+                'jenis' => 'normal'
+            ],
+            // 45 (13)
+            [
+                'jadwal_pelajaran_id' => 1, // MTK | 2023 (Ganjil) | X-B-1
+                'pertemuan_ke'  => 13,
+                'judul' => 'Bangun Ruang: Kubus dan Balok',
+                'tanggal'   => '2023-07-24',
+                'jenis' => 'normal'
+            ],
+            // 46 (14)
+            [
+                'jadwal_pelajaran_id' => 1, // MTK | 2023 (Ganjil) | X-B-1
+                'pertemuan_ke'  => 14,
+                'judul' => 'Bangun Ruang: Prisma dan Limas',
+                'tanggal'   => '2023-07-31',
+                'jenis' => 'normal'
+            ],
+            // 47 (15)
+            [
+                'jadwal_pelajaran_id' => 1, // MTK | 2023 (Ganjil) | X-B-1
+                'pertemuan_ke'  => 15,
+                'judul' => 'Bangun Ruang: Tabung, Kerucut, dan Bola',
+                'tanggal'   => '2023-08-07',
+                'jenis' => 'normal'
+            ],
+            // 48 (16) (UAS)
+            [
+                'jadwal_pelajaran_id' => 1, // MTK | 2023 (Ganjil) | X-B-1
+                'pertemuan_ke'  => 16,
+                'judul' => 'UAS',
+                'tanggal'   => '2023-08-14',
+                'jenis' => 'uas'
+            ],
+
+            // Genap
+            // 49 (1)
+            [
+                'jadwal_pelajaran_id' => 11, // MTK | 2024 (Genap) | X-B-1
+                'pertemuan_ke'  => 1,
+                'judul' => 'Statistika: Data, Tabel, dan Diagram',
+                'tanggal'   => '2024-01-01',
+                'jenis' => 'normal'
+            ],
+            // 50 (2)
+            [
+                'jadwal_pelajaran_id' => 11, // MTK | 2024 (Genap) | X-B-1
+                'pertemuan_ke'  => 2,
+                'judul' => 'Ukuran Pemusatan Data (Mean, Median, Modus)',
+                'tanggal'   => '2024-01-08',
+                'jenis' => 'normal'
+            ],
+            // 51 (3)
+            [
+                'jadwal_pelajaran_id' => 11, // MTK | 2024 (Genap) | X-B-1
+                'pertemuan_ke'  => 3,
+                'judul' => 'Peluang dan Percobaan Sederhana',
+                'tanggal'   => '2024-01-15',
+                'jenis' => 'normal'
+            ],
+            // 52 (4)
+            [
+                'jadwal_pelajaran_id' => 11, // MTK | 2024 (Genap) | X-B-1
+                'pertemuan_ke'  => 4,
+                'judul' => 'Barisan Aritmetika',
+                'tanggal'   => '2024-01-22',
+                'jenis' => 'normal'
+            ],
+            // 53 (5)
+            [
+                'jadwal_pelajaran_id' => 11, // MTK | 2024 (Genap) | X-B-1
+                'pertemuan_ke'  => 5,
+                'judul' => 'Deret Aritmetika',
+                'tanggal'   => '2024-02-05',
+                'jenis' => 'normal'
+            ],
+            // 54 (6)
+            [
+                'jadwal_pelajaran_id' => 11, // MTK | 2024 (Genap) | X-B-1
+                'pertemuan_ke'  => 6,
+                'judul' => 'Barisan Geometri',
+                'tanggal'   => '2024-02-12',
+                'jenis' => 'normal'
+            ],
+            // 55 (7)
+            [
+                'jadwal_pelajaran_id' => 11, // MTK | 2024 (Genap) | X-B-1
+                'pertemuan_ke'  => 7,
+                'judul' => 'Deret Geometri',
+                'tanggal'   => '2024-02-19',
+                'jenis' => 'normal'
+            ],
+            // 56 (8) (UTS)
+            [
+                'jadwal_pelajaran_id' => 11, // MTK | 2024 (Genap) | X-B-1
+                'pertemuan_ke'  => 8,
+                'judul' => 'UTS',
+                'tanggal'   => '2024-02-26',
+                'jenis' => 'uts'
+            ],
+            // 57 (9)
+            [
+                'jadwal_pelajaran_id' => 11, // MTK | 2024 (Genap) | X-B-1
+                'pertemuan_ke'  => 9,
+                'judul' => 'Persamaan Kuadrat',
+                'tanggal'   => '2024-03-04',
+                'jenis' => 'normal'
+            ],
+            // 58 (10)
+            [
+                'jadwal_pelajaran_id' => 11, // MTK | 2024 (Genap) | X-B-1
+                'pertemuan_ke'  => 10,
+                'judul' => 'Fungsi Kuadrat dan Grafiknya',
+                'tanggal'   => '2024-03-11',
+                'jenis' => 'normal'
+            ],
+            // 59 (11)
+            [
+                'jadwal_pelajaran_id' => 11, // MTK | 2024 (Genap) | X-B-1
+                'pertemuan_ke'  => 11,
+                'judul' => 'Trigonometri Dasar: Perbandingan Sudut pada Segitiga',
+                'tanggal'   => '2024-03-18',
+                'jenis' => 'normal'
+            ],
+            // 60 (12)
+            [
+                'jadwal_pelajaran_id' => 11, // MTK | 2024 (Genap) | X-B-1
+                'pertemuan_ke'  => 12,
+                'judul' => 'Identitas Trigonometri Sederhana',
+                'tanggal'   => '2024-03-25',
+                'jenis' => 'normal'
+            ],
+            // 61 (13)
+            [
+                'jadwal_pelajaran_id' => 11, // MTK | 2024 (Genap) | X-B-1
+                'pertemuan_ke'  => 13,
+                'judul' => 'Logaritma dan Eksponen',
+                'tanggal'   => '2024-04-01',
+                'jenis' => 'normal'
+            ],
+            // 62 (14)
+            [
+                'jadwal_pelajaran_id' => 11, // MTK | 2024 (Genap) | X-B-1
+                'pertemuan_ke'  => 14,
+                'judul' => 'Limit Fungsi Aljabar',
+                'tanggal'   => '2024-04-08',
+                'jenis' => 'normal'
+            ],
+            // 63 (15)
+            [
+                'jadwal_pelajaran_id' => 11, // MTK | 2024 (Genap) | X-B-1
+                'pertemuan_ke'  => 15,
+                'judul' => 'Turunan Fungsi Aljabar',
+                'tanggal'   => '2024-04-15',
+                'jenis' => 'normal'
+            ],
+            // 64 (16) (UAS)
+            [
+                'jadwal_pelajaran_id' => 11, // MTK | 2024 (Genap) | X-B-1
+                'pertemuan_ke'  => 16,
+                'judul' => 'UAS',
+                'tanggal'   => '2024-04-22',
+                'jenis' => 'uas'
+            ],
+        ]); 
 
         /**
          * 🎯✅ spa: C.R.U.D
@@ -3686,156 +4247,384 @@ class DatabaseSeeder extends Seeder
             [
                 // 1
                 'siswa_id' => 2, // Winton
-                'siswa_rombel_id' => 10,  // X-B-1
-                'jadwal_pelajaran_id' => 1, // MTK
-                'pertemuan_id' => 1,
-                'hari' => '2023-12-02',
+                'pertemuan_id' => 33,
                 'status' => 'hadir',
                 'bukti' => null, // hadir, izin, sakit, alpa                            
+                'siswa_rombel_id' => 10,  // X-B-1
+                'jadwal_pelajaran_id' => 1, // MTK
+                'hari' => '2023-12-02',
                 'tahun_akademik_id' => 1,
                 'semester_id' => 1, // Ganjil
             ],            
             [
                 // 2
                 'siswa_id' => 2, // Winton
-                'siswa_rombel_id' => 10,  // X-B-1
-                'jadwal_pelajaran_id' => 1, // MTK
-                'pertemuan_id' => 1,
-                'hari' => '2023-12-09',
+                'pertemuan_id' => 34,
                 'status' => 'alpa',
                 'bukti' => null, // hadir, izin, sakit, alpa                            
+                'siswa_rombel_id' => 10,  // X-B-1
+                'jadwal_pelajaran_id' => 1, // MTK
+                'hari' => '2023-12-09',
                 'tahun_akademik_id' => 1,
                 'semester_id' => 1, // Ganjil
             ],            
             [
                 // 3
                 'siswa_id' => 2, // Winton
-                'siswa_rombel_id' => 10,  // X-B-1
-                'jadwal_pelajaran_id' => 2, // Indonesia
-                'pertemuan_id' => 1,
-                'hari' => '2023-12-02',
+                'pertemuan_id' => 35,
                 'status' => 'izin',
                 'bukti' => 'izin.jpg', // hadir, izin, sakit, alpa                            
+                'siswa_rombel_id' => 10,  // X-B-1
+                'jadwal_pelajaran_id' => 2, // Indonesia
+                'hari' => '2023-12-02',
                 'tahun_akademik_id' => 1,
                 'semester_id' => 1, // Ganjil
             ],            
             [
                 // 4
                 'siswa_id' => 2, // Winton
-                'siswa_rombel_id' => 10,  // X-B-1
-                'jadwal_pelajaran_id' => 3, // PAI
-                'pertemuan_id' => 1,
-                'hari' => '2023-12-03',
+                'pertemuan_id' => 36,
                 'status' => 'hadir',
                 'bukti' => null, // hadir, izin, sakit, alpa                            
+                'siswa_rombel_id' => 10,  // X-B-1
+                'jadwal_pelajaran_id' => 3, // PAI
+                'hari' => '2023-12-03',
                 'tahun_akademik_id' => 1,
                 'semester_id' => 1, // Ganjil
             ],                        
             [
                 // 5
                 'siswa_id' => 2, // Winton
-                'siswa_rombel_id' => 10,  // X-B-1
-                'jadwal_pelajaran_id' => 1, // MTK
-                'pertemuan_id' => 1,
-                'hari' => '2024-01-09',
+                'pertemuan_id' => 37,
                 'status' => 'hadir',
                 'bukti' => null, // hadir, izin, sakit, alpa                            
+                'siswa_rombel_id' => 10,  // X-B-1
+                'jadwal_pelajaran_id' => 1, // MTK
+                'hari' => '2024-01-09',
                 'tahun_akademik_id' => 1,
                 'semester_id' => 2, // Genap
             ],            
             [
                 // 6
                 'siswa_id' => 2, // Winton
-                'siswa_rombel_id' => 10,  // XI-B-1
-                'jadwal_pelajaran_id' => 2, // Indonesia
-                'pertemuan_id' => 1,
-                'hari' => '2024-01-02',
+                'pertemuan_id' => 38,
                 'status' => 'izin',
                 'bukti' => 'izin.jpg', // hadir, izin, sakit, alpa                            
+                'siswa_rombel_id' => 10,  // XI-B-1
+                'jadwal_pelajaran_id' => 2, // Indonesia
+                'hari' => '2024-01-02',
                 'tahun_akademik_id' => 1,
                 'semester_id' => 2, // Genap
             ],            
             [
                 // 7
                 'siswa_id' => 2, // Winton
-                'siswa_rombel_id' => 10,  // X-B-1
-                'jadwal_pelajaran_id' => 3, // PAI
-                'pertemuan_id' => 1,
-                'hari' => '2024-01-03',
+                'pertemuan_id' => 39,
                 'status' => 'hadir',
                 'bukti' => null, // hadir, izin, sakit, alpa                            
+                'siswa_rombel_id' => 10,  // X-B-1
+                'jadwal_pelajaran_id' => 3, // PAI
+                'hari' => '2024-01-03',
                 'tahun_akademik_id' => 1,
                 'semester_id' => 2, // Genap
             ],                        
             [
                 // 8
                 'siswa_id' => 2, // Winton
-                'siswa_rombel_id' => 3, // XI-B-I
-                'jadwal_pelajaran_id' => 1, // MTK
-                'pertemuan_id' => 1,
-                'hari' => '2024-12-02',
+                'pertemuan_id' => 40,
                 'status' => 'hadir',
                 'bukti' => null, // hadir, izin, sakit, alpa                            
+                'siswa_rombel_id' => 3, // XI-B-I
+                'jadwal_pelajaran_id' => 1, // MTK
+                'hari' => '2024-12-02',
                 'tahun_akademik_id' => 2,
                 'semester_id' => 3, // Ganjil
             ],            
             [
                 // 9
                 'siswa_id' => 2, // Winton
-                'siswa_rombel_id' => 3, // XI-B-I
-                'jadwal_pelajaran_id' => 2, // Indonesia
-                'pertemuan_id' => 2,
-                'hari' => '2023-12-02',
+                'pertemuan_id' => 41,
                 'status' => 'izin',
                 'bukti' => 'izin.jpg', // hadir, izin, sakit, alpa                            
+                'siswa_rombel_id' => 3, // XI-B-I
+                'jadwal_pelajaran_id' => 2, // Indonesia
+                'hari' => '2023-12-02',
                 'tahun_akademik_id' => 2,
                 'semester_id' => 3, // Ganjil
             ],            
             [
                 // 10
                 'siswa_id' => 2, // Winton
-                'siswa_rombel_id' => 3, // XI-B-I
-                'jadwal_pelajaran_id' => 3, // PAI
-                'pertemuan_id' => 1,
-                'hari' => '2023-12-03',
+                'pertemuan_id' => 42,
                 'status' => 'hadir',
                 'bukti' => null, // hadir, izin, sakit, alpa                            
+                'siswa_rombel_id' => 3, // XI-B-I
+                'jadwal_pelajaran_id' => 3, // PAI
+                'hari' => '2023-12-03',
                 'tahun_akademik_id' => 2,
                 'semester_id' => 3, // Ganjil
             ],                        
             [
                 // 11
                 'siswa_id' => 2, // Winton
-                'siswa_rombel_id' => 3, // XI-B-I
-                'jadwal_pelajaran_id' => 1, // MTK
-                'pertemuan_id' => 1,
-                'hari' => '2024-01-02',
+                'pertemuan_id' => 43,
                 'status' => 'hadir',
                 'bukti' => null, // hadir, izin, sakit, alpa                            
+                'siswa_rombel_id' => 3, // XI-B-I
+                'jadwal_pelajaran_id' => 1, // MTK
+                'hari' => '2024-01-02',
                 'tahun_akademik_id' => 2,
                 'semester_id' => 4, // Genap
             ],            
             [
                 // 12
                 'siswa_id' => 2, // Winton
-                'siswa_rombel_id' => 3, // XI-B-I
-                'jadwal_pelajaran_id' => 2, // Indonesia
-                'pertemuan_id' => 1,
-                'hari' => '2024-01-02',
+                'pertemuan_id' => 44,
                 'status' => 'izin',
                 'bukti' => 'izin.jpg', // hadir, izin, sakit, alpa                            
+                'siswa_rombel_id' => 3, // XI-B-I
+                'jadwal_pelajaran_id' => 2, // Indonesia
+                'hari' => '2024-01-02',
                 'tahun_akademik_id' => 2,
                 'semester_id' => 4, // Genap
             ],            
             [
                 // 13
                 'siswa_id' => 2, // Winton
-                'siswa_rombel_id' => 3, // XI-B-I
-                'jadwal_pelajaran_id' => 3, // PAI
-                'pertemuan_id' => 1,
-                'hari' => '2024-01-03',
+                'pertemuan_id' => 45,
                 'status' => 'hadir',
                 'bukti' => null, // hadir, izin, sakit, alpa                            
+                'siswa_rombel_id' => 3, // XI-B-I
+                'jadwal_pelajaran_id' => 3, // PAI
+                'hari' => '2024-01-03',
+                'tahun_akademik_id' => 2,
+                'semester_id' => 4, // Genap
+            ],         
+            [
+                // 13
+                'siswa_id' => 2, // Winton
+                'pertemuan_id' => 46,
+                'status' => 'hadir',
+                'bukti' => null, // hadir, izin, sakit, alpa                            
+                'siswa_rombel_id' => 3, // XI-B-I
+                'jadwal_pelajaran_id' => 3, // PAI
+                'hari' => '2024-01-03',
+                'tahun_akademik_id' => 2,
+                'semester_id' => 4, // Genap
+            ],         
+            [
+                // 13
+                'siswa_id' => 2, // Winton
+                'pertemuan_id' => 47,
+                'status' => 'hadir',
+                'bukti' => null, // hadir, izin, sakit, alpa                            
+                'siswa_rombel_id' => 3, // XI-B-I
+                'jadwal_pelajaran_id' => 3, // PAI
+                'hari' => '2024-01-03',
+                'tahun_akademik_id' => 2,
+                'semester_id' => 4, // Genap
+            ],         
+            [
+                // 13
+                'siswa_id' => 2, // Winton
+                'pertemuan_id' => 48,
+                'status' => 'hadir',
+                'bukti' => null, // hadir, izin, sakit, alpa                            
+                'siswa_rombel_id' => 3, // XI-B-I
+                'jadwal_pelajaran_id' => 3, // PAI
+                'hari' => '2024-01-03',
+                'tahun_akademik_id' => 2,
+                'semester_id' => 4, // Genap
+            ],         
+            [
+                // 1
+                'siswa_id' => 2, // Winton
+                'pertemuan_id' => 49,
+                'status' => 'hadir',
+                'bukti' => null, // hadir, izin, sakit, alpa                            
+                'siswa_rombel_id' => 10,  // X-B-1
+                'jadwal_pelajaran_id' => 1, // MTK
+                'hari' => '2023-12-02',
+                'tahun_akademik_id' => 1,
+                'semester_id' => 1, // Ganjil
+            ],            
+            [
+                // 2
+                'siswa_id' => 2, // Winton
+                'pertemuan_id' => 50,
+                'status' => 'alpa',
+                'bukti' => null, // hadir, izin, sakit, alpa                            
+                'siswa_rombel_id' => 10,  // X-B-1
+                'jadwal_pelajaran_id' => 1, // MTK
+                'hari' => '2023-12-09',
+                'tahun_akademik_id' => 1,
+                'semester_id' => 1, // Ganjil
+            ],            
+            [
+                // 3
+                'siswa_id' => 2, // Winton
+                'pertemuan_id' => 51,
+                'status' => 'izin',
+                'bukti' => 'izin.jpg', // hadir, izin, sakit, alpa                            
+                'siswa_rombel_id' => 10,  // X-B-1
+                'jadwal_pelajaran_id' => 2, // Indonesia
+                'hari' => '2023-12-02',
+                'tahun_akademik_id' => 1,
+                'semester_id' => 1, // Ganjil
+            ],            
+            [
+                // 4
+                'siswa_id' => 2, // Winton
+                'pertemuan_id' => 52,
+                'status' => 'hadir',
+                'bukti' => null, // hadir, izin, sakit, alpa                            
+                'siswa_rombel_id' => 10,  // X-B-1
+                'jadwal_pelajaran_id' => 3, // PAI
+                'hari' => '2023-12-03',
+                'tahun_akademik_id' => 1,
+                'semester_id' => 1, // Ganjil
+            ],                        
+            [
+                // 5
+                'siswa_id' => 2, // Winton
+                'pertemuan_id' => 53,
+                'status' => 'hadir',
+                'bukti' => null, // hadir, izin, sakit, alpa                            
+                'siswa_rombel_id' => 10,  // X-B-1
+                'jadwal_pelajaran_id' => 1, // MTK
+                'hari' => '2024-01-09',
+                'tahun_akademik_id' => 1,
+                'semester_id' => 2, // Genap
+            ],            
+            [
+                // 6
+                'siswa_id' => 2, // Winton
+                'pertemuan_id' => 54,
+                'status' => 'izin',
+                'bukti' => 'izin.jpg', // hadir, izin, sakit, alpa                            
+                'siswa_rombel_id' => 10,  // XI-B-1
+                'jadwal_pelajaran_id' => 2, // Indonesia
+                'hari' => '2024-01-02',
+                'tahun_akademik_id' => 1,
+                'semester_id' => 2, // Genap
+            ],            
+            [
+                // 7
+                'siswa_id' => 2, // Winton
+                'pertemuan_id' => 55,
+                'status' => 'hadir',
+                'bukti' => null, // hadir, izin, sakit, alpa                            
+                'siswa_rombel_id' => 10,  // X-B-1
+                'jadwal_pelajaran_id' => 3, // PAI
+                'hari' => '2024-01-03',
+                'tahun_akademik_id' => 1,
+                'semester_id' => 2, // Genap
+            ],                        
+            [
+                // 8
+                'siswa_id' => 2, // Winton
+                'pertemuan_id' => 56,
+                'status' => 'hadir',
+                'bukti' => null, // hadir, izin, sakit, alpa                            
+                'siswa_rombel_id' => 3, // XI-B-I
+                'jadwal_pelajaran_id' => 1, // MTK
+                'hari' => '2024-12-02',
+                'tahun_akademik_id' => 2,
+                'semester_id' => 3, // Ganjil
+            ],            
+            [
+                // 9
+                'siswa_id' => 2, // Winton
+                'pertemuan_id' => 57,
+                'status' => 'izin',
+                'bukti' => 'izin.jpg', // hadir, izin, sakit, alpa                            
+                'siswa_rombel_id' => 3, // XI-B-I
+                'jadwal_pelajaran_id' => 2, // Indonesia
+                'hari' => '2023-12-02',
+                'tahun_akademik_id' => 2,
+                'semester_id' => 3, // Ganjil
+            ],            
+            [
+                // 10
+                'siswa_id' => 2, // Winton
+                'pertemuan_id' => 58,
+                'status' => 'hadir',
+                'bukti' => null, // hadir, izin, sakit, alpa                            
+                'siswa_rombel_id' => 3, // XI-B-I
+                'jadwal_pelajaran_id' => 3, // PAI
+                'hari' => '2023-12-03',
+                'tahun_akademik_id' => 2,
+                'semester_id' => 3, // Ganjil
+            ],                        
+            [
+                // 11
+                'siswa_id' => 2, // Winton
+                'pertemuan_id' => 59,
+                'status' => 'hadir',
+                'bukti' => null, // hadir, izin, sakit, alpa                            
+                'siswa_rombel_id' => 3, // XI-B-I
+                'jadwal_pelajaran_id' => 1, // MTK
+                'hari' => '2024-01-02',
+                'tahun_akademik_id' => 2,
+                'semester_id' => 4, // Genap
+            ],            
+            [
+                // 12
+                'siswa_id' => 2, // Winton
+                'pertemuan_id' => 60,
+                'status' => 'izin',
+                'bukti' => 'izin.jpg', // hadir, izin, sakit, alpa                            
+                'siswa_rombel_id' => 3, // XI-B-I
+                'jadwal_pelajaran_id' => 2, // Indonesia
+                'hari' => '2024-01-02',
+                'tahun_akademik_id' => 2,
+                'semester_id' => 4, // Genap
+            ],            
+            [
+                // 13
+                'siswa_id' => 2, // Winton
+                'pertemuan_id' => 61,
+                'status' => 'hadir',
+                'bukti' => null, // hadir, izin, sakit, alpa                            
+                'siswa_rombel_id' => 3, // XI-B-I
+                'jadwal_pelajaran_id' => 3, // PAI
+                'hari' => '2024-01-03',
+                'tahun_akademik_id' => 2,
+                'semester_id' => 4, // Genap
+            ],         
+            [
+                // 13
+                'siswa_id' => 2, // Winton
+                'pertemuan_id' => 62,
+                'status' => 'hadir',
+                'bukti' => null, // hadir, izin, sakit, alpa                            
+                'siswa_rombel_id' => 3, // XI-B-I
+                'jadwal_pelajaran_id' => 3, // PAI
+                'hari' => '2024-01-03',
+                'tahun_akademik_id' => 2,
+                'semester_id' => 4, // Genap
+            ],         
+            [
+                // 13
+                'siswa_id' => 2, // Winton
+                'pertemuan_id' => 63,
+                'status' => 'hadir',
+                'bukti' => null, // hadir, izin, sakit, alpa                            
+                'siswa_rombel_id' => 3, // XI-B-I
+                'jadwal_pelajaran_id' => 3, // PAI
+                'hari' => '2024-01-03',
+                'tahun_akademik_id' => 2,
+                'semester_id' => 4, // Genap
+            ],         
+            [
+                // 13
+                'siswa_id' => 2, // Winton
+                'pertemuan_id' => 64,
+                'status' => 'hadir',
+                'bukti' => null, // hadir, izin, sakit, alpa                            
+                'siswa_rombel_id' => 3, // XI-B-I
+                'jadwal_pelajaran_id' => 3, // PAI
+                'hari' => '2024-01-03',
                 'tahun_akademik_id' => 2,
                 'semester_id' => 4, // Genap
             ],         
@@ -3844,144 +4633,192 @@ class DatabaseSeeder extends Seeder
             [
                 // 14
                 'siswa_id' => 1, // Bagas
-                'siswa_rombel_id' => 9,  // X-B-1
-                'jadwal_pelajaran_id' => 1, // MTK
                 'pertemuan_id' => 1,
-                'hari' => '2023-12-02',
                 'status' => 'alpa',
                 'bukti' => null, // hadir, izin, sakit, alpa                            
+                'siswa_rombel_id' => 9,  // X-B-1
+                'jadwal_pelajaran_id' => 1, // MTK
+                'hari' => '2023-12-02',
                 'tahun_akademik_id' => 1,
                 'semester_id' => 1, // Ganjil
             ],            
             [
                 // 15
                 'siswa_id' => 1, // Bagas
-                'siswa_rombel_id' => 9,  // XI-B-1
-                'jadwal_pelajaran_id' => 2, // Indonesia
-                'pertemuan_id' => 1,
-                'hari' => '2023-12-02',
+                'pertemuan_id' => 2,
                 'status' => 'hadir',
                 'bukti' => null, // hadir, izin, sakit, alpa                            
+                'siswa_rombel_id' => 9,  // XI-B-1
+                'jadwal_pelajaran_id' => 2, // Indonesia
+                'hari' => '2023-12-02',
                 'tahun_akademik_id' => 1,
                 'semester_id' => 1, // Ganjil
             ],            
             [
                 // 16
                 'siswa_id' => 1, // Bagas
-                'siswa_rombel_id' => 9,  // X-B-1
-                'jadwal_pelajaran_id' => 3, // PAI
-                'pertemuan_id' => 1,
-                'hari' => '2023-12-03',
+                'pertemuan_id' => 3,
                 'status' => 'hadir',
                 'bukti' => null, // hadir, izin, sakit, alpa                            
+                'siswa_rombel_id' => 9,  // X-B-1
+                'jadwal_pelajaran_id' => 3, // PAI
+                'hari' => '2023-12-03',
                 'tahun_akademik_id' => 1,
                 'semester_id' => 1, // Ganjil
             ],                        
             [
                 // 17
                 'siswa_id' => 1, // Bagas
-                'siswa_rombel_id' => 9,  // X-B-1
-                'jadwal_pelajaran_id' => 1, // MTK
-                'pertemuan_id' => 1,
-                'hari' => '2024-01-02',
+                'pertemuan_id' => 4,
                 'status' => 'hadir',
                 'bukti' => null, // hadir, izin, sakit, alpa                            
+                'siswa_rombel_id' => 9,  // X-B-1
+                'jadwal_pelajaran_id' => 1, // MTK
+                'hari' => '2024-01-02',
                 'tahun_akademik_id' => 1,
                 'semester_id' => 2, // Genap
             ],            
             [
                 // 18
                 'siswa_id' => 1, // Bagas
-                'siswa_rombel_id' => 9,  // XI-B-1
-                'jadwal_pelajaran_id' => 2, // Indonesia
-                'pertemuan_id' => 1,
-                'hari' => '2024-01-02',
+                'pertemuan_id' => 5,
                 'status' => 'izin',
                 'bukti' => 'izin.jpg', // hadir, izin, sakit, alpa                            
+                'siswa_rombel_id' => 9,  // XI-B-1
+                'jadwal_pelajaran_id' => 2, // Indonesia
+                'hari' => '2024-01-02',
                 'tahun_akademik_id' => 1,
                 'semester_id' => 2, // Genap
             ],            
             [
                 // 19
                 'siswa_id' => 1, // Bagas
-                'siswa_rombel_id' => 9,  // X-B-1
-                'jadwal_pelajaran_id' => 3, // PAI
-                'pertemuan_id' => 1,
-                'hari' => '2024-01-03',
+                'pertemuan_id' => 6,
                 'status' => 'hadir',
                 'bukti' => null, // hadir, izin, sakit, alpa                            
+                'siswa_rombel_id' => 9,  // X-B-1
+                'jadwal_pelajaran_id' => 3, // PAI
+                'hari' => '2024-01-03',
                 'tahun_akademik_id' => 1,
                 'semester_id' => 2, // Genap
             ],                        
             [
                 // 20
                 'siswa_id' => 1, // Bagas
-                'siswa_rombel_id' => 2, // XI-B-I
-                'jadwal_pelajaran_id' => 1, // MTK
-                'pertemuan_id' => 1,
-                'hari' => '2023-12-02',
+                'pertemuan_id' => 7,
                 'status' => 'hadir',
                 'bukti' => null, // hadir, izin, sakit, alpa                            
+                'siswa_rombel_id' => 2, // XI-B-I
+                'jadwal_pelajaran_id' => 1, // MTK
+                'hari' => '2023-12-02',
                 'tahun_akademik_id' => 2,
                 'semester_id' => 3, // Ganjil
             ],            
             [
                 // 21
                 'siswa_id' => 1, // Bagas
-                'siswa_rombel_id' => 2, // XI-B-I
-                'jadwal_pelajaran_id' => 2, // Indonesia
-                'pertemuan_id' => 1,
-                'hari' => '2023-12-02',
+                'pertemuan_id' => 8,
                 'status' => 'izin',
                 'bukti' => 'izin.jpg', // hadir, izin, sakit, alpa                            
+                'siswa_rombel_id' => 2, // XI-B-I
+                'jadwal_pelajaran_id' => 2, // Indonesia
+                'hari' => '2023-12-02',
                 'tahun_akademik_id' => 2,
                 'semester_id' => 3, // Ganjil
             ],            
             [
                 // 22
                 'siswa_id' => 1, // Bagas
-                'siswa_rombel_id' => 2, // XI-B-I
-                'jadwal_pelajaran_id' => 3, // PAI
-                'pertemuan_id' => 1,
-                'hari' => '2023-12-03',
+                'pertemuan_id' => 9,
                 'status' => 'sakit',
                 'bukti' => 'sakit.jpg', // hadir, izin, sakit, alpa                            
+                'siswa_rombel_id' => 2, // XI-B-I
+                'jadwal_pelajaran_id' => 3, // PAI
+                'hari' => '2023-12-03',
                 'tahun_akademik_id' => 2,
                 'semester_id' => 3, // Ganjil
             ],                        
             [
                 // 23
                 'siswa_id' => 1, // Bagas
-                'siswa_rombel_id' => 2, // XI-B-I
-                'jadwal_pelajaran_id' => 1, // MTK
-                'pertemuan_id' => 1,
-                'hari' => '2024-01-02',
+                'pertemuan_id' => 10,
                 'status' => 'alpa',
                 'bukti' => null, // hadir, izin, sakit, alpa                            
+                'siswa_rombel_id' => 2, // XI-B-I
+                'jadwal_pelajaran_id' => 1, // MTK
+                'hari' => '2024-01-02',
                 'tahun_akademik_id' => 2,
                 'semester_id' => 4, // Genap
             ],            
             [
                 // 24
                 'siswa_id' => 1, // Bagas
-                'siswa_rombel_id' => 2, // XI-B-I
-                'jadwal_pelajaran_id' => 2, // Indonesia
-                'pertemuan_id' => 1,
-                'hari' => '2024-01-02',
+                'pertemuan_id' => 11,
                 'status' => 'izin',
                 'bukti' => 'izin.jpg', // hadir, izin, sakit, alpa                            
+                'siswa_rombel_id' => 2, // XI-B-I
+                'jadwal_pelajaran_id' => 2, // Indonesia
+                'hari' => '2024-01-02',
                 'tahun_akademik_id' => 2,
                 'semester_id' => 4, // Genap
             ],            
             [
                 // 25
                 'siswa_id' => 1, // Bagas
-                'siswa_rombel_id' => 2, // XI-B-I
-                'jadwal_pelajaran_id' => 3, // PAI
-                'pertemuan_id' => 1,
-                'hari' => '2024-01-03',
+                'pertemuan_id' => 12,
                 'status' => 'hadir',
                 'bukti' => null, // hadir, izin, sakit, alpa                            
+                'siswa_rombel_id' => 2, // XI-B-I
+                'jadwal_pelajaran_id' => 3, // PAI
+                'hari' => '2024-01-03',
+                'tahun_akademik_id' => 2,
+                'semester_id' => 4, // Genap
+            ],    
+            [
+                // 25
+                'siswa_id' => 1, // Bagas
+                'pertemuan_id' => 13,
+                'status' => 'hadir',
+                'bukti' => null, // hadir, izin, sakit, alpa                            
+                'siswa_rombel_id' => 2, // XI-B-I
+                'jadwal_pelajaran_id' => 3, // PAI
+                'hari' => '2024-01-03',
+                'tahun_akademik_id' => 2,
+                'semester_id' => 4, // Genap
+            ],    
+            [
+                // 25
+                'siswa_id' => 1, // Bagas
+                'pertemuan_id' => 14,
+                'status' => 'hadir',
+                'bukti' => null, // hadir, izin, sakit, alpa                            
+                'siswa_rombel_id' => 2, // XI-B-I
+                'jadwal_pelajaran_id' => 3, // PAI
+                'hari' => '2024-01-03',
+                'tahun_akademik_id' => 2,
+                'semester_id' => 4, // Genap
+            ],    
+            [
+                // 25
+                'siswa_id' => 1, // Bagas
+                'pertemuan_id' => 15,
+                'status' => 'hadir',
+                'bukti' => null, // hadir, izin, sakit, alpa                            
+                'siswa_rombel_id' => 2, // XI-B-I
+                'jadwal_pelajaran_id' => 3, // PAI
+                'hari' => '2024-01-03',
+                'tahun_akademik_id' => 2,
+                'semester_id' => 4, // Genap
+            ],    
+            [
+                // 25
+                'siswa_id' => 1, // Bagas
+                'pertemuan_id' => 16,
+                'status' => 'hadir',
+                'bukti' => null, // hadir, izin, sakit, alpa                            
+                'siswa_rombel_id' => 2, // XI-B-I
+                'jadwal_pelajaran_id' => 3, // PAI
+                'hari' => '2024-01-03',
                 'tahun_akademik_id' => 2,
                 'semester_id' => 4, // Genap
             ],    
@@ -3990,144 +4827,192 @@ class DatabaseSeeder extends Seeder
             [
                 // 26
                 'siswa_id' => 3, // Sanita
-                'siswa_rombel_id' => 11, // X-B-I
-                'jadwal_pelajaran_id' => 1, // MTK
-                'pertemuan_id' => 1,
-                'hari' => '2023-12-02',
+                'pertemuan_id' => 17,
                 'status' => 'alpa',
                 'bukti' => null, // hadir, izin, sakit, alpa                            
+                'siswa_rombel_id' => 11, // X-B-I
+                'jadwal_pelajaran_id' => 1, // MTK
+                'hari' => '2023-12-02',
                 'tahun_akademik_id' => 1,
                 'semester_id' => 1, // Ganjil
             ],            
             [
                 // 27
                 'siswa_id' => 3, // Sanita
-                'siswa_rombel_id' => 11, // X-B-I
-                'jadwal_pelajaran_id' => 2, // Indonesia
-                'pertemuan_id' => 1,
-                'hari' => '2023-12-02',
+                'pertemuan_id' => 18,
                 'status' => 'hadir',
                 'bukti' => null, // hadir, izin, sakit, alpa                            
+                'siswa_rombel_id' => 11, // X-B-I
+                'jadwal_pelajaran_id' => 2, // Indonesia
+                'hari' => '2023-12-02',
                 'tahun_akademik_id' => 1,
                 'semester_id' => 1, // Ganjil
             ],            
             [
                 // 28
                 'siswa_id' => 3, // Sanita
-                'siswa_rombel_id' => 11, // X-B-I
-                'jadwal_pelajaran_id' => 3, // PAI
-                'pertemuan_id' => 1,
-                'hari' => '2023-12-03',
+                'pertemuan_id' => 19,
                 'status' => 'hadir',
                 'bukti' => null, // hadir, izin, sakit, alpa                            
+                'siswa_rombel_id' => 11, // X-B-I
+                'jadwal_pelajaran_id' => 3, // PAI
+                'hari' => '2023-12-03',
                 'tahun_akademik_id' => 1,
                 'semester_id' => 1, // Ganjil
             ],                        
             [
                 // 29
                 'siswa_id' => 3, // Sanita
-                'siswa_rombel_id' => 11, // X-B-I
-                'jadwal_pelajaran_id' => 1, // MTK
-                'pertemuan_id' => 1,
-                'hari' => '2024-01-02',
+                'pertemuan_id' => 20,
                 'status' => 'hadir',
                 'bukti' => null, // hadir, izin, sakit, alpa                            
+                'siswa_rombel_id' => 11, // X-B-I
+                'jadwal_pelajaran_id' => 1, // MTK
+                'hari' => '2024-01-02',
                 'tahun_akademik_id' => 1,
                 'semester_id' => 2, // Genap
             ],            
             [
                 // 30
                 'siswa_id' => 3, // Sanita
-                'siswa_rombel_id' => 11, // X-B-I
-                'jadwal_pelajaran_id' => 2, // Indonesia
-                'pertemuan_id' => 1,
-                'hari' => '2024-01-02',
+                'pertemuan_id' => 21,
                 'status' => 'izin',
                 'bukti' => 'izin.jpg', // hadir, izin, sakit, alpa                            
+                'siswa_rombel_id' => 11, // X-B-I
+                'jadwal_pelajaran_id' => 2, // Indonesia
+                'hari' => '2024-01-02',
                 'tahun_akademik_id' => 1,
                 'semester_id' => 2, // Genap
             ],            
             [
                 // 31
                 'siswa_id' => 3, // Sanita
-                'siswa_rombel_id' => 11, // X-B-I
-                'jadwal_pelajaran_id' => 3, // PAI
-                'pertemuan_id' => 1,
-                'hari' => '2024-01-03',
+                'pertemuan_id' => 22,
                 'status' => 'hadir',
                 'bukti' => null, // hadir, izin, sakit, alpa                            
+                'siswa_rombel_id' => 11, // X-B-I
+                'jadwal_pelajaran_id' => 3, // PAI
+                'hari' => '2024-01-03',
                 'tahun_akademik_id' => 1,
                 'semester_id' => 2, // Genap
             ],                        
             [
                 // 32
                 'siswa_id' => 3, // Sanita
-                'siswa_rombel_id' => 7, // X-B-I
-                'jadwal_pelajaran_id' => 1, // MTK
-                'pertemuan_id' => 1,
-                'hari' => '2023-12-02',
+                'pertemuan_id' => 23,
                 'status' => 'hadir',
                 'bukti' => null, // hadir, izin, sakit, alpa                            
+                'siswa_rombel_id' => 7, // X-B-I
+                'jadwal_pelajaran_id' => 1, // MTK
+                'hari' => '2023-12-02',
                 'tahun_akademik_id' => 2,
                 'semester_id' => 3, // Ganjil
             ],            
             [
                 // 33
                 'siswa_id' => 3, // Sanita
-                'siswa_rombel_id' => 7, // X-B-I
-                'jadwal_pelajaran_id' => 2, // Indonesia
-                'pertemuan_id' => 1,
-                'hari' => '2023-12-02',
+                'pertemuan_id' => 24,
                 'status' => 'izin',
                 'bukti' => 'izin.jpg', // hadir, izin, sakit, alpa                            
+                'siswa_rombel_id' => 7, // X-B-I
+                'jadwal_pelajaran_id' => 2, // Indonesia
+                'hari' => '2023-12-02',
                 'tahun_akademik_id' => 2,
                 'semester_id' => 3, // Ganjil
             ],            
             [
                 // 34
                 'siswa_id' => 3, // Sanita
-                'siswa_rombel_id' => 7, // X-B-I
-                'jadwal_pelajaran_id' => 3, // PAI
-                'pertemuan_id' => 1,
-                'hari' => '2023-12-03',
+                'pertemuan_id' => 25,
                 'status' => 'alpa',
                 'bukti' => null, // hadir, izin, sakit, alpa                            
+                'siswa_rombel_id' => 7, // X-B-I
+                'jadwal_pelajaran_id' => 3, // PAI
+                'hari' => '2023-12-03',
                 'tahun_akademik_id' => 2,
                 'semester_id' => 3, // Ganjil
             ],                        
             [
                 // 35
                 'siswa_id' => 3, // Sanita
-                'siswa_rombel_id' => 7, // X-B-I
-                'jadwal_pelajaran_id' => 1, // MTK
-                'pertemuan_id' => 1,
-                'hari' => '2024-01-02',
+                'pertemuan_id' => 26,
                 'status' => 'alpa',
                 'bukti' => null, // hadir, izin, sakit, alpa                            
+                'siswa_rombel_id' => 7, // X-B-I
+                'jadwal_pelajaran_id' => 1, // MTK
+                'hari' => '2024-01-02',
                 'tahun_akademik_id' => 2,
                 'semester_id' => 4, // Genap
             ],            
             [
                 // 36
                 'siswa_id' => 3, // Sanita
-                'siswa_rombel_id' => 7, // X-B-I
-                'jadwal_pelajaran_id' => 2, // Indonesia
-                'pertemuan_id' => 1,
-                'hari' => '2024-01-02',
+                'pertemuan_id' => 27,
                 'status' => 'izin',
                 'bukti' => 'izin.jpg', // hadir, izin, sakit, alpa                            
+                'siswa_rombel_id' => 7, // X-B-I
+                'jadwal_pelajaran_id' => 2, // Indonesia
+                'hari' => '2024-01-02',
                 'tahun_akademik_id' => 2,
                 'semester_id' => 4, // Genap
             ],            
             [
                 // 37
                 'siswa_id' => 3, // Sanita
-                'siswa_rombel_id' => 7, // X-B-I
-                'jadwal_pelajaran_id' => 3, // PAI
-                'pertemuan_id' => 1,
-                'hari' => '2024-01-03',
+                'pertemuan_id' => 28,
                 'status' => 'hadir',
                 'bukti' => null, // hadir, izin, sakit, alpa                            
+                'siswa_rombel_id' => 7, // X-B-I
+                'jadwal_pelajaran_id' => 3, // PAI
+                'hari' => '2024-01-03',
+                'tahun_akademik_id' => 2,
+                'semester_id' => 4, // Genap
+            ],
+            [
+                // 37
+                'siswa_id' => 3, // Sanita
+                'pertemuan_id' => 29,
+                'status' => 'hadir',
+                'bukti' => null, // hadir, izin, sakit, alpa                            
+                'siswa_rombel_id' => 7, // X-B-I
+                'jadwal_pelajaran_id' => 3, // PAI
+                'hari' => '2024-01-03',
+                'tahun_akademik_id' => 2,
+                'semester_id' => 4, // Genap
+            ],
+            [
+                // 37
+                'siswa_id' => 3, // Sanita
+                'pertemuan_id' => 30,
+                'status' => 'hadir',
+                'bukti' => null, // hadir, izin, sakit, alpa                            
+                'siswa_rombel_id' => 7, // X-B-I
+                'jadwal_pelajaran_id' => 3, // PAI
+                'hari' => '2024-01-03',
+                'tahun_akademik_id' => 2,
+                'semester_id' => 4, // Genap
+            ],
+            [
+                // 37
+                'siswa_id' => 3, // Sanita
+                'pertemuan_id' => 31,
+                'status' => 'hadir',
+                'bukti' => null, // hadir, izin, sakit, alpa                            
+                'siswa_rombel_id' => 7, // X-B-I
+                'jadwal_pelajaran_id' => 3, // PAI
+                'hari' => '2024-01-03',
+                'tahun_akademik_id' => 2,
+                'semester_id' => 4, // Genap
+            ],
+            [
+                // 37
+                'siswa_id' => 3, // Sanita
+                'pertemuan_id' => 32,
+                'status' => 'hadir',
+                'bukti' => null, // hadir, izin, sakit, alpa                            
+                'siswa_rombel_id' => 7, // X-B-I
+                'jadwal_pelajaran_id' => 3, // PAI
+                'hari' => '2024-01-03',
                 'tahun_akademik_id' => 2,
                 'semester_id' => 4, // Genap
             ]
@@ -5536,530 +6421,7 @@ class DatabaseSeeder extends Seeder
                 'keterangan' => 'Bayaran SPP',
                 'tahun_akademik_id' => 2
             ],
-        ]);
-
-
-        // Pertemuan
-        Pertemuan::insert([
-            // 1
-            [
-                'jadwal_pelajaran_id' => 2, // Indo | 2023 (Ganjil) | X-B-1
-                'pertemuan_ke'  => 1,
-                'judul' => 'Memahami Penulisan KBBI',
-                'tanggal'   => '2023-05-01',
-                'jenis' => 'normal'
-            ],
-            // 2
-            [
-                'jadwal_pelajaran_id' => 2, // Indo | 2023 (Ganjil) | X-B-1
-                'pertemuan_ke'  => 2,
-                'judul' => 'Menulis sesuai KBBI',
-                'tanggal'   => '2023-05-08',
-                'jenis' => 'normal'
-            ],
-            // 3
-            [
-                'jadwal_pelajaran_id' => 2, // Indo | 2023 (Ganjil) | X-B-1
-                'pertemuan_ke'  => 3,
-                'judul' => 'Membuat berita acara sesuai KBBI',
-                'tanggal'   => '2023-05-15',
-                'jenis' => 'normal'
-            ],
-            // 4
-            [
-                'jadwal_pelajaran_id' => 2, // Indo | 2023 (Ganjil) | X-B-1
-                'pertemuan_ke'  => 4,
-                'judul' => 'Menulis Teks Wawancara',
-                'tanggal'   => '2023-05-22',
-                'jenis' => 'normal'
-            ],
-            // 5
-            [
-                'jadwal_pelajaran_id' => 2, // Indo | 2023 (Ganjil) | X-B-1
-                'pertemuan_ke'  => 5,
-                'judul' => 'Praktik Wawancara',
-                'tanggal'   => '2023-05-29',
-                'jenis' => 'normal'
-            ],
-            // 6
-            [
-                'jadwal_pelajaran_id' => 2, // Indo | 2023 (Ganjil) | X-B-1
-                'pertemuan_ke'  => 6,
-                'judul' => 'Menganalisis Kalimat Efektif',
-                'tanggal'   => '2023-06-05',
-                'jenis' => 'normal'
-            ],
-            // 7
-            [
-                'jadwal_pelajaran_id' => 2, // Indo | 2023 (Ganjil) | X-B-1
-                'pertemuan_ke'  => 7,
-                'judul' => 'Menulis Kalimat Efektif',
-                'tanggal'   => '2023-06-12',
-                'jenis' => 'normal'
-            ],
-            // 8 (UTS)
-            [
-                'jadwal_pelajaran_id' => 2, // Indo | 2023 (Ganjil) | X-B-1
-                'pertemuan_ke'  => 8,
-                'judul' => 'UTS',
-                'tanggal'   => '2023-06-19',
-                'jenis' => 'uts'
-            ],
-            // 9
-            [
-                'jadwal_pelajaran_id' => 2, // Indo | 2023 (Ganjil) | X-B-1
-                'pertemuan_ke'  => 9,
-                'judul' => 'Kalimat Tersirat',
-                'tanggal'   => '2023-06-26',
-                'jenis' => 'normal'
-            ],
-            // 10
-            [
-                'jadwal_pelajaran_id' => 2, // Indo | 2023 (Ganjil) | X-B-1
-                'pertemuan_ke'  => 10,
-                'judul' => 'Kalimat Tersurat',
-                'tanggal'   => '2023-07-03',
-                'jenis' => 'normal'
-            ],
-            // 11
-            [
-                'jadwal_pelajaran_id' => 2, // Indo | 2023 (Ganjil) | X-B-1
-                'pertemuan_ke'  => 11,
-                'judul' => 'Majas Hiperbola',
-                'tanggal'   => '2023-07-10',
-                'jenis' => 'normal'
-            ],
-            // 12
-            [
-                'jadwal_pelajaran_id' => 2, // Indo | 2023 (Ganjil) | X-B-1
-                'pertemuan_ke'  => 12,
-                'judul' => 'Majas Metafora',
-                'tanggal'   => '2023-07-17',
-                'jenis' => 'normal'
-            ],
-            // 13
-            [
-                'jadwal_pelajaran_id' => 2, // Indo | 2023 (Ganjil) | X-B-1
-                'pertemuan_ke'  => 13,
-                'judul' => 'Majas Sarkasme',
-                'tanggal'   => '2023-07-24',
-                'jenis' => 'normal'
-            ],
-            // 14
-            [
-                'jadwal_pelajaran_id' => 2, // Indo | 2023 (Ganjil) | X-B-1
-                'pertemuan_ke'  => 14,
-                'judul' => 'Majas Ironi',
-                'tanggal'   => '2023-07-31',
-                'jenis' => 'normal'
-            ],
-            // 15
-            [
-                'jadwal_pelajaran_id' => 2, // Indo | 2023 (Ganjil) | X-B-1
-                'pertemuan_ke'  => 15,
-                'judul' => 'Majas Retorika',
-                'tanggal'   => '2023-08-07',
-                'jenis' => 'normal'
-            ],
-            // 16 (UAS)
-            [
-                'jadwal_pelajaran_id' => 2, // Indo | 2023 (Ganjil) | X-B-1
-                'pertemuan_ke'  => 16,
-                'judul' => 'UAS',
-                'tanggal'   => '2023-08-14',
-                'jenis' => 'uas'
-            ],
-
-            // Genap
-            // 17
-            [
-                'jadwal_pelajaran_id' => 12, // Indo | 2024 (Genap) | X-B-1
-                'pertemuan_ke'  => 1,
-                'judul' => 'Membuat Cerita Fiksi',
-                'tanggal'   => '2024-01-01',
-                'jenis' => 'normal'
-            ],
-            // 18
-            [
-                'jadwal_pelajaran_id' => 12, // Indo | 2024 (Genap) | X-B-1
-                'pertemuan_ke'  => 2,
-                'judul' => 'Presentasi Cerita Fiksi',
-                'tanggal'   => '2024-01-08',
-                'jenis' => 'normal'
-            ],
-            // 19
-            [
-                'jadwal_pelajaran_id' => 12, // Indo | 2024 (Genap) | X-B-1
-                'pertemuan_ke'  => 3,
-                'judul' => 'Membuat berita acara sesuai KBBI',
-                'tanggal'   => '2024-01-15',
-                'jenis' => 'normal'
-            ],
-            // 20
-            [
-                'jadwal_pelajaran_id' => 12, // Indo | 2024 (Genap) | X-B-1
-                'pertemuan_ke'  => 4,
-                'judul' => 'Menulis Teks Wawancara',
-                'tanggal'   => '2024-01-22',
-                'jenis' => 'normal'
-            ],
-            // 21
-            [
-                'jadwal_pelajaran_id' => 12, // Indo | 2024 (Genap) | X-B-1
-                'pertemuan_ke'  => 5,
-                'judul' => 'Praktik Wawancara',
-                'tanggal'   => '2024-02-05',
-                'jenis' => 'normal'
-            ],
-            // 22
-            [
-                'jadwal_pelajaran_id' => 12, // Indo | 2024 (Genap) | X-B-1
-                'pertemuan_ke'  => 6,
-                'judul' => 'Menganalisis Kalimat Efektif',
-                'tanggal'   => '2024-02-12',
-                'jenis' => 'normal'
-            ],
-            // 23
-            [
-                'jadwal_pelajaran_id' => 12, // Indo | 2024 (Genap) | X-B-1
-                'pertemuan_ke'  => 7,
-                'judul' => 'Menulis Kalimat Efektif',
-                'tanggal'   => '2024-02-19',
-                'jenis' => 'normal'
-            ],
-            // 24 (UTS)
-            [
-                'jadwal_pelajaran_id' => 12, // Indo | 2024 (Genap) | X-B-1
-                'pertemuan_ke'  => 8,
-                'judul' => 'UTS',
-                'tanggal'   => '2024-02-26',
-                'jenis' => 'uts'
-            ],
-            //25
-            [
-                'jadwal_pelajaran_id' => 12, // Indo | 2024 (Genap) | X-B-1
-                'pertemuan_ke'  => 9,
-                'judul' => 'Kalimat Tersirat',
-                'tanggal'   => '2024-03-04',
-                'jenis' => 'normal'
-            ],
-            // 26
-            [
-                'jadwal_pelajaran_id' => 12, // Indo | 2024 (Genap) | X-B-1
-                'pertemuan_ke'  => 10,
-                'judul' => 'Kalimat Tersurat',
-                'tanggal'   => '2024-03-11',
-                'jenis' => 'normal'
-            ],
-            // 27
-            [
-                'jadwal_pelajaran_id' => 12, // Indo | 2024 (Genap) | X-B-1
-                'pertemuan_ke'  => 11,
-                'judul' => 'Majas Hiperbola',
-                'tanggal'   => '2024-03-18',
-                'jenis' => 'normal'
-            ],
-            // 28
-            [
-                'jadwal_pelajaran_id' => 12, // Indo | 2024 (Genap) | X-B-1
-                'pertemuan_ke'  => 12,
-                'judul' => 'Majas Metafora',
-                'tanggal'   => '2024-03-25',
-                'jenis' => 'normal'
-            ],
-            // 29
-            [
-                'jadwal_pelajaran_id' => 12, // Indo | 2024 (Genap) | X-B-1
-                'pertemuan_ke'  => 13,
-                'judul' => 'Majas Sarkasme',
-                'tanggal'   => '2024-04-01',
-                'jenis' => 'normal'
-            ],
-            // 30
-            [
-                'jadwal_pelajaran_id' => 12, // Indo | 2024 (Genap) | X-B-1
-                'pertemuan_ke'  => 14,
-                'judul' => 'Majas Ironi',
-                'tanggal'   => '2024-04-08',
-                'jenis' => 'normal'
-            ],
-            // 31
-            [
-                'jadwal_pelajaran_id' => 12, // Indo | 2024 (Genap) | X-B-1
-                'pertemuan_ke'  => 15,
-                'judul' => 'Majas Retorika',
-                'tanggal'   => '2024-04-15',
-                'jenis' => 'normal'
-            ],
-            // 32 (UAS)
-            [
-                'jadwal_pelajaran_id' => 12, // Indo | 2024 (Genap) | X-B-1
-                'pertemuan_ke'  => 16,
-                'judul' => 'UAS',
-                'tanggal'   => '2024-04-22',
-                'jenis' => 'uas'
-            ],
-
-            // MTK
-            // 33 (1)
-            [
-                'jadwal_pelajaran_id' => 1, // MTK | 2023 (Ganjil) | X-B-1
-                'pertemuan_ke'  => 1,
-                'judul' => 'Bilangan Bulat dan Operasinya',
-                'tanggal'   => '2023-05-01',
-                'jenis' => 'normal'
-            ],
-            // 34 (2)
-            [
-                'jadwal_pelajaran_id' => 1, // MTK | 2023 (Ganjil) | X-B-1
-                'pertemuan_ke'  => 2,
-                'judul' => 'Bilangan Pecahan dan Desimal',
-                'tanggal'   => '2023-05-08',
-                'jenis' => 'normal'
-            ],
-            // 35 (3)
-            [
-                'jadwal_pelajaran_id' => 1, // MTK | 2023 (Ganjil) | X-B-1
-                'pertemuan_ke'  => 3,
-                'judul' => 'Faktor, Kelipatan, dan Bilangan Prima',
-                'tanggal'   => '2023-05-15',
-                'jenis' => 'normal'
-            ],
-            // 36 (4)
-            [
-                'jadwal_pelajaran_id' => 1, // MTK | 2023 (Ganjil) | X-B-1
-                'pertemuan_ke'  => 4,
-                'judul' => 'Perbandingan dan Skala',
-                'tanggal'   => '2023-05-22',
-                'jenis' => 'normal'
-            ],
-            // 37 (5)
-            [
-                'jadwal_pelajaran_id' => 1, // MTK | 2023 (Ganjil) | X-B-1
-                'pertemuan_ke'  => 5,
-                'judul' => 'Persamaan Linear Satu Variabel',
-                'tanggal'   => '2023-05-29',
-                'jenis' => 'normal'
-            ],
-            // 38 (6)
-            [
-                'jadwal_pelajaran_id' => 1, // MTK | 2023 (Ganjil) | X-B-1
-                'pertemuan_ke'  => 6,
-                'judul' => 'Pertidaksamaan Linear Satu Variabel',
-                'tanggal'   => '2023-06-05',
-                'jenis' => 'normal'
-            ],
-            // 39 (7)
-            [
-                'jadwal_pelajaran_id' => 1, // MTK | 2023 (Ganjil) | X-B-1
-                'pertemuan_ke'  => 7,
-                'judul' => 'Sistem Persamaan Linear Dua Variabel',
-                'tanggal'   => '2023-06-12',
-                'jenis' => 'normal'
-            ],
-            // 40 (8) (UTS)
-            [
-                'jadwal_pelajaran_id' => 1, // MTK | 2023 (Ganjil) | X-B-1
-                'pertemuan_ke'  => 8,
-                'judul' => 'UTS',
-                'tanggal'   => '2023-06-19',
-                'jenis' => 'uts'
-            ],
-            // 41 (9)
-            [
-                'jadwal_pelajaran_id' => 1, // MTK | 2023 (Ganjil) | X-B-1
-                'pertemuan_ke'  => 9,
-                'judul' => 'Fungsi dan Grafik Linear',
-                'tanggal'   => '2023-06-26',
-                'jenis' => 'normal'
-            ],
-            // 42 (10)
-            [
-                'jadwal_pelajaran_id' => 1, // MTK | 2023 (Ganjil) | X-B-1
-                'pertemuan_ke'  => 10,
-                'judul' => 'Bangun Datar: Segitiga dan Segiempat',
-                'tanggal'   => '2023-07-03',
-                'jenis' => 'normal'
-            ],
-            // 43 (11)
-            [
-                'jadwal_pelajaran_id' => 1, // MTK | 2023 (Ganjil) | X-B-1
-                'pertemuan_ke'  => 11,
-                'judul' => 'Lingkaran: Unsur dan Keliling',
-                'tanggal'   => '2023-07-10',
-                'jenis' => 'normal'
-            ],
-            // 44 (12)
-            [
-                'jadwal_pelajaran_id' => 1, // MTK | 2023 (Ganjil) | X-B-1
-                'pertemuan_ke'  => 12,
-                'judul' => 'Luas Bangun Datar',
-                'tanggal'   => '2023-07-17',
-                'jenis' => 'normal'
-            ],
-            // 45 (13)
-            [
-                'jadwal_pelajaran_id' => 1, // MTK | 2023 (Ganjil) | X-B-1
-                'pertemuan_ke'  => 13,
-                'judul' => 'Bangun Ruang: Kubus dan Balok',
-                'tanggal'   => '2023-07-24',
-                'jenis' => 'normal'
-            ],
-            // 46 (14)
-            [
-                'jadwal_pelajaran_id' => 1, // MTK | 2023 (Ganjil) | X-B-1
-                'pertemuan_ke'  => 14,
-                'judul' => 'Bangun Ruang: Prisma dan Limas',
-                'tanggal'   => '2023-07-31',
-                'jenis' => 'normal'
-            ],
-            // 47 (15)
-            [
-                'jadwal_pelajaran_id' => 1, // MTK | 2023 (Ganjil) | X-B-1
-                'pertemuan_ke'  => 15,
-                'judul' => 'Bangun Ruang: Tabung, Kerucut, dan Bola',
-                'tanggal'   => '2023-08-07',
-                'jenis' => 'normal'
-            ],
-            // 48 (16) (UAS)
-            [
-                'jadwal_pelajaran_id' => 1, // MTK | 2023 (Ganjil) | X-B-1
-                'pertemuan_ke'  => 16,
-                'judul' => 'UAS',
-                'tanggal'   => '2023-08-14',
-                'jenis' => 'uas'
-            ],
-
-            // Genap
-            // 49 (1)
-            [
-                'jadwal_pelajaran_id' => 11, // MTK | 2024 (Genap) | X-B-1
-                'pertemuan_ke'  => 1,
-                'judul' => 'Statistika: Data, Tabel, dan Diagram',
-                'tanggal'   => '2024-01-01',
-                'jenis' => 'normal'
-            ],
-            // 50 (2)
-            [
-                'jadwal_pelajaran_id' => 11, // MTK | 2024 (Genap) | X-B-1
-                'pertemuan_ke'  => 2,
-                'judul' => 'Ukuran Pemusatan Data (Mean, Median, Modus)',
-                'tanggal'   => '2024-01-08',
-                'jenis' => 'normal'
-            ],
-            // 51 (3)
-            [
-                'jadwal_pelajaran_id' => 11, // MTK | 2024 (Genap) | X-B-1
-                'pertemuan_ke'  => 3,
-                'judul' => 'Peluang dan Percobaan Sederhana',
-                'tanggal'   => '2024-01-15',
-                'jenis' => 'normal'
-            ],
-            // 52 (4)
-            [
-                'jadwal_pelajaran_id' => 11, // MTK | 2024 (Genap) | X-B-1
-                'pertemuan_ke'  => 4,
-                'judul' => 'Barisan Aritmetika',
-                'tanggal'   => '2024-01-22',
-                'jenis' => 'normal'
-            ],
-            // 53 (5)
-            [
-                'jadwal_pelajaran_id' => 11, // MTK | 2024 (Genap) | X-B-1
-                'pertemuan_ke'  => 5,
-                'judul' => 'Deret Aritmetika',
-                'tanggal'   => '2024-02-05',
-                'jenis' => 'normal'
-            ],
-            // 54 (6)
-            [
-                'jadwal_pelajaran_id' => 11, // MTK | 2024 (Genap) | X-B-1
-                'pertemuan_ke'  => 6,
-                'judul' => 'Barisan Geometri',
-                'tanggal'   => '2024-02-12',
-                'jenis' => 'normal'
-            ],
-            // 55 (7)
-            [
-                'jadwal_pelajaran_id' => 11, // MTK | 2024 (Genap) | X-B-1
-                'pertemuan_ke'  => 7,
-                'judul' => 'Deret Geometri',
-                'tanggal'   => '2024-02-19',
-                'jenis' => 'normal'
-            ],
-            // 56 (8) (UTS)
-            [
-                'jadwal_pelajaran_id' => 11, // MTK | 2024 (Genap) | X-B-1
-                'pertemuan_ke'  => 8,
-                'judul' => 'UTS',
-                'tanggal'   => '2024-02-26',
-                'jenis' => 'uts'
-            ],
-            // 57 (9)
-            [
-                'jadwal_pelajaran_id' => 11, // MTK | 2024 (Genap) | X-B-1
-                'pertemuan_ke'  => 9,
-                'judul' => 'Persamaan Kuadrat',
-                'tanggal'   => '2024-03-04',
-                'jenis' => 'normal'
-            ],
-            // 58 (10)
-            [
-                'jadwal_pelajaran_id' => 11, // MTK | 2024 (Genap) | X-B-1
-                'pertemuan_ke'  => 10,
-                'judul' => 'Fungsi Kuadrat dan Grafiknya',
-                'tanggal'   => '2024-03-11',
-                'jenis' => 'normal'
-            ],
-            // 59 (11)
-            [
-                'jadwal_pelajaran_id' => 11, // MTK | 2024 (Genap) | X-B-1
-                'pertemuan_ke'  => 11,
-                'judul' => 'Trigonometri Dasar: Perbandingan Sudut pada Segitiga',
-                'tanggal'   => '2024-03-18',
-                'jenis' => 'normal'
-            ],
-            // 60 (12)
-            [
-                'jadwal_pelajaran_id' => 11, // MTK | 2024 (Genap) | X-B-1
-                'pertemuan_ke'  => 12,
-                'judul' => 'Identitas Trigonometri Sederhana',
-                'tanggal'   => '2024-03-25',
-                'jenis' => 'normal'
-            ],
-            // 61 (13)
-            [
-                'jadwal_pelajaran_id' => 11, // MTK | 2024 (Genap) | X-B-1
-                'pertemuan_ke'  => 13,
-                'judul' => 'Logaritma dan Eksponen',
-                'tanggal'   => '2024-04-01',
-                'jenis' => 'normal'
-            ],
-            // 62 (14)
-            [
-                'jadwal_pelajaran_id' => 11, // MTK | 2024 (Genap) | X-B-1
-                'pertemuan_ke'  => 14,
-                'judul' => 'Limit Fungsi Aljabar',
-                'tanggal'   => '2024-04-08',
-                'jenis' => 'normal'
-            ],
-            // 63 (15)
-            [
-                'jadwal_pelajaran_id' => 11, // MTK | 2024 (Genap) | X-B-1
-                'pertemuan_ke'  => 15,
-                'judul' => 'Turunan Fungsi Aljabar',
-                'tanggal'   => '2024-04-15',
-                'jenis' => 'normal'
-            ],
-            // 64 (16) (UAS)
-            [
-                'jadwal_pelajaran_id' => 11, // MTK | 2024 (Genap) | X-B-1
-                'pertemuan_ke'  => 16,
-                'judul' => 'UAS',
-                'tanggal'   => '2024-04-22',
-                'jenis' => 'uas'
-            ],
-        ]);            
+        ]);                  
 
         // Jurnal KBM
         JurnalKbm::insert([

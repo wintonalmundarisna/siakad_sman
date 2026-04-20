@@ -331,10 +331,10 @@ Route::put('/tu/update/diri', [KepegawaianController::class, 'updateDirinyaSendi
     // Route::get('/guru/kelas/show/diri', [KelasController::class, 'showKelasPegawai']);
 
     // ✅ Update kelas sendiri
-    Route::put('/guru/kelas/update/diri', [KelasController::class, 'updateKelasPegawai']);
+    // Route::put('/guru/kelas/update/diri', [KelasController::class, 'updateKelasPegawai']);
 
-    // ! rombel (belum dibuat insomnianya)
-    Route::get('/guru/rombel/all/diri', [RombelController::class, 'getAllRombelSendiri']);    
+    // Mengambil rombel pada tahun aktif
+    Route::get('/guru/rombel/show/self', [WaliRombelController::class, 'getRombelSendiri']);    
     
     // ! ✅ Alur Tujuan Pembelajaran
     Route::apiResource('/guru/atp/self', AlurTujuanPembelajaranController::class)->only('show');

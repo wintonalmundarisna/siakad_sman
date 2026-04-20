@@ -21,12 +21,19 @@ return new class extends Migration
             $table->string('judul')->nullable();
         
             $table->date('tanggal')->nullable();
+
+            $table->dateTime('deadline_absensi')->nullable();
         
             $table->enum('jenis', [
                 'normal',
                 'uts',
                 'uas'
             ])->default('normal');
+
+            $table->enum('status_pertemuan', [
+                'belum_dibuka',
+                'sudah_dibuka',
+            ])->default('belum_dibuka');
         
             $table->timestamps();
 

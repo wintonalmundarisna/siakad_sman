@@ -82,8 +82,8 @@ class PertemuanController extends Controller
             'jadwalPelajaran.rombel',
             'jadwalPelajaran.guru',
             'jadwalPelajaran.ruangan',
-            'absensiPelajaran',
-            'absensiSiswa',
+            'absensiPelajaran.guru',
+            'absensiSiswa.siswa',
             'jurnal',
             'materi',
             'forumDiskusi.guru',
@@ -129,7 +129,7 @@ class PertemuanController extends Controller
                     : null,
                 'jenis' => $pertemuan->jenis,
 
-                // Terbuat otomatis
+                // Manual
                 'jurnal_kbm' => $pertemuan->jurnal ? [
                     'jurnal_kbm_id' => $pertemuan->jurnal?->id,
                     'uraian_kegiatan' => $pertemuan->jurnal?->uraian_kegiatan,
@@ -175,6 +175,19 @@ class PertemuanController extends Controller
                     'hari'              => $pertemuan->absensiPelajaran->hari?->translatedFormat('l, d F Y - H.i'),
                     'status'            => $pertemuan->absensiPelajaran->status,
                 ] : null,
+
+                'absensi_siswa' => $pertemuan->absensiSiswa ? $pertemuan->absensiSiswa->map(function ($absenSiswa) {
+                    return [
+                        'absensi_siswa_id'  => $absenSiswa->id,
+                        'nama_siswa'        => $absenSiswa->siswa->nama,
+                        'nis'               => $absenSiswa->siswa->nis,
+                        'nisn'              => $absenSiswa->siswa->nisn,
+                        'hari'              => $absenSiswa->hari?->translatedFormat('l, d F Y - H.i'),
+                        'status'            => $absenSiswa->status,
+                        'bukti'             => $absenSiswa?->bukti ? asset(str_replace('public/', 'storage/', $absenSiswa?->bukti))
+                        : null,
+                    ];
+                })->values() : null,
             ],            
         ];
 

@@ -15,32 +15,34 @@ return new class extends Migration
             $table->id();
             $table->foreignId('siswa_id')->constrained('siswas')->cascadeOnDelete();
             
-            $table->foreignId('siswa_rombel_id')->constrained('siswa_rombel');
-            
-            $table->foreignId('jadwal_pelajaran_id')->constrained('jadwal_pelajarans')->cascadeOnDelete();
             
             $table->foreignId('pertemuan_id')->constrained('pertemuan')->cascadeOnDelete();
             
-            $table->date('hari');             
             
             $table->enum('status', ['hadir', 'izin', 'sakit', 'alpa']);
             
             $table->string('bukti')->nullable();                        
 
-            $table->foreignId('tahun_akademik_id')->constrained('tahun_akademik')->cascadeOnDelete();
+            $table->foreignId('siswa_rombel_id')->constrained('siswa_rombel'); // Sudah ada di jadwal
             
-            $table->foreignId('semester_id')->constrained('semester')->cascadeOnDelete();
+            $table->foreignId('jadwal_pelajaran_id')->constrained('jadwal_pelajarans')->cascadeOnDelete(); // Sudah ada di pertemuan
+            
+            $table->date('hari'); // Sudad ada di pertemuan
+
+            $table->foreignId('tahun_akademik_id')->constrained('tahun_akademik')->cascadeOnDelete(); // Sudah ada di jadwal 
+            
+            $table->foreignId('semester_id')->constrained('semester')->cascadeOnDelete(); // Sudah ada di jadwal
 
             $table->timestamps();
 
             $table->unique([
                 'siswa_id',
-                'jadwal_pelajaran_id',
                 'pertemuan_id',
-                'hari',
-                'tahun_akademik_id',
-                'semester_id',
-            ], 'unik');
+                // 'jadwal_pelajaran_id',
+                // 'hari',
+                // 'tahun_akademik_id',
+                // 'semester_id',
+            ], 'unik');            
         });
     }
 

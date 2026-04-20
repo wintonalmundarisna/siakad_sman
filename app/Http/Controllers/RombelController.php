@@ -8,7 +8,7 @@ use App\Models\Rombel;
 // use App\Models\Kelas;
 use App\Models\TahunAkademik;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+// use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 // use Illuminate\Support\Facades\Validator;
 
@@ -401,65 +401,65 @@ class RombelController extends Controller
     }
     
     // ✅ untuk guru (diambil yang aktif aja)
-    public function getAllRombelSendiri()
-    {
-        $user = Auth::guard('kepegawaian')->user();
+    // public function getRombelSendiri()
+    // {
+    //     $user = Auth::guard('kepegawaian')->user();
     
-        $rombels = Rombel::where('wali_rombel_id', $user->id)
-        ->whereHas('tahunAkademik', fn ($q) => $q->where('status', 'aktif'))
-        ->with([
-            'waliRombel:id,nama',
-            'tahunAkademik:id,tahun_akademik,status',
-            'kelas:id,nama_kelas',
-            'siswaRombels.siswa:id,nama,nisn',
-        ])
-        ->first();
+    //     $rombels = Rombel::where('wali_rombel_id', $user->id)
+    //     ->whereHas('tahunAkademik', fn ($q) => $q->where('status', 'aktif'))
+    //     ->with([
+    //         'waliRombel:id,nama',
+    //         'tahunAkademik:id,tahun_akademik,status',
+    //         'kelas:id,nama_kelas',
+    //         'siswaRombels.siswa:id,nama,nisn',
+    //     ])
+    //     ->first();
 
     
-        if (!$rombels) {
-            return ApiResponse::error(
-                'Rombel tidak ditemukan',
-                ['wali_rombel_id' => ['Belum memiliki rombel']],
-                404
-            );
-        }
+    //     if (!$rombels) {
+    //         return ApiResponse::error(
+    //             'Rombel tidak ditemukan',
+    //             ['wali_rombel_id' => ['Belum memiliki rombel']],
+    //             404
+    //         );
+    //     }
     
-        $data = [
-            'wali_rombel' => [
-                'id' => $user->id,
-                'nama' => $user->nama,
-            ],
-            'rombel' => [
-                    'rombel_id' => $rombel->id,
-                    'nama_rombel' => $rombel->nama_rombel,
+    //     $data = [
+    //         'wali_rombel' => [
+    //             'id' => $user->id,
+    //             'nama' => $user->nama,
+    //         ],
+    //         'rombel' => [
+    //                 'rombel_id' => $rombel->id,
+    //                 'nama_rombel' => $rombel->nama_rombel,
     
-                    'tahun_akademik' => [
-                        'id' => $rombel->tahunAkademik?->id,
-                        'tahun_akademik' => $rombel->tahunAkademik?->tahun_akademik,
-                        'status' => $rombel->tahunAkademik?->status,
-                    ],
+    //                 'tahun_akademik' => [
+    //                     'id' => $rombel->tahunAkademik?->id,
+    //                     'tahun_akademik' => $rombel->tahunAkademik?->tahun_akademik,
+    //                     'status' => $rombel->tahunAkademik?->status,
+    //                 ],
     
-                    'kelas' => [
-                        'id' => $rombel->kelas?->id,
-                        'nama_kelas' => $rombel->kelas?->nama_kelas,
-                    ],
+    //                 'kelas' => [
+    //                     'id' => $rombel->kelas?->id,
+    //                     'nama_kelas' => $rombel->kelas?->nama_kelas,
+    //                 ],
     
-                    'anggota' => $rombel->siswaRombels->map(function ($siswaRombel) {
-                        return [
-                            'siswa_rombel_id' => $siswaRombel->id,
-                            'siswa_id' => $siswaRombel->siswa?->id,
-                            'nama_siswa' => $siswaRombel->siswa?->nama,
-                            'nisn' => $siswaRombel->siswa?->nisn,
-                        ];
-                    })->values(),
-                ],
-        ];
+    //                 'anggota' => $rombel->siswaRombels->map(function ($siswaRombel) {
+    //                     return [
+    //                         'siswa_rombel_id' => $siswaRombel->id,
+    //                         'siswa_id' => $siswaRombel->siswa?->id,
+    //                         'nama_siswa' => $siswaRombel->siswa?->nama,
+    //                         'nisn' => $siswaRombel->siswa?->nisn,
+    //                     ];
+    //                 })->values(),
+    //             ],
+    //     ];
     
-        return ApiResponse::success(
-            ['data' => $data],
-            'Rombel berhasil diambil'
-        );
-    }
+    //     return ApiResponse::success(
+    //         ['data' => $data],
+    //         'Rombel berhasil diambil'
+    //     );
+    // }
     
 
     /**

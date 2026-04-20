@@ -239,13 +239,7 @@ class JadwalPelajaranController extends Controller
                     'jadwal_pelajaran_id' => $jadwal->id,
                     'pertemuan_ke' => $i,
                     'jenis' => $jenis
-                ]);
-
-
-                // Masuk sini dan pertemuanController, jurnal ga jadi otomatis
-                // ! Absensi Guru Pelajaran otomatis terbuat tapi status = tidak hadir
-
-                // ! Absensi Siswa Pelajaran otomatis terbuat tapi status = tidak hadir
+                ]);                
 
                 // ==============================
                 // BUAT JURNAL KBM OTOMATIS

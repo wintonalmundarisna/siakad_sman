@@ -4,29 +4,23 @@
 - Logout
 - Ubah Password
 - Get Detail Diri
+  - Histori Jadi Wali Rombel
+  - Histori Jadi Pembina
+  - Histori Jadi Pelatih
 - Update Diri
 - Lupa Password
   
 ------------------------------------------------------------------------------
-
+Bearer 1|xiIopW1HIEus0IvBu7cmAok8GtEu6NTkmqXWMzHI9f2848a5
 - Identitas Sekolah : GET
-  
-------------------------------------------------------------------------------
-
-- Gedung            : GET All, Detail
-  - Ruangan         : Get Detail
   
 ------------------------------------------------------------------------------
 
 
 <!-- Data Akademik -->
-- Rombel            : Detail Tahun Aktif
-  - 
-  - Siswa           : Get Detail, Prestasi
-
-------------------------------------------------------------------------------
-- Wali Rombel     : Histori
+- Wali Rombel     : Saat Ini
   - Rombel
+        - Siswa           : Get Detail, Prestasi
   
 ------------------------------------------------------------------------------
 
@@ -43,7 +37,8 @@
 
   - Pertemuan (Update Jurnal KBM, CRUD Forum Dskusi, CRUD Tugas, Pengumpulan Tugas) // Pengumpulan tugas terbuat otomatis ketika tugas dibuat
 
-  - ☑️ Pertemuan
+  - Pertemuan
+    - LMS
     - Letakkan button "lihat pertemuan" di masing masing jadwal guru dan siswa
       - Letakkan button "lihat jurnal kbm", "Lihat Materi", "Lihat Forum Diskusi", dan "lihat tugas" secara sejajar pada masing masing pertemuan
 

@@ -27,173 +27,174 @@ class AbsensiSiswaController extends Controller
 {
     /**
      * ✅ Untuk spa
+     * ! Kalau berat, berarti tentukan dulu rombelnya
      */
-public function index(Request $request)
-{
-    $request->validate([
-        'tahun_akademik_id' => 'required|exists:tahun_akademik,id',
-        'semester_id'       => 'required|exists:semester,id',
-    ], [
-        'tahun_akademik_id.required' => 'Tahun akademik harus ditentukan terlebih dahulu',
-        'tahun_akademik_id.exists'   => 'Tahun akademik tidak ditemukan',
-        'semester_id.required'       => 'Semester harus ditentukan terlebih dahulu',
-        'semester_id.exists'         => 'Semester tidak ditemukan',
-    ]);
+    public function index(Request $request)
+    {
+        $request->validate([
+            'tahun_akademik_id' => 'required|exists:tahun_akademik,id',
+            'semester_id'       => 'required|exists:semester,id',
+        ], [
+            'tahun_akademik_id.required' => 'Tahun akademik harus ditentukan terlebih dahulu',
+            'tahun_akademik_id.exists'   => 'Tahun akademik tidak ditemukan',
+            'semester_id.required'       => 'Semester harus ditentukan terlebih dahulu',
+            'semester_id.exists'         => 'Semester tidak ditemukan',
+        ]);
 
-    $tahunId    = $request->tahun_akademik_id;
-    $semesterId = $request->semester_id;
+        $tahunId    = $request->tahun_akademik_id;
+        $semesterId = $request->semester_id;
 
-    /*
-    |--------------------------------------------------------------------------
-    | 1️⃣ Ambil Detail Absensi
-    |--------------------------------------------------------------------------
-    */
-    $absen = AbsensiSiswa::with([
-            'siswa',
-            'siswaRombel.rombel',
-            'jadwalPelajaran.kurikulumMataPelajaran.mataPelajaran',
-            'tahunAkademik',
-            'semester',
-        ])
-        ->where('tahun_akademik_id', $tahunId)
-        ->where('semester_id', $semesterId)
-        ->orderBy('hari')
-        ->get();
+        /*
+        |--------------------------------------------------------------------------
+        | 1️⃣ Ambil Detail Absensi
+        |--------------------------------------------------------------------------
+        */
+        $absen = AbsensiSiswa::with([
+                'siswa',
+                'siswaRombel.rombel',
+                'jadwalPelajaran.kurikulumMataPelajaran.mataPelajaran',
+                'tahunAkademik',
+                'semester',
+            ])
+            ->where('tahun_akademik_id', $tahunId)
+            ->where('semester_id', $semesterId)
+            ->orderBy('hari')
+            ->get();
 
-    if ($absen->isEmpty()) {
-        return ApiResponse::error('Not found', 'Data absensi tidak ditemukan');
+        if ($absen->isEmpty()) {
+            return ApiResponse::error('Not found', 'Data absensi tidak ditemukan');
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | 2️⃣ Rekap Per Tahun (SQL Aggregation)
+        |--------------------------------------------------------------------------
+        */
+        $rekapTahun = DB::table('absensi_siswa')
+            ->select(
+                'siswa_id',
+                DB::raw("SUM(status='hadir') as hadir"),
+                DB::raw("SUM(status='sakit') as sakit"),
+                DB::raw("SUM(status='izin')  as izin"),
+                DB::raw("SUM(status='alpa')  as alpa")
+            )
+            ->where('tahun_akademik_id', $tahunId)
+            ->groupBy('siswa_id')
+            ->get()
+            ->keyBy('siswa_id');
+
+        /*
+        |--------------------------------------------------------------------------
+        | 3️⃣ Rekap Per Semester (SQL Aggregation)
+        |--------------------------------------------------------------------------
+        */
+        $rekapSemester = DB::table('absensi_siswa')
+            ->select(
+                'siswa_id',
+                DB::raw("SUM(status='hadir') as hadir"),
+                DB::raw("SUM(status='sakit') as sakit"),
+                DB::raw("SUM(status='izin')  as izin"),
+                DB::raw("SUM(status='alpa')  as alpa")
+            )
+            ->where('tahun_akademik_id', $tahunId)
+            ->where('semester_id', $semesterId)
+            ->groupBy('siswa_id')
+            ->get()
+            ->keyBy('siswa_id');
+
+        /*
+        |--------------------------------------------------------------------------
+        | 4️⃣ Format Output (Ringan, karena total sudah dihitung DB)
+        |--------------------------------------------------------------------------
+        */
+        $formatted = $absen
+            ->groupBy('tahun_akademik_id')
+            ->map(function ($tahunItems) use ($rekapTahun, $rekapSemester) {
+
+                $tahun = $tahunItems->first()->tahunAkademik;
+
+                return [
+                    'tahun_akademik_id' => $tahun->id ?? null,
+                    'tahun_akademik'    => $tahun->tahun_akademik ?? null,
+
+                    'semesters' => $tahunItems
+                        ->groupBy('semester_id')
+                        ->map(function ($semesterItems) use ($rekapTahun, $rekapSemester) {
+
+                            $semester = $semesterItems->first()->semester;
+
+                            return [
+                                'semester_id' => $semester->id ?? null,
+                                'semester'    => $semester->semester ?? null,
+                                'status_semester'    => $semester->status ?? null,
+
+                                'rombels' => $semesterItems
+                                    ->groupBy(fn ($item) => $item->siswaRombel?->rombel?->id)
+                                    ->map(function ($rombelItems) use ($rekapTahun, $rekapSemester) {
+
+                                        $rombel = $rombelItems->first()->siswaRombel?->rombel;
+
+                                        return [
+                                            'rombel_id'   => $rombel->id ?? null,
+                                            'nama_rombel' => $rombel->nama_rombel ?? null,
+
+                                            'siswas' => $rombelItems
+                                                ->groupBy('siswa_id')
+                                                ->map(function ($siswaItems, $siswaId) use ($rekapTahun, $rekapSemester) {
+
+                                                    $siswa = $siswaItems->first()->siswa;
+
+                                                    return [
+                                                        'siswa_id' => $siswa->id ?? null,
+                                                        'nama'     => $siswa->nama ?? null,
+                                                        'nisn'     => $siswa->nisn ?? null,
+                                                        'nis'      => $siswa->nis ?? null,
+
+                                                        'total_per_tahun' => [
+                                                            'hadir' => $rekapTahun[$siswaId]->hadir ?? 0,
+                                                            'sakit' => $rekapTahun[$siswaId]->sakit ?? 0,
+                                                            'izin'  => $rekapTahun[$siswaId]->izin ?? 0,
+                                                            'alpa'  => $rekapTahun[$siswaId]->alpa ?? 0,
+                                                        ],
+
+                                                        'total_per_semester' => [
+                                                            'hadir' => $rekapSemester[$siswaId]->hadir ?? 0,
+                                                            'sakit' => $rekapSemester[$siswaId]->sakit ?? 0,
+                                                            'izin'  => $rekapSemester[$siswaId]->izin ?? 0,
+                                                            'alpa'  => $rekapSemester[$siswaId]->alpa ?? 0,
+                                                        ],
+
+                                                        'absensi' => $siswaItems
+                                                            ->map(function ($abs) {
+
+                                                                $mapel = $abs->jadwalPelajaran
+                                                                    ?->kurikulumMataPelajaran
+                                                                    ?->mataPelajaran;
+
+                                                                return [
+                                                                    'absensi_id'        => $abs->id ?? null,
+                                                                    'hari'        => Carbon::parse($abs->hari)->translatedFormat('l, d F Y') ?? null,
+                                                                    'mata_pelajaran' => $mapel->nama_pelajaran ?? null,
+                                                                    'status'         => $abs->status,
+                                                                    'bukti'          => $abs->bukti,
+                                                                ];
+                                                            })
+                                                            ->values(),
+                                                    ];
+                                                })
+                                                ->values(),
+                                        ];
+                                    })
+                                    ->values(),
+                            ];
+                        })
+                        ->values(),
+                ];
+            })
+            ->values();
+
+        return ApiResponse::success($formatted, 'Absensi berhasil diambil');
     }
-
-    /*
-    |--------------------------------------------------------------------------
-    | 2️⃣ Rekap Per Tahun (SQL Aggregation)
-    |--------------------------------------------------------------------------
-    */
-    $rekapTahun = DB::table('absensi_siswa')
-        ->select(
-            'siswa_id',
-            DB::raw("SUM(status='hadir') as hadir"),
-            DB::raw("SUM(status='sakit') as sakit"),
-            DB::raw("SUM(status='izin')  as izin"),
-            DB::raw("SUM(status='alpa')  as alpa")
-        )
-        ->where('tahun_akademik_id', $tahunId)
-        ->groupBy('siswa_id')
-        ->get()
-        ->keyBy('siswa_id');
-
-    /*
-    |--------------------------------------------------------------------------
-    | 3️⃣ Rekap Per Semester (SQL Aggregation)
-    |--------------------------------------------------------------------------
-    */
-    $rekapSemester = DB::table('absensi_siswa')
-        ->select(
-            'siswa_id',
-            DB::raw("SUM(status='hadir') as hadir"),
-            DB::raw("SUM(status='sakit') as sakit"),
-            DB::raw("SUM(status='izin')  as izin"),
-            DB::raw("SUM(status='alpa')  as alpa")
-        )
-        ->where('tahun_akademik_id', $tahunId)
-        ->where('semester_id', $semesterId)
-        ->groupBy('siswa_id')
-        ->get()
-        ->keyBy('siswa_id');
-
-    /*
-    |--------------------------------------------------------------------------
-    | 4️⃣ Format Output (Ringan, karena total sudah dihitung DB)
-    |--------------------------------------------------------------------------
-    */
-    $formatted = $absen
-        ->groupBy('tahun_akademik_id')
-        ->map(function ($tahunItems) use ($rekapTahun, $rekapSemester) {
-
-            $tahun = $tahunItems->first()->tahunAkademik;
-
-            return [
-                'tahun_akademik_id' => $tahun->id ?? null,
-                'tahun_akademik'    => $tahun->tahun_akademik ?? null,
-
-                'semesters' => $tahunItems
-                    ->groupBy('semester_id')
-                    ->map(function ($semesterItems) use ($rekapTahun, $rekapSemester) {
-
-                        $semester = $semesterItems->first()->semester;
-
-                        return [
-                            'semester_id' => $semester->id ?? null,
-                            'semester'    => $semester->semester ?? null,
-                            'status_semester'    => $semester->status ?? null,
-
-                            'rombels' => $semesterItems
-                                ->groupBy(fn ($item) => $item->siswaRombel?->rombel?->id)
-                                ->map(function ($rombelItems) use ($rekapTahun, $rekapSemester) {
-
-                                    $rombel = $rombelItems->first()->siswaRombel?->rombel;
-
-                                    return [
-                                        'rombel_id'   => $rombel->id ?? null,
-                                        'nama_rombel' => $rombel->nama_rombel ?? null,
-
-                                        'siswas' => $rombelItems
-                                            ->groupBy('siswa_id')
-                                            ->map(function ($siswaItems, $siswaId) use ($rekapTahun, $rekapSemester) {
-
-                                                $siswa = $siswaItems->first()->siswa;
-
-                                                return [
-                                                    'siswa_id' => $siswa->id ?? null,
-                                                    'nama'     => $siswa->nama ?? null,
-                                                    'nisn'     => $siswa->nisn ?? null,
-                                                    'nis'      => $siswa->nis ?? null,
-
-                                                    'total_per_tahun' => [
-                                                        'hadir' => $rekapTahun[$siswaId]->hadir ?? 0,
-                                                        'sakit' => $rekapTahun[$siswaId]->sakit ?? 0,
-                                                        'izin'  => $rekapTahun[$siswaId]->izin ?? 0,
-                                                        'alpa'  => $rekapTahun[$siswaId]->alpa ?? 0,
-                                                    ],
-
-                                                    'total_per_semester' => [
-                                                        'hadir' => $rekapSemester[$siswaId]->hadir ?? 0,
-                                                        'sakit' => $rekapSemester[$siswaId]->sakit ?? 0,
-                                                        'izin'  => $rekapSemester[$siswaId]->izin ?? 0,
-                                                        'alpa'  => $rekapSemester[$siswaId]->alpa ?? 0,
-                                                    ],
-
-                                                    'absensi' => $siswaItems
-                                                        ->map(function ($abs) {
-
-                                                            $mapel = $abs->jadwalPelajaran
-                                                                ?->kurikulumMataPelajaran
-                                                                ?->mataPelajaran;
-
-                                                            return [
-                                                                'absensi_id'        => $abs->id ?? null,
-                                                                'hari'        => Carbon::parse($abs->hari)->translatedFormat('l, d F Y') ?? null,
-                                                                'mata_pelajaran' => $mapel->nama_pelajaran ?? null,
-                                                                'status'         => $abs->status,
-                                                                'bukti'          => $abs->bukti,
-                                                            ];
-                                                        })
-                                                        ->values(),
-                                                ];
-                                            })
-                                            ->values(),
-                                    ];
-                                })
-                                ->values(),
-                        ];
-                    })
-                    ->values(),
-            ];
-        })
-        ->values();
-
-    return ApiResponse::success($formatted, 'Absensi berhasil diambil');
-}
 
 
 
